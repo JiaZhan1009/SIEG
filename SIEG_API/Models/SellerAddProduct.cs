@@ -16,5 +16,8 @@ namespace SIEG_API.Models
         public DateTime SaleDate { get; set; }
         public int Price { get; set; }
         public bool? ValIdity { get; set; }
+
+        public virtual Member Member { get; set; }
+        public virtual Product Product { get; set; }
     }
 }

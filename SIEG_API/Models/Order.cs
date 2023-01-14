@@ -21,5 +21,7 @@ namespace SIEG_API.Models
         public string ReceivingPhone { get; set; }
         public string ShippingAddress { get; set; }
         public bool? ValIdity { get; set; }
+
+        public virtual Product Product { get; set; }
     }
 }

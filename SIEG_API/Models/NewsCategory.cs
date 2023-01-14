@@ -7,8 +7,15 @@ namespace SIEG_API.Models
 {
     public partial class NewsCategory
     {
+        public NewsCategory()
+        {
+            News = new HashSet<News>();
+        }
+
         public int NewsCategoryId { get; set; }
         public string CategoryName { get; set; }
         public bool? ValIdity { get; set; }
+
+        public virtual ICollection<News> News { get; set; }
     }
 }

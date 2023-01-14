@@ -7,14 +7,22 @@ namespace SIEG_API.Models
 {
     public partial class News
     {
+        public News()
+        {
+            FaviriteNews = new HashSet<FaviriteNews>();
+        }
+
         public int NewsId { get; set; }
         public string Img { get; set; }
         public string Title { get; set; }
         public string NewsContent { get; set; }
         public DateTime ReleaseTime { get; set; }
         public bool? ValIdity { get; set; }
-        public int NewsCategory { get; set; }
+        public int NewsCategoryId { get; set; }
         public DateTime AddTime { get; set; }
         public int ViewsCount { get; set; }
+
+        public virtual NewsCategory NewsCategory { get; set; }
+        public virtual ICollection<FaviriteNews> FaviriteNews { get; set; }
     }
 }

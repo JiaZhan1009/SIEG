@@ -17,5 +17,8 @@ namespace SIEG_API.Models
         public DateTime AddTime { get; set; }
         public bool? ValIdity { get; set; }
         public int LikeCount { get; set; }
+
+        public virtual ForumReply ForumReply { get; set; }
+        public virtual Member Member { get; set; }
     }
 }

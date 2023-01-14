@@ -7,7 +7,13 @@ namespace SIEG_API.Models
 {
     public partial class ForumArticle
     {
-        public int ForunArticleId { get; set; }
+        public ForumArticle()
+        {
+            FaviriteArticle = new HashSet<FaviriteArticle>();
+            ForumReply = new HashSet<ForumReply>();
+        }
+
+        public int ForumArticleId { get; set; }
         public int MemberId { get; set; }
         public string Category { get; set; }
         public int ProductId { get; set; }
@@ -18,6 +24,10 @@ namespace SIEG_API.Models
         public DateTime AddTime { get; set; }
         public string Img { get; set; }
         public bool? ValIdity { get; set; }
-        public int ProductCategoryId { get; set; }
+
+        public virtual Member Member { get; set; }
+        public virtual Product Product { get; set; }
+        public virtual ICollection<FaviriteArticle> FaviriteArticle { get; set; }
+        public virtual ICollection<ForumReply> ForumReply { get; set; }
     }
 }

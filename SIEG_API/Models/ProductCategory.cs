@@ -7,10 +7,17 @@ namespace SIEG_API.Models
 {
     public partial class ProductCategory
     {
+        public ProductCategory()
+        {
+            Product = new HashSet<Product>();
+        }
+
         public int ProductCategoryId { get; set; }
         public string CategoryName { get; set; }
         public string BrandName { get; set; }
         public string Img { get; set; }
         public bool? ValIdity { get; set; }
+
+        public virtual ICollection<Product> Product { get; set; }
     }
 }

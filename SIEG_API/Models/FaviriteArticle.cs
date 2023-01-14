@@ -11,6 +11,9 @@ namespace SIEG_API.Models
         public int ArticleId { get; set; }
         public int MemberId { get; set; }
         public bool? ValIdity { get; set; }
-        public int ForumId { get; set; }
+        public int ForumArticleId { get; set; }
+
+        public virtual ForumArticle ForumArticle { get; set; }
+        public virtual Member Member { get; set; }
     }
 }

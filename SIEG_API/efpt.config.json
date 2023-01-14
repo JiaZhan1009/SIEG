@@ -67,7 +67,7 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[MemberCoupons]",
+         "Name": "[dbo].[MemberCoupon]",
          "ObjectType": 0
       },
       {

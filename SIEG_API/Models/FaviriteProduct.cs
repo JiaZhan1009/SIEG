@@ -11,5 +11,8 @@ namespace SIEG_API.Models
         public int? ProductId { get; set; }
         public int? MemberId { get; set; }
         public bool? ValIdity { get; set; }
+
+        public virtual Member Member { get; set; }
+        public virtual Product Product { get; set; }
     }
 }

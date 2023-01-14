@@ -5,11 +5,14 @@ using System.Collections.Generic;
 
 namespace SIEG_API.Models
 {
-    public partial class MemberCoupons
+    public partial class MemberCoupon
     {
-        public int MemberCouponsId { get; set; }
-        public int CouponsId { get; set; }
+        public int MemberCouponId { get; set; }
+        public int CouponId { get; set; }
         public int MemberId { get; set; }
         public int Count { get; set; }
+
+        public virtual Coupon Coupon { get; set; }
+        public virtual Member Member { get; set; }
     }
 }

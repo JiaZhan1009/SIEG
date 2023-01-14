@@ -7,10 +7,17 @@ namespace SIEG_API.Models
 {
     public partial class Coupon
     {
+        public Coupon()
+        {
+            MemberCoupon = new HashSet<MemberCoupon>();
+        }
+
         public int CouponId { get; set; }
         public string Sn { get; set; }
         public int DiscountPrice { get; set; }
         public bool? ValIdity { get; set; }
         public string Name { get; set; }
+
+        public virtual ICollection<MemberCoupon> MemberCoupon { get; set; }
     }
 }

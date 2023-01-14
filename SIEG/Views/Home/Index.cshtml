@@ -1,0 +1,126 @@
+﻿@{
+    ViewData["Title"] = "首頁";
+}
+
+
+<!-- VUE banner -->
+<div class="banner_sec" id="bannerVue">
+    <div class="owl-carousel owl-theme banner-carousel">
+        <div class="item" v-for="item in BannerDTO">
+            <img class="w-100" :src="item.bannerImg" alt="Image">
+            <div class="carousel-caption">
+                <div class="container">
+                    <div class="row justify-content-start">
+                        <div class="col-lg-8 text-start">
+                            <div class="animated slideInUp banner_tx">
+                                {{item.bannerTitle}}
+                            </div>
+                            <a :href="item.bannerLink" class="animated slideInUp btn_style1">
+                                Read
+                                More
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Popular Brands -->
+<div class="index_brand index_space" id="brandVue">
+    <div class="container">
+        <div class="title_block wow slideInDown">
+            <div class="en">Popular Brands</div>
+            <h3 class="ch">熱門品牌</h3>
+        </div>
+        <div class="owl-carousel owl-theme index_brand-carousel wow slideInUp">
+            <div class="item" v-for="item in ProductSortDTO">
+                <div class="index_brand_block">
+                    <a @@click="hrefToInfo(item.productsortBrand)">
+                        <img class="w-100" :src="item.productsortImg" alt="Image">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hot Products -->
+<div class="index_product index_space" id="productlistVue">
+    <div class="container">
+        <div class="title_block wow slideInDown">
+            <div class="en">Hot Products</div>
+            <h3 class="ch">人氣商品</h3>
+        </div>
+        <div class="row wow slideInUp">
+            <div class="col-xl-3  col-md-4 col-6 product_col" v-for="item in ProductListDTO">
+                <div class="product_card">
+                    <div class="product_img">
+                        <a href="product_info.html">
+                            <img :src="item.productlistImg" alt="">
+                        </a>
+                    </div>
+                    <div class="product_content">
+                        <h4><a href="product_info.html" class="two-row">{{item.productlistName}}</a></h4>
+                        <div class="sale">
+                            <div class="price">{{item.productPrice}}</div>
+                            <div class="sold">售出100件</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- AD -->
+<div class="index_ad index_space pb-0" id="adVue">
+    <div class="container">
+        <div class="owl-carousel owl-theme index_ad-carousel">
+            <div class="item" v-for="item in AdDTO">
+                 <a :href="item.adLink">
+                    <img class="w-100" :src="item.adImg" alt="Image">
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- News -->
+<div class="index_news index_space" id="newslistVue">
+    <div class="container">
+        <div class="title_block wow slideInDown">
+            <div class="en">Latest News</div>
+            <h3 class="ch">最新消息</h3>
+        </div>
+            <div class="owl-carousel owl-theme index_news-carousel">
+            <div class="item" v-for="item in NewsListDTO">
+                <div class="news_card">
+                    <div class="news_img">
+                        <a href="news_info.html">
+                            <img :src="item.newslistImg" alt="">
+                        </a>
+                        <div class="sort"><a href="/news_list.html">{{item.newslistSort}}</a></div>
+                    </div>
+                    <div class="news_content">
+                        <div class="date"><i class="far fa-calendar-alt"></i>{{item.newslistdate}}</div>
+                        <div class="title">
+                            <a href="news_info.html"
+                            class="one-row">{{item.newslistTitle}}</a>
+                        </div>
+                        <p class="two-row">{{item.newslistContent}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<partial name="_footerPartial" />
+
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
+}

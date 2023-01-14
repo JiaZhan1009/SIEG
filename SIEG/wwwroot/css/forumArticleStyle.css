@@ -1,0 +1,328 @@
+/*發表文章按鈕*/
+.bubbly-button {
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    display: inline-block;
+    font-size: 16px;
+    width: 60%;
+    padding: 10px 16px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: #006340;
+    color: #fff;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    transition: transform ease-in 0.1s, box-shadow ease-in 0.25s;
+    box-shadow: 0 2px 25px #004b31;
+}
+
+.bubbly-button:focus {
+    outline: 0;
+}
+
+.bubbly-button:before,
+.bubbly-button:after {
+    position: absolute;
+    content: '';
+    display: block;
+    width: 140%;
+    height: 100%;
+    left: -20%;
+    z-index: -1000;
+    transition: all ease-in-out 0.5s;
+    background-repeat: no-repeat;
+}
+
+.bubbly-button:before {
+    display: none;
+    top: -75%;
+    background-image: radial-gradient(circle, #006340 20%, transparent 20%), radial-gradient(circle, transparent 20%, #006340 20%, transparent 30%), radial-gradient(circle, #006340 20%, transparent 20%), radial-gradient(circle, #006340 20%, transparent 20%), radial-gradient(circle, transparent 10%, #006340 15%, transparent 20%), radial-gradient(circle, #006340 20%, transparent 20%), radial-gradient(circle, #006340 20%, transparent 20%), radial-gradient(circle, #006340 20%, transparent 20%), radial-gradient(circle, #006340 20%, transparent 20%);
+    background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%, 10% 10%, 18% 18%;
+}
+
+.bubbly-button:after {
+    display: none;
+    bottom: -75%;
+    background-image: radial-gradient(circle, #006340 20%, transparent 20%), radial-gradient(circle, #006340 20%, transparent 20%), radial-gradient(circle, transparent 10%, #006340 15%, transparent 20%), radial-gradient(circle, #006340 20%, transparent 20%), radial-gradient(circle, #006340 20%, transparent 20%), radial-gradient(circle, #006340 20%, transparent 20%), radial-gradient(circle, #006340 20%, transparent 20%);
+    background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 10% 10%, 20% 20%;
+}
+
+.bubbly-button:active {
+    transform: scale(0.9);
+    background-color: #009b65;
+    box-shadow: 0 2px 25px #007049;
+}
+
+.bubbly-button.animate:before {
+    display: block;
+    animation: topBubbles ease-in-out 0.75s forwards;
+}
+
+.bubbly-button.animate:after {
+    display: block;
+    animation: bottomBubbles ease-in-out 0.75s forwards;
+}
+
+@keyframes topBubbles {
+    0% {
+        background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%, 40% 90%, 55% 90%, 70% 90%;
+    }
+
+    50% {
+        background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%, 50% 50%, 65% 20%, 90% 30%;
+    }
+
+    100% {
+        background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%, 50% 40%, 65% 10%, 90% 20%;
+        background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+    }
+}
+
+@keyframes bottomBubbles {
+    0% {
+        background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%, 70% -10%, 70% 0%;
+    }
+
+    50% {
+        background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%, 105% 0%;
+    }
+
+    100% {
+        background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%, 110% 10%;
+        background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+    }
+}
+
+/*名子*/
+.name {
+    padding-top: 10px;
+    font-size: 15px;
+}
+
+/*類別*/
+.sort {
+    font-size: 10px;
+    color: #0b7bc5;
+}
+
+/*時間*/
+.time {
+    font-size: 10px;
+    color: rgb(145, 145, 145);
+    margin: 0px 0px 11px;
+}
+
+/*內文*/
+.text {
+    word-break: break-all;
+    white-space: pre-line;
+    line-height: 22px;
+}
+
+/*圖片*/
+.image {
+    max-block-size: 700px;
+}
+
+/*愛心*/
+.heart {
+    width: 90px;
+    height: 100px;
+    background: url("../images/forum/heart.png") no-repeat;
+    background-position: 0 0;
+    cursor: pointer;
+    transition: background-position 1s steps(28);
+    transition-duration: 0s;
+}
+
+.heart.is-active {
+    transition-duration: 1s;
+    background-position: -2800px 0;
+}
+
+.placement {
+    padding-top: 40px;
+    transform: translate(0%, -50%);
+}
+
+/*收藏*/
+.book {
+    position: relative;
+    width: 32px;
+    height: 36px;
+    border-radius: 5px;
+    background: white;
+    border: none;
+    padding: 3px;
+    box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.1);
+    transition: transform 100ms, background-color 40ms, color 40ms;
+    outline: none;
+    cursor: pointer;
+}
+
+.book svg {
+    position: relative;
+}
+
+.book.pressed {
+    transform: scale(0.8);
+}
+
+.book.active {
+    color: white;
+    background-color: #006340;
+}
+
+.wave {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    transition: transform 230ms, opacity 230ms;
+    background-color: transparent;
+    opacity: 0.5;
+}
+
+.book.active .wave {
+    background-color: #006340;
+    transform: scale(2.5);
+    opacity: 0;
+}
+
+/*總留言數*/
+.total_message {
+    padding-top: 8px;
+    color: #00000080;
+    margin-bottom: 0;
+}
+
+/*我要回復鈕*/
+.Reply_btn {
+    height: 20px;
+    border-left: 15px;
+    font-size: 13px;
+    background-color: #007049;
+    color: #fff;
+    border-radius: 3px;
+}
+
+/*更多留言*/
+.more_button {
+    background: none;
+    color: #00000080;
+}
+
+/*回文框*/
+.Reply_block {
+    text-align: left;
+    width: 62.1%;
+    height: 170px;
+    background-color: #ffffff;
+    position: fixed;
+    top: 11.8%;
+    border: 1px solid rgb(0, 0, 0);
+    display: none;
+}
+
+/*回文框文字輸入*/
+.describe {
+    width: 100%;
+    height: 80%;
+    font-size: 14px;
+    resize: none;
+    border: none;
+    display: block;
+    /* background-color: aquamarine; */
+}
+
+/*回文框取消鈕*/
+.custom {
+    width: 44px;
+    height: 26px;
+    color: #fff;
+    border-radius: 5px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, .5), 7px 7px 20px 0px rgba(0, 0, 0, .1), 4px 4px 5px 0px rgba(0, 0, 0, .1);
+    outline: none;
+}
+
+.cancel_btn {
+    background-color: #89d8d3;
+    background-image: linear-gradient(315deg, #89d8d3 0%, #03c8a8 74%);
+    border: none;
+    z-index: 1;
+}
+
+.cancel_btn:after {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    border-radius: 5px;
+    background-color: #4dccc6;
+    background-image: linear-gradient(315deg, #4dccc6 0%, #96e4df 74%);
+    box-shadow: -7px -7px 20px 0px #fff 9, -4px -4px 5px 0px #fff 9, 7px 7px 20px 0px #000 2, 4px 4px 5px 0px #000 1;
+    transition: all 0.3s ease;
+}
+
+.cancel_btn:hover {
+    color: #fff;
+}
+
+.cancel_btn:hover:after {
+    top: 0;
+    height: 100%;
+}
+
+.cancel_btn:active {
+    top: 2px;
+}
+
+/*送出鈕*/
+.submit_btn {
+    background: #004b31;
+    border: none;
+    z-index: 1;
+}
+
+.submit_btn:after {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 0;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    border-radius: 5px;
+    background-color: #009b65;
+    background-image: linear-gradient(315deg, #009b65 0%, #009b65 74%);
+    transition: all 0.3s ease;
+}
+
+.submit_btn:hover {
+    color: #000;
+}
+
+.submit_btn:hover:after {
+    top: auto;
+    bottom: 0;
+    height: 100%;
+}
+
+.submit_btn:active {
+    top: 2px;
+}

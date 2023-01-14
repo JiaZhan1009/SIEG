@@ -1,0 +1,259 @@
+/* -----  Group  ----- */
+.btnCancel {
+    border: 1px solid #333;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100px;
+}
+
+.btnNext {
+    border: 1px solid #333;
+    padding: 8px 15px;
+    background-color: #444;
+    color: #fff;
+    cursor: pointer;
+    margin-left: 15px;
+    border-radius: 5px;
+    width: 100px;
+}
+
+.btnCancelAndNext {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.buyInfo .row .col-11 {
+    display: flex;
+    justify-content: space-between;
+}
+
+.buyInfo .row select {
+    border: 1px solid #d3d3d3;
+    background-color: #f3f3f3;
+    border-radius: 4px;
+}
+
+.selDay {
+    width: 100%;
+    border: 1px solid #ddd;
+    padding: 5px 8px;
+    border-radius: 3px;
+    color: #666;
+}
+
+/* .buyInfo .row {
+    padding: 13px;
+
+} */
+
+.buyInfo {
+    text-align: start;
+    /* margin: 25px 0; */
+}
+
+.totalPrice {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px dashed #333;
+    padding-top: 10px;
+}
+
+.specialOffer {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px dashed #aaa;
+}
+
+.specialOffer:last-child {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border-bottom: unset;
+}
+
+.calculateInfo {
+    padding: 0px 15px;
+    color: #666;
+}
+
+.inputPriceGroup .priceState {
+    color: #a3a3a3;
+    margin: 10px;
+}
+
+.inputPriceGroup .inputPrice {
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+    border: 1px solid #ccc;
+}
+
+.inputPriceGroup .inputSpan {
+    font-weight: bold;
+    font-size: 26px;
+    position: absolute;
+    top: 4px;
+    left: 15px;
+}
+
+.inputPriceGroup {
+    position: relative;
+    margin-bottom: 30px;
+    padding: 1px;
+}
+
+.submitAndBuy .submit {
+    border-radius: 50px;
+    padding: 15px 10px;
+    cursor: pointer;
+}
+
+.submitAndBuy .buyNow {
+    border-radius: 50px;
+    padding: 15px 10px;
+    cursor: pointer;
+}
+
+.submitAndBuy {
+    border-radius: 50px;
+    border-color: #d3d3d3;
+    background-color: #d3d3d3;
+    border: 1px solid #f1f1f1;
+    padding: 0px;
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+}
+
+.priceContent {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.selSize {
+    padding: 10px 20px;
+    background-color: white;
+    margin: 15px 0px;
+    border: .5px solid #333;
+    border-radius: 5px;
+    font-size: 20px;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.product_buy_Right {
+    background-color: #f3f3f3;
+    text-align: center;
+    padding: 30px 70px;
+}
+
+.product_buy_Right .stateGroup {
+    display: flex;
+    justify-content: center;
+}
+
+.product_buy_Right .state {
+    border: 1px solid #333;
+    background-color: #df2b14;
+    border-radius: 50px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+
+.product_buy_Right .state img {
+    height: 25px;
+    width: 25px;
+    border-radius: 50px;
+    margin: 5px;
+}
+
+.product_buy_Right .state span {
+    margin-right: 15px;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+
+/* -----  功能區  ----- */
+::placeholder {
+    color: #d1d1d1
+}
+
+.btnCancelAndNext div:hover {
+    color: #fff;
+    background-color: #000;
+}
+
+
+/* -----  新增  ----- */
+
+.product_buy {
+    overflow: hidden;
+}
+
+.buyInfoBlock {
+    border-bottom: 1px dashed #5f5f5f;
+    padding: 15px;
+}
+
+.buyInfoBlock img {
+    width: 16px;
+}
+
+.buyInfoBlock span {
+    position: relative;
+    top: 1px;
+    margin-left: 10px;
+}
+
+.buyInfoBlock .icon {
+    cursor: pointer;
+    text-align: right;
+}
+
+
+@media (max-width: 1399px) {
+    .product_buy_Right {
+        padding: 30px 50px;
+    }
+}
+
+@media (max-width: 991px) {
+    .product_buy_Left {
+        max-width: 800px;
+        margin: 70px auto;
+        padding: 0 50px;
+    }
+}
+
+@media (max-width: 575px) {
+    .product_buy_Left {
+        margin: 50px auto;
+    }
+
+    .product_buy_Right {
+        padding: 20px 30px;
+    }
+}
+
+@media (max-width: 375px) {
+    .product_buy_Right {
+        padding: 15px 20px;
+    }
+
+    .product_buy_Left {
+        padding: 0 30px;
+    }
+
+    .priceContent {
+        padding: 20px;
+    }
+}

@@ -52,9 +52,9 @@
     color: black;
 }
 
-.Aelement:hover {
-    background: #ededed;
-}
+    .Aelement:hover {
+        background: #ededed;
+    }
 
 .Aelement-1 {
     padding: 10px 0px 10px 10px;
@@ -86,7 +86,6 @@
     margin-top: 50px;
     display: inline-block;
     margin-left: 50px;
-
 }
 
 .KycImge-2 {
@@ -109,12 +108,11 @@
     background-color: #393939;
     color: #efefef;
     border: 0px;
-
 }
 
-.submitDistance1:hover {
-    background-color: #0f0f0f;
-}
+    .submitDistance1:hover {
+        background-color: #0f0f0f;
+    }
 
 /* 上方member---------------------------------------------------------------------- */
 
@@ -129,9 +127,9 @@
     color: #a1a5a4
 }
 
-.orderTopWidth-1:hover {
-    color: #0f0f0f;
-}
+    .orderTopWidth-1:hover {
+        color: #0f0f0f;
+    }
 
 .orderTopWidth-2 {
     justify-content: center;
@@ -140,7 +138,6 @@
 }
 
 .orderTopWidth-3 {
-
     margin-top: 80px;
 }
 
@@ -148,7 +145,6 @@
 
 .totalAmount {
     margin-left: 200PX;
-
 }
 
 /* 目前購買邊框 */
@@ -173,6 +169,7 @@ hr {
 .table tbody tr td {
     vertical-align: middle;
     word-break: break-all;
+    min-height: 90px;
 }
 
 .imgTd {
@@ -186,9 +183,9 @@ hr {
     cursor: pointer;
 }
 
-.imgTd-1:hover {
-    background-color: #ededed;
-}
+    .imgTd-1:hover {
+        background-color: #ededed;
+    }
 
 .imgMargin {
     margin-left: 20px;
@@ -214,10 +211,24 @@ hr {
 }
 
 .btncolor {
-    border: 2px solid #006340;
-    color: black;
+    background-color: #006340;
+    color: white;
+}
+
+
+
+.btncolor-2 {
+    background-color: #006340;
+    color: white;
+    margin: 10px 0px;
     /* background-color: #006340; */
 }
+
+    .btncolor-2:hover {
+        background-color: #006340;
+        color: #fafafa;
+    }
+
 
 .btncolor:hover {
     background-color: #006340;
@@ -232,19 +243,19 @@ hr {
     padding: 20px 0px;
 }
 
-.noticeDivimg img {
-    margin-left: 40px;
-    height: 56px;
-}
+    .noticeDivimg img {
+        margin-left: 40px;
+        height: 56px;
+    }
 
 .noticecolor {
     /* list-style-position: inside; */
     list-style: none
 }
 
-.noticecolor:hover {
-    background-color: #ededed;
-}
+    .noticecolor:hover {
+        background-color: #ededed;
+    }
 
 
 
@@ -270,7 +281,6 @@ hr {
 
 .settingbut {
     display: flex;
-
 }
 
 .settinp {
@@ -324,10 +334,10 @@ hr {
         border-style: none;
     }
 
-    .table tbody tr td:first-child {
-        padding-top: 30px;
-        border-top: 6px double #006340;
-    }
+        .table tbody tr td:first-child {
+            padding-top: 30px;
+            border-top: 6px double #006340;
+        }
 
     .table tbody tr td {
         font-size: 16px;
@@ -336,18 +346,14 @@ hr {
         border-left: 6px double #006340;
     }
 
-    .table tbody tr td:last-child {
-        padding-bottom: 30px;
-        margin-bottom: 20px;
-        border-bottom: 6px double #006340;
-    }
-
+        .table tbody tr td:last-child {
+            padding-bottom: 30px;
+            margin-bottom: 20px;
+            border-bottom: 6px double #006340;
+        }
 }
 
-.btncolor {
-    background-color: #006340;
-    color: white;
-}
+
 
 
 .Pcolor {
@@ -363,14 +369,14 @@ hr {
     justify-content: space-between;
 }
 
-.orderdetail span {
-    word-break: break-all;
-    width: calc(100% - 120px);
-}
+    .orderdetail span {
+        word-break: break-all;
+        width: calc(100% - 120px);
+    }
 
-.orderdetail span:first-child {
-    width: 110px;
-}
+        .orderdetail span:first-child {
+            width: 110px;
+        }
 
 .cupon-block {
     position: relative;
@@ -378,14 +384,14 @@ hr {
     margin-top: 30px;
 }
 
-.cupon-block:before {
-    content: '';
-    position: absolute;
-    width: 1px;
-    height: 100%;
-    left: 110px;
-    border-right: dashed 1px #ccc;
-}
+    .cupon-block:before {
+        content: '';
+        position: absolute;
+        width: 1px;
+        height: 100%;
+        left: 110px;
+        border-right: dashed 1px #ccc;
+    }
 
 .cupon-value {
     display: inline-block;
@@ -435,17 +441,16 @@ hr {
     line-height: 200px
 }
 
-.preview img {
-    height: 200px;
-    order: 1;
-    vertical-align: middle;
-}
+    .preview img {
+        height: 200px;
+        order: 1;
+        vertical-align: middle;
+    }
 
 #image_uploads {
     position: absolute;
     height: 200px;
     width: 400px;
-
     opacity: 1;
     /* position: relative;
     width: 100px;
@@ -458,19 +463,19 @@ hr {
     opacity: 0;
 }
 
-#image_uploads:before {
-    font-size: 15px;
-    text-align: center;
-    position: relative;
-    /* top: -30px; */
-    width: 100%;
-    height: 100%;
-    display: block;
-    content: "正➕面";
-    line-height: 200px;
-    /* background: rgb(221, 221, 221); */
-    transition: all 0.3s ease 0s;
-}
+    #image_uploads:before {
+        font-size: 15px;
+        text-align: center;
+        position: relative;
+        /* top: -30px; */
+        width: 100%;
+        height: 100%;
+        display: block;
+        content: "正➕面";
+        line-height: 200px;
+        /* background: rgb(221, 221, 221); */
+        transition: all 0.3s ease 0s;
+    }
 
 
 
@@ -491,17 +496,16 @@ hr {
     line-height: 200px
 }
 
-.preview-2 img {
-    height: 200px;
-    order: 1;
-    vertical-align: middle;
-}
+    .preview-2 img {
+        height: 200px;
+        order: 1;
+        vertical-align: middle;
+    }
 
 #image_uploads-2 {
     position: absolute;
     height: 200px;
     width: 400px;
-
     opacity: 1;
     /* position: relative;
     width: 100px;
@@ -514,16 +518,34 @@ hr {
     opacity: 0;
 }
 
-#image_uploads-2:before {
-    font-size: 15px;
-    text-align: center;
+    #image_uploads-2:before {
+        font-size: 15px;
+        text-align: center;
+        position: relative;
+        /* top: -30px; */
+        width: 100%;
+        height: 100%;
+        display: block;
+        content: "正➕面";
+        line-height: 200px;
+        /* background: rgb(221, 221, 221); */
+        transition: all 0.3s ease 0s;
+    }
+
+.searchlocation {
+    display: flex;
+    align-items: center;
     position: relative;
-    /* top: -30px; */
-    width: 100%;
-    height: 100%;
-    display: block;
-    content: "正➕面";
-    line-height: 200px;
-    /* background: rgb(221, 221, 221); */
-    transition: all 0.3s ease 0s;
+}
+
+#aaaa {
+    padding-right: 110px;
+}
+
+#btnlocation {
+    width: 100px;
+    position: absolute;
+    right: 0;
+    background: #006340;
+    color: #fff;
 }

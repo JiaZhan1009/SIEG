@@ -38,7 +38,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=D_Personal}/{action=D_Personal_Circle}/{id?}");
 app.MapRazorPages();
 
 app.Run();

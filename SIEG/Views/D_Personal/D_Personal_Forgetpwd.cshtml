@@ -1,0 +1,34 @@
+﻿@{
+    ViewData["Title"] = "忘記密碼";
+    ViewData["enTitle"] = "Sign";
+}
+@section Styles{
+        <!--forum Article Stylesheet-->
+        <link href="~/css/sign.css" rel="stylesheet" />
+
+}
+
+<!-- 按鈕 tab 登入&註冊 -->
+<div id="resetpwdVue">
+    <div class="index_space about_sign">
+        <div class="container">
+            <div class="card resetcard">
+                <div>
+                    <h3>重設密碼</h3>
+                    <p>請輸入在 S.I.E.G 當時註冊的電子信箱</p>
+                    <input type="email" placeholder="電子信箱*">
+                    <button type="submit" class="btn btn-dark">傳送</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts{
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
+
+}
+

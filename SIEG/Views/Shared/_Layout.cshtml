@@ -20,13 +20,13 @@
     <link href="~/css/style.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/css/responsive.css" rel="stylesheet" asp-append-version="true" />
 
-    @await RenderSectionAsync("Styles", required: false)
+    @await RenderSectionAsync("Style", required: false)
 
 </head>
 <body>
 
     <!-- header -->
-    <div class="header_sec sticky-top">
+    <div class="header_sec sticky-top" id="headerVue">
         <div class="container">
             <div class="row">
                 <div class="col-md-3 col-5">
@@ -44,34 +44,26 @@
                             </div>
                             <div class="offcanvas-body">
                                 <div class="navbar-nav ms-auto">
-                                    <a class="nav-item nav-link" asp-controller="Home" asp-action="About">關於我們</a>
+                                    <a class="nav-item nav-link" asp-controller="about" asp-action="index">關於我們</a>
                                     <div class="nav-item dropdown">
-                                        <a class="nav-link" asp-controller="NewsList" asp-action="index">最新消息</a>
+                                        <a class="nav-link" asp-controller="news_list" asp-action="index">最新消息</a>
                                         <i class="bi bi-chevron-down dropdown-toggle" data-bs-toggle="dropdown"></i>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" asp-controller="NewsList" asp-action="index">品牌資訊</a>
-                                            <a class="dropdown-item" asp-controller="NewsList" asp-action="index">獨家情報</a>
-                                            <a class="dropdown-item" asp-controller="NewsList" asp-action="index">新品發佈</a>
+                                            <a class="dropdown-item" v-for="item in NewsSortDTO" @@click="newsSortToList(item.newssortName)">{{item.newssortName}}</a>
                                         </div>
                                     </div>
                                     <div class="nav-item dropdown">
-                                        <a class="nav-link" asp-controller="ProductList" asp-action="index">商品介紹</a>
+                                        <a class="nav-link" asp-controller="product_list" asp-action="index">商品介紹</a>
                                         <i class="bi bi-chevron-down dropdown-toggle" data-bs-toggle="dropdown"></i>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" asp-controller="ProductList" asp-action="index">鞋子</a>
-                                            <a class="dropdown-item" asp-controller="ProductList" asp-action="index">衣服</a>
-                                            <a class="dropdown-item" asp-controller="ProductList" asp-action="index">包款</a>
-                                            <a class="dropdown-item" asp-controller="ProductList" asp-action="index">手錶</a>
+                                            <a class="dropdown-item" v-for="item in ProductSortDTO" @@click="ProductSortToList(item.productsortName)">{{item.productsortName}}</a>
                                         </div>
                                     </div>
                                     <div class="nav-item dropdown">
-                                        <a href="forum_list.html" class="nav-link">討論專區</a>
+                                        <a class="nav-link" asp-controller="forum_list" asp-action="index">討論專區</a>
                                         <i class="bi bi-chevron-down dropdown-toggle" data-bs-toggle="dropdown"></i>
                                         <div class="dropdown-menu">
-                                            <a href="forum_list.html" class="dropdown-item">高檔腕錶</a>
-                                            <a href="forum_list.html" class="dropdown-item">潮流服飾</a>
-                                            <a href="forum_list.html" class="dropdown-item">時尚包款</a>
-                                            <a href="forum_list.html" class="dropdown-item">高檔鞋履</a>
+                                            <a class="dropdown-item" v-for="item in ProductSortDTO" @@click="ForumSortToList(item.productsortName)">{{item.productsortName}}</a>
                                         </div>
                                     </div>
                                     <a href="contact.html" class="nav-item nav-link">聯絡我們</a>
@@ -94,19 +86,19 @@
                         </div>
                         <ul class="header_icon">
                             <li class="header_user">
-                                <a href="signup.html">
-                                    <img src="~/images/icon-user.png" alt="">
+                                <a @@click="memberLogin">
+                                    <img src="~/images/icon-user.png" alt="img">
                                 </a>
                             </li>
                             <li class="header_notice">
                                 <a href="notice.html">
-                                    <img src="~/images/icon-notice.png" alt="">
+                                    <img src="~/images/icon-notice.png" alt="img">
                                 </a>
                                 <span class="new_notice"></span>
                             </li>
                             <li class="header_search">
                                 <a href="javascript:void(0)">
-                                    <img src="~/images/icon-search.png" alt="">
+                                    <img src="~/images/icon-search.png" alt="img">
                                 </a>
                             </li>
                         </ul>
@@ -121,7 +113,7 @@
         <!-- search form -->
         <div class="header_search_form">
             <form action="ProductList">
-                <button type="button" class="fa fa-search" onclick="searchProsuct()"></button>
+                <button type="button" class="fa fa-search" @@click="searchProsuct"></button>
                 <input type="text" name="search_content" placeholder="Search" class="searchInput">
             </form>
         </div>
@@ -153,16 +145,87 @@
     <!-- Template Javascript -->
     <script src="~/js/main.js"></script>
 
-    @await RenderSectionAsync("Scripts", required: false)
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
 
     <script>
+        var webApiBaseAddress = "https://localhost:7139";
+        var appVue = new Vue({
+            el: "#headerVue",
+            name: "headerVue",
+            data: {
+                Filter: "",
+                NewsSortDTO: [],
+                newssortId: null,
+                newssortName: null,
+                ProductSortDTO: [],
+                productsortId: null,
+                productsortImg: null,
+                productsortBrand: null,
+                productsortSort: null,
+            },
+            mounted: function () {
+                let _this = this;
+                _this.getNewsSortDTO();
+                _this.getProductSortDTO();
 
-        function searchProsuct() {
-            sessionStorage.setItem("keyword", $(".searchInput").val());
-            window.location = "/ProductList";
-        }
-
+            },
+            methods: {
+                getNewsSortDTO: function () {
+                    let _this = this;
+                    axios.get(`${webApiBaseAddress}/api/E_NewsSort`).then(
+                        response => {
+                            _this.NewsSortDTO = response.data;
+                            var NewsSort = [];
+                            for (let i = 0; i < _this.NewsSortDTO.length; i++) {
+                                let item = {};
+                                item = _this.NewsSortDTO[i];
+                                NewsSort.push(item);
+                            }
+                            _this.NewsSortDTO = NewsSort;
+                        }
+                    );
+                },
+                newsSortToList: function (sortName) {
+                    sessionStorage.setItem("indexNSortName", sortName);
+                    window.location = "/news_list";
+                },
+                getProductSortDTO: function () {
+                    let _this = this;
+                    axios.get(`${webApiBaseAddress}/api/E_ProductSort`).then(
+                        response => {
+                            _this.ProductSortDTO = response.data;
+                            //console.log(response.data);
+                        }
+                    );
+                },
+                ProductSortToList: function (sortName) {
+                    sessionStorage.setItem("indexPSortName", sortName);
+                    window.location = "/product_list";
+                },
+                ForumSortToList: function (sortName) {
+                    sessionStorage.setItem("indexFSortName", sortName);
+                    window.location = "/forum_list";
+                },
+                memberLogin: function () {
+                    mID = sessionStorage.getItem("mID");
+                    //console.log(mID);
+                    if (mID == "" || mID == null) {
+                        window.location = "/signup";
+                    }
+                    else {
+                        window.location = "/member";
+                    }
+                },
+                searchProsuct: function () {
+                    sessionStorage.setItem("pKeyword", $(".searchInput").val());
+                    window.location = "/product_list";
+                },
+            },
+        });
     </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
 
 </body>
 </html>

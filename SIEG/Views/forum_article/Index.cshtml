@@ -1,0 +1,426 @@
+﻿@{
+    ViewData["Title"] = "討論專區";
+    ViewData["enTitle"] = "Forum";
+}
+
+@section Style{
+        <!--forum Article Stylesheet-->
+        <link href="~/css/forumArticleStyle.css" rel="stylesheet">
+}
+
+
+<!-- Content -->
+<div class="index_space news_list_page">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-xl-3 order-lg-1 order-2 widget_area">
+                <div class="sticky_sidebar">
+                    <!-- 側欄分類 -->
+                    <div class="widget widget_categories">
+                        <!--發表文章按鈕-->
+                        <div style="text-align: center;">
+                            <button type="button" class="bubbly-button">發表文章</button>
+                        </div>
+                        <div class="widget_title">S.E.I.G<span>精選看板</span></div>
+                        <ul>
+                            <li>
+                                <div class="has_child">
+                                    <a href="">高檔腕表</a>
+                                    <span class="has_child_btn">
+                                        <i class="bi bi-chevron-right"></i>
+                                    </span>
+                                </div>
+                                <ul class="sub_child">
+                                    <li><a href="">IWC</a></li>
+                                    <li><a href="">Rolex</a></li>
+                                    <li><a href="">Seiko</a></li>
+                                    <li><a href="">Panerai</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="has_child">
+                                    <a href="">潮流服飾</a>
+                                    <span class="has_child_btn">
+                                        <i class="bi bi-chevron-right"></i>
+                                    </span>
+                                </div>
+                                <ul class="sub_child">
+                                    <li><a href="">Kaws</a></li>
+                                    <li><a href="">Stussy</a></li>
+                                    <li><a href="">Supreme</a></li>
+                                    <li><a href="">Yeezy</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="has_child">
+                                    <a href="">精品包款</a>
+                                    <span class="has_child_btn">
+                                        <i class="bi bi-chevron-right"></i>
+                                    </span>
+                                </div>
+                                <ul class="sub_child">
+                                    <li><a href="">Kaws</a></li>
+                                    <li><a href="">Stussy</a></li>
+                                    <li><a href="">Supreme</a></li>
+                                    <li><a href="">Yeezy</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="has_child">
+                                    <a href="">高級鞋履</a>
+                                    <span class="has_child_btn">
+                                        <i class="bi bi-chevron-right"></i>
+                                    </span>
+                                </div>
+                                <ul class="sub_child">
+                                    <li><a href="">Kaws</a></li>
+                                    <li><a href="">Stussy</a></li>
+                                    <li><a href="">Supreme</a></li>
+                                    <li><a href="">Yeezy</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8 col-xl-9 order-lg-2 order-1">
+                <div id="ForumArticleVue" class="form_list_content">
+                    <!--內文-->
+                    <div>
+                        <!--身分列-->
+                        <div style="padding-top: 5px; float: left;">
+                            <svg viewBox="0 0 40 40" focusable="false" width="32" height="32">
+                                <path fill="#81D4FA" d="M40 20a20 20 0 1 1-40 0 20 20 0 0 1 40 0"></path>
+                                <path fill="#2490BF"
+                                      d="M16 7.9C12.4 7.4 9.3 6 9.3 6s5.5 4.3 5 5.3c-.4 1-4.2 0-4.2 0l4 2a9.7 9.7 0 0 0-1.5 4.6l.1 3.4a1.5 1.5 0 1 0 .8 2.9 8.3 8.3 0 0 0 6.2 5.3c.6 0 .6 2 .6 3.2-1.6 1-2.5 3-2 5v2.2a20.2 20.2 0 0 0 9.9-1.6l-.7-2.7v-.4l-.2-.4-.2-.4-.2-.3-.2-.3c-.7-1-1.7-1.6-2.9-1.8l.6-2.3s1.4-1 3-2.6l.4 1.3 1.4-2.5.9-1.8s3.8-10.3.8-13.9c-2.6-3-11-1.9-14.7-2.3">
+                                </path>
+                            </svg>
+                        </div>
+                        <div class="name">
+                            <span style="padding-left: 5px;">{{PostDTOs.memberId}}</span>
+                        </div>
+                        <!--Title-->
+                        <h3 style="padding-top: 15px;">{{PostDTOs.title}}</h3>
+                        <!--分類、時間-->
+                        <p class="time"><a href="forum_list.html" class="sort">高檔腕表</a>·{{Date}}</p>
+                        <!--內文-->
+                        <div class="text">
+                            <span>
+                                {{PostDTOs.articleContent}}
+                            </span>
+                        </div>
+                        <!--內文圖-->
+                        <div v-if="PostDTOs.img != null" style="text-align: center;">
+                            <img :src="PostDTOs.img" class="image">
+                        </div>
+                        <!--Like-->
+                        <div style="padding-top: 20px; float:left">
+                            <img style="width: 30px; height:30px" src="~/images/forum/biglike.png">
+                        </div>
+                        <div style="padding-top:22px;">
+                            <span>{{PostDTOs.likeCount}}·留言 4</span>
+                            <!--收藏按讚紐-->
+                            <div class="placement" style="float: right;" @@click="like(PostDTOs)">
+                                <div class="heart"></div>
+                            </div>
+                            <button type="button" class="book" style="float: right;">
+                                <div class="wave"></div>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -256 1792 1792">
+                                    <path d="M1417.763 66.17h-1024v1242l423-406 89-85 89 85 423 406v-1242zm12-128q23 0 44 9 33 13 52.5 41t19.5 62v1289q0 34-19.5 62t-52.5 41q-19 8-44 8-48 0-83-32l-441-424-441 424q-36 33-83 33-23 0-44-9-33-13-52.5-41t-19.5-62v-1289q0-34 19.5-62t52.5-41q21-9 44-9h1048z"
+                                          fill="currentColor" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div style="padding-top: 35px;border-bottom: 2px solid #ddd;"></div>
+                    </div>
+                </div>
+                <!--留言區-->
+                <div id="ReplyVue" style="background-color: #f5f5f5;">
+                    <div style="border-bottom: 1px solid #ddd;">
+                        <span>
+                            <a class="total_message">共4則留言</a>
+                            <span>
+                                <button id="Reply_btn" class="Reply_btn" type="button">我要回復!</button>
+                                <div class="Reply_block">
+                                    <textarea id="text" class="describe" placeholder="請勿帶有仇恨言論" v-model="Reply"></textarea>
+                                    <div style="text-align: center;" class="frame">
+                                        <button id="cancel" type="button" class="cancel_btn custom">取消</button>
+                                        <button id="submit_btn" type="button" class="submit_btn custom" @@click="insert">送出</button>
+                                    </div>
+                                </div>
+                            </span>
+                        </span>
+                    </div>
+                    <template v-for="item in ReplyDTOs">
+                        <!--留言身分列-->
+                        <div style="padding-top: 5px; float: left;">
+                            <svg viewBox="0 0 40 40" focusable="false" width="32" height="32">
+                                <path fill="#81D4FA" d="M40 20a20 20 0 1 1-40 0 20 20 0 0 1 40 0">
+                                </path>
+                                <path fill="#2490BF"
+                                      d="M16 7.9C12.4 7.4 9.3 6 9.3 6s5.5 4.3 5 5.3c-.4 1-4.2 0-4.2 0l4 2a9.7 9.7 0 0 0-1.5 4.6l.1 3.4a1.5 1.5 0 1 0 .8 2.9 8.3 8.3 0 0 0 6.2 5.3c.6 0 .6 2 .6 3.2-1.6 1-2.5 3-2 5v2.2a20.2 20.2 0 0 0 9.9-1.6l-.7-2.7v-.4l-.2-.4-.2-.4-.2-.3-.2-.3c-.7-1-1.7-1.6-2.9-1.8l.6-2.3s1.4-1 3-2.6l.4 1.3 1.4-2.5.9-1.8s3.8-10.3.8-13.9c-2.6-3-11-1.9-14.7-2.3">
+                                </path>
+                            </svg>
+                        </div>
+                        <div class="name" style="border-bottom: 1px solid #ddd;">
+                            <span style="padding-left: 5px;">{{item.memberId}}</span>
+                            <!--留言-->
+                            <div style="padding-left:37px;">
+                                <span style="word-break: break-all;white-space: pre-line;">{{item.forumReplyContent}}</span>
+
+                                <p style="font-size: 13px;">
+                                    B{{item.floor}}·{{item.AddTime}}
+                                </p>
+                            </div>
+                            <!--更多留言-->
+                            <div style="padding: 3px 0px 3px 30px;">
+                                    <button v-if="rp2.rp1floor == item.樓層" v-for="rp2 in rp2Floor" id="more" type="button" class="more_button slideToggle">
+                                        查看其他{{rp2.rpamount}}則留言
+                                    </button>
+                                 <div class="showcontent" style="display: none;">
+                                    <div v-if="rp2.回覆1樓層 == item.樓層" v-for="rp2 in Reply2DTOs" onAfterUpdate="alert('qwe')">
+                                          <!--留言身分列-->
+                                          <div style="padding-top: 5px; float: left;">
+                                              <svg viewBox="0 0 40 40" focusable="false" width="32" height="32">
+                                                <path fill="#81D4FA"
+                                                        d="M40 20a20 20 0 1 1-40 0 20 20 0 0 1 40 0">
+                                                </path>
+                                                <path fill="#2490BF"
+                                                      d="M16 7.9C12.4 7.4 9.3 6 9.3 6s5.5 4.3 5 5.3c-.4 1-4.2 0-4.2 0l4 2a9.7 9.7 0 0 0-1.5 4.6l.1 3.4a1.5 1.5 0 1 0 .8 2.9 8.3 8.3 0 0 0 6.2 5.3c.6 0 .6 2 .6 3.2-1.6 1-2.5 3-2 5v2.2a20.2 20.2 0 0 0 9.9-1.6l-.7-2.7v-.4l-.2-.4-.2-.4-.2-.3-.2-.3c-.7-1-1.7-1.6-2.9-1.8l.6-2.3s1.4-1 3-2.6l.4 1.3 1.4-2.5.9-1.8s3.8-10.3.8-13.9c-2.6-3-11-1.9-14.7-2.3">
+                                                </path>
+                                              </svg>
+                                          </div>
+                                          <div class="name">
+                                              <span style="padding-left: 5px;">丹尼斯</span>
+                                              <!--留言-->
+                                              <div style="padding-left:37px;">
+                                                <span style="word-break: break-all;white-space: pre-line;">{{rp2.內文}}</span>
+                                                <p style="font-size: 13px;">B{{rp2.回覆1樓層}}-{{rp2.樓層}}·12月31日 15:30</p>
+                                              </div>
+                                          </div>
+                                    </div>
+                                 </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Footer {
+        <partial name="_FooterPartial" />
+}
+
+@section Scripts{
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
+        <script src="~/js/forum_post.js"></script>
+
+        <script>
+            let articleId = sessionStorage.getItem("fID");
+            var webApiBaseAddress = "https://localhost:7139";
+            var postVue = new Vue({
+                el: "#ForumArticleVue",
+                name: "ForumArticleVue",
+                data: {
+                    PostDTOs: [],
+                    Date: [],
+                    Fliter: "",
+                },
+                mounted: function () {
+                    let _this = this;
+                    _this.getPostDTOs();
+
+                    //  /*按讚鈕*/
+                    $(function () {
+                        $(".heart").on("click", function () {
+                            $(this).toggleClass("is-active");
+                        });
+                    });
+
+                    ///*收藏*/
+                    $(function () {
+                        $(".book").on("mousedown", function () {
+                            if (!$(this).hasClass('active')) {
+                                $(this).addClass('pressed')
+                            }
+                        });
+                    });
+
+                    $(function () {
+                        $(".book").on("click", function () {
+                            $(this).removeClass('pressed')
+                            $(this).toggleClass('active')
+                        });
+                    });
+                },
+                methods: {
+                    getPostDTOs: function () {
+                        let _this = this;
+                        axios.get(`${webApiBaseAddress}/api/G_ForumArticles/${articleId}`).then(
+                            response => {
+                                _this.PostDTOs = response.data;
+                                var PostList = [];
+                                let item = {};
+                                item = _this.PostDTOs;
+                                _this.Date = moment(item.addTime).format("YYYY年MM/DD A:hh:mm");
+                                PostList.push(item);
+                            }
+                        );
+                    },
+                    like: function (Post) {
+                        //console.log(Post)
+                        let _this = this;
+                        var request = {};
+                        let PostId = articleId;
+                    request.ForumArticleId = PostId;
+                        request.MemberId = Post.memberId;
+                        request.Category = Post.category;
+                        request.ProductId = Post.productId;
+                        request.Title = Post.title;
+                        request.ArticleContent = Post.articleContent;
+                        request.LikeCount = Post.likeCount + 1;
+                        request.Img = Post.img;
+                        axios.put(`${webApiBaseAddress}/api/G_ForumArticles/${PostId}`, request).then(
+                            response => {
+                                //alert(response.data);
+                                _this.getPostDTOs();
+                            }
+                        );
+                    },
+                },
+            });
+        </script>
+
+        <script>
+            let articleid = sessionStorage.getItem("fID");
+            var webApiBaseAddress = "https://localhost:7139";
+            var postVue = new Vue({
+                el: "#ReplyVue",
+                name: "ReplyVue",
+                data: {
+                    ReplyDTOs: [],
+                    Reply2DTOs: [],
+                    lastFloor: [],
+                    rp2lastFloor: [],
+                    Reply: null,
+                    rp2Floor:[],
+                },
+                mounted: function () {
+                    let _this = this;
+                    _this.getReplyDTOs();
+                    //_this.getReply2DTOs();
+                    /*取消鈕*/
+                    let cancel = document.getElementById('cancel');
+                    cancel.addEventListener('click', function () {
+                        $('.Reply_block').css('display', 'none');
+                    });
+
+                    //留言收折
+                    $(function () {
+                        setTimeout(function () {
+                            let aa = {};
+                            $(".more_button").on('click', function () {
+                                aa = this.textContent;
+                                $(this).next(".showcontent").slideToggle();
+                                if (this.textContent == '隱藏留言') {
+                                    this.textContent = _this.old;
+                                }
+                                else {
+                                    this.textContent = '隱藏留言';
+                                }
+                                _this.old = aa;
+                            });
+                        }, 1000);
+                    });
+                },
+                methods: {
+                    getReplyDTOs: function () {
+                        let _this = this;
+                        axios.get(`${webApiBaseAddress}/api/G_ForumReply1/${articleid}`).then(
+                            response => {
+                                _this.ReplyDTOs = response.data;
+                                var EmployeeList = [];
+                                var lastfloorList = [];
+                                for (let i = 0; i < _this.ReplyDTOs.length; i++) {
+                                    let item = {};
+                                    let floor = {};
+                                    item = _this.ReplyDTOs[i];
+                                    item.AddTime = moment(_this.ReplyDTOs[i].addTime).format("MM/DD hh:mma");
+                                    EmployeeList.push(item);
+                                    floor = _this.ReplyDTOs[i].floor + 1;
+                                    lastfloorList.push(floor);
+                                }
+                                _this.ReplyDTOs = EmployeeList;
+                                lastFloor = lastfloorList.slice(-1);
+                            }
+                        );
+                    },
+                    getReply2DTOs: function () {
+                        let _this = this;
+                        axios.get(`${webApiBaseAddress}/api/Reply2/${articleid}`).then(
+                            response => {
+                                _this.Reply2DTOs = response.data;
+                                var EmployeeList = [];
+                                var FloorList = [];
+                                var RpList = [];
+                                for (let i = 0; i < _this.Reply2DTOs.length; i++) {
+                                    let item = {};
+                                    let floor = {};
+                                    item = _this.Reply2DTOs[i];
+                                    floor = _this.Reply2DTOs[i].回覆1樓層;
+                                    item.建立時間 = moment(_this.Reply2DTOs[i].建立時間).format("MM/DD hh:mma");
+                                    EmployeeList.push(item);
+                                    FloorList.push(floor);
+                                    let rparray = {
+                                        "rp1floor":floor,
+                                        "rpamount": _this.Reply2DTOs[i].樓層,
+                                    }
+                                    RpList.push(rparray);
+                                }
+                                _this.Reply2DTOs = EmployeeList;
+                                _this.removeDuplicates(RpList, "rp1floor")
+                            }
+                        );
+                    },
+                    removeDuplicates: function removeDuplicates(originData, rp1floor) {
+                            let _this = this;
+                            var newArray = [];
+                            var lookupObject  = {};
+
+                            for (var i in originData) {
+                            lookupObject[originData[i][rp1floor]] = originData[i];
+                            }
+
+                            for(i in lookupObject) {
+                                newArray.push(lookupObject[i]);
+                            }
+                            _this.rp2Floor = newArray;
+                            //console.log(_this.rp2Floor);
+                    },
+                    insert: function () {
+                        var _this = this;
+                        var request = {};
+                        request.ForumArticleId = articleid;
+                        request.MemberId = "101";
+                        request.Floor = lastFloor[0];
+                        request.ForumReplyContent = _this.Reply;
+                        request.Img = "00";
+                        axios.post(`${webApiBaseAddress}/api/G_ForumReply1`, request).then(
+                            response => {
+                                _this.Reply = null;
+                                setTimeout(function () {
+                                    $('.Reply_block').css('display', 'none');
+                                }, 500);
+                                _this.getReplyDTOs();
+                            }
+                        );
+                    },
+                },
+            });
+        </script>
+}

@@ -20,7 +20,7 @@
     <link href="~/css/style.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/css/responsive.css" rel="stylesheet" asp-append-version="true" />
 
-    @await RenderSectionAsync("Styles", required: false)
+    @await RenderSectionAsync("Style", required: false)
 
 </head>
 <body>
@@ -65,7 +65,7 @@
                                         </div>
                                     </div>
                                     <div class="nav-item dropdown">
-                                        <a href="forum_list.html" class="nav-link">討論專區</a>
+                                        <a class="nav-item nav-link" asp-controller="forum_list" asp-action="index">討論專區</a>
                                         <i class="bi bi-chevron-down dropdown-toggle" data-bs-toggle="dropdown"></i>
                                         <div class="dropdown-menu">
                                             <a href="forum_list.html" class="dropdown-item">高檔腕錶</a>

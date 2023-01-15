@@ -1,10 +1,22 @@
+
+
 .setAddress {
     margin-bottom: 30px;
 }
 
+.product_buy_Right {
+    background-color: #fafafa;
+    padding: 70px;
+}
+
+.product_Pay_Right {
+    background-color: #fafafa;
+    padding: 70px;
+}
+
 .product_Address_Right {
     background-color: #fafafa;
-    padding: 45px;
+    padding: 70px;
 }
 
 .addressConcelAndNext {
@@ -41,4 +53,16 @@
 .btnNext:hover {
     color: #fff;
     background-color: #000;
+}
+
+.DisPlayNone {
+    display: none;
+}
+
+.BuyDisPlayNone {
+    display: none;
+}
+
+.AddressDisPlayNone {
+    display: none;
 }

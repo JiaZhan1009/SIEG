@@ -1,4 +1,10 @@
 /* -----  Group  ----- */
+.divSizeItem {
+    /*margin: 2px;*/
+    padding: 2px 10px;
+    border: 1px solid #c3c3c3;
+    margin-bottom: 15px;
+}
 .btnCancel {
     border: 1px solid #333;
     padding: 8px 15px;
@@ -21,7 +27,7 @@
 .btnCancelAndNext {
     margin-top: 30px;
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
 }
 
 .buyInfo .row .col-11 {
@@ -143,7 +149,7 @@
     padding: 10px 20px;
     background-color: white;
     margin: 15px 0px;
-    border: .5px solid #333;
+    border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 20px;
     display: flex;
@@ -155,6 +161,7 @@
     background-color: #f3f3f3;
     text-align: center;
     padding: 30px 70px;
+    position: relative;
 }
 
 .product_buy_Right .stateGroup {
@@ -290,4 +297,84 @@
     .priceContent {
         padding: 20px;
     }
+}
+.active {
+    border: 2px solid #a3a3a3;
+    font-weight: bold;
+    background-color: #f1f1f1
+}
+.divSizeItem:hover {
+    color: #333;
+    border-color: #999;
+    background-color: #eeeeee;
+    font-weight: bold;
+    cursor: pointer;
+    border: 2px solid #a3a3a3;
+}
+.sizePriceItem {
+    width: 32%;
+    margin-bottom: 10px;
+}
+.sizeAndPrice {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.selSizeHide {
+    position: absolute;
+    background-color: #fff;
+    width: 100%;
+    /*width: calc(100% - 40px);*/
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    left: 0px;
+    /*left: 20px;*/
+    /*top: 68px;*/
+    padding: 5px 20px 10px 20px;
+    z-index: 1;
+}
+.sizeItemContoiner {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.divSizeItem {
+    /*margin: 2px;*/
+    padding: 2px 10px;
+    border: 1px solid #c3c3c3;
+    margin-bottom: 15px;
+}
+
+.displayNone {
+    display: none;
+}
+
+/*.slide-enter-active, .slide-leave-active {
+    transition: all .5s;
+}
+
+.slide-enter {
+    transform: translateY(100%);
+}
+
+.slide-enter-to {
+    transform: translateY(0%);
+}
+
+.slide-leave {
+    transform: translateY(0%);
+}
+
+.slide-leave-to {
+    transform: translateY(-100%);
+}*/
+
+.silde-enter-active, .silde-leave-active {
+    transition: transform .5s;
+}
+
+.silde-enter, .silde-leave-to {
+    transform: translateY(-100%);
 }

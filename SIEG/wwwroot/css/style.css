@@ -121,6 +121,7 @@ p:last-child {
     color: #333;
     padding: 10px 20px;
     transition: 0;
+    cursor: pointer;
 }
 
 .header_sec .navbar .dropdown-item:hover,
@@ -149,6 +150,7 @@ p:last-child {
 
 .index_space {
     padding: 100px 0;
+    cursor: default;
 }
 
 .title_block {
@@ -434,6 +436,7 @@ p:last-child {
 .product_card .product_img a {
     display: block;
     overflow: hidden;
+    cursor: pointer;
 }
 
 .product_card .product_img a img {
@@ -460,6 +463,7 @@ p:last-child {
     letter-spacing: 0.5px;
     font-weight: 400;
     line-height: 1.4;
+    cursor:pointer;
 }
 
 .product_card .product_content h4 a:hover {
@@ -504,6 +508,7 @@ p:last-child {
 .news_card .news_img a {
     display: block;
     overflow: hidden;
+    cursor: pointer;
 }
 
 .news_card .news_img a img {
@@ -527,6 +532,7 @@ p:last-child {
     background-color: #006340;
     font-weight: 300;
     letter-spacing: 0.5px;
+    cursor: pointer;
 }
 
 .news_card .news_img .sort a:hover {
@@ -559,6 +565,7 @@ p:last-child {
     font-size: 18px;
     letter-spacing: 0.5px;
     font-weight: 400;
+    cursor: pointer;
 }
 
 .news_card .news_content .title a:hover {
@@ -580,6 +587,7 @@ p:last-child {
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
+    cursor: default;
 }
 
 .page_banner::before {
@@ -741,6 +749,7 @@ p:last-child {
     font-size: 17px;
     letter-spacing: 0.5px;
     display: block;
+    cursor: pointer;
 }
 
 .widget_categories ul li.active>a,
@@ -750,6 +759,10 @@ p:last-child {
 .widget_categories ul li.active>.has_child .has_child_btn i,
 .widget_categories ul li:hover .has_child .has_child_btn i {
     color: #006340;
+}
+
+.widget_categories ul li a:hover {
+    color: #006340 !important;
 }
 
 .widget_categories ul li .has_child {
@@ -779,12 +792,13 @@ p:last-child {
     transition: 0.5s;
 }
 
-.widget_categories ul li.active>.has_child .has_child_btn i {
+.widget_categories ul li > .has_child .has_child_btn.active i {
     transform: rotate(90deg);
 }
 
 .widget_categories ul.sub_child {
     margin-top: 30px;
+    /*display: none;*/
 }
 
 .widget_categories ul.sub_child li a {
@@ -818,6 +832,7 @@ p:last-child {
     background-color: #000;
     overflow: hidden;
     transition: 0.3s;
+    cursor: pointer;
 }
 
 .hot_news_item .image_warp:hover img {
@@ -848,6 +863,7 @@ p:last-child {
     line-height: 1.5;
     word-break: break-all;
     letter-spacing: 0.5px;
+    cursor: pointer;
 }
 
 .hot_news_item .item_info .title:hover {
@@ -944,15 +960,15 @@ p:last-child {
     font-size: 12px;
 }
 
+.pagination .page-item:hover .page-link {
+    color: #006340;
+    border-color: #006340;
+}
+
 .pagination .page-item.active .page-link {
     color: #fff;
     border-color: #006340;
     background-color: #006340;
-}
-
-.pagination .page-item:hover .page-link {
-    color: #006340;
-    border-color: #006340;
 }
 
 .pagination .page-item .page-link:focus {
@@ -1001,6 +1017,8 @@ p:last-child {
 
 .owl-dots .owl-dot {
     opacity: 0.5;
+    background: unset;
+    padding: 0;
 }
 
 .owl-dots .owl-dot.active {
@@ -1045,6 +1063,10 @@ p:last-child {
 
 .index_brand_block {
     overflow: hidden;
+}
+
+.index_brand_block a{
+    cursor: pointer;
 }
 
 .index_brand_block a img {

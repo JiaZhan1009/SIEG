@@ -1,0 +1,117 @@
+﻿@{
+    ViewData["Title"] = "personal";
+    ViewData["enTitle"] = "Ben";
+}
+
+@section Style{
+    <link href="~/css/BEN.css" rel="stylesheet">
+}
+
+    <div id="appVue">
+        <partial name="_MemberBanner" />
+        <div class="container-fluid">
+            <div class="row">
+                <partial name="_Membersidebar">
+                    <div class="col-lg-9">
+                        <div class="orderTopWidth">
+                            <div class="row">
+                                <div class="col-10">
+                                    <h4>個人資料</h4>
+                                </div>
+
+                                <div class="col-lg-2">
+                                    <a asp-area="" asp-controller="Member" asp-action="Member_Membermodification">
+                                        <button type="button" class="btn btncolor">
+                                            編輯
+                                        </button>
+                                    </a>
+                                </div>
+
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="personalDivrow">
+                                        <h6>名稱</h6>
+                                        <p>{{PersonalDTOes.name}}</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="personalDivrow">
+                                        <h6>電話</h6>
+                                        <p>{{PersonalDTOes.phone}}</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="personalDivrow">
+                                        <h6>電子信箱</h6>
+                                        <p>{{PersonalDTOes.email}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <div>
+                                        <h6>暱稱</h6>
+                                        <p>{{PersonalDTOes.nickName}}</p>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div>
+                                        <h6>重設密碼</h6>
+                                        <button type="button" class="btn btncolor">
+                                            更改<a href="#"></a>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    @section Scripts
+    {
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.2/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+        var webApiBaseAddress = "https://localhost:7139";
+        var appVue = new Vue({
+           
+            el: "#appVue",
+            name: "appVue",
+            data: {
+                mID: sessionStorage.getItem("mID"),
+                PersonalDTOes: {},
+            },
+            mounted: function () {
+                let _this = this;
+                _this.getPersonalDTOes();
+            },
+            methods: {
+                getPersonalDTOes: function () {
+                    let _this = this;
+                    axios.get(`${webApiBaseAddress}/api/B_personalinformation/${_this.mID}`).then(
+                        response => {
+                            _this.PersonalDTOes = response.data
+                            console.log(_this.PersonalDTOes);
+                        }
+                    );
+                },
+            },
+        });
+    </script>
+
+    }
+
+
+
+
+
+
+
+
+
+
+

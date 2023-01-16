@@ -1,13 +1,14 @@
 /* -----  Group  ----- */
 .sizePriceItem {
     width: 32%;
+    margin: 0 0.6%;
     margin-bottom: 10px;
     border: 1px solid #c3c3c3;
 }
 .sizeAndPrice {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    /*justify-content: space-between;*/
 }
 .sizeItemContoiner {
     display: flex;
@@ -33,9 +34,9 @@
     background-color: #fff;
     width: 100%;
     /*width: calc(100% - 40px);*/
-    border-left: 1px solid #ddd;
+    /*border-left: 1px solid #ddd;
     border-right: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;*/
     left: 0px;
     /*left: 20px;*/
     /*top: 68px;*/
@@ -114,7 +115,7 @@
 
 
 .selSize {
-    border: .5px solid #333;
+    border: .5px solid #555;
     border-radius: 5px;
     display: flex;
     align-items: center;
@@ -303,4 +304,12 @@ tr > td > p {
     border: 2px solid #a3a3a3;
     font-weight: bold;
     background-color:#f1f1f1
+}
+
+@media (max-width: 575px){
+
+    .sizePriceItem {
+        width: 31%;
+        margin: 0 1%;
+    }
 }

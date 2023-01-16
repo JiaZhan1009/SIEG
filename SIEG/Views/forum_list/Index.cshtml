@@ -1,0 +1,221 @@
+﻿@{
+    ViewData["Title"] = "討論專區";
+    ViewData["enTitle"] = "Forum";
+}
+
+@section Style{
+    <!--Forum List Stylesheet-->
+    <link href="~/css/formListStyle.css" rel="stylesheet">
+}
+
+<!-- Page Banner -->
+<div class="page_banner" style="background-image: url(../images/forum/IWC.jpg)">
+    <div class="container">
+        <div class="content">
+            <h1 class="page_title">IWC</h1>
+        </div>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="index_space news_list_page">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-xl-3 order-lg-1 order-2 widget_area">
+                <div class="sticky_sidebar">
+                    <!--文章熱門、最新篩選，發文按鈕-->
+                    <span class="dropdown">
+                        <button type="button" class="btn dropdown-toggle class-btn"
+                                data-bs-toggle="dropdown">
+                            文章篩選
+                        </button>
+                        <span class="dropdown-menu">
+                            <a href="#" class="dropdown-item active">熱門</a>
+                            <a href="#" class="dropdown-item">最新</a>
+                        </span>
+                    </span>
+                    <div style="float: right;">
+                        <a asp-controller="forum_post" asp-action="Index"><img src="~/images/forum/pen.jpg"></a>
+                    </div>
+                    <hr>
+                    <!-- 側欄搜尋 -->
+                    <div class="widget widget_search" style="padding-top: 15px;">
+                        <form class="search_form">
+                            <input type="text" placeholder="搜尋貼文">
+                            <button type="submit"><i class="bi bi-search"></i></button>
+                        </form>
+                    </div>
+                    <!-- 側欄分類 -->
+                    <div class="widget widget_categories">
+                        <div class="widget_title">S.E.I.G<span>精選看板</span></div>
+                        <ul>
+                            <li>
+                                <div class="has_child">
+                                    <a href="">高檔腕表</a>
+                                    <span class="has_child_btn">
+                                        <i class="bi bi-chevron-right"></i>
+                                    </span>
+                                </div>
+                                <ul class="sub_child">
+                                    <li><a href="">IWC</a></li>
+                                    <li><a href="">Rolex</a></li>
+                                    <li><a href="">Seiko</a></li>
+                                    <li><a href="">Panerai</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="has_child">
+                                    <a href="">潮流服飾</a>
+                                    <span class="has_child_btn">
+                                        <i class="bi bi-chevron-right"></i>
+                                    </span>
+                                </div>
+                                <ul class="sub_child">
+                                    <li><a href="">Kaws</a></li>
+                                    <li><a href="">Stussy</a></li>
+                                    <li><a href="">Supreme</a></li>
+                                    <li><a href="">Yeezy</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="has_child">
+                                    <a href="">精品包款</a>
+                                    <span class="has_child_btn">
+                                        <i class="bi bi-chevron-right"></i>
+                                    </span>
+                                </div>
+                                <ul class="sub_child">
+                                    <li><a href="">Kaws</a></li>
+                                    <li><a href="">Stussy</a></li>
+                                    <li><a href="">Supreme</a></li>
+                                    <li><a href="">Yeezy</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="has_child">
+                                    <a href="">高級鞋履</a>
+                                    <span class="has_child_btn">
+                                        <i class="bi bi-chevron-right"></i>
+                                    </span>
+                                </div>
+                                <ul class="sub_child">
+                                    <li><a href="">Kaws</a></li>
+                                    <li><a href="">Stussy</a></li>
+                                    <li><a href="">Supreme</a></li>
+                                    <li><a href="">Yeezy</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="ForumListVue" class="col-lg-8 col-xl-9 order-lg-2 order-1">
+                <div class="form_list_content">
+                    <!--文章列表-->
+                    <div class="row">
+                        <div class="col-12 forum-sm-6 mymouse" v-for="item in PostDTOs" @@click="article(item.forumArticleId)">
+                            <img :src="item.img" style="float: right;" class="preview_img">
+                            <div class="news_content" style="width: calc(100% - 120px); float:left">
+                                <div style="font-size: 13px;">
+                                    <p>
+                                        {{item.category}}‧{{item.memberId}}‧1小時前
+                                    </p>
+                                </div>
+                                <div class="article_title">
+                                    <a class="one-row">{{item.title}}</a>
+                                </div>
+                                <p tag class="forum-two-row">
+                                    {{item.articleContent}}
+                                </p>
+                            </div>
+                            <div style="float: left;">
+                                <span class="like_block">
+                                    <span style="box-sizing: border-box; display: block; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; max-width: 100%;">
+                                        <img alt=""
+                                             src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%2716%27%20height=%2716%27/%3e"
+                                             style="display: block; max-width: 100%; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px;">
+
+                                        <img alt="like" src="~/images/forum/like.png"
+                                             style="position: absolute; inset: 0px; box-sizing: border-box; padding: 0px; border: none; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 110%; max-height: 110%;">
+                                    </span>
+                                </span>
+                                <div class="like_quantity">
+                                    <p>123</p>
+                                </div>
+                            </div>
+                            <div style="float: left; padding-left: 15px;">
+                                <span class="like_block">
+                                    <span style="box-sizing: border-box; display: block; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; max-width: 100%;">
+                                        <img alt=""
+                                             src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%2716%27%20height=%2716%27/%3e"
+                                             style="display: block; max-width: 100%; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px;">
+
+                                        <img alt="message" src="~/images/forum/message.png"
+                                             style="position: absolute; inset: 0px; box-sizing: border-box; padding: 0px; border: none; margin: auto; display: block; width: 0px; height: 0px; min-width: 110%; max-width: 110%; min-height: 110%; max-height: 110%;">
+                                    </span>
+                                </span>
+                                <div class="like_quantity">
+                                    <p>8</p>
+                                </div>
+                            </div>
+                            <hr style="clear:both;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Footer {
+    <partial name="_FooterPartial" />
+}
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
+    <script src="~/js/forum_post.js"></script>
+
+    <script>
+        var webApiBaseAddress = "https://localhost:7139";
+        var postVue = new Vue({
+            el: "#ForumListVue",
+            name: "ForumListVue",
+            data: {
+                PostDTOs: [],
+                Fliter: "",
+            },
+            mounted: function () {
+                let _this = this;
+                _this.getPostDTOs();
+
+            },
+            methods: {
+                getPostDTOs: function () {
+                    let _this = this;
+                    axios.get(`${webApiBaseAddress}/api/G_ForumArticles`).then(
+                        response => {
+                            _this.PostDTOs = response.data.reverse();
+                            var PostList = [];
+
+                            for (let i = 0; i < _this.PostDTOs.length; i++) {
+                                let item = {};
+                                item = _this.PostDTOs[i];
+                                PostList.push(item);
+
+                            }
+                            console.log(PostList);
+                            _this.PostDTOs = PostList;
+                        }
+                    );
+                },
+                article: function (itemid) {
+                    var PostId = itemid;
+                    sessionStorage.setItem("fID", PostId);
+                    window.location = "/forum_article";
+                },
+            },
+        });
+    </script>
+}

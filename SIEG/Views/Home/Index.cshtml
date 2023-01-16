@@ -2,11 +2,10 @@
     ViewData["Title"] = "首頁";
 }
 
-
 <!-- VUE banner -->
 <div class="banner_sec" id="bannerVue">
     <div class="owl-carousel owl-theme banner-carousel">
-        <div class="item" v-for="item in BannerDTO">
+        @*<div class="item" v-for="item in BannerDTO">
             <img class="w-100" :src="item.bannerImg" alt="Image">
             <div class="carousel-caption">
                 <div class="container">
@@ -23,7 +22,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>*@
     </div>
 </div>
 
@@ -35,13 +34,13 @@
             <h3 class="ch">熱門品牌</h3>
         </div>
         <div class="owl-carousel owl-theme index_brand-carousel wow slideInUp">
-            <div class="item" v-for="item in ProductSortDTO">
+            @*<div class="item" v-for="item in ProductSortDTO">
                 <div class="index_brand_block">
-                    <a @@click="hrefToInfo(item.productsortBrand)">
+                    <a @@click="hrefToInfo(item.productsortBrand, item.productsortName)">
                         <img class="w-100" :src="item.productsortImg" alt="Image">
                     </a>
                 </div>
-            </div>
+            </div>*@
         </div>
     </div>
 </div>
@@ -57,12 +56,12 @@
             <div class="col-xl-3  col-md-4 col-6 product_col" v-for="item in ProductListDTO">
                 <div class="product_card">
                     <div class="product_img">
-                        <a href="product_info.html">
+                        <a @@click="hrefToInfo(item.productlistId)">
                             <img :src="item.productlistImg" alt="">
                         </a>
                     </div>
                     <div class="product_content">
-                        <h4><a href="product_info.html" class="two-row">{{item.productlistName}}</a></h4>
+                        <h4><a @@click="hrefToInfo(item.productlistId)" class="two-row">{{item.productlistName}}</a></h4>
                         <div class="sale">
                             <div class="price">{{item.productPrice}}</div>
                             <div class="sold">售出100件</div>
@@ -78,11 +77,11 @@
 <div class="index_ad index_space pb-0" id="adVue">
     <div class="container">
         <div class="owl-carousel owl-theme index_ad-carousel">
-            <div class="item" v-for="item in AdDTO">
-                 <a :href="item.adLink">
+            @*<div class="item" v-for="item in AdDTO">
+                <a :href="item.adLink">
                     <img class="w-100" :src="item.adImg" alt="Image">
                 </a>
-            </div>
+            </div>*@
         </div>
     </div>
 </div>
@@ -94,25 +93,25 @@
             <div class="en">Latest News</div>
             <h3 class="ch">最新消息</h3>
         </div>
-            <div class="owl-carousel owl-theme index_news-carousel">
-            <div class="item" v-for="item in NewsListDTO">
+        <div class="owl-carousel owl-theme index_news-carousel">
+            @*<div class="item" v-for="item in NewsListDTO">
                 <div class="news_card">
                     <div class="news_img">
-                        <a href="news_info.html">
+                        <a @@click="hrefToInfo(item.newslistId)">
                             <img :src="item.newslistImg" alt="">
                         </a>
-                        <div class="sort"><a href="/news_list.html">{{item.newslistSort}}</a></div>
+                        <div class="sort"><a @@click="sortToList(item.newslistSort)">{{item.newslistSort}}</a></div>
                     </div>
                     <div class="news_content">
                         <div class="date"><i class="far fa-calendar-alt"></i>{{item.newslistdate}}</div>
                         <div class="title">
-                            <a href="news_info.html"
-                            class="one-row">{{item.newslistTitle}}</a>
+                            <a @@click="hrefToInfo(item.newslistId)"
+                               class="one-row">{{item.newslistTitle}}</a>
                         </div>
                         <p class="two-row">{{item.newslistContent}}</p>
                     </div>
                 </div>
-            </div>
+            </div>*@
         </div>
     </div>
 </div>
@@ -123,4 +122,339 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
+
+    <script>
+
+        var webApiBaseAddress = "https://localhost:7139";
+        var appVue = new Vue({
+            el: "#bannerVue",
+            name: "bannerVue",
+            data: {
+                BannerDTO: [],
+                Filter: "",
+                BannerId: null,
+                BannerImg: null,
+                BannerTitle: null,
+                BannerLink: null,
+            },
+            mounted: async function () {
+                let _this = this;
+                await _this.getBannerDTO();
+
+                const datas = _this.BannerDTO.map(item => {
+                    const { bannerId, bannerImg, bannerLink, bannerTitle } = item;
+                    return (`
+                         <div class="item">
+                            <img class="w-100" src="${item.bannerImg}" alt="Image">
+                            <div class="carousel-caption">
+                                <div class="container">
+                                    <div class="row justify-content-start">
+                                        <div class="col-lg-8 text-start">
+                                            <div class="animated slideInUp banner_tx">
+                                                ${item.bannerTitle}
+                                            </div>
+                                                 <a href="${item.bannerLink}" class="animated slideInUp btn_style1">
+                                                Read
+                                                More
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                         </div>
+                    `)
+                })
+
+                $(".banner-carousel").html(datas.join(""));
+                $(".banner-carousel").owlCarousel({
+                    loop: true,
+                    autoplay: true,
+                    smartSpeed: 1000,
+                    items: 1,
+                    singleItem: true,
+                    dots: true,
+                    nav: false,
+                });
+            },
+            methods: {
+                getBannerDTO: async function () {
+                    let _this = this;
+                    let response = await axios.get(`${webApiBaseAddress}/api/E_Banner`);
+                    _this.BannerDTO = response.data;
+                },
+            },
+        });
+
+        var appVue = new Vue({
+            el: "#brandVue",
+            name: "brandVue",
+            data: {
+                ProductSortDTO: [],
+                Filter: "",
+                productsortId: null,
+                productsortImg: null,
+            },
+            mounted: async function () {
+                let _this = this;
+                await _this.getProductSortDTO();
+
+                const datas = _this.ProductSortDTO.map(item => {
+                    const { productsortId, productsortName, productsortBrand, productsortImg } = item;
+                    return (`
+                            <div class="item">
+                                <div class="index_brand_block">
+                                    <a onclick="hrefToPInfo('${item.productsortBrand}', '${item.productsortName}')">
+                                        <img class="w-100" src="${item.productsortImg}" alt="Image">
+                                    </a>
+                               </div>
+                            </div>
+                    `)
+                })
+
+                $(".index_brand-carousel").html(datas.join(""));
+                $(".index_brand-carousel").owlCarousel({
+                    loop: true,
+                    autoplay: true,
+                    smartSpeed: 1000,
+                    items: 3,
+                    margin: 24,
+                    dots: false,
+                    nav: false,
+                    responsive: {
+                        0: {
+                            items: 2,
+                            margin: 12
+                        },
+                        576: {
+                            items: 2,
+                            margin: 24
+                        },
+                        768: {
+                            items: 3
+                        },
+                    }
+                });
+            },
+            methods: {
+                getProductSortDTO: async function () {
+                    let _this = this;
+                    let response = await axios.get(`${webApiBaseAddress}/api/E_ProductSort/Brand`);
+                    _this.ProductSortDTO = response.data;
+                },
+                //hrefToInfo: function (brand, sortName) {
+                //    sessionStorage.setItem("indexPBrand", brand);
+                //    sessionStorage.setItem("indexPSortName", sortName);
+                //    window.location = "/product_list";
+                //},
+            },
+        });
+
+        function hrefToPInfo(brand, sortName) {
+            sessionStorage.setItem("indexPBrand", brand);
+            sessionStorage.setItem("indexPSortName", sortName);
+            window.location = "/product_list";
+        }
+
+
+
+        var appVue = new Vue({
+            el: "#productlistVue",
+            name: "productlistVue",
+            data: {
+                ProductListDTO: [],
+                Filter: "",
+                productlistId: null,
+                productlistImg: null,
+                productlistName: null,
+                productlistPrice: null,
+                productPrice: null,
+            },
+            mounted: function () {
+                let _this = this;
+                _this.getProductListDTO();
+            },
+            methods: {
+                getProductListDTO: function () {
+                    let _this = this;
+                    axios.get(`${webApiBaseAddress}/api/E_ProductList`).then(
+                        response => {
+                            _this.ProductListDTO = response.data;
+                            var ProductList = [];
+                            for (let i = 0; i < _this.ProductListDTO.length; i++) {
+                                let item = {};
+                                item = _this.ProductListDTO[i];
+                                ProductList.push(item);
+
+                                item.productPrice = "$" + item.productlistPrice.toLocaleString();
+                            }
+                            _this.ProductListDTO = ProductList;
+                        }
+                    );
+                },
+                hrefToInfo: function (productId) {
+                    sessionStorage.setItem("pID", productId);
+                    //console.log(productId);
+                    window.location = "/product_info";
+                },
+            },
+        });
+
+        var appVue = new Vue({
+            el: "#adVue",
+            name: "adVue",
+            data: {
+                AdDTO: [],
+                Filter: "",
+                AdId: null,
+                AdImg: null,
+                AdLink: null,
+            },
+            mounted: async function () {
+                let _this = this;
+                await _this.getAdDTO();
+
+                const datas = _this.AdDTO.map(item => {
+                    const { AdId, AdImg, AdLink } = item;
+                    return (`
+                            <div class="item">
+                                <a href="${item.adLink}">
+                                   <img class="w-100" src="${item.adImg}" alt="Image">
+                                </a>
+                            </div>
+                    `)
+                })
+
+                $(".index_ad-carousel").html(datas.join(""));
+                $(".index_ad-carousel").owlCarousel({
+                    loop: true,
+                    autoplay: true,
+                    smartSpeed: 1000,
+                    items: 1,
+                    dots: false,
+                    nav: false,
+                });
+            },
+            methods: {
+                getAdDTO: async function () {
+                    let _this = this;
+                    let response = await axios.get(`${webApiBaseAddress}/api/E_Ad`);
+                    _this.AdDTO = response.data;
+                },
+            },
+        });
+
+        var appVue = new Vue({
+            el: "#newslistVue",
+            name: "newslistVue",
+            data: {
+                NewsListDTO: [],
+                NewsHotDTO: [],
+                Filter: "",
+                newslistId: null,
+                newslistImg: null,
+                newslistTitle: null,
+                newslistContent: null,
+                newslistSort: null,
+                newslistTime: null,
+                newslistdate: null,
+            },
+            mounted: async function () {
+                let _this = this;
+                await _this.getNewsListDTO();
+
+                const datas = _this.NewsListDTO.map(item => {
+                    const { newslistId, newslistImg, newslistTitle, newslistContent, newslistSort, newslistTime, newslistviewcount } = item;
+                    return (`
+                            <div class="item">
+                                <div class= "news_card">
+                                    <div class= "news_img">
+                                        <a onclick="hrefToNInfo('${item.newslistId}')">
+                                           <img src="${item.newslistImg}" alt="">
+                                        </a>
+                                        <div class="sort">
+                                            <a onclick="sortToNList('${item.newslistSort}')">${item.newslistSort}</a>
+                                        </div>
+                                    </div>
+                                    <div class= "news_content">
+                                        <div class="date"><i class="far fa-calendar-alt"></i>${item.newslistdate}</div>
+                                        <div class="title">
+                                           <a onclick="hrefToNInfo('${item.newslistId}')" class="one-row">${item.newslistTitle}</a>
+                                        </div>
+                                        <p class="two-row">${item.newslistContent}</p>
+                                    </div>
+                                </div>
+                            </div>
+                    `)
+                })
+
+                $(".index_news-carousel").html(datas.join(""));
+                $(".index_news-carousel").owlCarousel({
+                    loop: true,
+                    autoplay: true,
+                    smartSpeed: 1000,
+                    items: 4,
+                    margin: 24,
+                    dots: false,
+                    nav: false,
+                    responsive: {
+                        0: {
+                            items: 1
+                        },
+                        768: {
+                            items: 2
+                        },
+                        992: {
+                            items: 3
+                        },
+                        1200: {
+                            items: 4
+                        }
+                    },
+                });
+
+            },
+            methods: {
+                getNewsListDTO: async function () {
+                    let _this = this;
+                    await axios.get(`${webApiBaseAddress}/api/E_NewsList`).then(
+                        response => {
+                            _this.NewsListDTO = response.data;
+                            var NewsList = [];
+                            for (let i = 0; i < _this.NewsListDTO.length; i++) {
+                                let item = {};
+                                item = _this.NewsListDTO[i];
+                                NewsList.push(item);
+
+                                var str = item.newslistTime;
+                                item.newslistdate = str.split("T")[0];
+                            }
+                            _this.NewsListDTO = NewsList;
+                        }
+                    );
+                },
+                //hrefToInfo: function (newsId) {
+                //    sessionStorage.setItem("nID", newsId);
+                //    console.log(newsId);
+                //    window.location = "/news_info";
+                //},
+                //sortToList: function (sortName) {
+                //    sessionStorage.setItem("indexNSortName", sortName);
+                //    window.location = "/news_list";
+                //},
+            },
+        });
+
+
+        function hrefToNInfo(newsId) {
+            sessionStorage.setItem("nID", newsId);
+            console.log(newsId);
+            window.location = "/news_info";
+        }
+
+        function sortToNList(sortName) {
+            sessionStorage.setItem("indexNSortName", sortName);
+            window.location = "/news_list";
+        }
+
+    </script>
 }

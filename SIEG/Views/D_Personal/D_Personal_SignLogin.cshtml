@@ -3,7 +3,7 @@
     ViewData["enTitle"] = "Sign";
 }
 
-@section Styles{
+@section Style{
     <!--forum Article Stylesheet-->
     <link href="~/css/sign.css" rel="stylesheet">
 }
@@ -224,9 +224,9 @@
                                             alert("登入成功");
                                             var loginId = response.data.memberId
                                             console.log(loginId)//找到Id了
-                                            sessionStorage.setItem("id", loginId)
+                                            sessionStorage.setItem("mID", loginId)
                                             //window.location = "/Home/"
-                                            //window.location = "/Home"
+                                            window.location = "/Home/index"
                                         }
                                         else {
                                             alert("失敗")

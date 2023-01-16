@@ -32,7 +32,7 @@ namespace SIEG_API.Controllers
 
         // GET: api/D_SellGrade/5
         [HttpGet("{id}")]
-        public async Task<IEnumerable<D_GradeBuyDTO>> GetMember(int id)
+        public async Task<IEnumerable<D_GradeSellDTO>> GetMember(int id)
         {
             //var productBAV = _context.Order.Where(pdo => pdo.BuyerId == id && pdo.State == "已完成").Select(a => a.Price).Sum();
             var productSAV = _context.Order.Where(pdo => pdo.SellerId == id && pdo.State == "已完成").Select(b => b.Price).Sum();
@@ -42,7 +42,7 @@ namespace SIEG_API.Controllers
             // 會員id是要寫進去的
             var coupon = _context.MemberCoupon.Where(ticket => ticket.MemberId == 200).Select(c => c.Count).Sum();
 
-            var ccc = _context.Member.Where(x => x.MemberId == id).Select(y => new D_GradeBuyDTO
+            var ccc = _context.Member.Where(x => x.MemberId == id).Select(y => new D_GradeSellDTO
             {
                 //ID會get session的值來用
                 BuyerId = id,
@@ -58,9 +58,9 @@ namespace SIEG_API.Controllers
         // PUT: api/D_SellGrade/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<string> PutMemberSell(int id, D_GradeBuyDTO memDTO)
+        public async Task<string> PutMemberSell(int id, D_GradeSellDTO memDTO)
         {
-            if (id != memDTO.BuyerId)
+            if (id != memDTO.SellerId)
             {
                 return "不正確";
             }

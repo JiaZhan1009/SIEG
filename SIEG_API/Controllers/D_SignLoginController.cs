@@ -108,7 +108,8 @@ namespace SIEG_API.Controllers
                 Password = member.Password,
             };
             bool exit = _context.Member.Any(e => e.Email == member.Email);
-            if (exit == true)
+            bool exit1= _context.Member.Any(a => a.Password== member.Password);
+            if (exit == true || exit1 == true)
             {
                 msg = "失敗";
             }

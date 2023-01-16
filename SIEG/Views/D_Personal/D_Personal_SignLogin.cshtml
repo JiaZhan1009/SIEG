@@ -192,6 +192,7 @@
                             request.Password = $("#PassWord").val();
                             axios.post(`${webApiBaseAddress}/api/D_SignLogin`, request).then(
                                 response => {
+                                    console.log("註冊"+response.data)
                                     if (response.data == "失敗") {
                                         alert("重複");
                                     } else {

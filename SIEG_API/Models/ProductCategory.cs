@@ -9,6 +9,7 @@ namespace SIEG_API.Models
     {
         public ProductCategory()
         {
+            ForumArticle = new HashSet<ForumArticle>();
             Product = new HashSet<Product>();
         }
 
@@ -18,6 +19,7 @@ namespace SIEG_API.Models
         public string Img { get; set; }
         public bool? ValIdity { get; set; }
 
+        public virtual ICollection<ForumArticle> ForumArticle { get; set; }
         public virtual ICollection<Product> Product { get; set; }
     }
 }

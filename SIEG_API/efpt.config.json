@@ -19,6 +19,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[Bank]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Banner]",
          "ObjectType": 0
       },

@@ -39,7 +39,11 @@ namespace SIEG_API.Controllers
                 pImg = list.ImgFront,
                 pBrand = list.ProductCategory.BrandName,
                 pSize = list.Size,
-            };            
+            };
+
+
+
+
         }
 
 
@@ -48,12 +52,14 @@ namespace SIEG_API.Controllers
         {
             var sizeAndPrice = await _context.Product
             .Join(_context.SellerAddProduct, product => product.ProductId, s => s.ProductId,
-            (p, s) => new { Product = p, seller = s })
-            .GroupBy(p => p.Product.Size).AsNoTracking()
-            .Select(g => g.OrderBy(g => g.seller.Price).First())
-            .ToListAsync();
+            (p, s) => new { Product = p, seller = s }).ToListAsync();
 
-            List<J_PriceListDTO> priceList = sizeAndPrice.Select(p => new J_PriceListDTO
+            var bbb = sizeAndPrice.GroupBy(p => p.Product.Size);
+
+            var aaa = bbb.Select(g => g.OrderBy(g => g.seller.Price).First());
+
+
+            List<J_PriceListDTO> priceList = aaa.Select(p => new J_PriceListDTO
             {
                 pID = p.Product.ProductId,
                 pPrice = p.seller.Price,
@@ -123,7 +129,7 @@ namespace SIEG_API.Controllers
         [HttpGet("GetLastDealPrice/{pID}")]
         public async Task<int?> GetLastDealPrice(int pID)
         {
-            var lsit = await _context.Order.Where(o => o.ProductId == pID) // 先拿掉 && o.State == "已完成" 有中文會錯誤
+            var lsit = await _context.Order.Where(o => o.ProductId == pID && o.State == "已完成") // 先拿掉 && o.State == "已完成" 有中文會錯誤
                .OrderByDescending(o => o.DoneTime).Select(o => o.Price)
                .FirstOrDefaultAsync();
             //.MinAsync(o => o.價錢); 找最少的價格
@@ -148,10 +154,10 @@ namespace SIEG_API.Controllers
         //[HttpPut("{mId}")]
         //public async Task<string> PutEmployees(int id, J_PutBankDTO bankDTO)
         //{
-            //if (id != empDTO.EmployeeId)
-            //{
-            //    return "ID不正確!";
-            //}
+        //if (id != empDTO.EmployeeId)
+        //{
+        //    return "ID不正確!";
+        //}
         //    Member mb = await _context.Member.FindAsync(bankDTO.mID);
         //    mb. = bankDTO.FirstName;
         //    mb.LastName = bankDTO.LastName;

@@ -57,7 +57,7 @@
                                             <img :src="item.imgFront" class="imgWidth">
                                             <div class="imgMargin">
                                                 <div>{{item.productName}}</div>
-                                                <span class="nameDilute">Travis Scott Black Phantom (PS)</span>
+                                                    <span class="nameDilute">{{item.model}}</span>
                                                 <div>
                                                     <p class=" badge rounded-pill Pcolor">us{{item.size}}</p>
                                                 </div>
@@ -78,7 +78,7 @@
                                             <img :src="item.imgFront" class="imgWidth">
                                             <div class="imgMargin">
                                                 <div>{{item.productName}}</div>
-                                                <span class="nameDilute">Travis Scott Black Phantom (PS)</span>
+                                                    <span class="nameDilute">{{item.model}}</span>
                                                 <div>
                                                     <p class=" badge rounded-pill Pcolor">us{{item.size}}</p>
                                                 </div>
@@ -119,7 +119,7 @@
                                             <img :src="item.image" class="imgWidth">
                                             <div class="imgMargin">
                                                 <div>{{item.productName}}</div>
-                                                <span class="nameDilute">Travis Scott Black Phantom (PS)</span>
+                                                    <span class="nameDilute">{{item.model}}</span>
                                                 <div>
                                                     <p class=" badge rounded-pill Pcolor">us{{item.SizeId}}</p>
                                                 </div>
@@ -140,7 +140,7 @@
                                             <img :src="item.image" class="imgWidth">
                                             <div class="imgMargin">
                                                 <div>{{item.productName}}</div>
-                                                <span class="nameDilute">Travis Scott Black Phantom (PS)</span>
+                                                    <span class="nameDilute">{{item.model}}</span>
                                                 <div>
                                                     <p class=" badge rounded-pill Pcolor">us{{item.sizeId}}</p>
                                                 </div>
@@ -183,7 +183,7 @@
                                         <img :src="item.image" alt="Image" class="imgWidth" :id="item.orderId">
                                         <div class="imgMargin" :id="item.orderId">
                                             <div :id="item.orderId">{{item.productName}}</div>
-                                            <span :id="item.orderId" class="nameDilute">Travis Scott Black Phantom (PS) </span>
+                                                <span :id="item.orderId" class="nameDilute">{{item.model}} </span>
                                             <div :id="item.orderId">
                                                 <p :id="item.orderId" class=" badge rounded-pill Pcolor">us{{item.sizeId}}</p>
                                             </div>
@@ -431,7 +431,7 @@
                     }
                     else {
                         request.orderId = _this.FilterBuyerOrders;
-                        axios.post(`${webApiBaseAddress}/api/B_BuyerOrders/FilterBuyerOrders/${_this.mID}`, request).then(
+                        axios.post(`${webApiBaseAddress}/api/B_BuyerOrders/FilterBuyerOrders/${_this.mIDD}`, request).then(
                             response => {
                                 _this.MemberDTOes = response.data;
                                 var MemberList = [];

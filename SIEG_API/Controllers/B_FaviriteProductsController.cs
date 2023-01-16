@@ -56,6 +56,7 @@ namespace SIEG_API.Controllers
                     ProductId = y.ProductId,
                     Size = y.Size,
                     FaviriteProductsId = FaviriteId,
+                    Model=y.Model,
                 }).First();
                 ProductCollection.Add(ProductDTO);
             }

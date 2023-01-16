@@ -54,7 +54,8 @@ namespace SIEG_API.Controllers
                     Price = (int)buyerbid2,
                     lowPrice = (int)SellerlowPrice,
                     Size = y.Size,
-                    BidTime = Buyerdatetime
+                    BidTime = Buyerdatetime,
+                    Model=y.Model,
                 }).First();
                 ProductCollection.Add(Productname);
             }

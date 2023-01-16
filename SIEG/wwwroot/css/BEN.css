@@ -1,7 +1,7 @@
 /* 成員框架 */
 .MemberFrame {
     /* width: 270px; */
-    background-color: #fafafa;
+   /* background-color: #fafafa;*/
     /* border: 3px solid #8E8E8E; */
     height: 1000px;
 }
@@ -16,7 +16,9 @@
     height: 60px;
     /* margin: 30px 0PX 15PX 20px; */
 }
-
+.sidebarcoler {
+    background-color: #fafafa;
+}
 /* 圖片 */
 .AccountIcon {
     width: 20PX;

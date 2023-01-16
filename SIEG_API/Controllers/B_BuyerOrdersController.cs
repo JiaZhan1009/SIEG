@@ -47,6 +47,7 @@ namespace SIEG_API.Controllers
                     State = pd.State,
                     Receiver = pd.Receiver,
                     OrderId = pd.OrderId,
+                    Model = pds.Model,
 
                 });
             return Products;

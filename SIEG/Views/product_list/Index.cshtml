@@ -233,7 +233,9 @@
                     let _this = this;
                     var request = {};
 
+                    sessionStorage.setItem("pKeyword", _this.Filter);
                     request.productlistName = _this.Filter;
+                    console.log(_this.Filter);
 
                     if (_this.Filter == "" || _this.Filter == null) {
                         _this.getProductListDTO();
@@ -263,7 +265,7 @@
                                 }
                             }
                         );
-                        sessionStorage.removeItem('pKeyword');
+                        //sessionStorage.removeItem('pKeyword');
                     }
 
                 },

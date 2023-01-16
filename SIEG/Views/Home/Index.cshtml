@@ -5,7 +5,7 @@
 <!-- VUE banner -->
 <div class="banner_sec" id="bannerVue">
     <div class="owl-carousel owl-theme banner-carousel">
-        <div class="item" v-for="item in BannerDTO">
+        @*<div class="item" v-for="item in BannerDTO">
             <img class="w-100" :src="item.bannerImg" alt="Image">
             <div class="carousel-caption">
                 <div class="container">
@@ -22,7 +22,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>*@
     </div>
 </div>
 
@@ -34,13 +34,13 @@
             <h3 class="ch">熱門品牌</h3>
         </div>
         <div class="owl-carousel owl-theme index_brand-carousel wow slideInUp">
-            <div class="item" v-for="item in ProductSortDTO">
+            @*<div class="item" v-for="item in ProductSortDTO">
                 <div class="index_brand_block">
                     <a @@click="hrefToInfo(item.productsortBrand, item.productsortName)">
                         <img class="w-100" :src="item.productsortImg" alt="Image">
                     </a>
                 </div>
-            </div>
+            </div>*@
         </div>
     </div>
 </div>
@@ -77,11 +77,11 @@
 <div class="index_ad index_space pb-0" id="adVue">
     <div class="container">
         <div class="owl-carousel owl-theme index_ad-carousel">
-            <div class="item" v-for="item in AdDTO">
+            @*<div class="item" v-for="item in AdDTO">
                 <a :href="item.adLink">
                     <img class="w-100" :src="item.adImg" alt="Image">
                 </a>
-            </div>
+            </div>*@
         </div>
     </div>
 </div>
@@ -94,7 +94,7 @@
             <h3 class="ch">最新消息</h3>
         </div>
         <div class="owl-carousel owl-theme index_news-carousel">
-            <div class="item" v-for="item in NewsListDTO">
+            @*<div class="item" v-for="item in NewsListDTO">
                 <div class="news_card">
                     <div class="news_img">
                         <a @@click="hrefToInfo(item.newslistId)">
@@ -111,7 +111,7 @@
                         <p class="two-row">{{item.newslistContent}}</p>
                     </div>
                 </div>
-            </div>
+            </div>*@
         </div>
     </div>
 </div>
@@ -141,14 +141,40 @@
                 let _this = this;
                 await _this.getBannerDTO();
 
+                const datas = _this.BannerDTO.map(item => {
+                    const { bannerId, bannerImg, bannerLink, bannerTitle } = item;
+                    return (`
+                         <div class="item">
+                            <img class="w-100" src="${item.bannerImg}" alt="Image">
+                            <div class="carousel-caption">
+                                <div class="container">
+                                    <div class="row justify-content-start">
+                                        <div class="col-lg-8 text-start">
+                                            <div class="animated slideInUp banner_tx">
+                                                ${item.bannerTitle}
+                                            </div>
+                                                 <a href="${item.bannerLink}" class="animated slideInUp btn_style1">
+                                                Read
+                                                More
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                         </div>
+                    `)
+                })
+
+                $(".banner-carousel").html(datas.join(""));
                 $(".banner-carousel").owlCarousel({
                     loop: true,
                     autoplay: true,
                     smartSpeed: 1000,
                     items: 1,
+                    singleItem: true,
                     dots: true,
                     nav: false,
-                });                
+                });
             },
             methods: {
                 getBannerDTO: async function () {
@@ -172,6 +198,20 @@
                 let _this = this;
                 await _this.getProductSortDTO();
 
+                const datas = _this.ProductSortDTO.map(item => {
+                    const { productsortId, productsortName, productsortBrand, productsortImg } = item;
+                    return (`
+                            <div class="item">
+                                <div class="index_brand_block">
+                                    <a onclick="hrefToPInfo('${item.productsortBrand}', '${item.productsortName}')">
+                                        <img class="w-100" src="${item.productsortImg}" alt="Image">
+                                    </a>
+                               </div>
+                            </div>
+                    `)
+                })
+
+                $(".index_brand-carousel").html(datas.join(""));
                 $(".index_brand-carousel").owlCarousel({
                     loop: true,
                     autoplay: true,
@@ -201,13 +241,21 @@
                     let response = await axios.get(`${webApiBaseAddress}/api/E_ProductSort/Brand`);
                     _this.ProductSortDTO = response.data;
                 },
-                hrefToInfo: function (brand, sortName) {
-                    sessionStorage.setItem("indexPBrand", brand);
-                    sessionStorage.setItem("indexPSortName", sortName);
-                    window.location = "/product_list";
-                },
+                //hrefToInfo: function (brand, sortName) {
+                //    sessionStorage.setItem("indexPBrand", brand);
+                //    sessionStorage.setItem("indexPSortName", sortName);
+                //    window.location = "/product_list";
+                //},
             },
         });
+
+        function hrefToPInfo(brand, sortName) {
+            sessionStorage.setItem("indexPBrand", brand);
+            sessionStorage.setItem("indexPSortName", sortName);
+            window.location = "/product_list";
+        }
+
+
 
         var appVue = new Vue({
             el: "#productlistVue",
@@ -265,8 +313,19 @@
                 let _this = this;
                 await _this.getAdDTO();
 
-                var owl = $(".index_ad-carousel");
-                owl.owlCarousel({
+                const datas = _this.AdDTO.map(item => {
+                    const { AdId, AdImg, AdLink } = item;
+                    return (`
+                            <div class="item">
+                                <a href="${item.adLink}">
+                                   <img class="w-100" src="${item.adImg}" alt="Image">
+                                </a>
+                            </div>
+                    `)
+                })
+
+                $(".index_ad-carousel").html(datas.join(""));
+                $(".index_ad-carousel").owlCarousel({
                     loop: true,
                     autoplay: true,
                     smartSpeed: 1000,
@@ -303,6 +362,32 @@
                 let _this = this;
                 await _this.getNewsListDTO();
 
+                const datas = _this.NewsListDTO.map(item => {
+                    const { newslistId, newslistImg, newslistTitle, newslistContent, newslistSort, newslistTime, newslistviewcount } = item;
+                    return (`
+                            <div class="item">
+                                <div class= "news_card">
+                                    <div class= "news_img">
+                                        <a onclick="hrefToNInfo('${item.newslistId}')">
+                                           <img src="${item.newslistImg}" alt="">
+                                        </a>
+                                        <div class="sort">
+                                            <a onclick="sortToNList('${item.newslistSort}')">${item.newslistSort}</a>
+                                        </div>
+                                    </div>
+                                    <div class= "news_content">
+                                        <div class="date"><i class="far fa-calendar-alt"></i>${item.newslistdate}</div>
+                                        <div class="title">
+                                           <a onclick="hrefToNInfo('${item.newslistId}')" class="one-row">${item.newslistTitle}</a>
+                                        </div>
+                                        <p class="two-row">${item.newslistContent}</p>
+                                    </div>
+                                </div>
+                            </div>
+                    `)
+                })
+
+                $(".index_news-carousel").html(datas.join(""));
                 $(".index_news-carousel").owlCarousel({
                     loop: true,
                     autoplay: true,
@@ -347,18 +432,29 @@
                         }
                     );
                 },
-                hrefToInfo: function (newsId) {
-                    sessionStorage.setItem("nID", newsId);
-                    console.log(newsId);
-                    window.location = "/news_info";
-                },
-                sortToList: function (sortName) {
-                    sessionStorage.setItem("indexNSortName", sortName);
-                    window.location = "/news_list";
-                },
-
+                //hrefToInfo: function (newsId) {
+                //    sessionStorage.setItem("nID", newsId);
+                //    console.log(newsId);
+                //    window.location = "/news_info";
+                //},
+                //sortToList: function (sortName) {
+                //    sessionStorage.setItem("indexNSortName", sortName);
+                //    window.location = "/news_list";
+                //},
             },
         });
+
+
+        function hrefToNInfo(newsId) {
+            sessionStorage.setItem("nID", newsId);
+            console.log(newsId);
+            window.location = "/news_info";
+        }
+
+        function sortToNList(sortName) {
+            sessionStorage.setItem("indexNSortName", sortName);
+            window.location = "/news_list";
+        }
 
     </script>
 }

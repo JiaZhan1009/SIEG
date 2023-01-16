@@ -27,7 +27,7 @@ namespace SIEG_API.Controllers
         [HttpGet]
         public async Task<IEnumerable<E_BannerDTO>> GetBanner()
         {
-            return await _context.Banner
+            return _context.Banner
                 .Where(banner => banner.ValIdity == true)
                 .Select(banner => new E_BannerDTO
                 {
@@ -35,7 +35,7 @@ namespace SIEG_API.Controllers
                     BannerImg = banner.Img,
                     BannerTitle = banner.Title,
                     BannerLink = banner.Link,
-                }).ToListAsync();
+                });
         }
 
         // GET: api/E_Banner/5

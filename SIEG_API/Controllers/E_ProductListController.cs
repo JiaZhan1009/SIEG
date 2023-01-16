@@ -43,24 +43,21 @@ namespace SIEG_API.Controllers
 
                 }).ToListAsync();
 
-            ////pl = Product / ps = ProductCategory / pb = Product + ProductCategory / po = 訂單
-            //return _context.商品
-            //    .Join(_context.品牌, pl => pl.品牌Id, ps => ps.Id, (pl, ps) => new { pl, ps })
-
-            //    .Join(_context.訂單, pb => pb.pl.品牌Id, po => po.商品Id, (pb, po) => new { pb, po })
-            //    // x = pb (商品 + 品牌) + po (訂單)
-            //    .Where(x => x.pb.pl.有效性 == true && x.pb.pl.品牌Id == x.po.商品Id && x.po.狀態 == "已完成")
-            //    .OrderByDescending(x => x.pb.pl.上架日期)
+            //var aa = _context.Product
+            //    .Join(_context.ProductCategory, pl => pl.ProductCategoryId, ps => ps.ProductCategoryId, (pl, ps) => new { pl, ps })
+            //    .Join(_context.Order, pb => pb.pl.ProductId, po => po.ProductId, (pb, po) => new { pb, po })
+            //    .Where(x => x.pb.pl.ValIdity == true && x.pb.pl.ProductId == x.po.ProductId && x.po.State == "已完成")
+            //    .OrderByDescending(x => x.pb.pl.AddTime)
             //    .Select(x => new E_ProductListDTO
-            //{
-            //    productlistId = x.pb.pl.Id,
-            //    productlistImg = x.pb.pl.圖檔_正面,
-            //    productlistName = x.pb.pl.商品名稱,
-            //    productlistPrice = x.pb.pl.價格,
-            //    productlistSort = x.pb.ps.類別名稱,
-            //    productlistBrand = x.pb.ps.品牌名稱,
-
-            //});
+            //    {
+            //        productlistId = x.pb.pl.ProductId,
+            //        productlistImg = x.pb.pl.ImgFront,
+            //        productlistName = x.pb.pl.Name,
+            //        productlistPrice = x.pb.pl.Price,
+            //        productlistSort = x.pb.ps.CategoryName,
+            //        productlistBrand = x.pb.ps.BrandName,
+            //    });
+            //return aa;
         }
 
         // Below500: api/E_ProductListDTO/Below500

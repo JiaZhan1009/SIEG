@@ -97,26 +97,25 @@ namespace SIEG_API.Controllers
         // POST: api/D_SignLogin
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<string> PostMember(D_MemberDTO member)
+        public async Task<string> PostMember(D_MemberDTO mem)
         {
             var msg = "";
-            Member mem = new Member
+            Member member = new Member
             {
-                Name = member.Name,
-                NickName = member.NickName,
-                Email = member.Email,
-                Password = member.Password,
+                Name = mem.Name,
+                NickName = mem.NickName,
+                Email = mem.Email,
+                Password = mem.Password,
             };
-            bool exit = _context.Member.Any(e => e.Email == member.Email);
-            bool exit1= _context.Member.Any(a => a.Password== member.Password);
-            if (exit == true || exit1 == true)
+            bool exit = _context.Member.Any(e => e.Email == mem.Email);
+            if (exit == true)
             {
                 msg = "失敗";
             }
             else
             {
                 msg = "成功";
-                _context.Member.Add(mem);
+                _context.Member.Add(member);
                 await _context.SaveChangesAsync();
             }
             return msg;

@@ -24,6 +24,7 @@ namespace SIEG_API.Models
         public DateTime AddTime { get; set; }
         public string Img { get; set; }
         public bool? ValIdity { get; set; }
+        public int? ReplyCount { get; set; }
 
         public virtual Member Member { get; set; }
         public virtual ProductCategory ProductCategory { get; set; }

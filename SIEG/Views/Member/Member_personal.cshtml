@@ -78,9 +78,11 @@
     <script>
         var webApiBaseAddress = "https://localhost:7139";
         var appVue = new Vue({
+           
             el: "#appVue",
             name: "appVue",
             data: {
+                mID: sessionStorage.getItem("mID"),
                 PersonalDTOes: {},
             },
             mounted: function () {
@@ -90,7 +92,7 @@
             methods: {
                 getPersonalDTOes: function () {
                     let _this = this;
-                    axios.get(`${webApiBaseAddress}/api/B_personalinformation/${101}`).then(
+                    axios.get(`${webApiBaseAddress}/api/B_personalinformation/${_this.mID}`).then(
                         response => {
                             _this.PersonalDTOes = response.data
                             console.log(_this.PersonalDTOes);

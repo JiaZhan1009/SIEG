@@ -25,6 +25,17 @@ namespace SIEG.Controllers
         {
             return View();
         }
+
+        public IActionResult Member_coupon()
+        {
+            return View();
+        }
+
+        public IActionResult Member_ProductCollection()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

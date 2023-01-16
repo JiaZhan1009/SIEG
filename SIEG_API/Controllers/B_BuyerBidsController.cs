@@ -31,23 +31,24 @@ namespace SIEG_API.Controllers
         }
 
         // GET: api/B_BuyerBids/5
-        [HttpGet("{BuyerBidid}")]
-        public async Task<IEnumerable<B_BuyerBidsDTO>> GetBuyerBid(int BuyerBidid)
+        [HttpGet("{BuyerBidmID}")]
+        public async Task<IEnumerable<B_BuyerBidsDTO>> GetBuyerBid(int BuyerBidmID)
         {
-            var buyerbid = _context.BuyerBid.Where(bb => bb.MemberId == BuyerBidid && bb.ValIdity == true).Select(pdId => pdId.ProductId).ToArray();
+            var buyerbid = _context.BuyerBid.Where(bb => bb.MemberId == BuyerBidmID && bb.ValIdity == true).Select(pdId => pdId.BuyerBidId).ToArray();
+            Console.WriteLine(buyerbid);
             var ProductCollection = new List<B_BuyerBidsDTO>();
             foreach (var bId in buyerbid)
             {
-                var BuyerBidID = _context.BuyerBid.Where(bb => bb.MemberId == BuyerBidid && bb.ProductId == bId).Select(pdId => pdId.BuyerBidId).First();
-                var Buyerdatetime = _context.BuyerBid.Where(bb => bb.MemberId == BuyerBidid && bb.ProductId == bId).Select(pdId => pdId.BidTime).First();
-                var SellerlowPrice = await _context.SellerAddProduct.Where(pdId => pdId.ProductId == bId && pdId.ValIdity == true).OrderBy(a => a.Price).Select(lp => lp.Price).FirstOrDefaultAsync();
+                var ProductId = _context.BuyerBid.Where(bb => bb.MemberId == BuyerBidmID && bb.BuyerBidId == bId).Select(pdId => pdId.ProductId).First();
+                var Buyerdatetime = _context.BuyerBid.Where(bb => bb.MemberId == BuyerBidmID && bb.BuyerBidId == bId).Select(pdId => pdId.BidTime).First();
+                var SellerlowPrice = await _context.SellerAddProduct.Where(pdId => pdId.ProductId == ProductId && pdId.ValIdity == true).OrderBy(a => a.Price).Select(lp => lp.Price).FirstOrDefaultAsync();
                 //var SellerlowPrice1 = _context.SellerAddProduct.Where(pdId => pdId.ProductId == bId && pdId.ValIdity == true).Select(lp => lp.Price).Min() ?? 0;
-                var buyerbid2 = _context.BuyerBid.Where(bb => bb.MemberId == BuyerBidid && bb.ProductId == bId).Select(pdId => pdId.Price).First();
-                var Productname = _context.Product.Where(pn => pn.ProductId == bId).Select(y => new B_BuyerBidsDTO
+                var buyerbid2 = _context.BuyerBid.Where(bb => bb.MemberId == BuyerBidmID && bb.BuyerBidId == bId).Select(pdId => pdId.Price).First();
+                var Productname = _context.Product.Where(pn => pn.ProductId == ProductId).Select(y => new B_BuyerBidsDTO
                 {
-                    BuyerBidId = BuyerBidID,
-                    MemberId = BuyerBidid,
-                    ProductId = (int)bId,
+                    BuyerBidId = bId,
+                    MemberId = BuyerBidmID,
+                    ProductId = ProductId,
                     ProductName = y.Name,
                     ImgFront = y.ImgFront,
                     Price = (int)buyerbid2,

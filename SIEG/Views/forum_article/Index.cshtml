@@ -84,7 +84,7 @@
                 </div>
             </div>
             <div class="col-lg-8 col-xl-9 order-lg-2 order-1">
-                <div style="float:right">
+                <div id="DeleteVue" style="float:right">
                     <div class="list-container">
                         <button class="edit_button" aria-label="Menu Button">
                             <div class="menu-icon-wrapper">
@@ -102,7 +102,7 @@
                                 </svg>
                                 <span style="font-size:13px">編輯貼文</span>
                             </li>
-                            <li class="edit_button-list-item" style="color:red">
+                            <li class="edit_button-list-item" style="color:red" @@click="deleteArticle()">
                                 <svg width="32px" height="32px" viewBox="0 0 32 32" id="i-trash" xmlns="http://www.w3.org/2000/svg"
                                      fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                                     <path d="M28 6 L6 6 8 30 24 30 26 6 4 6 M16 12 L16 24 M21 12 L20 24 M11 12 L12 24 M12 6 L13 2 19 2 20 6" />
@@ -266,9 +266,9 @@
         <script src="~/js/forum_post.js"></script>
 
         <script>
-            let articleId = sessionStorage.getItem("fID");
+            var articleId = sessionStorage.getItem("fID");
             var webApiBaseAddress = "https://localhost:7139";
-            var postVue = new Vue({
+            var ArticleVue = new Vue({
                 el: "#ForumArticleVue",
                 name: "ForumArticleVue",
                 data: {
@@ -342,9 +342,9 @@
         </script>
 
         <script>
-            let articleid = sessionStorage.getItem("fID");
+            var articleid = sessionStorage.getItem("fID");
             var webApiBaseAddress = "https://localhost:7139";
-            var postVue = new Vue({
+            var ReplyVue = new Vue({
                 el: "#ReplyVue",
                 name: "ReplyVue",
                 data: {
@@ -446,7 +446,7 @@
                                 newArray.push(lookupObject[i]);
                             }
                             _this.rp2Floor = newArray;
-                            console.log(_this.rp2Floor);
+                            //console.log(_this.rp2Floor);
                     },
                     insert: function () {
                         var _this = this;
@@ -468,6 +468,37 @@
                                 _this.getReplyDTOs();
                             }
                         );
+                    },
+                },
+            });
+        </script>
+
+        <script>
+            var articleid = sessionStorage.getItem("fID");
+            var webApiBaseAddress = "https://localhost:7139";
+            var DeleteVue = new Vue({
+                el: "#DeleteVue",
+                name: "DeleteVue",
+                data: {},
+                mounted: function () {
+                /*刪除修改選單*/
+                document.querySelector('.edit_button').addEventListener('click', function () {
+                    document.querySelector('.list-container').classList.toggle('active');
+                });
+                },
+                methods: {
+                    deleteArticle: function () {
+                        let _this = this;
+                        var ret = confirm("確定真要刪除?");
+                        if (ret == true) {
+                        axios.delete(`${webApiBaseAddress}/api/G_ForumArticles/${articleid}`).then
+                            (
+                                response => {
+                                    alert(response.data);
+                                    window.location = "Forum_list"
+                                }
+                            )
+                        };
                     },
                 },
             });

@@ -27,6 +27,13 @@ namespace SIEG_API.Controllers
         [HttpGet]
         public async Task<IEnumerable<E_ProductListDTO>> GetProduct()
         {
+
+            //var sellcount = _context.Order.Where(po => po.State == "已完成").Select(po => po.ProductId).ToArray();
+            //var valueG = sellcount.GroupBy(v => v).Select(g => new { v = g.Key, c = g.Count() }).OrderBy(g => g.v);
+
+            // WHERE STATUS = 'Y' GROUP BY CELLPHONE HAVING COUNT(*) > 1;
+
+
             //pl = Product / ps = ProductCategory / pb = Product + ProductCategory / po = 訂單
             return await _context.Product
                 .Join(_context.ProductCategory, pl => pl.ProductCategoryId, ps => ps.ProductCategoryId, (pl, ps) => new { pl, ps })

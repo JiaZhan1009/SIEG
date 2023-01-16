@@ -63,7 +63,7 @@
                             <div class="col-12 col-sm-6" v-for="item in NewsListDTO">
                                 <div class="news_card">
                                     <div class="news_img">
-                                        <a @@click="hrefToInfo(item.newslistId)">
+                                        <a @@click="hrefToInfo(item.newslistId,item.newslistviewcount)">
                                             <img :src="item.newslistImg" alt="">
                                         </a>
                                         <div class="sort"><a @@click="filterNewsSort(item.newslistSort)">{{item.newslistSort}}</a></div>
@@ -71,7 +71,7 @@
                                     <div class="news_content">
                                         <div class="date"><i class="far fa-calendar-alt"></i>{{item.newslistdate}}</div>
                                         <div class="title">
-                                            <a @@click="hrefToInfo(item.newslistId)" class="one-row">{{item.newslistTitle}}</a>
+                                            <a @@click="hrefToInfo(item.newslistId,item.newslistviewcount)" class="one-row">{{item.newslistTitle}}</a>
                                         </div>
                                         <p class="two-row">{{item.newslistContent}}</p>
                                     </div>
@@ -121,6 +121,7 @@
                 newslistSort: null,
                 newslistTime: null,
                 newslistdate: null,
+                newslistviewcount: null,
                 newssortId: null,
                 newssortName: null,
                 indexNSortName: sessionStorage.getItem('indexNSortName'),
@@ -305,9 +306,22 @@
                         $(this).addClass('active');
                     });
                 },
-                hrefToInfo: function(newsId) {
+                hrefToInfo: function (newsId, viewCount) {
+
+                    let _this = this;
+                    var request = {};
+
+                    let newsViewCount = viewCount + 1;
+                    request.newslistviewcount = newsViewCount;
+                    request.newslistId = newsId;
+
+                    axios.put(`${webApiBaseAddress}/api/E_NewsList/${newsId}`, request).then(
+                        response => {
+                            //alert(response.data);
+                        }
+                    );
+
                     sessionStorage.setItem("nID", newsId);
-                    console.log(newsId);
                     window.location = "/news_info";
                 }
             },

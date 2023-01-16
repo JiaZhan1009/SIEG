@@ -7,7 +7,7 @@ namespace SIEG.Controllers
 {
     public class D_PersonalController : Controller
     {
-        public IActionResult D_Personal_SignLogin()
+        public IActionResult index()
         {
             return View();
         }

@@ -9,11 +9,10 @@ namespace SIEG_API.Models
     {
         public int SellerAddProductId { get; set; }
         public int ProductId { get; set; }
-        public string Size { get; set; }
         public int Count { get; set; }
         public int MemberId { get; set; }
         public DateTime AddTime { get; set; }
-        public DateTime SaleDate { get; set; }
+        public DateTime? SaleDate { get; set; }
         public int Price { get; set; }
         public bool? ValIdity { get; set; }
 

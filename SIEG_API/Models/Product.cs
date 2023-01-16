@@ -12,7 +12,6 @@ namespace SIEG_API.Models
             BuyerBid = new HashSet<BuyerBid>();
             ContactAddProduct = new HashSet<ContactAddProduct>();
             FaviriteProduct = new HashSet<FaviriteProduct>();
-            ForumArticle = new HashSet<ForumArticle>();
             Order = new HashSet<Order>();
             SellerAddProduct = new HashSet<SellerAddProduct>();
         }
@@ -28,12 +27,12 @@ namespace SIEG_API.Models
         public string ImgBack { get; set; }
         public string ImgSide { get; set; }
         public int? ViewsCount { get; set; }
+        public string Model { get; set; }
 
         public virtual ProductCategory ProductCategory { get; set; }
         public virtual ICollection<BuyerBid> BuyerBid { get; set; }
         public virtual ICollection<ContactAddProduct> ContactAddProduct { get; set; }
         public virtual ICollection<FaviriteProduct> FaviriteProduct { get; set; }
-        public virtual ICollection<ForumArticle> ForumArticle { get; set; }
         public virtual ICollection<Order> Order { get; set; }
         public virtual ICollection<SellerAddProduct> SellerAddProduct { get; set; }
     }

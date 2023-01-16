@@ -1,4 +1,9 @@
-﻿@section Style{
+﻿@{
+    ViewData["Title"] = "發表文章";
+    ViewData["enTitle"] = "PostArticle";
+}
+
+@section Style{
     <!--Forum Post Stylesheet-->
     <link href="~/css/forumPost.css" rel="stylesheet">
 }
@@ -103,18 +108,16 @@
             },
             mounted: function () {
 
-
             },
             methods: {
                 insert: function () {
                     var _this = this;
                     var request = {};
                     request.MemberId = 101;
-                    request.Category = "手錶";
-                    request.ProductId = 104;
+                    request.Category = "精品腕錶";
+                    request.ProductCategoryID = 101;
                     request.Title = _this.標題;
                     request.ArticleContent = _this.內文;
-                    request.img = "/images/forum/post/79250BA.png";
                     axios.post(`${webApiBaseAddress}/api/G_ForumArticles`, request).then(
                         response => {
                             //window.location = "/Forum/Forum_list"
@@ -124,36 +127,4 @@
             },
         });
     </script>
-
-    @*<script>
-        document.querySelector('.file').addEventListener('change', function (e) {
-            //1.可以通过this拿到这个file的DOM元素
-            console.log(this)
-            //1.  e 函数事件参数对象中也有这个file的DOM元素对象。使用e.target也可以直接拿到
-            //console.log(e.target)
-            //对开发人员屏蔽，所以直接 必须调用这个文件的DOM对象的files属性，返回一个数组
-            let files = e.target.files
-            console.log(files)
-            // console.log(files.item(0))
-            // console.log(files[0])
-            // 判断一手是否有文件
-            if (!files.length) return
-            // 上传文件 创建FormData
-            let formData = new FormData()
-            // upFile就是后台接收的key
-            formData.append('upFile', files[0], files[0].name)
-            // 将formdata发送到后台即可
-            // 我用的 axios.post('url', formData)
-            $.ajax({
-                url: '~/images/forum/post',
-                type:'POST',
-                cache:false,
-                data:formData,
-                processData:false,
-                contentType:false
-            }).done(function(res){
-            }).fail(function(res){});
-
-        });
-    </script>*@
 }

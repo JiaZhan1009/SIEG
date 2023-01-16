@@ -33,7 +33,7 @@ namespace SIEG_API.Controllers
                 ForumArticleId = emp.ForumArticleId,
                 MemberId = emp.MemberId,
                 Category = emp.Category,
-                ProductId = emp.ProductId,
+                ProductCategoryId = emp.ProductCategoryId,
                 Title = emp.Title,
                 ArticleContent = emp.ArticleContent,
                 LikeCount = emp.LikeCount,
@@ -58,7 +58,7 @@ namespace SIEG_API.Controllers
                 ForumArticleId = forumArticle.ForumArticleId,
                 MemberId = forumArticle.MemberId,
                 Category = forumArticle.Category,
-                ProductId = forumArticle.ProductId,
+                ProductCategoryId = forumArticle.ProductCategoryId,
                 Title = forumArticle.Title,
                 ArticleContent = forumArticle.ArticleContent,
                 LikeCount = forumArticle.LikeCount,
@@ -84,7 +84,7 @@ namespace SIEG_API.Controllers
             pos.ForumArticleId = id;
             pos.MemberId = g_ForumArticlesDTO.MemberId;
             pos.Category = g_ForumArticlesDTO.Category;
-            pos.ProductId = g_ForumArticlesDTO.ProductId;
+            pos.ProductCategoryId = g_ForumArticlesDTO.ProductCategoryId;
             pos.Title = g_ForumArticlesDTO.Title;
             pos.ArticleContent = g_ForumArticlesDTO.ArticleContent;
             pos.LikeCount = g_ForumArticlesDTO.LikeCount;
@@ -120,7 +120,7 @@ namespace SIEG_API.Controllers
             {
                 MemberId = forumArticle.MemberId,
                 Category = forumArticle.Category,
-                ProductId = forumArticle.ProductId,
+                ProductCategoryId = forumArticle.ProductCategoryId,
                 Title = forumArticle.Title,
                 ArticleContent = forumArticle.ArticleContent,
                 Img = forumArticle.Img,

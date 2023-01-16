@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SIEG_API.DTO;
 using SIEG_API.Models;
 
 namespace SIEG_API.Controllers
@@ -31,23 +32,29 @@ namespace SIEG_API.Controllers
 
         // GET: api/G_ForumReply2/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ForumReply2>> GetForumReply2(int id)
+        public async Task<ActionResult<IEnumerable<ForumReply2>>> GetForumReply2(int id)
         {
-            return await _context.ForumReply2.Where(c => c.文章Id == id).ToListAsync();
+            return await _context.ForumReply2.Where(c => c.ArticleId == id).ToListAsync();
 
         }
 
         // PUT: api/G_ForumReply2/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutForumReply2(int id, ForumReply2 forumReply2)
+        public async Task<string> PutForumReply2(int id, G_ForumReply2DTO g_ForumReply2DTO)
         {
-            if (id != forumReply2.ForumReply2Id)
+            if (id != g_ForumReply2DTO.ForumReply2Id)
             {
-                return BadRequest();
+                return "ID不正確";
             }
 
-            _context.Entry(forumReply2).State = EntityState.Modified;
+            ForumReply2 pos = await _context.ForumReply2.FindAsync(id);
+            pos.ForumReply2Content = g_ForumReply2DTO.ForumReply2Content;
+            pos.Img = g_ForumReply2DTO.Img;
+            pos.ValIdity = g_ForumReply2DTO.ValIdity;
+            pos.LikeCount = g_ForumReply2DTO.LikeCount;
+
+            _context.Entry(pos).State = EntityState.Modified;
 
             try
             {
@@ -57,7 +64,7 @@ namespace SIEG_API.Controllers
             {
                 if (!ForumReply2Exists(id))
                 {
-                    return NotFound();
+                    return "找不到欲修改的資料";
                 }
                 else
                 {
@@ -65,18 +72,27 @@ namespace SIEG_API.Controllers
                 }
             }
 
-            return NoContent();
+            return "修改成功";
         }
 
         // POST: api/G_ForumReply2
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ForumReply2>> PostForumReply2(ForumReply2 forumReply2)
+        public async Task<ActionResult<ForumReply2>> PostForumReply2(G_ForumReply2DTO forumReply2)
         {
-            _context.ForumReply2.Add(forumReply2);
+            ForumReply2 pos = new ForumReply2
+            {
+                ArticleId = forumReply2.ArticleId,
+                MemberId = forumReply2.MemberId,
+                Floor = forumReply2.Floor,
+                ForumReplyFloor = forumReply2.ForumReplyFloor,
+                Img = forumReply2.Img,
+            };
+
+            //_context.ForumReply.Add(pos);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetForumReply2", new { id = forumReply2.ForumReply2Id }, forumReply2);
+            return pos;
         }
 
         // DELETE: api/G_ForumReply2/5

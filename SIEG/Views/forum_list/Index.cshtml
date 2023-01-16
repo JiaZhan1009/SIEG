@@ -113,22 +113,19 @@
                 <div class="form_list_content">
                     <!--文章列表-->
                     <div class="row">
-                        <div class="col-12 forum-sm-6 mymouse" v-for="item in PostDTOs" @@click="article(item.forumArticleId
-)">
+                        <div class="col-12 forum-sm-6 mymouse" v-for="item in PostDTOs" @@click="article(item.forumArticleId)">
                             <img :src="item.img" style="float: right;" class="preview_img">
                             <div class="news_content" style="width: calc(100% - 120px); float:left">
                                 <div style="font-size: 13px;">
                                     <p>
-                                        {{item.productId}}‧{{item.memberId
-                                        }}‧1小時前
+                                        {{item.category}}‧{{item.memberId}}‧1小時前
                                     </p>
                                 </div>
                                 <div class="article_title">
                                     <a class="one-row">{{item.title}}</a>
                                 </div>
                                 <p tag class="forum-two-row">
-                                    {{item.articleContent
-                                    }}
+                                    {{item.articleContent}}
                                 </p>
                             </div>
                             <div style="float: left;">

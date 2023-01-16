@@ -88,4 +88,10 @@ for (var i = 0; i < bubblyButtons.length; i++) {
     bubblyButtons[i].addEventListener('click', animateButton, false);
 }
 
+/*刪除修改選單*/
+document.querySelector('.edit_button').addEventListener('click', function () {
+    document.querySelector('.list-container').classList.toggle('active');
+});
+
+
 

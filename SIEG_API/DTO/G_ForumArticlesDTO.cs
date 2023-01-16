@@ -5,7 +5,7 @@
         public int? ForumArticleId { get; set; }
         public int MemberId { get; set; }
         public string? Category { get; set; }
-        public int ProductId { get; set; }
+        public int ProductCategoryId { get; set; }
         public string? Title { get; set; }
         public string? ArticleContent { get; set; }
         public int LikeCount { get; set; }

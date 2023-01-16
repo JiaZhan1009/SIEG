@@ -28,43 +28,32 @@ namespace SIEG_API.Controllers
         public async Task<IEnumerable<E_ProductListDTO>> GetProduct()
         {
 
-            //var sellcount = _context.Order.Where(po => po.State == "已完成").Select(po => po.ProductId).ToArray();
-            //var valueG = sellcount.GroupBy(v => v).Select(g => new { v = g.Key, c = g.Count() }).OrderBy(g => g.v);
-
-            // WHERE STATUS = 'Y' GROUP BY CELLPHONE HAVING COUNT(*) > 1;
-
-
-            //pl = Product / ps = ProductCategory / pb = Product + ProductCategory / po = 訂單
             return await _context.Product
-                .Join(_context.ProductCategory, pl => pl.ProductCategoryId, ps => ps.ProductCategoryId, (pl, ps) => new { pl, ps })
-                .Where(x => x.pl.ValIdity == true)
-                .OrderByDescending(x => x.pl.AddTime)
-                .Select(x => new E_ProductListDTO
+                .Select(pl => new E_ProductListDTO
                 {
-                    productlistId = x.pl.ProductId,
-                    productlistImg = x.pl.ImgFront,
-                    productlistName = x.pl.Name,
-                    productlistPrice = x.pl.Price,
-                    productlistSort = x.ps.CategoryName,
-                    productlistBrand = x.ps.BrandName,
-
+                    productlistId = pl.ProductCategoryId,
+                    productlistImg = pl.ImgFront,
+                    productlistName = pl.Name,
+                    productlistPrice = pl.Price,
                 }).ToListAsync();
 
-            //var aa = _context.Product
-            //    .Join(_context.ProductCategory, pl => pl.ProductCategoryId, ps => ps.ProductCategoryId, (pl, ps) => new { pl, ps })
-            //    .Join(_context.Order, pb => pb.pl.ProductId, po => po.ProductId, (pb, po) => new { pb, po })
-            //    .Where(x => x.pb.pl.ValIdity == true && x.pb.pl.ProductId == x.po.ProductId && x.po.State == "已完成")
-            //    .OrderByDescending(x => x.pb.pl.AddTime)
-            //    .Select(x => new E_ProductListDTO
+
+            var BrandName = "Air Jordan";
+            var CategoryName = "高檔鞋履";
+
+            //var ProductSaleInfo = await _context.Order.Include(o => o.Product).Include(o => o.Product.SellerAddProduct).Include(o => o.Product.ProductCategory)
+            //    .Where(x => x.Product.ProductCategory.CategoryName.Contains(CategoryName) && x.Product.ProductCategory.BrandName.Contains(BrandName))
+            //    .GroupBy(x => new { x.Product.Name, x.Product.ImgFront })
+            //    .Select(g => new E_ProductSaleDTO
             //    {
-            //        productlistId = x.pb.pl.ProductId,
-            //        productlistImg = x.pb.pl.ImgFront,
-            //        productlistName = x.pb.pl.Name,
-            //        productlistPrice = x.pb.pl.Price,
-            //        productlistSort = x.pb.ps.CategoryName,
-            //        productlistBrand = x.pb.ps.BrandName,
-            //    });
-            //return aa;
+            //        ProductSaleCount = g.Count(),
+            //        ProductName = g.Key.Name,
+            //        ProductImg = g.Key.ImgFront,
+            //        ProductMinPrice = g.Min(x => x.Price)
+            //    }).ToListAsync();
+
+            //return ProductSaleInfo;
+
         }
 
         // Below500: api/E_ProductListDTO/Below500
@@ -164,14 +153,17 @@ namespace SIEG_API.Controllers
         // PUT: api/E_ProductList/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct(int id, Product product)
+        public async Task<IActionResult> PutProduct(int id, E_ProductListDTO E_ProductViewDTO)
         {
-            if (id != product.ProductId)
+            if (id != E_ProductViewDTO.productlistId)
             {
                 return BadRequest();
             }
+            Product ProductView = await _context.Product.FindAsync(E_ProductViewDTO.productlistId);
 
-            _context.Entry(product).State = EntityState.Modified;
+            ProductView.ViewsCount = E_ProductViewDTO.productlistviewcount;
+
+            _context.Entry(ProductView).State = EntityState.Modified;
 
             try
             {

@@ -26,7 +26,7 @@ namespace SIEG_API.Models
         public string ImgFront { get; set; }
         public string ImgBack { get; set; }
         public string ImgSide { get; set; }
-        public int? ViewsCount { get; set; }
+        public int ViewsCount { get; set; }
         public string Model { get; set; }
 
         public virtual ProductCategory ProductCategory { get; set; }

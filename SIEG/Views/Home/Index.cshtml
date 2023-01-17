@@ -64,7 +64,7 @@
                         <h4><a @@click="hrefToInfo(item.productlistId,item.productlistViewcount)" class="two-row">{{item.productlistName}}</a></h4>
                         <div class="sale">
                             <div class="price">{{item.productPrice}}</div>
-                            <div class="sold">售出100件</div>
+                            <div class="sold">售出{{item.productlistSellCount}}件</div>
                         </div>
                     </div>
                 </div>
@@ -241,11 +241,6 @@
                     let response = await axios.get(`${webApiBaseAddress}/api/E_ProductSort/Brand`);
                     _this.ProductSortDTO = response.data;
                 },
-                //hrefToInfo: function (brand, sortName) {
-                //    sessionStorage.setItem("indexPBrand", brand);
-                //    sessionStorage.setItem("indexPSortName", sortName);
-                //    window.location = "/product_list";
-                //},
             },
         });
 
@@ -254,7 +249,6 @@
             sessionStorage.setItem("indexPSortName", sortName);
             window.location = "/product_list";
         }
-
 
 
         var appVue = new Vue({
@@ -276,7 +270,7 @@
             methods: {
                 getProductListDTO: function () {
                     let _this = this;
-                    axios.get(`${webApiBaseAddress}/api/E_ProductList`).then(
+                    axios.get(`${webApiBaseAddress}/api/E_ProductList/TopProduct`).then(
                         response => {
                             _this.ProductListDTO = response.data;
                             var ProductList = [];
@@ -391,7 +385,7 @@
                                     <div class= "news_content">
                                         <div class="date"><i class="far fa-calendar-alt"></i>${item.newslistdate}</div>
                                         <div class="title">
-                                           <a onclick="hrefToNInfo('${item.newslistId}')" class="one-row">${item.newslistTitle}</a>
+                                                   <a onclick="hrefToNInfo('${item.newslistId}','${item.newslistviewcount}')" class="one-row">${item.newslistTitle}</a>
                                         </div>
                                         <p class="two-row">${item.newslistContent}</p>
                                     </div>
@@ -445,22 +439,22 @@
                         }
                     );
                 },
-                //hrefToInfo: function (newsId) {
-                //    sessionStorage.setItem("nID", newsId);
-                //    console.log(newsId);
-                //    window.location = "/news_info";
-                //},
-                //sortToList: function (sortName) {
-                //    sessionStorage.setItem("indexNSortName", sortName);
-                //    window.location = "/news_list";
-                //},
             },
         });
 
 
-        function hrefToNInfo(newsId) {
+        async function hrefToNInfo(newsId, viewCount) {
+
+            let _this = this;
+            var request = {};
+
+            let newsViewCount = parseInt(viewCount) + 1;
+            request.newslistviewcount = newsViewCount;
+            request.newslistId = newsId;
+
+            let response = await axios.put(`${webApiBaseAddress}/api/E_NewsList/${newsId}`, request);
+
             sessionStorage.setItem("nID", newsId);
-            console.log(newsId);
             window.location = "/news_info";
         }
 

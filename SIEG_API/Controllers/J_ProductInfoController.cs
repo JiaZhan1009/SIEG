@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol;
 using SIEG_API.DTO;
 using SIEG_API.Models;
 using SIEG_API.Parameters;
@@ -40,10 +41,6 @@ namespace SIEG_API.Controllers
                 pBrand = list.ProductCategory.BrandName,
                 pSize = list.Size,
             };
-
-
-
-
         }
 
 
@@ -150,36 +147,39 @@ namespace SIEG_API.Controllers
 
             return mDTO;
         }
-
-        //[HttpPut("{mId}")]
-        //public async Task<string> PutEmployees(int id, J_PutBankDTO bankDTO)
-        //{
-        //if (id != empDTO.EmployeeId)
-        //{
-        //    return "ID不正確!";
-        //}
-        //    Member mb = await _context.Member.FindAsync(bankDTO.mID);
-        //    mb. = bankDTO.FirstName;
-        //    mb.LastName = bankDTO.LastName;
-        //    mb.BankAccount = bankDTO.Title;
-        //    _context.Entry(emp).State = EntityState.Modified;
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!EmployeesExists(id))
-        //        {
-        //            return "找不到欲修改的記錄!";
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-        //    return "修改成功!";
-        //}
-
     }
 }
+
+
+
+
+//var BrandName = "Air Jordan";
+//var CategoryName = "高檔鞋履";
+
+//var SaleInfo = await _context.Order.Include(o => o.Product).Include(o => o.Product.SellerAddProduct)
+//    .Include(o => o.Product.ProductCategory).Where(x => x.Product.ProductCategory.CategoryName
+//    .Contains(CategoryName) && x.Product.ProductCategory.BrandName.Contains(BrandName))
+//    .GroupBy(x => new { x.Product.Name, x.Product.ImgFront })
+//    .Select(g => new J_SaleCount
+//    {
+//        SaleCount = g.Count(),
+//        Name = g.Key.Name,
+//        Img = g.Key.ImgFront,
+//        minPrice = g.Min(x => x.Price)
+//    }).ToListAsync();
+
+//return SaleInfo;
+
+//var saleCount = from o in _context.Order
+//                join p in _context.Product on o.ProductId equals p.ProductId
+//                join s in _context.SellerAddProduct on p.ProductId equals s.ProductId
+//                join pc in _context.ProductCategory on p.ProductCategoryId equals pc.ProductCategoryId
+//                //where pc.CategoryName.Contains("高檔鞋履")
+//                group new { p, s } by p.Name into g
+//                select new
+//                {
+//                    Img = g,
+//                    銷售數量 = g.Count(),
+//                    g.Key,
+//                    最低價 = g.Min(x => x.s.Price)
+//                };

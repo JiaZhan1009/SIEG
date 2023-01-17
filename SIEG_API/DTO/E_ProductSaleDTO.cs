@@ -3,10 +3,9 @@
     public class E_ProductSaleDTO
     {
         public int ProductSaleCount { get; set; }
-        public string? ProductImg { get; set; }
-        public string? ProductName { get; set; }
-        public int? ProductMinPrice { get; set; }
-        public string? ProductSaleInfo { get; set; }
+        public string? productlistImg { get; set; }
+        public string? productlistName { get; set; }
+        public int? productlistPrice { get; set; }
 
     }
 }

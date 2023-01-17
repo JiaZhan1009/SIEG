@@ -25,35 +25,44 @@ namespace SIEG_API.Controllers
 
         // GET: api/E_ProductList
         [HttpGet]
-        public async Task<IEnumerable<E_ProductListDTO>> GetProduct()
+        public async Task<IEnumerable<E_ProductListDTO>> GetProduct(string? name)
         {
 
-            return await _context.Product
-                .Select(pl => new E_ProductListDTO
-                {
-                    productlistId = pl.ProductCategoryId,
-                    productlistImg = pl.ImgFront,
-                    productlistName = pl.Name,
-                    productlistPrice = pl.Price,
-                }).ToListAsync();
-
-
-            var BrandName = "Air Jordan";
-            var CategoryName = "高檔鞋履";
-
-            //var ProductSaleInfo = await _context.Order.Include(o => o.Product).Include(o => o.Product.SellerAddProduct).Include(o => o.Product.ProductCategory)
-            //    .Where(x => x.Product.ProductCategory.CategoryName.Contains(CategoryName) && x.Product.ProductCategory.BrandName.Contains(BrandName))
-            //    .GroupBy(x => new { x.Product.Name, x.Product.ImgFront })
-            //    .Select(g => new E_ProductSaleDTO
+            //pl = Product / ps = ProductCategory / pb = Product + ProductCategory / po = 訂單
+            //return await _context.Product
+            //    .Join(_context.ProductCategory, pl => pl.ProductCategoryId, ps => ps.ProductCategoryId, (pl, ps) => new { pl, ps })
+            //    .Where(x => x.pl.ValIdity == true)
+            //    .OrderByDescending(x => x.pl.AddTime)
+            //    .Select(x => new E_ProductListDTO
             //    {
-            //        ProductSaleCount = g.Count(),
-            //        ProductName = g.Key.Name,
-            //        ProductImg = g.Key.ImgFront,
-            //        ProductMinPrice = g.Min(x => x.Price)
+            //        productlistId = x.pl.ProductId,
+            //        productlistImg = x.pl.ImgFront,
+            //        productlistName = x.pl.Name,
+            //        productlistPrice = x.pl.Price,
+            //        productlistSort = x.ps.CategoryName,
+            //        productlistBrand = x.ps.BrandName,
+            //        productlistViewcount = x.pl.ViewsCount,
             //    }).ToListAsync();
 
-            //return ProductSaleInfo;
 
+            //var ProductList = await _context.Order.Include(o => o.Product).Include(o => o.Product.SellerAddProduct).Include(o => o.Product.ProductCategory)
+
+            var ProductList = await _context.Product.Include(o => o.ProductCategory)
+                //.Where(x => x.Product.ProductCategory.CategoryName.Contains(CategoryName) && x.Product.ProductCategory.BrandName.Contains(BrandName))
+                .GroupBy(x => new { x.Name, x.ImgFront, x.ProductCategoryId })
+                .Select(g => new E_ProductListDTO
+                {
+                    productlistSellCount = g.Count(),
+                    productlistName = g.Key.Name,
+                    productlistImg = g.Key.ImgFront,
+                    productlistPrice = g.Min(x => x.Price),
+                    productlistId = g.Key.ProductCategoryId,
+                }).ToListAsync();
+            if (!string.IsNullOrEmpty(name)) 
+            {
+                ProductList = ProductList.Where(x => x.productlistName.Contains(name)).ToList();
+            }
+            return ProductList;
         }
 
         // Below500: api/E_ProductListDTO/Below500
@@ -161,7 +170,7 @@ namespace SIEG_API.Controllers
             }
             Product ProductView = await _context.Product.FindAsync(E_ProductViewDTO.productlistId);
 
-            ProductView.ViewsCount = E_ProductViewDTO.productlistviewcount;
+            ProductView.ViewsCount = E_ProductViewDTO.productlistViewcount;
 
             _context.Entry(ProductView).State = EntityState.Modified;
 
@@ -234,19 +243,34 @@ namespace SIEG_API.Controllers
         [HttpPost("FilterSort")]
         public async Task<IEnumerable<E_ProductListDTO>> FilterSort([FromBody] E_ProductListDTO product)
         {
+
+            var ProductList = await _context.Order.Include(o => o.Product).Include(o => o.Product.SellerAddProduct).Include(o => o.Product.ProductCategory)
+                    .Where(x => x.Product.ProductCategory.CategoryName.Contains(product.productlistSort))
+                    .GroupBy(x => new { x.Product.Name, x.Product.ImgFront })
+                    .Select(g => new E_ProductListDTO
+                    {
+                        productlistSellCount = g.Count(),
+                        productlistName = g.Key.Name,
+                        productlistImg = g.Key.ImgFront,
+                        productlistPrice = g.Min(x => x.Price),
+                    }).ToListAsync();
+
+            return ProductList;
+
+
             //pl = Product / ps = ProductCategory / pb = Product + ProductCategory
-            return await _context.Product
-                .Join(_context.ProductCategory, pl => pl.ProductCategoryId, ps => ps.ProductCategoryId, (pl, ps) => new { pl, ps })
-                .Where(pb => pb.ps.CategoryName.Contains(product.productlistSort) && pb.pl.ValIdity == true)
-                .OrderByDescending(pb => pb.pl.AddTime).Select(x => new E_ProductListDTO
-                {
-                    productlistId = x.pl.ProductCategoryId,
-                    productlistImg = x.pl.ImgFront,
-                    productlistName = x.pl.Name,
-                    productlistPrice = x.pl.Price,
-                    productlistSort = x.ps.CategoryName,
-                    productlistBrand = x.ps.BrandName,
-                }).ToListAsync();
+            //return await _context.Product
+            //    .Join(_context.ProductCategory, pl => pl.ProductCategoryId, ps => ps.ProductCategoryId, (pl, ps) => new { pl, ps })
+            //    .Where(pb => pb.ps.CategoryName.Contains(product.productlistSort) && pb.pl.ValIdity == true)
+            //    .OrderByDescending(pb => pb.pl.AddTime).Select(x => new E_ProductListDTO
+            //    {
+            //        productlistId = x.pl.ProductCategoryId,
+            //        productlistImg = x.pl.ImgFront,
+            //        productlistName = x.pl.Name,
+            //        productlistPrice = x.pl.Price,
+            //        productlistSort = x.ps.CategoryName,
+            //        productlistBrand = x.ps.BrandName,
+            //    }).ToListAsync();
         }
 
         // FilterBrand: api/E_ProductList/FilterBrand

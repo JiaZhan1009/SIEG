@@ -8,8 +8,8 @@
         public int MemberId { get; set; }
         public int ForumReplyFloor { get; set; }
         public int Floor { get; set; }
-        public string ForumReply2Content { get; set; }
-        public string Img { get; set; }
+        public string? ForumReply2Content { get; set; }
+        public string? Img { get; set; }
         public DateTime AddTime { get; set; }
         public bool? ValIdity { get; set; }
         public int LikeCount { get; set; }

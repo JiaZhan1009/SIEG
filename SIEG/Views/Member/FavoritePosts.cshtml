@@ -1,0 +1,102 @@
+﻿@{
+    ViewData["Title"] = "coupon";
+    ViewData["enTitle"] = "Ben";
+}
+
+@section Style{
+    <link href="~/css/BEN.css" rel="stylesheet">
+}
+<div id="appVue">
+    <partial name="_MemberBanner" />
+    <div class="container-fluid">
+        <div class="row">
+            <partial name="_Membersidebar">
+                <div class="col-lg-7">
+                    <div class="orderTopWidth">
+                        <div class="row">
+                            <div>
+                                <h4>貼文追蹤</h4>
+                            </div>
+                            <ul>
+                                <li class="noticecolor">
+                                    <div class="noticeDivimg">
+                                        <div class="news_collect">
+                                            <img src="/images/Benicon/Messi.jpg" class="a-1">
+                                            <div class="noticetext">
+                                                <p>卡達世界盃／梅西 Lionel Messi 阿根廷冠軍賽球衣瘋狂上漲，一件被炒賣至 400 美元！</p>
+                                                <p>
+                                                    Shuo Dec 22. 2022
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <img src="/images/Benicon/trash.png"  class="Productcollection">
+                                    </div>
+                                </li>
+                                <li class="noticecolor">
+                                    <div class="noticeDivimg">
+                                        <div class="news_collect">
+                                            <img src="/images/Benicon/Messi.jpg" class="a-1">
+                                            <div class="noticetext">
+                                                <p>卡達世界盃／梅西 Lionel Messi 阿根廷冠軍賽球衣瘋狂上漲，一件被炒賣至 400 美元！</p>
+                                                <p>
+                                                    Shuo Dec 22. 2022
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <img src="/images/Benicon/trash.png" class="Productcollection">
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.2/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+        var webApiBaseAddress = "https://localhost:7139";
+        var appVue = new Vue({
+            el: "#appVue",
+            name: "appVue",
+            data: {
+                mID: sessionStorage.getItem("mID"),
+                couponDTOes: {},
+                Filter: "",
+
+            },
+            mounted: function () {
+                let _this = this;
+                //_this.getcouponDTOes();
+            },
+            methods: {
+                getcouponDTOes: function () {
+                    let _this = this;
+                    axios.get(`${webApiBaseAddress}/api/B_MemberCoupons/${_this.mID}`).then(
+                        response => {
+                            _this.couponDTOes = response.data;
+
+                        }
+                    );
+                },
+            },
+        });
+
+    </script>
+    }
+
+
+
+
+
+
+
+
+
+

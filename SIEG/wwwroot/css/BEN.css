@@ -236,13 +236,14 @@ hr {
     background-color: #006340;
     color: #fafafa;
 }
-
-
 .noticeDivimg {
     display: flex;
     align-items: center;
-    border-bottom: 1px solid #ededed;
-    padding: 20px 0px;
+    /* border-bottom: 1px solid #ededed; */
+    /* padding: 20px 0px; */
+    /* width: calc(100% - 50px); */
+    position: relative;
+    padding-right: 70px;
 }
 
     .noticeDivimg img {
@@ -252,13 +253,21 @@ hr {
 
 .noticecolor {
     /* list-style-position: inside; */
-    list-style: none
+    list-style: none;
+    border-bottom: 1px solid #ededed;
 }
 
-    .noticecolor:hover {
+  /*  .noticecolor:hover {
         background-color: #ededed;
-    }
+    }*/
 
+.Productcollection {
+    height: 20px !important;
+    cursor: pointer;
+    position: absolute;
+    right: 15px;
+    margin: 0;
+}
 
 
 .noticetext {
@@ -279,11 +288,11 @@ hr {
     display: flex;
     cursor: pointer;
     flex: 1 0 0%;
+    padding: 20px 0px;
 }
-
-.settingbut {
-    display: flex;
-}
+    .news_collect:hover {
+        background-color: #ededed;
+    }
 
 .settinp {
     display: flex;

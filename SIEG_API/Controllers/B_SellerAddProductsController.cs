@@ -32,14 +32,14 @@ namespace SIEG_API.Controllers
         }
 
         // GET: api/B_SellerAddProducts/5
-        [HttpGet("{id}")]
+        [HttpGet("{MemberId}")]
         public async Task<IEnumerable<B_SellerAddProductsDTO>> GetSellerAddProduct(int MemberId)
         {
             var sellproducts = _context.SellerAddProduct.Where(bb => bb.MemberId == MemberId && bb.ValIdity == true).Select(SdId => SdId.SellerAddProductId).ToArray();
             var allmessageslist = new List<B_SellerAddProductsDTO>();
             foreach (var SellerAddId in sellproducts)
             {
-                var ProductId = _context.BuyerBid.Where(bb => bb.MemberId == MemberId && bb.BuyerBidId == SellerAddId).Select(pdId => pdId.ProductId).First();
+                var ProductId = _context.SellerAddProduct.Where(bb => bb.MemberId == MemberId && bb.SellerAddProductId == SellerAddId).Select(pdId => pdId.ProductId).First();
                 //var ID = _context.SellerAddProduct.Where(bb => bb.MemberId == MemberId && bb.ProductId == ProductId).Select(pdId => pdId.ProductId).First();
                 var datetime = _context.SellerAddProduct.Where(bb => bb.MemberId == MemberId && bb.ProductId == ProductId).Select(pdId => pdId.AddTime).First();
                 var BuylowPrice = await _context.BuyerBid.Where(pdId => pdId.ProductId == ProductId && pdId.ValIdity == true).OrderBy(lp => lp.Price).Select(lp => lp.Price).FirstOrDefaultAsync();
@@ -56,7 +56,8 @@ namespace SIEG_API.Controllers
                     lowPrice = BuylowPrice,
                     hightPrice = BuyhighPrice,
                     Size = y.Size,
-                    Shelfdate = datetime
+                    Shelfdate = datetime,
+                    Model=y.Model,
                 }).First();
                 allmessageslist.Add(allmessages);
             }
@@ -65,15 +66,17 @@ namespace SIEG_API.Controllers
 
         // PUT: api/B_SellerAddProducts/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutSellerAddProduct(int id, SellerAddProduct sellerAddProduct)
+        [HttpPut("{SellerAddProductid}")]
+        public async Task<string> PutSellerAddProduct(int SellerAddProductid, SellerAddProduct sellerAddProduct)
         {
-            if (id != sellerAddProduct.SellerAddProductId)
+            if (SellerAddProductid != sellerAddProduct.SellerAddProductId)
             {
-                return BadRequest();
+                return "不正確";
             }
-
-            _context.Entry(sellerAddProduct).State = EntityState.Modified;
+            SellerAddProduct pricemodification = await _context.SellerAddProduct.FindAsync(sellerAddProduct.SellerAddProductId);
+            pricemodification.Price = sellerAddProduct.Price;
+            pricemodification.AddTime = DateTime.Now;
+            _context.Entry(pricemodification).State = EntityState.Modified;
 
             try
             {
@@ -81,9 +84,9 @@ namespace SIEG_API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!SellerAddProductExists(id))
+                if (!SellerAddProductExists(SellerAddProductid))
                 {
-                    return NotFound();
+                    return "找不到欲修改紀錄";
                 }
                 else
                 {
@@ -91,7 +94,7 @@ namespace SIEG_API.Controllers
                 }
             }
 
-            return NoContent();
+            return "修改成功";
         }
 
         // POST: api/B_SellerAddProducts
@@ -107,18 +110,18 @@ namespace SIEG_API.Controllers
 
         // DELETE: api/B_SellerAddProducts/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSellerAddProduct(int id)
+        public async Task<string> DeleteSellerAddProduct(int id)
         {
             var sellerAddProduct = await _context.SellerAddProduct.FindAsync(id);
             if (sellerAddProduct == null)
             {
-                return NotFound();
+                return "找不到欲刪除的記錄!";
             }
 
             _context.SellerAddProduct.Remove(sellerAddProduct);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return "刪除成功!";
         }
 
         private bool SellerAddProductExists(int id)

@@ -293,8 +293,8 @@
                                 var item = {};
                                 item = _this.MemberDTOes[i];
                                 item.num = "A" + item.orderId;
-                                var str = item.completeTime;
-                                item.newCompletetime = str.split("T")[0];
+                               var str = item.completeTime;
+                                    item.newCompletetime = str.split("T")[0];
                                 MemberList.push(item);
 
                             }
@@ -378,7 +378,7 @@
                     request.State = "申請退貨";
                     request.Receiver = returnthegoods.receiver;
                     request.orderId = returnthegoods.orderId;
-                    axios.put(`${webApiBaseAddress}/api/B_BuyerBids/Returns/${returnthegoods.orderId}`, request).then(
+                    axios.put(`${webApiBaseAddress}/api/B_BuyerBids/${returnthegoods.orderId}`, request).then(
                         response => {
                             alert(response.data);
                             //_this.filterEmployeeDTOes();
@@ -447,7 +447,6 @@
 
                             }
                         );
-
                     }
                 },
                 deleteOrder: function (orderId) {

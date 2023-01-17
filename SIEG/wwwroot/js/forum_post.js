@@ -44,7 +44,7 @@ $('document').ready(function () {
         $('.image-button').css('display', 'inline');
     });
 
-    /*我要回復鈕*/
+    /*我要回覆鈕*/
     let reply = document.getElementById('Reply_btn');
     reply.addEventListener('click', function () {
         $(this).next(".Reply_block").slideToggle();

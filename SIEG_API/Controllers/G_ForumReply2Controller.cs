@@ -83,13 +83,15 @@ namespace SIEG_API.Controllers
             ForumReply2 pos = new ForumReply2
             {
                 ArticleId = forumReply2.ArticleId,
+                ForumReplyId = forumReply2.ForumReplyId,
                 MemberId = forumReply2.MemberId,
-                Floor = forumReply2.Floor,
                 ForumReplyFloor = forumReply2.ForumReplyFloor,
+                Floor = forumReply2.Floor,
+                ForumReply2Content = forumReply2.ForumReply2Content,
                 Img = forumReply2.Img,
             };
 
-            //_context.ForumReply.Add(pos);
+            _context.ForumReply2.Add(pos);
             await _context.SaveChangesAsync();
 
             return pos;

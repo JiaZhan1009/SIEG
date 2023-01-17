@@ -194,6 +194,16 @@
                                     </div>
                                 </div>
                             </span>
+                            @*回覆二回覆框*@
+                            <span>
+                                <div class="Reply2_block">
+                                    <textarea id="text" class="describe" placeholder="請勿帶有仇恨言論" v-model="Reply2"></textarea>
+                                    <div style="text-align: center;" class="frame">
+                                        <button id="cancel" type="button" class="cancel_btn custom" onclick="$('.Reply2_block').css('display', 'none')">取消</button>
+                                        <button id="submit_btn" type="button" class="submit_btn custom" @@click="rp2Insert">送出</button>
+                                    </div>
+                                </div>
+                            </span>
                         </span>
                     </div>
                     <template v-for="item in ReplyDTOs">
@@ -214,7 +224,7 @@
                                 <span style="word-break: break-all;white-space: pre-line;">{{item.forumReplyContent}}</span>
 
                                 <p style="font-size: 13px;">
-                                    B{{item.floor}}·{{item.AddTime}}
+                                    B{{item.floor}}·{{item.AddTime}} <button id="Reply2_btn" style="background:none; color:#00000080 ;" @@click="rp2Open(item.forumReplyId, item.floor, rp2Floor)">回覆</button>
                                 </p>
                             </div>
                             <!--更多留言-->
@@ -322,10 +332,10 @@
                         let _this = this;
                         var request = {};
                         let PostId = articleId;
-                    request.ForumArticleId = PostId;
+                        request.ForumArticleId = PostId;
                         request.MemberId = Post.memberId;
                         request.Category = Post.category;
-                    request.ProductCategoryId = Post.productCategoryId;
+                        request.ProductCategoryId = Post.productCategoryId;
                         request.Title = Post.title;
                         request.ArticleContent = Post.articleContent;
                         request.LikeCount = Post.likeCount + 1;
@@ -351,9 +361,12 @@
                     ReplyDTOs: [],
                     Reply2DTOs: [],
                     lastFloor: [],
-                    rp2lastFloor: [],
-                    Reply: null,
                     rp2Floor:[],
+                    rp2LastFloor: [],
+                    rp2Request:{},
+                    Reply: null,
+                    Reply2: null,
+
                 },
                 mounted: function () {
                     let _this = this;
@@ -365,7 +378,7 @@
                         $('.Reply_block').css('display', 'none');
                     });
 
-                    //留言收折
+                    //留言收折+RP2回覆紐
                     $(function () {
                         setTimeout(function () {
                             let aa = {};
@@ -429,7 +442,6 @@
                                 }
                                 _this.Reply2DTOs = EmployeeList;
                                 _this.removeDuplicates(RpList, "rp1floor")
-                                //console.log(_this.Reply2DTOs)
                             }
                         );
                     },
@@ -459,17 +471,54 @@
                             request.Floor = lastFloor[0];
                         }
                         request.ForumReplyContent = _this.Reply;
-                        axios.post(`${webApiBaseAddress}/api/G_ForumReply1`, request).then(
-                            response => {
-                                _this.Reply = null;
-                                setTimeout(function () {
-                                    $('.Reply_block').css('display', 'none');
-                                }, 500);
-                                _this.getReplyDTOs();
-                            }
-                        );
+                        console.log(request)
+                        //axios.post(`${webApiBaseAddress}/api/G_ForumReply1`, request).then(
+                        //    response => {
+                        //        _this.Reply = null;
+                        //        setTimeout(function () {
+                        //            $('.Reply_block').css('display', 'none');
+                        //        }, 500);
+                        //        _this.getReplyDTOs();
+                        //    }
+                        //);
                     },
-                },
+                    rp2Open: function (Reply1Id, rp1Floor, rp2Floor) {
+                        var _this = this;
+                        $(".Reply2_block").slideToggle();
+                        var request = {};
+                        request.ArticleId = articleid;
+                        request.ForumReplyId = Reply1Id;
+                        request.MemberId = "101";
+                        request.ForumReplyFloor = rp1Floor;
+                        var rp2FloorList = [];
+                        for (let i = 0; i < rp2Floor.length; i++) {
+                            let item = {};
+                            if (rp2Floor[i].rp1floor == rp1Floor)
+                            {
+                                rp2FloorList.push(rp2Floor[i]);
+                            }
+                            else {rp2FloorList.push({ "rpamount": 0 })};
+                        };
+                        request.Floor = rp2FloorList[0].rpamount + 1;
+                        _this.rp2Request = request;
+                        console.log(_this.rp2Request);
+                    },
+                    rp2Insert: function () {
+                        var _this = this;
+                        _this.rp2Request['ForumReply2Content'] = _this.Reply2;
+                        _this.rp2Request['Img'] = null;
+                        let request = _this.rp2Request;
+                        console.log(request);
+                    //axios.post(`${webApiBaseAddress}/api/G_ForumReply2`, request).then(
+                    //        response => {
+                    //            setTimeout(function () {
+                    //                $('.Reply2_block').css('display', 'none');
+                    //            }, 500);
+                    //            _this.getReply2DTOs();
+                    //        }
+                    //    );
+                    },
+                }
             });
         </script>
 

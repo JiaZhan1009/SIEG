@@ -18,39 +18,44 @@
                                 <h4>貼文追蹤</h4>
                             </div>
                             <ul>
-                                <li class="noticecolor">
-                                    <div class="noticeDivimg">
-                                        <div class="news_collect">
-                                            <img src="/images/Benicon/Messi.jpg" class="a-1">
-                                            <div class="noticetext">
-                                                <p>卡達世界盃／梅西 Lionel Messi 阿根廷冠軍賽球衣瘋狂上漲，一件被炒賣至 400 美元！</p>
-                                                <p>
-                                                    Shuo Dec 22. 2022
-                                                </p>
+                                <template v-for ="item in FavoritePostsDTOes" v-if="item.faviriteNewID == null">
+                                    <li class="noticecolor" >
+                                        <div class="noticeDivimg">
+                                            <div class="news_collect">
+                                                <div class="news_collect-img">
+                                                    <img :src="item.img" class="a-1">
+                                                </div>
+                                                <div class="noticetext">
+                                                    <p>討論區</p>
+                                                    <p>{{item.title}}</p>
+                                                    <p>發布日期:{{item.newAddtime}}</p>
+                                                </div>
                                             </div>
+                                            <img src="/images/Benicon/trash.png" class="Productcollection">
                                         </div>
-                                        <img src="/images/Benicon/trash.png"  class="Productcollection">
-                                    </div>
-                                </li>
-                                <li class="noticecolor">
-                                    <div class="noticeDivimg">
-                                        <div class="news_collect">
-                                            <img src="/images/Benicon/Messi.jpg" class="a-1">
-                                            <div class="noticetext">
-                                                <p>卡達世界盃／梅西 Lionel Messi 阿根廷冠軍賽球衣瘋狂上漲，一件被炒賣至 400 美元！</p>
-                                                <p>
-                                                    Shuo Dec 22. 2022
-                                                </p>
+                                    </li>
+                                </template>
+                                <template v-else>
+                                    <li class="noticecolor">
+                                        <div class="noticeDivimg">
+                                            <div class="news_collect">
+                                                <div class="news_collect-img">
+                                                    <img :src="item.img" class="a-1">
+                                                </div>
+                                                <div class="noticetext">
+                                                    <p>新聞</p>
+                                                    <p>{{item.title}}</p>
+                                                    <p>發布日期:{{item.newAddtime}}</p>
+                                                </div>
                                             </div>
+                                            <img src="/images/Benicon/trash.png" class="Productcollection">
                                         </div>
-                                        <img src="/images/Benicon/trash.png" class="Productcollection">
-                                    </div>
-                                </li>
+                                    </li>
+                                </template>
                             </ul>
                         </div>
                     </div>
                 </div>
-
         </div>
     </div>
 </div>
@@ -67,22 +72,31 @@
             name: "appVue",
             data: {
                 mID: sessionStorage.getItem("mID"),
-                couponDTOes: {},
-                Filter: "",
-
+                FavoritePostsDTOes: {},
+                newAddtime: null,
             },
             mounted: function () {
                 let _this = this;
-                //_this.getcouponDTOes();
+                _this.getFavoritePostsDTOes();
             },
             methods: {
-                getcouponDTOes: function () {
+                getFavoritePostsDTOes: function () {
                     let _this = this;
-                    axios.get(`${webApiBaseAddress}/api/B_MemberCoupons/${_this.mID}`).then(
+                    axios.get(`${webApiBaseAddress}/api/B_FaviriteNews/${_this.mID}`).then(
                         response => {
-                            _this.couponDTOes = response.data;
+                            _this.FavoritePostsDTOes = response.data;
+                            var FavoritePostsList = [];
+                            for (var i = 0; i < _this.FavoritePostsDTOes.length; i++) {
+                                var item = {};
+                                item = _this.FavoritePostsDTOes[i];
+                                var str = item.addTime;
+                                item.newAddtime = str.split("T")[0];
+                                FavoritePostsList.push(item);
 
+                            }
+                            _this.FavoritePostsDTOes = FavoritePostsList;
                         }
+
                     );
                 },
             },

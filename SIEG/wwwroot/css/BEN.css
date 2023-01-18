@@ -247,8 +247,8 @@ hr {
 }
 
     .noticeDivimg img {
-        margin-left: 40px;
-        height: 56px;
+        /*margin-left: 40px;
+        height: 56px;*/
     }
 
 .noticecolor {
@@ -271,7 +271,7 @@ hr {
 
 
 .noticetext {
-    margin-left: 30px;
+    margin-left: 35px;
     flex: 1 0 0%;
 }
 
@@ -288,11 +288,15 @@ hr {
     display: flex;
     cursor: pointer;
     flex: 1 0 0%;
-    padding: 20px 0px;
+    padding: 15px 0px;
 }
     .news_collect:hover {
         background-color: #ededed;
     }
+
+.news_collect-img {
+    width:100px;
+}
 
 .settinp {
     display: flex;

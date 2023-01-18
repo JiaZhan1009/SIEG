@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Configuration;
 using SIEG_API.DTO;
 using SIEG_API.Models;
 
@@ -34,30 +35,44 @@ namespace SIEG_API.Controllers
         [HttpGet("{MemberId}")]
         public async Task<IEnumerable<B_FaviriteNewsDTO>> GetFaviriteNews(int MemberId)
         {
-            var FaviriteAritcleID= _context.FaviriteArticle.Where(FAD=>FAD.MemberId==MemberId).Select(FAID=> FAID.FaviriteAritcleId).ToArray();
-            var NewsID=_context.News
+            var FaviriteAritcleAll = await _context.FaviriteArticle
+                  .Where(f => f.MemberId == MemberId)
+                .Include(f => f.ForumArticle)
+                .Select(x => new B_FaviriteNewsDTO
+                {
+                    FaviriteArticleID = x.FaviriteAritcleId,
+                    ArticleID = x.ArticleId,
+                    MemberId = MemberId,
+                    Title = x.ForumArticle.Title,
+                    AddTime = x.ForumArticle.AddTime,
+                    Img = x.ForumArticle.Img
 
+                }).ToListAsync();
+            var FaviriteNewsAll2 = await _context.FaviriteNews
+                .Where(f => f.MemberId == MemberId)
+              .Include(f => f.News)
+              .Select(x => new B_FaviriteNewsDTO
+              {
+                  FaviriteNewID = x.FaviriteNewsId,
+                  NewID = x.NewsId,
+                  MemberId = MemberId,
+                  Title = x.News.Title,
+                  AddTime = x.News.AddTime,
+                  Img = x.News.Img,
+              }).ToListAsync(); ;
+            var PostFavorites = new List<B_FaviriteNewsDTO>() { };         
+            foreach (var item in FaviriteAritcleAll)
+            {
+                PostFavorites.Add(item);
+            }
 
+            foreach (var item in FaviriteNewsAll2)
+            {
+                PostFavorites.Add(item);
+            }
 
-            //var CouponId = _context.MemberCoupon.Where(cp => cp.MemberId == MemberId).Select(cpid => cpid.CouponId).ToArray();
-            //var Newcoupon = new List<B_MemberCouponsDTO>();
-            //foreach (var NewCouponId in CouponId)
-            //{
-            //    var CouponCount = _context.MemberCoupon.Where(cp => cp.MemberId == MemberId && cp.CouponId == NewCouponId).Select(cp2 => cp2.Count).First();
-            //    var CouponAll = _context.Coupon.Where(cp => cp.CouponId == NewCouponId).Select(newcp => new B_MemberCouponsDTO
-            //    {
-            //        MemberId = MemberId,
-            //        CouponName = newcp.Name,
-            //        CouponId = NewCouponId,
-            //        count = CouponCount,
-            //        SerialNumber = newcp.Sn,
-            //        DiscountPrice = newcp.DiscountPrice,
+            return PostFavorites.OrderByDescending(time => time.AddTime);
 
-
-            //    }).First();
-            //    Newcoupon.Add(CouponAll);
-            //}
-            //return Newcoupon;
         }
 
         // PUT: api/B_FaviriteNews/5

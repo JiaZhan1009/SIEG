@@ -16,6 +16,7 @@ namespace SIEG_API.Models
         public int ProductCategoryId { get; set; }
         public string CategoryName { get; set; }
         public string BrandName { get; set; }
+        public string ProductName { get; set; }
         public string Img { get; set; }
         public bool? ValIdity { get; set; }
 

@@ -18,7 +18,6 @@ namespace SIEG_API.Models
 
         public int ProductId { get; set; }
         public int ProductCategoryId { get; set; }
-        public string Name { get; set; }
         public DateTime AddTime { get; set; }
         public bool? ValIdity { get; set; }
         public int Price { get; set; }
@@ -28,6 +27,7 @@ namespace SIEG_API.Models
         public string ImgSide { get; set; }
         public int? ViewsCount { get; set; }
         public string Model { get; set; }
+        public string Note { get; set; }
 
         public virtual ProductCategory ProductCategory { get; set; }
         public virtual ICollection<BuyerBid> BuyerBid { get; set; }

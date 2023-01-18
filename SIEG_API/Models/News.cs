@@ -16,7 +16,7 @@ namespace SIEG_API.Models
         public string Img { get; set; }
         public string Title { get; set; }
         public string NewsContent { get; set; }
-        public DateTime ReleaseTime { get; set; }
+        public DateTime? ReleaseTime { get; set; }
         public bool? ValIdity { get; set; }
         public int NewsCategoryId { get; set; }
         public DateTime AddTime { get; set; }

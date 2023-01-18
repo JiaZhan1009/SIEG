@@ -8,7 +8,7 @@ namespace SIEG_API.Models
     public partial class ForumReply2
     {
         public int ForumReply2Id { get; set; }
-        public int ArticleId { get; set; }
+        public int ForumArticleId { get; set; }
         public int ForumReplyId { get; set; }
         public int MemberId { get; set; }
         public int ForumReplyFloor { get; set; }

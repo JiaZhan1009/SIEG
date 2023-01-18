@@ -208,7 +208,6 @@
                                 $(".no_data").hide();
                                 $("#pagination").show();
                             }
-                            console.log(_this.ProductListDTO)
                         }
                     );
                 },
@@ -239,6 +238,7 @@
                     console.log(_this.Filter);
 
                     if (_this.Filter == "" || _this.Filter == null) {
+                        //alert(_this.Filter);
                         _this.getProductListDTO();
                     }
                     else {

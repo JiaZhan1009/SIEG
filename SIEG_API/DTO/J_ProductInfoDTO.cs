@@ -8,5 +8,7 @@
         public string pSize { get; set; }
         public string pImg { get; set; }
         public string pBrand { get; set; }
+
+        public string pModel { get; set; }
     }
 }

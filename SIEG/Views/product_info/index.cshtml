@@ -1,4 +1,9 @@
-﻿@section Style{
+﻿@{
+    ViewData["Title"] = "產品介紹";
+    ViewData["EnTitle"] = "PRODUCT";
+}
+
+@section Style{
 
     <link href="/css/jiazhan/product_info.css" rel="stylesheet">
     <link href="/css/jiazhan/general.css" rel="stylesheet">
@@ -8,21 +13,39 @@
     </style>
 }
 
+
+
     <div id="appVue">
+    <!-- Page Banner -->
+    <div class="page_banner" style="background-image: url(/images/1920x350-1.jpg)">
+        <div class="container">
+            <div class="content">
+                <h1 class="page_title">@ViewData["EnTitle"]</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item"><a href="index.html">{{productInfo.pCategory}}</a></li>
+                        <li class="breadcrumb-item"><a href="index.html">{{productInfo.pBrand}}</a></li>
+                        <li class="breadcrumb-item active">{{productInfo.pName}}</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
         <div class="container">
 
-            <div class="pathGroup">
+   @*         <div class="pathGroup">
                 <a href="#"> Home /</a>
                 <a href="#"> {{productInfo.pCategory}} /</a>
                 <a href="#"> {{productInfo.pBrand}} /</a>
                 <a href="#"> {{productInfo.pName}} </a>
 
-            </div>
+            </div>*@
 
-            <div class="title">
+            @*<div class="title">
                 <h4 class="mainTitle">{{productInfo.pName}}</h4>
-                @*<h5 class="subTitle">White Black Panda (2021)</h5>*@
-            </div>
+                <h5 class="subTitle">White Black Panda (2021)</h5>
+            </div>*@
 
             <div class="productGroup">
                 <div class="row align-items-center">
@@ -38,6 +61,11 @@
                     @*RightProductInfo*@
                     <div class="col-xl-5 col-xs-5 col-12">
                         <div class="infoGroup ">
+
+                            <div class="title">
+                                <h4 class="mainTitle">{{productInfo.pName}}</h4>
+                                <h5 class="subTitle">White Black Panda (2021)</h5>
+                            </div>
 
                             <div class="stateGroup">
                                 <img src="/images/jiazhan/icon/SellingFastBadgeV3.gif">
@@ -546,7 +574,8 @@
             el: "#appVue",
             data: {
                 mID: sessionStorage.setItem("mID", 101),
-                pID: 102,
+                //pID: 102,
+                pID: sessionStorage.getItem("pID"),
                 productInfo: {},
                 quotePriceList: [],
                 bidPriceList: [],

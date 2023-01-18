@@ -644,8 +644,11 @@ p:last-child {
     font-weight: 300;
 }
 
+/*以 jiazhan*/ 
 .breadcrumb li.active {
     color: #fff;
+    border: unset;
+    background-color: unset;
 }
 
 .breadcrumb li a {

@@ -91,7 +91,7 @@ namespace SIEG_API.Controllers
             var productName = _context.Product.Where(p => p.ProductId == val.pID).ToList()[0].Name;
             var QuoteInfo = await _context.SellerAddProduct
                 .Include(s => s.Product)
-                .Where(s => s.ValIdity == true && s.Product.Name == productName) // 待補上 s.SaleDate == null && 
+                .Where(s => s.ValIdity == true && s.Product.Name == productName && s.SaleDate == null) // 待補上 s.SaleDate == null && 
                 .GroupBy(s => new { s.Product.Size, s.Price, s.Product.Name })
                 .Select(x => new J_PriceListDTO
                 {
@@ -110,7 +110,7 @@ namespace SIEG_API.Controllers
         {
             var productName = _context.Product.Where(p => p.ProductId == pID).ToList()[0].Name;
             var list = await _context.Order.Include(o => o.Product)
-                .Where(o => o.Product.Name == productName && o.State == "已完成")
+                .Where(o => o.Product.Name == productName && o.State == "已完成" && o.DoneTime != null)
                 .OrderByDescending(o => o.DoneTime)
                 .Select(x => new J_OrderListDTO
                 {

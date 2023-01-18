@@ -8,5 +8,8 @@
         public int? productlistPrice { get; set; }
         public string? productlistSort { get; set; }
         public string? productlistBrand { get; set; }
+        public int productlistViewcount { get; set; }
+        public int productlistSellCount { get; set; }
+
     }
 }

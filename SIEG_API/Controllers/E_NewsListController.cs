@@ -59,14 +59,18 @@ namespace SIEG_API.Controllers
         // PUT: api/E_NewsList/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutNews(int id, News news)
+        public async Task<IActionResult> PutNews(int id, E_NewsListDTO E_NewsViewDTO)
         {
-            if (id != news.NewsId)
+            if (id != E_NewsViewDTO.newslistId)
             {
                 return BadRequest();
             }
+            News NewsView = await _context.News.FindAsync(E_NewsViewDTO.newslistId);
 
-            _context.Entry(news).State = EntityState.Modified;
+            NewsView.ViewsCount = E_NewsViewDTO.newslistviewcount;
+
+
+            _context.Entry(NewsView).State = EntityState.Modified;
 
             try
             {

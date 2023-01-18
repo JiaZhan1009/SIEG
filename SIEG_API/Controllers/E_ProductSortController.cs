@@ -32,6 +32,7 @@ namespace SIEG_API.Controllers
                 .Where(ps => ps.ValIdity == true)
                 .Select(ps => new E_ProductSortDTO
                 {
+
                     productsortName = ps.CategoryName,
                 }).Distinct().ToListAsync();
         }

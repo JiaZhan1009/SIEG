@@ -18,10 +18,5 @@ namespace SIEG_API.Models
 
         public virtual Member Member { get; set; }
         public virtual Product Product { get; set; }
-
-        public static implicit operator SellerAddProduct(BuyerBid v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -38,6 +38,9 @@ namespace SIEG_API.Models
         public int SellerGrade { get; set; }
         public int? BankId { get; set; }
         public int? BankAccount { get; set; }
+        public int? CreditCard { get; set; }
+        public string CreditCardDate { get; set; }
+        public int? CreditCardCcv { get; set; }
 
         public virtual ICollection<BuyerBid> BuyerBid { get; set; }
         public virtual ICollection<ContactAddProduct> ContactAddProduct { get; set; }

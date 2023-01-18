@@ -8,7 +8,6 @@ namespace SIEG_API.Models
     public partial class FaviriteArticle
     {
         public int FaviriteAritcleId { get; set; }
-        public int ArticleId { get; set; }
         public int MemberId { get; set; }
         public bool? ValIdity { get; set; }
         public int ForumArticleId { get; set; }

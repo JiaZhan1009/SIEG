@@ -46,7 +46,7 @@
                                 </div>
                                 <ul class="sub_child">
                                     <li v-for="subitem in ProductBrandDTO.filter(x => x.productsortName == item.productsortName)">
-                                        <a @@click="filterProductBrand(subitem.productsortBrand, subitem.productsortName)">{{subitem.productsortBrand}}</a>
+                                        <a @@click="filterProductBrand(subitem.productsortBrandName, subitem.productsortName)">{{subitem.productsortBrand}}</a>
                                     </li>
                                 </ul>
                             </li>
@@ -161,7 +161,7 @@
                 productsortBrand: null,
                 indexPSortName: sessionStorage.getItem('indexPSortName'),
                 indexPBrand: sessionStorage.getItem('indexPBrand'),
-
+                
             },
             mounted: function () {
 
@@ -181,12 +181,29 @@
                 //_this.getProductListDTO();
                 _this.getProductSortDTO();
                 _this.getProductBrandDTO();
-                _this.filterProductListDTO();
-                _this.indexFilterBrand();
-                _this.headerFilterSort();
+
+                _this.sort();
+
+
             },
             methods: {
+                sort: function () {
+                    let _this = this;
+                    if (_this.Filter == null && _this.indexPSortName == null && _this.indexPBrand == null) {
+                        _this.getProductListDTO();
+                    } else if (_this.Filter == null && _this.indexPSortName != null && _this.indexPBrand != null) {
+                        _this.indexFilterBrand();
+                    } else if (_this.Filter == null && _this.indexPSortName != null && _this.indexPBrand == null) {
+                        _this.headerFilterSort();
+                    }else{
+                        _this.filterProductListDTO();
+                    }
+                    //_this.headerFilterSort();
+                    //_this.indexFilterBrand();
+                    //_this.filterProductListDTO();
+                },
                 getProductListDTO: function () {
+
                     let _this = this;
                     axios.get(`${webApiBaseAddress}/api/E_ProductList`).then(
                         response => {
@@ -199,6 +216,7 @@
                                 item.productPrice = "$" + item.productlistPrice.toLocaleString();
                             }
                             _this.ProductListDTO = ProductList;
+                            console.log(_this.ProductListDTO);
                             //console.log(ProductList.length);
                             if (ProductList.length == 0) {
                                 $(".no_data").show();
@@ -232,7 +250,8 @@
                 filterProductListDTO: function () {
                     let _this = this;
                     var request = {};
-                    
+
+
                     //sessionStorage.setItem("pKeyword", _this.Filter);
                     request.productlistName = _this.Filter;
                     console.log(_this.Filter);
@@ -255,7 +274,7 @@
 
                                 }
                                 _this.ProductListDTO = ProductList;
-
+                                console.log(_this.ProductListDTO);
                                 if (ProductList.length == 0) {
                                     $(".no_data").show();
                                     $("#pagination").hide();
@@ -266,7 +285,7 @@
                                 }
                             }
                         );
-                        //sessionStorage.removeItem('pKeyword');
+                        sessionStorage.removeItem('pKeyword');
                     }
                     //let request = {};
                     //let x = $('#productlistName').val();
@@ -306,6 +325,8 @@
                 filterProductSort: function (sort) {
                     let _this = this;
                     var request = {};
+
+
                     sessionStorage.setItem("pKeyword", sort);
                     request.productlistSort = sort;
                     //console.log(sort);
@@ -324,7 +345,7 @@
 
                             }
                             _this.ProductListDTO = ProductList;
-
+                            console.log(_this.ProductListDTO);
                             if (ProductList.length == 0) {
                                 $(".no_data").show();
                                 $("#pagination").hide();
@@ -340,8 +361,6 @@
                 filterProductBrand: function (brand, sortName) {
                     let _this = this;
                     var request = {};
-                    sessionStorage.setItem("pBrand", brand);
-                    sessionStorage.setItem("pSortName", sortName);
                     request.productlistBrand = brand;
                     request.productlistSort = sortName;
 
@@ -359,7 +378,9 @@
                                 item.productPrice = "$" + item.productlistPrice.toLocaleString();
 
                             }
+
                             _this.ProductListDTO = ProductList;
+                            console.log(_this.ProductListDTO);
 
                             if (ProductList.length == 0) {
                                 $(".no_data").show();
@@ -387,14 +408,12 @@
                                 let item = {};
                                 item = _this.ProductListDTO[i];
                                 ProductList.push(item);
-
                                 console.log(item);
-
                                 item.productPrice = "$" + item.productlistPrice.toLocaleString();
-
                             }
-                            _this.ProductListDTO = ProductList;
 
+                            _this.ProductListDTO = ProductList;
+                            console.log(_this.ProductListDTO);
                             if (ProductList.length == 0) {
                                 $(".no_data").show();
                                 $("#pagination").hide();
@@ -428,7 +447,7 @@
 
                             }
                             _this.ProductListDTO = ProductList;
-
+                            console.log(_this.ProductListDTO);
                             if (ProductList.length == 0) {
                                 $(".no_data").show();
                                 $("#pagination").hide();
@@ -460,6 +479,7 @@
                                     item.productPrice = "$" + item.productlistPrice.toLocaleString();
                                 }
                                 _this.ProductListDTO = ProductList;
+                                console.log(_this.ProductListDTO);
                                 //console.log(ProductList.length);
                                 if (ProductList.length == 0) {
                                     $(".no_data").show();
@@ -494,6 +514,7 @@
                                     item.productPrice = "$" + item.productlistPrice.toLocaleString();
                                 }
                                 _this.ProductListDTO = ProductList;
+                                console.log(_this.ProductListDTO);
                                 //console.log(ProductList.length);
                                 if (ProductList.length == 0) {
                                     $(".no_data").show();
@@ -528,6 +549,7 @@
                                     item.productPrice = "$" + item.productlistPrice.toLocaleString();
                                 }
                                 _this.ProductListDTO = ProductList;
+                                console.log(_this.ProductListDTO);
                                 //console.log(ProductList.length);
                                 if (ProductList.length == 0) {
                                     $(".no_data").show();
@@ -562,6 +584,7 @@
                                     item.productPrice = "$" + item.productlistPrice.toLocaleString();
                                 }
                                 _this.ProductListDTO = ProductList;
+                                console.log(_this.ProductListDTO);
                                 //console.log(ProductList.length);
                                 if (ProductList.length == 0) {
                                     $(".no_data").show();
@@ -596,6 +619,7 @@
                                     item.productPrice = "$" + item.productlistPrice.toLocaleString();
                                 }
                                 _this.ProductListDTO = ProductList;
+                                console.log(_this.ProductListDTO);
                                 //console.log(ProductList.length);
                                 if (ProductList.length == 0) {
                                     $(".no_data").show();

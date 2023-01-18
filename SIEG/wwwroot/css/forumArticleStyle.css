@@ -229,6 +229,18 @@
     display: none;
 }
 
+/*回文框2*/
+.Reply2_block {
+    text-align: left;
+    width: 62.1%;
+    height: 170px;
+    background-color: #ffffff;
+    position: fixed;
+    top: 11.8%;
+    border: 1px solid rgb(0, 0, 0);
+    display: none;
+}
+
 /*回文框文字輸入*/
 .describe {
     width: 100%;
@@ -327,7 +339,7 @@
         top: 2px;
     }
 
-/*刪除修改選單*/
+/*刪除、修改選單*/
 .list-container {
     position: relative;
 }

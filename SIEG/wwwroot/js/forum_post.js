@@ -44,21 +44,7 @@ $('document').ready(function () {
         $('.image-button').css('display', 'inline');
     });
 
-    //留言收折
-    //let old = document.getElementById('more').textContent;
-    //let more = document.getElementById('more');
-    //more.addEventListener('click', function handleClick() {
-    //    $(this).next(".showcontent").slideToggle();
-    //    if (more.textContent == '隱藏留言') {
-    //        more.textContent = old;
-    //    } else {
-    //        more.textContent = '隱藏留言';
-    //    }
-    //});
-
-
-
-    /*我要回復鈕*/
+    /*我要回覆鈕*/
     let reply = document.getElementById('Reply_btn');
     reply.addEventListener('click', function () {
         $(this).next(".Reply_block").slideToggle();
@@ -87,11 +73,6 @@ var bubblyButtons = document.getElementsByClassName("bubbly-button");
 for (var i = 0; i < bubblyButtons.length; i++) {
     bubblyButtons[i].addEventListener('click', animateButton, false);
 }
-
-/*刪除修改選單*/
-document.querySelector('.edit_button').addEventListener('click', function () {
-    document.querySelector('.list-container').classList.toggle('active');
-});
 
 
 

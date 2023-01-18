@@ -11,5 +11,6 @@
         public int? ProductId { get; set; }
         public int? FaviriteProductsId { get; set; }
         public string? Size { get; set; }
+        public string? Model { get; set; }
     }
 }

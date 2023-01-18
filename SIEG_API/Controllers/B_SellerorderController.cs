@@ -14,56 +14,57 @@ namespace SIEG_API.Controllers
     [EnableCors("AllowAny")]
     [Route("api/[controller]")]
     [ApiController]
-    public class B_BuyerOrdersController : ControllerBase
+    public class B_SellerorderController : ControllerBase
     {
         private readonly SIEGContext _context;
 
-        public B_BuyerOrdersController(SIEGContext context)
+        public B_SellerorderController(SIEGContext context)
         {
             _context = context;
         }
 
-        // GET: api/B_BuyerOrders
+        // GET: api/B_Sellerorder
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrder()
         {
             return await _context.Order.ToListAsync();
         }
 
-        // GET: api/B_BuyerOrders/5
-        [HttpGet("{id}")]
-        public async Task<IEnumerable<B_BuyerOrdersDTO>> GetOrder(int id)
+        // GET: api/B_Sellerorder/5
+        [HttpGet("{MemberId}")]
+        public async Task<IEnumerable<B_SellerorderDTO>> GetOrder(int MemberId)
         {
-            var productIDs = _context.Order.Where(pd => pd.BuyerId == id);
-            var Products = productIDs.OrderByDescending(time => time.DoneTime)
-                .Join(_context.Product, pd => pd.ProductId, pds => pds.ProductId, (pd, pds) => new B_BuyerOrdersDTO
+            var productIDs = _context.Order.Where(pd => pd.SellerId == MemberId);
+            var Products = productIDs.OrderByDescending(time => time.AddTime)
+                .Join(_context.Product, pd => pd.ProductId, pds => pds.ProductId, (pd, pds) => new B_SellerorderDTO
                 {
+                    ImgFront = pds.ImgFront,
                     ProductName = pds.Name,
-                    Image = pds.ImgFront,
-                    SizeId = pds.Size,
+                    OrderId = pd.OrderId,
                     Price = pd.Price,
+                    Size = pds.Size,
+                    State = pd.State,
                     CompleteTime = pd.AddTime,
                     ShippingAddress = pd.ShippingAddress,
-                    State = pd.State,
                     Receiver = pd.Receiver,
-                    OrderId = pd.OrderId,
-                    Model = pds.Model,
+                    Model=pds.Model,
 
                 });
             return Products;
         }
 
-        // PUT: api/B_BuyerOrders/5
+        // PUT: api/B_Sellerorder/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{Ordersid}")]
-        public async Task<string> PutOrder(int Ordersid, B_BuyerOrdersDTO BuyerOrders)
+        [HttpPut("{SellerAddProductid}")]
+        public async Task<string> PutOrder(int SellerAddProductid, B_SellerorderDTO order)
         {
-            if (Ordersid != BuyerOrders.OrderId)
+            if (SellerAddProductid != order.OrderId)
             {
                 return "不正確";
             }
-            Order Buyer = await _context.Order.FindAsync(BuyerOrders.OrderId);
-            Buyer.State= BuyerOrders.State;
+
+            Order Buyer = await _context.Order.FindAsync(order.OrderId);
+            Buyer.State = order.State;
             _context.Entry(Buyer).State = EntityState.Modified;
 
             try
@@ -72,9 +73,9 @@ namespace SIEG_API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!OrderExists(Ordersid))
+                if (!OrderExists(SellerAddProductid))
                 {
-                    return "找不到欲修改訂單";
+                    return "找不到欲修改紀錄";
                 }
                 else
                 {
@@ -85,45 +86,55 @@ namespace SIEG_API.Controllers
             return "修改成功";
         }
 
-        // POST: api/B_BuyerOrders
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost("FilterBuyerOrders/{BuyerId}")]
-        public async Task<IEnumerable<B_BuyerOrdersDTO>> FilterOrder([FromBody] B_BuyerOrdersDTO OrderDTO, int BuyerId)
+        [HttpPost("FilterBuyerOrders/{SellerId}")]
+        public async Task<IEnumerable<B_SellerorderDTO>> FilterOrder([FromBody] B_SellerorderDTO OrderDTO, int SellerId)
         {
             var Buyerordersearch = _context.Order.Where(
-                emp => emp.OrderId.ToString().Contains(OrderDTO.OrderId.ToString()) && emp.State == "已完成" && emp.BuyerId == BuyerId).Join(_context.Product, pd => pd.ProductId, pds => pds.ProductId, (pd, pds) => new B_BuyerOrdersDTO
+                emp => emp.OrderId.ToString().Contains(OrderDTO.OrderId.ToString()) && emp.State == "已完成" && emp.SellerId == SellerId).Join(_context.Product, pd => pd.ProductId, pds => pds.ProductId, (pd, pds) => new B_SellerorderDTO
 
                 {
                     ProductName = pds.Name,
-                    Image = pds.ImgFront,
-                    SizeId = pds.Size,
+                    ImgFront = pds.ImgFront,
+                    Size = pds.Size,
                     Price = pd.Price,
-                    CompleteTime = pd.DoneTime,
+                    CompleteTime = pd.AddTime,
                     ShippingAddress = pd.ShippingAddress,
                     State = pd.State,
                     Receiver = pd.Receiver,
                     OrderId = pd.OrderId,
+                    Model = pds.Model,
 
                 }).OrderByDescending(time => time.CompleteTime);
 
-   
+
             return Buyerordersearch;
         }
 
-        // DELETE: api/B_BuyerOrders/5
+        // POST: api/B_Sellerorder
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Order>> PostOrder(Order order)
+        {
+            _context.Order.Add(order);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetOrder", new { id = order.OrderId }, order);
+        }
+
+        // DELETE: api/B_Sellerorder/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteOrder(int id)
+        public async Task<string> DeleteOrder(int id)
         {
             var order = await _context.Order.FindAsync(id);
             if (order == null)
             {
-                return NotFound();
+                return "找不到欲刪除的記錄!";
             }
 
             _context.Order.Remove(order);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return "刪除成功!";
         }
 
         private bool OrderExists(int id)

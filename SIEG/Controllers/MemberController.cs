@@ -35,6 +35,16 @@ namespace SIEG.Controllers
         {
             return View();
         }
+        public IActionResult SellerAddProduct()
+        {
+            return View();
+        }
+
+        public IActionResult FavoritePosts()
+        {
+            return View();
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

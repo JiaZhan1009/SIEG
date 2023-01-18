@@ -1,7 +1,7 @@
 /* 成員框架 */
 .MemberFrame {
     /* width: 270px; */
-    background-color: #fafafa;
+   /* background-color: #fafafa;*/
     /* border: 3px solid #8E8E8E; */
     height: 1000px;
 }
@@ -16,7 +16,9 @@
     height: 60px;
     /* margin: 30px 0PX 15PX 20px; */
 }
-
+.sidebarcoler {
+    background-color: #fafafa;
+}
 /* 圖片 */
 .AccountIcon {
     width: 20PX;
@@ -234,33 +236,42 @@ hr {
     background-color: #006340;
     color: #fafafa;
 }
-
-
 .noticeDivimg {
     display: flex;
     align-items: center;
-    border-bottom: 1px solid #ededed;
-    padding: 20px 0px;
+    /* border-bottom: 1px solid #ededed; */
+    /* padding: 20px 0px; */
+    /* width: calc(100% - 50px); */
+    position: relative;
+    padding-right: 70px;
 }
 
     .noticeDivimg img {
-        margin-left: 40px;
-        height: 56px;
+        /*margin-left: 40px;
+        height: 56px;*/
     }
 
 .noticecolor {
     /* list-style-position: inside; */
-    list-style: none
+    list-style: none;
+    border-bottom: 1px solid #ededed;
 }
 
-    .noticecolor:hover {
+  /*  .noticecolor:hover {
         background-color: #ededed;
-    }
+    }*/
 
+.Productcollection {
+    height: 20px !important;
+    cursor: pointer;
+    position: absolute;
+    right: 15px;
+    margin: 0;
+}
 
 
 .noticetext {
-    margin-left: 30px;
+    margin-left: 35px;
     flex: 1 0 0%;
 }
 
@@ -277,10 +288,14 @@ hr {
     display: flex;
     cursor: pointer;
     flex: 1 0 0%;
+    padding: 15px 0px;
 }
+    .news_collect:hover {
+        background-color: #ededed;
+    }
 
-.settingbut {
-    display: flex;
+.news_collect-img {
+    width:100px;
 }
 
 .settinp {

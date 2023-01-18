@@ -1,0 +1,116 @@
+﻿@{
+    ViewData["Title"] = "coupon";
+    ViewData["enTitle"] = "Ben";
+}
+
+@section Style{
+    <link href="~/css/BEN.css" rel="stylesheet">
+}
+<div id="appVue">
+    <partial name="_MemberBanner" />
+    <div class="container-fluid">
+        <div class="row">
+            <partial name="_Membersidebar">
+                <div class="col-lg-7">
+                    <div class="orderTopWidth">
+                        <div class="row">
+                            <div>
+                                <h4>貼文追蹤</h4>
+                            </div>
+                            <ul>
+                                <template v-for ="item in FavoritePostsDTOes" v-if="item.faviriteNewID == null">
+                                    <li class="noticecolor" >
+                                        <div class="noticeDivimg">
+                                            <div class="news_collect">
+                                                <div class="news_collect-img">
+                                                    <img :src="item.img" class="a-1">
+                                                </div>
+                                                <div class="noticetext">
+                                                    <p>討論區</p>
+                                                    <p>{{item.title}}</p>
+                                                    <p>發布日期:{{item.newAddtime}}</p>
+                                                </div>
+                                            </div>
+                                            <img src="/images/Benicon/trash.png" class="Productcollection">
+                                        </div>
+                                    </li>
+                                </template>
+                                <template v-else>
+                                    <li class="noticecolor">
+                                        <div class="noticeDivimg">
+                                            <div class="news_collect">
+                                                <div class="news_collect-img">
+                                                    <img :src="item.img" class="a-1">
+                                                </div>
+                                                <div class="noticetext">
+                                                    <p>新聞</p>
+                                                    <p>{{item.title}}</p>
+                                                    <p>發布日期:{{item.newAddtime}}</p>
+                                                </div>
+                                            </div>
+                                            <img src="/images/Benicon/trash.png" class="Productcollection">
+                                        </div>
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.2/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+        var webApiBaseAddress = "https://localhost:7139";
+        var appVue = new Vue({
+            el: "#appVue",
+            name: "appVue",
+            data: {
+                mID: sessionStorage.getItem("mID"),
+                FavoritePostsDTOes: {},
+                newAddtime: null,
+            },
+            mounted: function () {
+                let _this = this;
+                _this.getFavoritePostsDTOes();
+            },
+            methods: {
+                getFavoritePostsDTOes: function () {
+                    let _this = this;
+                    axios.get(`${webApiBaseAddress}/api/B_FaviriteNews/${_this.mID}`).then(
+                        response => {
+                            _this.FavoritePostsDTOes = response.data;
+                            var FavoritePostsList = [];
+                            for (var i = 0; i < _this.FavoritePostsDTOes.length; i++) {
+                                var item = {};
+                                item = _this.FavoritePostsDTOes[i];
+                                var str = item.addTime;
+                                item.newAddtime = str.split("T")[0];
+                                FavoritePostsList.push(item);
+
+                            }
+                            _this.FavoritePostsDTOes = FavoritePostsList;
+                        }
+
+                    );
+                },
+            },
+        });
+
+    </script>
+    }
+
+
+
+
+
+
+
+
+
+

@@ -54,7 +54,8 @@ namespace SIEG_API.Controllers
                     Price = (int)buyerbid2,
                     lowPrice = (int)SellerlowPrice,
                     Size = y.Size,
-                    BidTime = Buyerdatetime
+                    BidTime = Buyerdatetime,
+                    Model=y.Model,
                 }).First();
                 ProductCollection.Add(Productname);
             }
@@ -72,8 +73,7 @@ namespace SIEG_API.Controllers
             }
             BuyerBid pricemodification = await _context.BuyerBid.FindAsync(BuyerBidid1.BuyerBidId);
             pricemodification.Price = BuyerBidid1.Price;
-            pricemodification.BidTime = (DateTime)BuyerBidid1.BidTime;
-
+            pricemodification.BidTime = DateTime.Now;
             _context.Entry(pricemodification).State = EntityState.Modified;
 
             try
@@ -123,7 +123,7 @@ namespace SIEG_API.Controllers
                 }
             }
 
-            return "修改成功2123123132";
+            return "修改成功";
         }
 
         // POST: api/B_BuyerBids

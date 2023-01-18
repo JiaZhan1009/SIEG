@@ -1,0 +1,371 @@
+﻿@{
+    ViewData["Title"] = "新聞內文";
+    ViewData["enTitle"] = "NewsInfo";
+}
+
+<!-- Page Banner -->
+<div id="newslistVue">
+    <div class="page_banner" style="background-image: url(images/1920x350-1.jpg)">
+        <div class="container">
+            <div class="content">
+                <h1 class="page_title">NEWS</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item"><a href="index.html">最新消息</a></li>
+                        <li class="breadcrumb-item"><a href="index.html">獨家情報</a></li>
+                        <li class="breadcrumb-item active">{{Title}}</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Content -->
+    <div class="index_space news_info_page">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-xl-3 order-lg-1 order-2 widget_area">
+                    <div class="sticky_sidebar" >
+                        <!-- 側欄搜尋 -->
+                        <div class="widget widget_search">
+                            <form class="search_form">
+                                <input type="text" placeholder="搜尋消息" id="newslistTitle newslistContent" v-model="Filter">
+                                <button type="button" @@click="filterNewsListDTO"><i class="bi bi-search"></i></button>
+                            </form>
+                        </div>
+                        <!-- 側欄分類 -->
+                        <div class="widget widget_categories">
+                            <div class="widget_title">消息<span>分類</span></div>
+                            <ul>
+                                <li class="active"><a href="news_list">所有消息</a></li>
+                                <li v-for="item in NewsSortDTO"><a @@click="filterNewsSort(item.newssortName)">{{item.newssortName}}</a></li>
+                            </ul>
+                        </div>
+                        <!-- 熱門消息 -->
+                        <div class="widget widget_hot_news">
+                            <div class="widget_title">熱門<span>消息</span></div>
+                            <div class="hot_news_item" v-for="item in NewsHotDTO">
+                                <a @@click="hrefToInfo(item.newslistId)" class="image_warp">
+                                    <img :src="item.newslistImg" alt="Img">
+                                </a>
+                                <div class="item_info">
+                                    <a @@click="hrefToInfo(item.newslistId)" class="title two-row">{{item.newslistTitle}}</a>
+                                    <div class="date">{{item.newslistdate}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8 col-xl-9 order-lg-2 order-1">
+                    <div class="news_info_content">
+                        <div class="news_info_title">{{Title}}</div>
+                        <div class="meta">
+                            <div class="date"><i class="far fa-calendar-alt"></i>{{年月日}}</div>
+                            <div class="sort"><a @@click="jump(CategoryName)"><i class="fa fa-bolt"></i>{{CategoryName}}</a></div>
+                        </div>
+                        <div class="img">
+                            <img :src="Img" alt="">
+                        </div>
+                        <div class="tx">
+                            <p>{{NewsContent}}。</p>
+                            <p>
+                                消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文。
+                            </p>
+                        </div>
+                        <div class="news_share">
+                            <div class="social">
+                                <span>分享文章至</span>
+                                <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                                <div class="addthis_inline_share_toolbox_qtfl"></div>
+
+                              @*   <a class="fb" href="#">
+                                <img src="images/icon-fb.png">
+                                </a>
+                                 <a class="facebook w-45 p-3 bd-r hov mb-3" target='_blank' rel="noreferrer noopener" href="https://www.facebook.com/sharer.php?u=@seohelp.WebAddress">
+                                <i class="fa-brands fa-square-facebook"></i>
+                                <span class='social_text'>Facebook</span>
+                                </a>
+                                    <a class="line" href="#">
+                                <img src="images/icon-line.png">
+                                </a>*@
+                            </div>
+                            <div class="link">
+                                <!-- 點擊後加active -->
+                                <a class="collect" @@click="insert"><i class="fa fa-bookmark" aria-hidden="true"></i>收藏</a>
+                                <!-- 點擊後加active -->
+                                <a class="like" href="#"><i class="fa fa-heart"></i>按讚</a>
+                                <a class="reply" href="#"><i class="fa fa-reply"></i>轉發至討論區</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="/js/moment-with-locales.js"></script>
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-63c643ccbd5b60b6"></script>
+
+    <script>
+        var webApiBaseAddress = "https://localhost:7139";
+        var appVue = new Vue({
+            el: "#newslistVue",
+            name: "newslistVue",
+            data: {
+                NewsHotDTO: [],
+                NewsSortDTO: [],
+                Filter: "",
+                newssortId: null,
+                newssortName: null,
+                //Dennis
+                D_NewsInfoDTO: [],
+                Filter: "",
+                NewsID: null,
+                Title: null,
+                Img: null,
+                NewsContent: null,
+                CategoryName: null,
+                AddTime: null,
+                年月日: null,
+            },
+            mounted: function () {
+                let _this = this;
+                _this.getNewsSortDTO();
+                _this.getNewsHotDTO();
+                 _this.getD_NewsInfoDTO();
+            },
+            methods: {
+                getNewsSortDTO: function () {
+                    let _this = this;
+                    axios.get(`${webApiBaseAddress}/api/E_NewsSort`).then(
+                        response => {
+                            _this.NewsSortDTO = response.data;
+                            console.log(_this.NewsSortDTO)
+                            var NewsSort = [];
+                            for (let i = 0; i < _this.NewsSortDTO.length; i++) {
+                                let item = {};
+                                item = _this.NewsSortDTO[i];
+                                NewsSort.push(item);
+                            }
+                            _this.NewsSortDTO = NewsSort;
+
+                        }
+                    );
+                },
+                getNewsHotDTO: function () {
+                    let _this = this;
+                    axios.get(`${webApiBaseAddress}/api/E_NewsHot`).then(
+                        response => {
+                            _this.NewsHotDTO = response.data;
+                            var NewsHot = [];
+                            for (let i = 0; i < _this.NewsHotDTO.length; i++) {
+                                let item = {};
+                                item = _this.NewsHotDTO[i];
+                                NewsHot.push(item);
+
+                                var str = item.newslistTime;
+                                item.newslistdate = str.split("T")[0];
+
+                            }
+                            _this.NewsHotDTO = NewsHot;
+                        }
+                    );
+                },
+                filterNewsListDTO: function () {
+                    let _this = this;
+                    var request = {};
+                    request.newslistTitle = _this.Filter;
+                    request.newslistContent = _this.Filter;
+
+                    axios.post(`${webApiBaseAddress}/api/E_NewsList/Filter`, request).then(
+                        response => {
+                            _this.NewsListDTO = response.data;
+                            var NewsList = [];
+                            for (let i = 0; i < _this.NewsListDTO.length; i++) {
+                                let item = {};
+                                item = _this.NewsListDTO[i];
+                                NewsList.push(item);
+
+                                var str = item.newslistTime;
+                                item.newslistdate = str.split("T")[0];
+
+                            }
+                            _this.NewsListDTO = NewsList;
+                            console.log(NewsList.length);
+                            if (NewsList.length == 0) {
+                                $(".no_data").show();
+                                $("#pagination").hide();
+                            }
+                            else {
+                                $(".no_data").hide();
+                                $("#pagination").show();
+                            }
+                        }
+                    );
+                },
+                filterNewsSort: function (sort) {
+                    let _this = this;
+                    var request = {};
+                    request.newslistSort = sort;
+                    //console.log(sort);
+
+                    axios.post(`${webApiBaseAddress}/api/E_NewsList/FilterSort`, request).then(
+                        response => {
+                            _this.NewsListDTO = response.data;
+                            //console.log(response.data);
+                            var NewsList = [];
+                            for (let i = 0; i < _this.NewsListDTO.length; i++) {
+                                let item = {};
+                                item = _this.NewsListDTO[i];
+                                NewsList.push(item);
+
+                                var str = item.newslistTime;
+                                item.newslistdate = str.split("T")[0];
+
+                            }
+                            _this.NewsListDTO = NewsList;
+                            if (NewsList.length == 0) {
+                                $(".no_data").show();
+                                $("#pagination").hide();
+                            }
+                            else {
+                                $(".no_data").hide();
+                                $("#pagination").show();
+                            }
+                        }
+                    );
+                },
+                hrefToInfo: function (newsId) {
+                    sessionStorage.setItem("nID", newsId);
+                    console.log(newsId);
+                    window.location = "/news_info";
+                },
+                // ----------------Dennis----------------
+                getD_NewsInfoDTO: function () {
+                    var nID = sessionStorage.getItem("nID")
+                    let _this = this;
+                    axios.get(`${webApiBaseAddress}/api/D_NewsInfo/${nID}`).then(
+                        response => {
+                            console.log(response.data)
+                            _this.D_NewsInfoDTO = response.data;
+                            _this.Title = _this.D_NewsInfoDTO[0].title;
+                            _this.Img = _this.D_NewsInfoDTO[0].img;
+                            _this.NewsContent = _this.D_NewsInfoDTO[0].newsContent;
+                            _this.CategoryName = _this.D_NewsInfoDTO[0].categoryName;
+                            _this.AddTime = _this.D_NewsInfoDTO[0].addTime
+                            _this.年月日 = moment(_this.AddTime).subtract(10, 'days').calendar();
+                        }
+                    );
+                },
+                jump: function (sortName) {
+                    var nID = sessionStorage.getItem("nID")
+                    sessionStorage.setItem("indexNSortName", sortName);
+                    window.location = "/news_list";
+                },
+                
+                insert: function () {
+                    alert("eee")
+                    var _this = this;
+                    var request = {};
+                    var mID = sessionStorage.getItem("mID")
+                    var nID = sessionStorage.getItem("nID")
+                    request.FaviriteNewsId = 0;
+                    request.NewsId = nID;
+                    request.MemberId = mID;
+                    console.log("我是nID" + nID)
+                    console.log("我是mID" + mID)
+                    axios.post(`${webApiBaseAddress}/api/D_NewsInfo`, request).then(
+                        response => {
+                            console.log(response.data)
+                            if (response.data == "失敗") {
+                                alert("重複");
+
+                            } else {
+                                alert("成功")
+                            }
+                            //window.location = "/Home"
+                        }
+                    );
+                },
+            },
+        });
+
+        //var SignVue = new Vue
+        //    ({
+
+        //        el: "#NewsInfo",
+        //        name: "NewsInfo",
+        //        data: {
+        //            //mID=sessionStorage.setItem("mID",101)
+        //            //mIDD = sessionStorage.getItem("mID")
+        //            D_NewsInfoDTO: [],
+        //            Filter: "",
+        //            NewsID: null,
+        //            Title: null,
+        //            Img: null,
+        //            NewsContent: null,
+        //            CategoryName: null,
+        //            AddTime: null,
+        //            年月日: null,
+        //        },
+        //        mounted: function () {
+        //            console.log("mounted")
+        //            let _this = this;
+        //            _this.getD_NewsInfoDTO();
+        //        },
+        //        methods: {
+        //            getD_NewsInfoDTO: function () {
+        //                var nID = sessionStorage.getItem("nID")
+        //                let _this = this;
+        //                axios.get(`${webApiBaseAddress}/api/D_NewsInfo/${nID}`).then(
+        //                    response => {
+        //                        console.log(response.data)
+        //                        _this.D_NewsInfoDTO = response.data;
+        //                        _this.Title = _this.D_NewsInfoDTO[0].title;
+        //                        _this.Img = _this.D_NewsInfoDTO[0].img;
+        //                        _this.NewsContent = _this.D_NewsInfoDTO[0].newsContent;
+        //                        _this.CategoryName = _this.D_NewsInfoDTO[0].categoryName;
+        //                        _this.AddTime = _this.D_NewsInfoDTO[0].addTime
+        //                        _this.年月日 = moment(_this.AddTime).subtract(10, 'days').calendar();
+        //                    }
+        //                );
+        //            },
+        //            jump: function (sortName) {
+        //                var nID = sessionStorage.getItem("nID")
+        //                sessionStorage.setItem("indexNSortName", sortName);
+        //                window.location = "/news_list";
+        //            },
+        //            insert: function () {
+        //                alert("eee")
+        //                var _this = this;
+        //                var request = {};
+        //                var mID = sessionStorage.getItem("mID")
+        //                var nID = sessionStorage.getItem("nID")
+        //                request.FaviriteNewsId = 0;
+        //                request.NewsId = nID;
+        //                request.MemberId = mID;
+        //                console.log("我是nID"+nID)
+        //                console.log("我是mID" + mID)
+        //                axios.post(`${webApiBaseAddress}/api/D_NewsInfo`, request).then(
+        //                    response => {
+        //                        console.log(response.data)
+        //                        if (response.data == "失敗") {
+        //                            alert("重複");
+
+        //                        } else {
+        //                            alert("成功")
+        //                        }
+        //                        //window.location = "/Home"
+        //                    }
+        //                );
+        //            },
+        //        },
+        //    });
+    </script>
+}

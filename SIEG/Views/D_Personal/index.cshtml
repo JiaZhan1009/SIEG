@@ -42,29 +42,26 @@
                             <i class="far fa-eye" id="togglePassword" style="cursor: pointer;"></i>
                         </div>
                         <p class="password-text">至少 8 個字元、1 個大寫字母、1 個數字和 1 個符號</p>
-                        <form>
                             <div class="mb-sm-3 mb-3">
                                 <input type="email" inputmode="email" class="form-control" id="SignEmail" placeholder="電子信箱*" required>
                             </div>
                             <div class="col-12 d-grid text-center">
-                                <button type="submit" class="btn btn-dark" required="required" id="Signbtn" @@click="insert">確認註冊</button>
+                                <button type="button" class="btn btn-dark" required="required" id="Signbtn" @@click="insert">確認註冊</button>
                             </div>
-                        </form>
                         <div class="center-text">
                             <p>--------或---------</p>
                         </div>
-                        <button type="submit" class="btn btn-light col-12 m-sm-1 d-grid text-center">
+                       @* <button type="submit" class="btn btn-light col-12 m-sm-1 d-grid text-center">
                             <span></span>
                             Google
                         </button>
                         <button type="submit" class="btn btn-light col-12 m-sm-1 d-grid text-center">
                             <span></span>
                             FB
-                        </button>
+                        </button>*@
 
                         <div class="card-footer">註冊即表示你同意<a href="#">服務條款</a>和<a href="#">隱私政策</a></div>
                     </div>
-
                     <div class="tab-pane fade" id="register" role="tabpanel">
                         <div class="mb-sm-3 mb-3">
                             <input type="email" inputmode="email" class="form-control" id="loginEmail" placeholder="電子信箱*" required>

@@ -41,7 +41,7 @@ namespace SIEG_API.Controllers
                 .Select(x => new B_FaviriteNewsDTO
                 {
                     FaviriteArticleID = x.FaviriteAritcleId,
-                    ArticleID = x.ArticleId,
+                    ArticleID = x.ForumArticleId,
                     MemberId = MemberId,
                     Title = x.ForumArticle.Title,
                     AddTime = x.ForumArticle.AddTime,

@@ -34,7 +34,7 @@ namespace SIEG_API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<IEnumerable<ForumReply2>>> GetForumReply2(int id)
         {
-            return await _context.ForumReply2.Where(c => c.ArticleId == id).ToListAsync();
+            return await _context.ForumReply2.Where(c => c.ForumArticleId == id).ToListAsync();
 
         }
 
@@ -82,7 +82,7 @@ namespace SIEG_API.Controllers
         {
             ForumReply2 pos = new ForumReply2
             {
-                ArticleId = forumReply2.ArticleId,
+                ForumArticleId = forumReply2.ArticleId,
                 ForumReplyId = forumReply2.ForumReplyId,
                 MemberId = forumReply2.MemberId,
                 ForumReplyFloor = forumReply2.ForumReplyFloor,

@@ -49,7 +49,7 @@ namespace SIEG_API.Controllers
                     BuyerBidId = bId,
                     MemberId = BuyerBidmID,
                     ProductId = ProductId,
-                    ProductName = y.Name,
+                    ProductName = y.ProductCategory.ProductName,
                     ImgFront = y.ImgFront,
                     Price = (int)buyerbid2,
                     lowPrice = (int)SellerlowPrice,

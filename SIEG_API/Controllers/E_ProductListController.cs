@@ -31,11 +31,11 @@ namespace SIEG_API.Controllers
 
                 var ProductList = await _context.Product.Include(o => o.ProductCategory)
                 .Where(x => x.ValIdity == true)
-                .GroupBy(x => new { x.Name, x.ImgFront })
+                .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
                 .Select(g => new E_ProductListDTO
                 {
                     productlistSellCount = g.Count(),
-                    productlistName = g.Key.Name,
+                    productlistName = g.Key.ProductName,
                     productlistImg = g.Key.ImgFront,
                     productlistPrice = g.Min(x => x.Price),
                 }).ToListAsync();
@@ -52,11 +52,11 @@ namespace SIEG_API.Controllers
         {
             var ProductList = await _context.Product.Include(o => o.ProductCategory)
                 .Where(x => x.ValIdity == true && x.Price <= 500)
-                .GroupBy(x => new { x.Name, x.ImgFront })
+                .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
                 .Select(g => new E_ProductListDTO
                 {
                     productlistSellCount = g.Count(),
-                    productlistName = g.Key.Name,
+                    productlistName = g.Key.ProductName,
                     productlistImg = g.Key.ImgFront,
                     productlistPrice = g.Min(x => x.Price),
                 }).ToListAsync();
@@ -70,11 +70,11 @@ namespace SIEG_API.Controllers
         {
             var ProductList = await _context.Product.Include(o => o.ProductCategory)
                 .Where(x => x.ValIdity == true && x.Price <= 1000 && x.Price >= 500)
-                .GroupBy(x => new { x.Name, x.ImgFront })
+                .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
                 .Select(g => new E_ProductListDTO
                 {
                     productlistSellCount = g.Count(),
-                    productlistName = g.Key.Name,
+                    productlistName = g.Key.ProductName,
                     productlistImg = g.Key.ImgFront,
                     productlistPrice = g.Min(x => x.Price),
                 }).ToListAsync();
@@ -88,11 +88,11 @@ namespace SIEG_API.Controllers
         {
             var ProductList = await _context.Product.Include(o => o.ProductCategory)
                 .Where(x => x.ValIdity == true && x.Price <= 1500 && x.Price >= 1000)
-                .GroupBy(x => new { x.Name, x.ImgFront })
+                .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
                 .Select(g => new E_ProductListDTO
                 {
                     productlistSellCount = g.Count(),
-                    productlistName = g.Key.Name,
+                    productlistName = g.Key.ProductName,
                     productlistImg = g.Key.ImgFront,
                     productlistPrice = g.Min(x => x.Price),
                 }).ToListAsync();
@@ -106,11 +106,11 @@ namespace SIEG_API.Controllers
         {
             var ProductList = await _context.Product.Include(o => o.ProductCategory)
                 .Where(x => x.ValIdity == true && x.Price <= 2000 && x.Price >= 1500)
-                .GroupBy(x => new { x.Name, x.ImgFront })
+                .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
                 .Select(g => new E_ProductListDTO
                 {
                     productlistSellCount = g.Count(),
-                    productlistName = g.Key.Name,
+                    productlistName = g.Key.ProductName,
                     productlistImg = g.Key.ImgFront,
                     productlistPrice = g.Min(x => x.Price),
                 }).ToListAsync();
@@ -124,11 +124,11 @@ namespace SIEG_API.Controllers
         {
             var ProductList = await _context.Product.Include(o => o.ProductCategory)
                 .Where(x => x.ValIdity == true && x.Price >= 2000)
-                .GroupBy(x => new { x.Name, x.ImgFront })
+                .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
                 .Select(g => new E_ProductListDTO
                 {
                     productlistSellCount = g.Count(),
-                    productlistName = g.Key.Name,
+                    productlistName = g.Key.ProductName,
                     productlistImg = g.Key.ImgFront,
                     productlistPrice = g.Min(x => x.Price),
                 }).ToListAsync();
@@ -143,12 +143,12 @@ namespace SIEG_API.Controllers
 
             var ProductList = await _context.Order.Include(o => o.Product).Include(o => o.Product.SellerAddProduct).Include(o => o.Product.ProductCategory)
             .Where(x => x.Product.ValIdity == true && x.State == "已完成" )
-            .GroupBy(x => new { x.Product.Name, x.Product.ImgFront })
+            .GroupBy(x => new { x.Product.ProductCategory.ProductName, x.Product.ImgFront })
             .OrderByDescending(x => x.Count()).Take(8)
             .Select(g => new E_ProductListDTO
             {
                 productlistSellCount = g.Count(),
-                productlistName = g.Key.Name,
+                productlistName = g.Key.ProductName,
                 productlistImg = g.Key.ImgFront,
                 productlistPrice = g.Min(x => x.Price),
             }).ToListAsync();
@@ -236,12 +236,12 @@ namespace SIEG_API.Controllers
         public async Task<IEnumerable<E_ProductListDTO>> FilterProduct([FromBody] E_ProductListDTO product)
         {
             var ProductList = await _context.Product.Include(o => o.ProductCategory)
-                .Where(x => x.ValIdity == true && x.Name.Contains(product.productlistName))
-                .GroupBy(x => new { x.Name, x.ImgFront })
+                .Where(x => x.ValIdity == true && x.ProductCategory.ProductName.Contains(product.productlistName))
+                .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
                 .Select(g => new E_ProductListDTO
                 {
                     productlistSellCount = g.Count(),
-                    productlistName = g.Key.Name,
+                    productlistName = g.Key.ProductName,
                     productlistImg = g.Key.ImgFront,
                     productlistPrice = g.Min(x => x.Price),
                 }).ToListAsync();
@@ -256,11 +256,11 @@ namespace SIEG_API.Controllers
 
             var ProductList = await _context.Product.Include(o => o.ProductCategory)
                 .Where(x => x.ValIdity == true && x.ProductCategory.CategoryName.Contains(product.productlistSort))
-                .GroupBy(x => new { x.Name, x.ImgFront })
+                .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
                 .Select(g => new E_ProductListDTO
                 {
                     productlistSellCount = g.Count(),
-                    productlistName = g.Key.Name,
+                    productlistName = g.Key.ProductName,
                     productlistImg = g.Key.ImgFront,
                     productlistPrice = g.Min(x => x.Price),
                 }).ToListAsync();
@@ -275,11 +275,11 @@ namespace SIEG_API.Controllers
         {
             var ProductList = await _context.Product.Include(o => o.ProductCategory)
                 .Where(x => x.ValIdity == true && x.ProductCategory.CategoryName.Contains(product.productlistSort) && x.ProductCategory.BrandName.Contains(product.productlistBrand))
-                .GroupBy(x => new { x.Name, x.ImgFront })
+                .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
                 .Select(g => new E_ProductListDTO
                 {
                     productlistSellCount = g.Count(),
-                    productlistName = g.Key.Name,
+                    productlistName = g.Key.ProductName,
                     productlistImg = g.Key.ImgFront,
                     productlistPrice = g.Min(x => x.Price),
                 }).ToListAsync();

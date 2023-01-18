@@ -39,7 +39,7 @@ namespace SIEG_API.Controllers
                 .Join(_context.Product, pd => pd.ProductId, pds => pds.ProductId, (pd, pds) => new B_SellerorderDTO
                 {
                     ImgFront = pds.ImgFront,
-                    ProductName = pds.Name,
+                    ProductName = pds.ProductCategory.ProductName,
                     OrderId = pd.OrderId,
                     Price = pd.Price,
                     Size = pds.Size,
@@ -93,7 +93,7 @@ namespace SIEG_API.Controllers
                 emp => emp.OrderId.ToString().Contains(OrderDTO.OrderId.ToString()) && emp.State == "已完成" && emp.SellerId == SellerId).Join(_context.Product, pd => pd.ProductId, pds => pds.ProductId, (pd, pds) => new B_SellerorderDTO
 
                 {
-                    ProductName = pds.Name,
+                    ProductName = pds.ProductCategory.ProductName,
                     ImgFront = pds.ImgFront,
                     Size = pds.Size,
                     Price = pd.Price,

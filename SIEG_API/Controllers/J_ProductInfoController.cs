@@ -36,7 +36,7 @@ namespace SIEG_API.Controllers
             {
                 pID = list.ProductId,
                 pCategory = list.ProductCategory.CategoryName,
-                pName = list.Name,
+                pName = list.ProductCategory.ProductName,
                 pImg = list.ImgFront,
                 pBrand = list.ProductCategory.BrandName,
                 pSize = list.Size,
@@ -68,11 +68,11 @@ namespace SIEG_API.Controllers
         [HttpGet("BidPriceList/{pID}")]
         public async Task<IEnumerable<J_PriceListDTO>> getBidPrice([FromRoute] PriceParameter val)
         {
-            var productName = _context.Product.Where(p => p.ProductId == val.pID).ToList()[0].Name;
+            var productName = _context.Product.Where(p => p.ProductId == val.pID).ToList()[0].ProductCategory.ProductName;
             var BidInfo = await _context.BuyerBid
                 .Include(b => b.Product)
-                .Where(b => b.ValIdity == true && b.Product.Name == productName)
-                .GroupBy(b => new { b.Product.Size, b.Price, b.Product.Name })
+                .Where(b => b.ValIdity == true && b.Product.ProductCategory.ProductName == productName)
+                .GroupBy(b => new { b.Product.Size, b.Price, b.Product.ProductCategory.ProductName })
                 .Select(x => new J_PriceListDTO
                 {
                     pID = val.pID,
@@ -88,11 +88,11 @@ namespace SIEG_API.Controllers
         [HttpGet("QuotePriceList/{pID}")]
         public async Task<IEnumerable<J_PriceListDTO>> getQuotePrice([FromRoute] PriceParameter val)
         {
-            var productName = _context.Product.Where(p => p.ProductId == val.pID).ToList()[0].Name;
+            var productName = _context.Product.Where(p => p.ProductId == val.pID).ToList()[0].ProductCategory.ProductName;
             var QuoteInfo = await _context.SellerAddProduct
                 .Include(s => s.Product)
-                .Where(s => s.ValIdity == true && s.Product.Name == productName && s.SaleDate == null) // 待補上 s.SaleDate == null && 
-                .GroupBy(s => new { s.Product.Size, s.Price, s.Product.Name })
+                .Where(s => s.ValIdity == true && s.Product.ProductCategory.ProductName == productName && s.SaleDate == null) // 待補上 s.SaleDate == null && 
+                .GroupBy(s => new { s.Product.Size, s.Price, s.Product.ProductCategory.ProductName })
                 .Select(x => new J_PriceListDTO
                 {
                     pID = val.pID,
@@ -108,9 +108,9 @@ namespace SIEG_API.Controllers
         [HttpGet("GetOrderList/{pID}")]
         public async Task<IEnumerable<J_OrderListDTO>> GetOrderList(int pID)
         {
-            var productName = _context.Product.Where(p => p.ProductId == pID).ToList()[0].Name;
+            var productName = _context.Product.Where(p => p.ProductId == pID).ToList()[0].ProductCategory.ProductName;
             var list = await _context.Order.Include(o => o.Product)
-                .Where(o => o.Product.Name == productName && o.State == "已完成" && o.DoneTime != null)
+                .Where(o => o.Product.ProductCategory.ProductName == productName && o.State == "已完成" && o.DoneTime != null)
                 .OrderByDescending(o => o.DoneTime)
                 .Select(x => new J_OrderListDTO
                 {

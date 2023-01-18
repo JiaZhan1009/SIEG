@@ -47,7 +47,7 @@ namespace SIEG_API.Controllers
                 var finalprice = await _context.Order.Where(pc => pc.ProductId == ProductsId).OrderBy(x => x.Price).Select(x => x.Price).LastOrDefaultAsync();
                 var ProductDTO = _context.Product.Where(x => x.ProductId == ProductsId).Select(y => new B_FaviriteProductsDTO
                 {
-                    ProductName = y.Name,
+                    ProductName = y.ProductCategory.ProductName,
                     ImageFront = y.ImgFront,
                     avecommodityprice = (int?)averageprice,
                     lowprice = lowprice,

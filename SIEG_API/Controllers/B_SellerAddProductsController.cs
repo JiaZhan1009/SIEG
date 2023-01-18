@@ -50,7 +50,7 @@ namespace SIEG_API.Controllers
                     SellerAddProductID = SellerAddId,
                     MemberId = MemberId,
                     ProductId = ProductId,
-                    ProductName = y.Name,
+                    ProductName = y.ProductCategory.ProductName,
                     ImgFront = y.ImgFront,
                     Price = (int)sellPrice,
                     lowPrice = BuylowPrice,

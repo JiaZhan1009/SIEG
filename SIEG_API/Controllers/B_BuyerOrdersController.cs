@@ -36,18 +36,20 @@ namespace SIEG_API.Controllers
         {
             var productIDs = _context.Order.Where(pd => pd.BuyerId == id);
             var Products = productIDs.OrderByDescending(time => time.DoneTime)
-                .Join(_context.Product, pd => pd.ProductId, pds => pds.ProductId, (pd, pds) => new B_BuyerOrdersDTO
+                .Join(_context.Product, pd => pd.ProductId, pds => pds.ProductId, (pd, pds) => new {pd, pds})
+                .Join(_context.ProductCategory, x => x.pds.ProductCategoryId, pc => pc.ProductCategoryId, (x, pc) => 
+                new B_BuyerOrdersDTO
                 {
-                    ProductName = pds.Name,
-                    Image = pds.ImgFront,
-                    SizeId = pds.Size,
-                    Price = pd.Price,
-                    CompleteTime = pd.AddTime,
-                    ShippingAddress = pd.ShippingAddress,
-                    State = pd.State,
-                    Receiver = pd.Receiver,
-                    OrderId = pd.OrderId,
-                    Model = pds.Model,
+                    ProductName = pc.ProductName,
+                    Image = x.pds.ImgFront,
+                    SizeId = x.pds.Size,
+                    Price = x.pd.Price,
+                    CompleteTime = x.pd.AddTime,
+                    ShippingAddress = x.pd.ShippingAddress,
+                    State = x.pd.State,
+                    Receiver = x.pd.Receiver,
+                    OrderId = x.pd.OrderId,
+                    Model = x.pds.Model,
 
                 });
             return Products;
@@ -94,7 +96,7 @@ namespace SIEG_API.Controllers
                 emp => emp.OrderId.ToString().Contains(OrderDTO.OrderId.ToString()) && emp.State == "已完成" && emp.BuyerId == BuyerId).Join(_context.Product, pd => pd.ProductId, pds => pds.ProductId, (pd, pds) => new B_BuyerOrdersDTO
 
                 {
-                    ProductName = pds.Name,
+                    ProductName = pds.ProductCategory.ProductName,
                     Image = pds.ImgFront,
                     SizeId = pds.Size,
                     Price = pd.Price,

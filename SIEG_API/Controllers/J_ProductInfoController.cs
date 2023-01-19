@@ -43,8 +43,8 @@ namespace SIEG_API.Controllers
             };
         }
 
-        [HttpGet("GetSizeAndPriceList")]
-        public async Task<List<J_PriceListDTO>> GetSizeAndPriceList()
+        [HttpGet("GetSizeAndQuote")]
+        public async Task<List<J_PriceListDTO>> GetSizeAndQuote()
         {
             var sizeAndPrice = await _context.Product
             .Join(_context.SellerAddProduct, product => product.ProductId, s => s.ProductId,
@@ -57,6 +57,24 @@ namespace SIEG_API.Controllers
             {
                 pID = p.Product.ProductId,
                 pPrice = p.seller.Price,
+                pSize = p.Product.Size
+            }).ToList();
+            return priceList;
+        }
+        [HttpGet("GetSizeAndBid")]
+        public async Task<List<J_PriceListDTO>> GetSizeAndBid()
+        {
+            var sizeAndPrice = await _context.Product
+            .Join(_context.BuyerBid, product => product.ProductId, b => b.ProductId,
+            (p, b) => new { Product = p, Buyer = b })
+            .GroupBy(p => p.Product.Size)
+            .Select(g => g.OrderBy(g => g.Buyer.Price)
+            .First()).ToListAsync();
+
+            List<J_PriceListDTO> priceList = sizeAndPrice.Select(p => new J_PriceListDTO
+            {
+                pID = p.Product.ProductId,
+                pPrice = p.Buyer.Price,
                 pSize = p.Product.Size
             }).ToList();
             return priceList;

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using SIEG_API.DTO;
 using SIEG_API.Models;
@@ -28,6 +29,7 @@ namespace SIEG_API.Controllers
         public async Task<IEnumerable<E_ProductListDTO>> GetProduct()
         {
             //var ProductList = await _context.Order.Include(o => o.Product).Include(o => o.Product.SellerAddProduct).Include(o => o.Product.ProductCategory)
+            var pIDs = await _context.Product.Select(x => new {x.ProductId, x.ProductCategory.ProductName}).ToListAsync();
 
                 var ProductList = await _context.Product.Include(o => o.ProductCategory)
                 .Where(x => x.ValIdity == true)
@@ -39,6 +41,17 @@ namespace SIEG_API.Controllers
                     productlistImg = g.Key.ImgFront,
                     productlistPrice = g.Min(x => x.Price),
                 }).ToListAsync();
+
+            foreach (var list in ProductList)
+            {
+                foreach (var pID in pIDs)
+                {
+                    if (list.productlistName == pID.ProductName)
+                    {
+                        list.productlistId = pID.ProductId;
+                    }
+                }
+            }
             //if (!string.IsNullOrEmpty(name)) 
             //{
             //    ProductList = ProductList.Where(x => x.productlistName.Contains(name)).ToList();

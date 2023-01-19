@@ -16,37 +16,33 @@
 
 
     <div id="appVue">
-    <!-- Page Banner -->
-    <div class="page_banner" style="background-image: url(/images/1920x350-1.jpg)">
-        <div class="container">
-            <div class="content">
-                <h1 class="page_title">@ViewData["EnTitle"]</h1>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                        <li class="breadcrumb-item"><a href="index.html">{{productInfo.pCategory}}</a></li>
-                        <li class="breadcrumb-item"><a href="index.html">{{productInfo.pBrand}}</a></li>
-                        <li class="breadcrumb-item active">{{productInfo.pName}}</li>
-                    </ol>
-                </nav>
+        <!-- Page Banner -->
+        <div class="page_banner" style="background-image: url(/images/1920x350-1.jpg)">
+            <div class="container">
+                <div class="content">
+                    <h1 class="page_title">@ViewData["EnTitle"]</h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="breadcrumb-item"><a href="index.html">{{productInfo.pCategory}}</a></li>
+                            <li class="breadcrumb-item"><a href="index.html">{{productInfo.pBrand}}</a></li>
+                            <li class="breadcrumb-item active">{{productInfo.pName}}</li>
+                        </ol>
+                    </nav>
+                </div>
             </div>
         </div>
-    </div>
         <div class="container">
-
-   @*         <div class="pathGroup">
-                <a href="#"> Home /</a>
-                <a href="#"> {{productInfo.pCategory}} /</a>
-                <a href="#"> {{productInfo.pBrand}} /</a>
-                <a href="#"> {{productInfo.pName}} </a>
-
-            </div>*@
-
+            @*         <div class="pathGroup">
+        <a href="#"> Home /</a>
+        <a href="#"> {{productInfo.pCategory}} /</a>
+        <a href="#"> {{productInfo.pBrand}} /</a>
+        <a href="#"> {{productInfo.pName}} </a>
+        </div>*@
             @*<div class="title">
-                <h4 class="mainTitle">{{productInfo.pName}}</h4>
-                <h5 class="subTitle">White Black Panda (2021)</h5>
-            </div>*@
-
+        <h4 class="mainTitle">{{productInfo.pName}}</h4>
+        <h5 class="subTitle">White Black Panda (2021)</h5>
+        </div>*@
             <div class="productGroup">
                 <div class="row align-items-center">
 
@@ -613,8 +609,6 @@
                                 //呼叫時給一個預設選取的 pID
                                 _this.selectSizeItem(_this.SizeAndPriceList[0].pSize, _this.SizeAndPriceList[0].pPrice, 0, _this.SizeAndPriceList[0].pID);
                             }
-                            _this.pID = _this.SizeAndPriceList[0].pID;
-                            _this.getLastPrice();
                         }
                     )
                 },
@@ -622,16 +616,12 @@
                     let _this = this;
                     var response = await axios.get(`${webApiAddress}/api/GetOrderList/${_this.pID}`);
                     _this.TranList = response.data;
-                    _this.lastTimePrice = _this.TranList[0].pPrice;
                 },
                 async getLastPrice() { //取得選取的 pID 最近一筆的成交價格
                     let _this = this;
                     var response = await axios.get(`${webApiAddress}/api/GetLastDealPrice/${_this.pID}`);
                     _this.lastTimePrice = response.data;
-                    console.log(`_this.lastTimePrice:`);
-                    console.log(_this.lastTimePrice);
                 },
-
                 async getQuotePrice() {
                     let _this = this;
                     var response = await axios.get(`${webApiAddress}/api/QuotePriceList/${_this.pID}`);
@@ -642,13 +632,11 @@
                     var response = await axios.get(`${webApiAddress}/api/BidPriceList/${_this.pID}`);
                     _this.bidPriceList = response.data;
                 },
-
                 selectSizeItem(pSize, pPrice, index, pID) {
                     let _this = this;
                     _this.pSize = pSize;
                     _this.pPrice = pPrice;
                     _this.pID = pID;
-
                     sessionStorage.setItem("pSize", pSize);
                     sessionStorage.setItem("pPrice", pPrice);
                     sessionStorage.setItem("selIndex", index);
@@ -669,37 +657,30 @@
                     window.location = "/order";
                 }
 
-
+            },
+            watch: {
+                pID: {
+                    handler: function () {
+                        this.getProductInfoDTO();
+                        this.getLastPrice();
+                    }
+                }
             },
             computed: {
-                GetLastDealPrice: {
-                    get() { return this.lastTimePrice == 0 ? "無成交記錄" : this.lastTimePrice }
-                },
                 DispalyLastDealPrice: {
-                    get() { return this.GetLastDealPrice == "無成交記錄" ? "無成交記錄" : this.Format(this.GetLastDealPrice); }
+                    get() { return this.lastTimePrice == 0 ? "無成交記錄" : this.Format(this.lastTimePrice); }
                 },
-                //GetDifference: { //
-                //    get() { return this.lastTimePrice == "無成交記錄" ? "" : this.pPrice - this.lastTimePrice; }
-                //},
-                GetDifference: { //
-                    get() { return this.pPrice - this.lastTimePrice; }
+                GetDifference: { 
+                    get() { return this.lastTimePrice == 0 ? "" : this.pPrice - this.lastTimePrice; }
                 },
                 DispalyDifference: {
-                    get() { return isNaN(this.GetDifference) ? "" : this.Format(this.GetDifference); }
+                    get() { return this.lastTimePrice == 0 ? "" : this.Format(this.pPrice - this.lastTimePrice); }
                 },
-                GetPercentage: { //
-                    get() {
-                        //if (!isNaN(this.lastTimePrice)) { // 變成 Infinity ?
-                        if (typeof (this.lastTimePrice) == "number") {
-                            //if (typeof (this.lastTimePrice) > 0) {
-                            return ((this.pPrice - this.lastTimePrice) / this.lastTimePrice * 100).toFixed(2);
-                        } else {
-                            return "0";
-                        }
-                    }
+                GetPercentage: { 
+                    get() { return this.lastTimePrice == 0 ? 0 : ((this.pPrice - this.lastTimePrice) / this.lastTimePrice * 100).toFixed(2); }
                 },
                 GetUpDown: {
-                    get() { return this.GetDifference > 0 ? "▲ " : this.GetDifference < 0 ? "▼ " : " - " }
+                    get() { return this.GetDifference > 0 ? "▲ " : this.GetDifference < 0 ? "▼ " : "  " }
                 },
                 GetFontColor: {
                     get() { return this.GetDifference > 0 ? "#006340" : this.GetDifference < 0 ? "#df2b14" : "#333" }
@@ -746,7 +727,7 @@
                 DisplayTranList: {
                     get() {
                         var _this = this;
-                        console.log(_this.TranList);
+                        //console.log(_this.TranList);
                         return _this.TranList.map(item => {
                             return {
                                 date: item.oTime.split('T')[0],

@@ -43,20 +43,17 @@ namespace SIEG_API.Controllers
             };
         }
 
-
         [HttpGet("GetSizeAndPriceList")]
         public async Task<List<J_PriceListDTO>> GetSizeAndPriceList()
         {
             var sizeAndPrice = await _context.Product
             .Join(_context.SellerAddProduct, product => product.ProductId, s => s.ProductId,
-            (p, s) => new { Product = p, seller = s }).ToListAsync();
+            (p, s) => new { Product = p, seller = s })
+            .GroupBy(p => p.Product.Size)
+            .Select(g => g.OrderBy(g => g.seller.Price)
+            .First()).ToListAsync();
 
-            var bbb = sizeAndPrice.GroupBy(p => p.Product.Size);
-
-            var aaa = bbb.Select(g => g.OrderBy(g => g.seller.Price).First());
-
-
-            List<J_PriceListDTO> priceList = aaa.Select(p => new J_PriceListDTO
+            List<J_PriceListDTO> priceList = sizeAndPrice.Select(p => new J_PriceListDTO
             {
                 pID = p.Product.ProductId,
                 pPrice = p.seller.Price,
@@ -68,7 +65,8 @@ namespace SIEG_API.Controllers
         [HttpGet("BidPriceList/{pID}")]
         public async Task<IEnumerable<J_PriceListDTO>> getBidPrice([FromRoute] PriceParameter val)
         {
-            var productName = _context.Product.Where(p => p.ProductId == val.pID).ToList()[0].ProductCategory.ProductName;
+
+            var productName = _context.Product.Include(p => p.ProductCategory).Where(p => p.ProductId == val.pID).ToList()[0].ProductCategory.ProductName;
             var BidInfo = await _context.BuyerBid
                 .Include(b => b.Product)
                 .Where(b => b.ValIdity == true && b.Product.ProductCategory.ProductName == productName)
@@ -83,12 +81,13 @@ namespace SIEG_API.Controllers
                 .OrderBy(x => x.pPrice).ToListAsync();
 
             return BidInfo;
+            //return new List<J_PriceListDTO>();
         }
 
         [HttpGet("QuotePriceList/{pID}")]
         public async Task<IEnumerable<J_PriceListDTO>> getQuotePrice([FromRoute] PriceParameter val)
         {
-            var productName = _context.Product.Where(p => p.ProductId == val.pID).ToList()[0].ProductCategory.ProductName;
+            var productName = _context.Product.Include(p => p.ProductCategory).Where(p => p.ProductId == val.pID).ToList()[0].ProductCategory.ProductName;
             var QuoteInfo = await _context.SellerAddProduct
                 .Include(s => s.Product)
                 .Where(s => s.ValIdity == true && s.Product.ProductCategory.ProductName == productName && s.SaleDate == null) // 待補上 s.SaleDate == null && 
@@ -106,11 +105,11 @@ namespace SIEG_API.Controllers
         }
 
         [HttpGet("GetOrderList/{pID}")]
-        public async Task<IEnumerable<J_OrderListDTO>> GetOrderList(int pID)
+        public async Task<IEnumerable<J_OrderListDTO>> GetOrderList([FromRoute] PriceParameter val)
         {
-            var productName = _context.Product.Where(p => p.ProductId == pID).ToList()[0].ProductCategory.ProductName;
+            var productName = _context.Product.Include(p => p.ProductCategory).Where(p => p.ProductId == val.pID).ToList()[0].ProductCategory.ProductName;
             var list = await _context.Order.Include(o => o.Product)
-                .Where(o => o.Product.ProductCategory.ProductName == productName && o.State == "已完成" && o.DoneTime != null)
+                .Where(o => o.Product.ProductCategory.ProductName == productName && o.DoneTime != null)//&& o.State == "已完成" 
                 .OrderByDescending(o => o.DoneTime)
                 .Select(x => new J_OrderListDTO
                 {
@@ -126,11 +125,16 @@ namespace SIEG_API.Controllers
         [HttpGet("GetLastDealPrice/{pID}")]
         public async Task<int?> GetLastDealPrice(int pID)
         {
-            var lsit = await _context.Order.Where(o => o.ProductId == pID && o.State == "已完成") // 先拿掉 && o.State == "已完成" 有中文會錯誤
+            var lastPrice = 0;
+            var price = await _context.Order.Where(o => o.ProductId == pID && o.State == "已完成")
                .OrderByDescending(o => o.DoneTime).Select(o => o.Price)
                .FirstOrDefaultAsync();
+            if (price != null)
+            {
+                lastPrice = price;
+            }
             //.MinAsync(o => o.價錢); 找最少的價格
-            return lsit;
+            return lastPrice;
         }
 
         [HttpGet("GetMemberInfo/{mID}")]
@@ -146,6 +150,32 @@ namespace SIEG_API.Controllers
             };
 
             return mDTO;
+        }
+
+        [HttpGet("GetMaxMinPrice/{pID}")]
+        public async Task<object> GetMaxMinQuote(int pID)
+        {
+            var maxBid = 0;
+            var minQuote = 0;
+            var bid = await _context.BuyerBid.Where(s => s.ProductId == pID)
+                .Select(s => s.Price).OrderByDescending(s=>s).FirstOrDefaultAsync();
+            var quote = await _context.SellerAddProduct.Where(s => s.ProductId == pID)
+                .Select(s=>s.Price).OrderBy(s=>s).FirstOrDefaultAsync();
+            if(bid != null)
+            {
+                maxBid = bid;
+            }
+            if (quote != null)
+            {
+                minQuote = quote;
+            }
+
+            var list = new
+            {
+                maxBid = maxBid,
+                minQuote = minQuote
+            };
+            return list;
         }
     }
 }

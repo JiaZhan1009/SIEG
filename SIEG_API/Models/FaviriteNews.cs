@@ -12,7 +12,6 @@ namespace SIEG_API.Models
         public int MemberId { get; set; }
         public bool? ValIdity { get; set; }
 
-        public virtual Member Member { get; set; }
         public virtual News News { get; set; }
     }
 }

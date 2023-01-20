@@ -13,6 +13,5 @@ namespace SIEG_API.Models
         public int ForumArticleId { get; set; }
 
         public virtual ForumArticle ForumArticle { get; set; }
-        public virtual Member Member { get; set; }
     }
 }

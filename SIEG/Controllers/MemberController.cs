@@ -45,6 +45,20 @@ namespace SIEG.Controllers
             return View();
         }
 
+        public IActionResult SettingCreditcard()
+        {
+            return View();
+        }
+
+        public IActionResult PaymentInformation()
+        {
+            return View();
+        }
+
+        public IActionResult Mailinginformation()
+        {
+            return View();
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

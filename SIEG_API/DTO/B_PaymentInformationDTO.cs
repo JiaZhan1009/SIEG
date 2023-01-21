@@ -9,5 +9,7 @@
         public string? Name { get; set; }
         public string? BillingAddress { get; set; }
         public string? Phone { get; set; }
+
+        public string? Shippingaddress { get; set; }
     }
 }

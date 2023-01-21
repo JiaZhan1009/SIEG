@@ -50,6 +50,7 @@ namespace SIEG_API.Controllers
                 Name = member.Name,
                 BillingAddress = member.BillingAddress,
                 Phone = member.Phone,
+                Shippingaddress= member.Address,
             };
             return PaymentInformation;
         }
@@ -89,6 +90,38 @@ namespace SIEG_API.Controllers
             PaymentInformation.CreditCardDate = member.CreditCardDate;
             PaymentInformation.CreditCardCcv = member.CreditCardCCV;
             _context.Entry(PaymentInformation).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!MemberExists(Memberid))
+                {
+                    return "找不到欲修改紀錄";
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return "修改成功!";
+        }
+
+        [HttpPut("Mailinginformation/{Memberid}")]
+        public async Task<string> PutMember(int Memberid, B_MailinginformationDTO member)
+        {
+            if (Memberid != member.MemberId)
+            {
+                return "不正確";
+            }
+            Member Mailinginformation = await _context.Member.FindAsync(member.MemberId);
+            Mailinginformation.Address = member.Shippingaddress;
+           
+            _context.Entry(Mailinginformation).State = EntityState.Modified;
+          
 
             try
             {

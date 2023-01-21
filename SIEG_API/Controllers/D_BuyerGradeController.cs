@@ -40,7 +40,7 @@ namespace SIEG_API.Controllers
             var sellerG = _context.Member.Where(o => o.MemberId == id).Select(c => c.SellerGrade).First();
 
             // 會員id是要寫進去的
-            var coupon = _context.MemberCoupon.Where(ticket => ticket.MemberId == 200).Select(c => c.Count).Sum();
+            var coupon = _context.MemberCoupon.Where(ticket => ticket.MemberId == id).Select(c => c.Count).Sum();
 
             var bbb = _context.Member.Where(x => x.MemberId == id).Select(y => new D_GradeBuyDTO
             {

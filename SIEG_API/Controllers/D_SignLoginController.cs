@@ -32,6 +32,7 @@ namespace SIEG_API.Controllers
                 MemberId = member.MemberId,
                 Name = member.Name,
                 NickName = member.NickName,
+                Phone= member.Phone,
                 Email = member.Email,
                 Password = member.Password,
             });
@@ -52,6 +53,7 @@ namespace SIEG_API.Controllers
                 MemberId = member.MemberId,
                 Name = member.Name,
                 NickName = member.NickName,
+                Phone = member.Phone,
                 Email = member.Email,
                 Password = member.Password,
             };
@@ -71,6 +73,7 @@ namespace SIEG_API.Controllers
             Member member = await _context.Member.FindAsync(memDTO.MemberId);
             member.Name = memDTO.Name;
             member.NickName = memDTO.NickName;
+            member.Phone = memDTO.Phone;
             member.Email = memDTO.Email;
             member.Password = memDTO.Password;
             _context.Entry(member).State = EntityState.Modified;
@@ -105,9 +108,10 @@ namespace SIEG_API.Controllers
                 Name = mem.Name,
                 NickName = mem.NickName,
                 Email = mem.Email,
+                Phone = mem.Phone,
                 Password = mem.Password,
             };
-            bool exit = _context.Member.Any(e => e.Email == mem.Email);
+            bool exit = _context.Member.Any(e => e.Email == mem.Email && e.Password == mem.Password);
             if (exit == true)
             {
                 msg = "失敗";

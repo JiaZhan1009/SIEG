@@ -23,15 +23,15 @@
                                 </div>
                                 <div>
                                     <label>名字</label>
-                                    <input type="text" disabled="disabled" name="text" class="form-control " placeholder="請輸入名子">
+                                <input type="text" disabled="disabled" name="text" class="form-control " placeholder="請輸入名子" v-model="MailinginformationDTOes.name">
                                 </div>                             
                                 <div class="addressgroup">
                                     <label>地址</label>
-                                    <input type="text" name="text" class="form-control" placeholder="請輸入地址">
+                                <input type="text" name="text" class="form-control" placeholder="請輸入地址" v-model="MailinginformationDTOes.shippingaddress">
                                 </div>                           
                                 <div class="addressgroup">
                                     <label>電話號碼</label>
-                                    <input type="tel" disabled="disabled" name="tel" class="form-control" placeholder="請輸入電話號碼">
+                                <input type="tel" disabled="disabled" name="tel" class="form-control" placeholder="請輸入電話號碼" v-model="MailinginformationDTOes.phone">
                                 </div>
                                 <div class="addressgroup">
                                     <a asp-area="" asp-controller="Member" asp-action="SettingCreditcard">
@@ -61,20 +61,20 @@
             name: "appVue",
             data: {
                 mID: sessionStorage.getItem("mID"),
-                couponDTOes: {},
+                MailinginformationDTOes: {},
                 Filter: "",
 
             },
             mounted: function () {
                 let _this = this;
-                _this.getcouponDTOes();
+                _this.getMailinginformationDTOes();
             },
             methods: {
-                getcouponDTOes: function () {
+                getMailinginformationDTOes: function () {
                     let _this = this;
-                    axios.get(`${webApiBaseAddress}/api/B_MemberCoupons/${_this.mID}`).then(
+                    axios.get(`${webApiBaseAddress}/api/B_PaymentInformation/Mailinginformation/${_this.mID}`).then(
                         response => {
-                            _this.couponDTOes = response.data;
+                            _this.MailinginformationDTOes = response.data;
 
                         }
                     );

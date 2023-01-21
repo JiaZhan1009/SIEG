@@ -54,6 +54,26 @@ namespace SIEG_API.Controllers
             return PaymentInformation;
         }
 
+        [HttpGet("Mailinginformation/{Memberid}")]
+        public async Task<ActionResult<B_MailinginformationDTO>> GetMember2(int Memberid)
+        {
+            var member = await _context.Member.FindAsync(Memberid);
+
+            if (member == null)
+            {
+                return NotFound();
+            }
+            B_MailinginformationDTO PaymentInformation = new B_MailinginformationDTO
+            {
+                MemberId = member.MemberId,             
+                Name = member.Name,
+                Shippingaddress = member.Address,
+                Phone = member.Phone,
+            };
+            return PaymentInformation;
+        }
+
+
         // PUT: api/B_PaymentInformation/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{Memberid}")]

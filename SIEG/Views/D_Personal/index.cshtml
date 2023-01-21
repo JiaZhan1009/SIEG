@@ -38,6 +38,9 @@
                             <input type="text" class="form-control" id="NickName" placeholder="暱稱*" required>
                         </div>
                         <div class="mb-sm-3 mb-3">
+                            <input type="text" class="form-control" id="Phone" placeholder="手機*" maxlength="11" required>
+                        </div>
+                        <div class="mb-sm-3 mb-3">
                             <input type="password" class="form-control" id="PassWord" placeholder="密碼*" required>
                             <i class="far fa-eye" id="togglePassword" style="cursor: pointer;"></i>
                         </div>
@@ -133,6 +136,7 @@
                     MemberId: null,
                     Name: null,
                     NickName: null,
+                    Phone:null,
                     Email: null,
                     Password: null,
                 },
@@ -162,17 +166,23 @@
                     insert: function () {
                         let emailcheck = $("#SignEmail").val()
                         let pwdcheck = $("#PassWord").val()
+                        let telcheck = $("#Phone").val()
 
                         var emailRegxp = /^\w+((-\w+)|(\.\w+))*\@@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
                         // 至少八個字，一個字母和一個數字
                         var pwdRegxp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+                        var telRegxp = /^09[0-9]{8}$/;
 
-                        if (($("#FirstName").val() && $("#NickName").val() && $("#SignEmail").val() && $("#PassWord").val()) == "") {
+                        if (($("#FirstName").val() && $("#Phone").val() && $("#NickName").val() && $("#SignEmail").val() && $("#PassWord").val()) == "") {
                             alert("有地方空白喔!")
                             return;
                         }
                         else if (emailRegxp.test(emailcheck) == false) {
                             alert("信箱格式錯誤")
+                            return;
+                        }
+                        else if (telRegxp.test(telcheck) == false) {
+                            alert("手機格式錯誤")
                             return;
                         }
                         else if (pwdRegxp.test(pwdcheck) == false) {
@@ -185,6 +195,7 @@
                             request.ID = 0;
                             request.Name = $("#FirstName").val();
                             request.NickName = $("#NickName").val();
+                            request.Phone = $("#Phone").val();
                             request.email = $("#SignEmail").val();
                             request.Password = $("#PassWord").val();
                             axios.post(`${webApiBaseAddress}/api/D_SignLogin`,request).then(
@@ -194,6 +205,7 @@
                                         alert("重複");
                                 
                                     } else {
+                                        $("#FirstName").val() && $("#Phone").val() && $("#NickName").val() && $("#SignEmail").val() && $("#PassWord").val() == ""
                                         alert("註冊成功")
                                     }
                                     //window.location = "/Home"

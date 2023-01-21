@@ -3,32 +3,74 @@
     ViewData["enTitle"] = "Sign";
 }
 @section Style{
-        <!--forum Article Stylesheet-->
-        <link href="~/css/sign.css" rel="stylesheet" />
+    <!--forum Article Stylesheet-->
+    <link href="~/css/sign.css" rel="stylesheet" />
 
 }
 
 <!-- 按鈕 tab 登入&註冊 -->
-<div id="resetpwdVue">
-    <div class="index_space about_sign">
-        <div class="container">
-            <div class="card resetcard">
-                <div>
-                    <h3>重設密碼</h3>
-                    <p>請輸入在 S.I.E.G 當時註冊的電子信箱</p>
-                    <input type="email" placeholder="電子信箱*">
-                    <button type="submit" class="btn btn-dark">傳送</button>
-                </div>
+<div id="Forgetpwd">
+    <div id="resetpwdVue">
+        <div class="index_space about_sign">
+            <div class="container">
+                <div class="card resetcard">
+                    <div>
+                        <h3>重設密碼</h3>
+                        <p>請輸入在 S.I.E.G 當時註冊的電子信箱</p>
+                        <input type="email" placeholder="電子信箱*">
+                        <button type="submit" class="btn btn-dark" @@click="sent">傳送</button>
+                    </div>
 
+                </div>
             </div>
         </div>
     </div>
-
 </div>
 
+
 @section Scripts{
-        <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
+
+    <script>
+        //var clearLogin = $("#loginEmail").val();
+        //var clearLoginpassword = $("#loginPassword").val();
+
+        var webApiBaseAddress = "https://localhost:7139";
+        var SignVue = new Vue
+            ({
+                el: "#Forgetpwd",
+                name: "Forgetpwd",
+                data: {
+
+                },
+                mounted: function () {
+                    let _this = this;
+                    _this.getMemberDTO();
+                },
+                methods: {
+                    sent: function () {
+                        var _this = this;
+                        var request = {};
+                        request.ID = 0;
+                        request.Name = $("#FirstName").val();
+                        request.NickName = $("#NickName").val();
+                        request.Phone = $("#Phone").val();
+                        request.email = $("#SignEmail").val();
+                        request.Password = $("#PassWord").val();
+                        axios.post(`${webApiBaseAddress}/api/D_SignLogin`, request).then(
+                            response => {
+                                console.log(response.data)
+                                //window.location = "/Home"
+                            }
+                        );
+
+                    },
+
+                },
+            });
+
+    </script>
 
 }
 

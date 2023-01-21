@@ -16,6 +16,7 @@ namespace SIEG_API.Models
         public DateTime EffectiveTime { get; set; }
         public int Count { get; set; }
 
+        public virtual Member Member { get; set; }
         public virtual Product Product { get; set; }
     }
 }

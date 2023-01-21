@@ -7,6 +7,21 @@ namespace SIEG_API.Models
 {
     public partial class Member
     {
+        public Member()
+        {
+            BuyerBid = new HashSet<BuyerBid>();
+            ContactAddProduct = new HashSet<ContactAddProduct>();
+            ContactCustomerService = new HashSet<ContactCustomerService>();
+            FaviriteArticle = new HashSet<FaviriteArticle>();
+            FaviriteNews = new HashSet<FaviriteNews>();
+            FaviriteProduct = new HashSet<FaviriteProduct>();
+            ForumArticle = new HashSet<ForumArticle>();
+            ForumReply = new HashSet<ForumReply>();
+            ForumReply2 = new HashSet<ForumReply2>();
+            MemberCoupon = new HashSet<MemberCoupon>();
+            SellerAddProduct = new HashSet<SellerAddProduct>();
+        }
+
         public int MemberId { get; set; }
         public string NickName { get; set; }
         public string Email { get; set; }
@@ -27,5 +42,17 @@ namespace SIEG_API.Models
         public string CreditCardDate { get; set; }
         public int? CreditCardCcv { get; set; }
         public string BillingAddress { get; set; }
+
+        public virtual ICollection<BuyerBid> BuyerBid { get; set; }
+        public virtual ICollection<ContactAddProduct> ContactAddProduct { get; set; }
+        public virtual ICollection<ContactCustomerService> ContactCustomerService { get; set; }
+        public virtual ICollection<FaviriteArticle> FaviriteArticle { get; set; }
+        public virtual ICollection<FaviriteNews> FaviriteNews { get; set; }
+        public virtual ICollection<FaviriteProduct> FaviriteProduct { get; set; }
+        public virtual ICollection<ForumArticle> ForumArticle { get; set; }
+        public virtual ICollection<ForumReply> ForumReply { get; set; }
+        public virtual ICollection<ForumReply2> ForumReply2 { get; set; }
+        public virtual ICollection<MemberCoupon> MemberCoupon { get; set; }
+        public virtual ICollection<SellerAddProduct> SellerAddProduct { get; set; }
     }
 }

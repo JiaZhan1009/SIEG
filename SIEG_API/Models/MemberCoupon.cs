@@ -13,5 +13,6 @@ namespace SIEG_API.Models
         public int Count { get; set; }
 
         public virtual Coupon Coupon { get; set; }
+        public virtual Member Member { get; set; }
     }
 }

@@ -16,5 +16,7 @@ namespace SIEG_API.Models
         public string State { get; set; }
         public DateTime ContactTime { get; set; }
         public string Category { get; set; }
+
+        public virtual Member Member { get; set; }
     }
 }

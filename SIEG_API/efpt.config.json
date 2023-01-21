@@ -99,10 +99,11 @@
          "ObjectType": 0
       }
    ],
-   "UiHint": "siegdb.SIEG",
+   "UiHint": "siegdb128.SIEG",
    "UncountableWords": null,
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,
+   "UseDateOnlyTimeOnly": false,
    "UseDbContextSplitting": false,
    "UseFluentApiOnly": true,
    "UseHandleBars": false,

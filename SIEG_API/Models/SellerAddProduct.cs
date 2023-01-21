@@ -16,6 +16,7 @@ namespace SIEG_API.Models
         public int Price { get; set; }
         public bool? ValIdity { get; set; }
 
+        public virtual Member Member { get; set; }
         public virtual Product Product { get; set; }
     }
 }

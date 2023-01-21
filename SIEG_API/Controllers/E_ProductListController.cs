@@ -28,8 +28,7 @@ namespace SIEG_API.Controllers
         [HttpGet]
         public async Task<IEnumerable<E_ProductListDTO>> GetProduct()
         {
-            //var ProductList = await _context.Order.Include(o => o.Product).Include(o => o.Product.SellerAddProduct).Include(o => o.Product.ProductCategory)
-            var pIDs = await _context.Product.Select(x => new {x.ProductId, x.ProductCategory.ProductName}).ToListAsync();
+            var pIDs = await _context.Product.Select(x => new { x.ProductId, x.ProductCategory.ProductName }).ToListAsync();
 
                 var ProductList = await _context.Product.Include(o => o.ProductCategory)
                 .Where(x => x.ValIdity == true)
@@ -42,11 +41,11 @@ namespace SIEG_API.Controllers
                     productlistPrice = g.Min(x => x.Price),
                 }).ToListAsync();
 
-            foreach (var list in ProductList)
+            foreach(var list in ProductList)
             {
-                foreach (var pID in pIDs)
+                foreach(var pID in pIDs)
                 {
-                    if (list.productlistName == pID.ProductName)
+                    if(list.productlistName == pID.ProductName)
                     {
                         list.productlistId = pID.ProductId;
                     }

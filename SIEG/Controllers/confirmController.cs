@@ -2,7 +2,7 @@
 
 namespace SIEG.Controllers
 {
-    public class productController1 : Controller
+    public class confirmController : Controller
     {
         public IActionResult Index()
         {

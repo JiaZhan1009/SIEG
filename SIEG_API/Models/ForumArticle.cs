@@ -26,7 +26,6 @@ namespace SIEG_API.Models
         public bool? ValIdity { get; set; }
         public int? ReplyCount { get; set; }
 
-        public virtual Member Member { get; set; }
         public virtual ProductCategory ProductCategory { get; set; }
         public virtual ICollection<FaviriteArticle> FaviriteArticle { get; set; }
         public virtual ICollection<ForumReply> ForumReply { get; set; }

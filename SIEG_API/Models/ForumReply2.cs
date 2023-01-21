@@ -20,6 +20,5 @@ namespace SIEG_API.Models
         public int LikeCount { get; set; }
 
         public virtual ForumReply ForumReply { get; set; }
-        public virtual Member Member { get; set; }
     }
 }

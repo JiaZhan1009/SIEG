@@ -3,7 +3,7 @@
     /* width: 270px; */
    /* background-color: #fafafa;*/
     /* border: 3px solid #8E8E8E; */
-    height: 1000px;
+    height: 900px;
 }
 
 /* 會員邊欄 */
@@ -313,6 +313,7 @@ hr {
 
 .addressgroup {
     margin-top: 30px;
+    width: 500px;
 }
 
 .addressgroup-1 {
@@ -366,6 +367,9 @@ hr {
             margin-bottom: 20px;
             border-bottom: 6px double #006340;
         }
+    .creditcard {
+        margin-top: 20px;
+    }
 }
 
 
@@ -563,4 +567,17 @@ hr {
     right: 0;
     background: #006340;
     color: #fff;
+}
+
+.creditcard {
+    display: inline-block;
+    margin-right: 100px;
+}
+
+.settingbut {
+    display: flex;
+}
+
+.nomodification {
+    display
 }

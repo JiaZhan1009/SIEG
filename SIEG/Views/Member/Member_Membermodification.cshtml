@@ -16,10 +16,10 @@
                             <div>
                                 <h1>個人資料</h1>
                                 <p>更改你的個人資料設定</p>
-                                <div>
+                            @*    <div>
                                     <label>名稱</label>
                                     <input type="text" name="text" class="form-control" placeholder="請輸入名子" v-model="PersonalDTOes.name">
-                                </div>
+                                </div>*@
                                 <div class="addressgroup">
                                     <label>暱稱</label>
                                     <input type="text" name="text" class="form-control" placeholder="請輸入用戶名稱" v-model="PersonalDTOes.nickName">
@@ -27,6 +27,14 @@
                                 <div class="addressgroup">
                                     <label>電話號碼</label>
                                     <input type="tel" name="tel" class="form-control" placeholder="請輸入電話號碼" v-model="PersonalDTOes.phone">
+                                </div>
+                                <div class="addressgroup">
+                                    <label>收貨地址</label>
+                                    <input type="tel" name="tel" class="form-control" placeholder="請輸入收貨地址" v-model="PersonalDTOes.shippingaddress">
+                                </div>
+                                <div class="addressgroup">
+                                    <label>帳單地址</label>
+                                    <input type="tel" name="tel" class="form-control" placeholder="請輸入帳單地址" v-model="PersonalDTOes.billingAddress">
                                 </div>
                                 <div class="addressgroup">
                                     <a asp-area="" asp-controller="Member" asp-action="Member_personal">
@@ -79,7 +87,8 @@
                     var request = {};
                     request.MemberId = PersonalDTOes.memberId;
                     request.Email = PersonalDTOes.email;
-                    request.Address = PersonalDTOes.address;
+                    request.Shippingaddress = PersonalDTOes.shippingaddress;
+                    request.BillingAddress = PersonalDTOes.billingAddress;
                     request.Password = PersonalDTOes.password;
                     request.NickName = PersonalDTOes.nickName;
                     request.Phone = PersonalDTOes.phone;

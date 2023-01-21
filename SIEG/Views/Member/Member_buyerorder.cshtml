@@ -378,7 +378,7 @@
                     request.State = "申請退貨";
                     request.Receiver = returnthegoods.receiver;
                     request.orderId = returnthegoods.orderId;
-                    axios.put(`${webApiBaseAddress}/api/B_BuyerBids/${returnthegoods.orderId}`, request).then(
+                    axios.put(`${webApiBaseAddress}/api/B_BuyerBids/Returns/${returnthegoods.orderId}`, request).then(
                         response => {
                             alert(response.data);
                             //_this.filterEmployeeDTOes();

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Microsoft.EntityFrameworkCore;
 using SIEG_API.DTO;
 using SIEG_API.Models;
@@ -14,25 +15,25 @@ namespace SIEG_API.Controllers
     [EnableCors("AllowAny")]
     [Route("api/[controller]")]
     [ApiController]
-    public class B_personalinformationController : ControllerBase
+    public class B_PaymentInformationController : ControllerBase
     {
         private readonly SIEGContext _context;
 
-        public B_personalinformationController(SIEGContext context)
+        public B_PaymentInformationController(SIEGContext context)
         {
             _context = context;
         }
 
-        // GET: api/B_personalinformation
+        // GET: api/B_PaymentInformation
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Member>>> GetMember()
         {
             return await _context.Member.ToListAsync();
         }
 
-        // GET: api/B_personalinformation/5
+        // GET: api/B_PaymentInformation/5
         [HttpGet("{Memberid}")]
-        public async Task<ActionResult<B_personalinformationDTO>> GetMember(int Memberid)
+        public async Task<ActionResult<B_PaymentInformationDTO>> GetMember(int Memberid)
         {
             var member = await _context.Member.FindAsync(Memberid);
 
@@ -40,37 +41,54 @@ namespace SIEG_API.Controllers
             {
                 return NotFound();
             }
-            B_personalinformationDTO personal = new B_personalinformationDTO
+            B_PaymentInformationDTO PaymentInformation = new B_PaymentInformationDTO
             {
                 MemberId = member.MemberId,
-                NickName = member.NickName,
-                Email = member.Email,
-                Password = member.Password,
-                Shippingaddress = member.Address,
-                BillingAddress= member.BillingAddress,
-                Phone = member.Phone,
+                CreditCard = member.CreditCard,
+                CreditCardDate = member.CreditCardDate,
+                CreditCardCCV = member.CreditCardCcv,
                 Name = member.Name,
+                BillingAddress = member.BillingAddress,
+                Phone = member.Phone,
             };
-
-            return personal;
+            return PaymentInformation;
         }
 
-        // PUT: api/B_personalinformation/5
+        [HttpGet("Mailinginformation/{Memberid}")]
+        public async Task<ActionResult<B_MailinginformationDTO>> GetMember2(int Memberid)
+        {
+            var member = await _context.Member.FindAsync(Memberid);
+
+            if (member == null)
+            {
+                return NotFound();
+            }
+            B_MailinginformationDTO PaymentInformation = new B_MailinginformationDTO
+            {
+                MemberId = member.MemberId,             
+                Name = member.Name,
+                Shippingaddress = member.Address,
+                Phone = member.Phone,
+            };
+            return PaymentInformation;
+        }
+
+
+        // PUT: api/B_PaymentInformation/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{Memberid}")]
-        public async Task<string> PutMember(int Memberid, B_personalinformationDTO member)
+        public async Task<string> PutMember(int Memberid, B_PaymentInformationDTO member)
         {
             if (Memberid != member.MemberId)
             {
                 return "不正確";
             }
-            Member memberinformation = await _context.Member.FindAsync(member.MemberId);
-            memberinformation.NickName = member.NickName;
-            memberinformation.Phone = member.Phone;
-            memberinformation.Address = member.Shippingaddress;
-            memberinformation.BillingAddress = member.BillingAddress;
-            //memberinformation.Name = member.Name;
-            _context.Entry(memberinformation).State = EntityState.Modified;
+            Member PaymentInformation = await _context.Member.FindAsync(member.MemberId);
+            PaymentInformation.BillingAddress=member.BillingAddress;
+            PaymentInformation.CreditCard = member.CreditCard;
+            PaymentInformation.CreditCardDate = member.CreditCardDate;
+            PaymentInformation.CreditCardCcv = member.CreditCardCCV;
+            _context.Entry(PaymentInformation).State = EntityState.Modified;
 
             try
             {
@@ -91,7 +109,7 @@ namespace SIEG_API.Controllers
             return "修改成功!";
         }
 
-        // POST: api/B_personalinformation
+        // POST: api/B_PaymentInformation
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Member>> PostMember(Member member)
@@ -102,7 +120,7 @@ namespace SIEG_API.Controllers
             return CreatedAtAction("GetMember", new { id = member.MemberId }, member);
         }
 
-        // DELETE: api/B_personalinformation/5
+        // DELETE: api/B_PaymentInformation/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMember(int id)
         {

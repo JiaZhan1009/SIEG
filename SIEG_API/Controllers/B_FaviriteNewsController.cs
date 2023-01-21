@@ -118,19 +118,34 @@ namespace SIEG_API.Controllers
         }
 
         // DELETE: api/B_FaviriteNews/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteFaviriteNews(int id)
+        [HttpDelete("{FaviriteNewsid}")]
+        public async Task<string> DeleteFaviriteNews(int FaviriteNewsid)
         {
-            var faviriteNews = await _context.FaviriteNews.FindAsync(id);
+            var faviriteNews = await _context.FaviriteNews.FindAsync(FaviriteNewsid);
             if (faviriteNews == null)
             {
-                return NotFound();
+                return "找不到欲刪除的記錄!";
             }
 
             _context.FaviriteNews.Remove(faviriteNews);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return "刪除成功!";
+        }
+
+        [HttpDelete("DeleteArticle/{FaviriteArticleid}")]
+        public async Task<string> DeleteFaviriteArticle(int FaviriteArticleid)
+        {
+            var FaviriteArticle = await _context.FaviriteArticle.FindAsync(FaviriteArticleid);
+            if (FaviriteArticle == null)
+            {
+                return "找不到欲刪除的記錄!";
+            }
+
+            _context.FaviriteArticle.Remove(FaviriteArticle);
+            await _context.SaveChangesAsync();
+
+            return "刪除成功!";
         }
 
         private bool FaviriteNewsExists(int id)

@@ -76,7 +76,7 @@
                             <div class="priceContent">
                                 <div class="submitAndBuy">
                                     <div @@click="selBtnGreen=true" id="submit" :class="['submit', {'bkcLightGray': !selBtnGreen}, 'col-6', {'bkcGreen': selBtnGreen}]">提交出價</div>
-                                    <div @@click="selBtnGreen=false;linepay();" id="buyNow" :class="['buyNow', {'bkcLightGray': selBtnGreen}, 'col-6',{'bkcGreen': !selBtnGreen}]">立即購買</div>
+                                    <div @@click="selBtnGreen=false;" id="buyNow" :class="['buyNow', {'bkcLightGray': selBtnGreen}, 'col-6',{'bkcGreen': !selBtnGreen}]">立即購買</div>
                                 </div>
                                 <!-- showPrice -->
                                 <div :class="{'hideShopPrice':selBtnGreen}">
@@ -126,17 +126,31 @@
                                 </div>
                                 <div class="buyInfoBlock">
                                     <div class="row align-items-center">
-                                        <div class="col-9">
-                                            <img src="https://stockx-assets.imgix.net/svg/icons/credit_card.svg?auto=compress,format">
+                                        <div class="col-6">
+                                            <img src="https://stockx-assets.imgix.net/svg/icons/stopwatch.svg?auto=compress,format">
                                             <span>請選擇付款方式</span>
                                         </div>
-                                        <div class="col-3">
-                                            <div class="icon">
-                                                <img @@click="changePayDisplay" src="https://stockx-assets.imgix.net/svg/icons/pencil.svg?auto=compress,format">
-                                            </div>
+                                        <div class="col-6">
+                                            <select value="1" class="selDay" v-model="selPay">
+                                                <option value="1">Line Pay</option>
+                                                <option value="3">信用卡</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
+                                @* <div class="buyInfoBlock">
+                            <div class="row align-items-center">
+                            <div class="col-9">
+                            <img src="https://stockx-assets.imgix.net/svg/icons/credit_card.svg?auto=compress,format">
+                            <span>請選擇付款方式</span>
+                            </div>
+                            <div class="col-3">
+                            <div class="icon">
+                            <img @@click="changePayDisplay" src="https://stockx-assets.imgix.net/svg/icons/pencil.svg?auto=compress,format">
+                            </div>
+                            </div>
+                            </div>
+                            </div>*@
                                 <div class="buyInfoBlock">
                                     <div class="row align-items-center">
                                         <div class="col-9">
@@ -155,7 +169,7 @@
                                 <a>
                                     <div @@click="back" class="btnCancel">返回</div>
                                 </a>
-                                <div @@click="" class="btnNext">下一步</div>
+                                <div @@click="next" class="btnNext">下一步</div>
                             </div>
                         </div>
 
@@ -286,6 +300,8 @@
     <script src="/js/main.js"></script>
 
     <script>
+        // order page
+        let baseLoginPayUrl = "https://localhost:7052/api/LinePay/";
         var webApiAddress = "https://localhost:7139";
         var appVue = new Vue({
             el: "#appVue",
@@ -311,8 +327,7 @@
                 DisplayPriceState: "",
                 maxBid: null,
                 minQuote: null,
-                uuidv4: null,
-                crypto: null,
+                selPay: null,
             },
             mounted: function () {
                 let _this = this;
@@ -325,76 +340,6 @@
                 } else {
                     _this.selBtnGreen = false;
                 }
-
-
-
-                let key = '4ae558ec2f00f26cd35db45715cc1522';
-                let nonce = uuidv4();
-                let requestUri = '/v3/payments/request';
-                let order = {
-                    "amount": 100,
-                    "currency": "TWD",
-                    "orderId": "MKSI_S_20180904_1000001",
-                    "packages": [
-                        {
-                            "id": "1",
-                            "amount": 100,
-                            "products": [
-                                {
-                                    "id": "PEN-B-001",
-                                    "name": "Pen Brown",
-                                    "imageUrl": "https://pay-store.line.com/images/pen_brown.jpg",
-                                    "quantity": 2,
-                                    "price": 50
-                                }
-                            ]
-                        }
-                    ],
-                    "redirectUrls": {
-                        "confirmUrl": "https://pay-store.line.com/order/payment/authorize",
-                        "cancelUrl": "https://pay-store.line.com/order/payment/cancel"
-                    }
-                }
-                let order2 = {
-                    amount: 4000,
-                    currency: 'TWD',
-                    orderId: 'order504ac11a-1888-4410-89b2-75382fef61b3',
-                    packages: [
-                        {
-                            id: '20191011I001',
-                            amount: 4000,
-                            name: '星戰公仔',
-                            products: [
-                                {
-                                    name: '星際大戰足輕白兵第一軍團風暴兵',
-                                    quantity: 2,
-                                    price: 2000
-                                }
-                            ]
-                        }
-                    ],
-                    redirectUrls: {
-                        confirmUrl: 'https://6ddcf789.ngrok.io/confitmUrl',
-                        cancelUrl: 'https://6ddcf789.ngrok.io/cancelUrl'
-                    }
-                }
-                let encrypt = CryptoJS.HmacSHA256(key, key + requestUri + JSON.stringify(order) + nonce);
-                let hmacBase64 = CryptoJS.enc.Base64.stringify(encrypt);
-
-                let configs = {
-                    header: {
-                        "Content-Type": "application/json",
-                        "X-LINE-ChannelId": 1657834524,
-                        "X-LINE-Authorization-Nonce": nonce,
-                        "X-LINE-Authorization": hmacBase64,
-                    }
-                }
-                axios.post('https://sandbox-api-pay.line.me/v3/payments/request', order, configs).then(
-                    res => {
-                        console.log(res.data);
-                    }
-                )
-
 
             },
             methods: {
@@ -460,6 +405,62 @@
                 Format: function (val) { return numeral(val).format("$0,0"); },
                 linepay: function () {
                     window.location = "/products"
+                },
+                async requestLinePayment() {
+                    try {
+                        let _this = this;
+                        payment = {
+                            amount: parseInt(_this.pPrice),
+                            currency: "TWD",
+                            orderId: Date.now().toString(), //使用 Timestamp 當作 orderId
+                            packages: [
+                                {
+                                    id: "20191011I001",
+                                    amount: parseInt(_this.pPrice),
+                                    name: _this.productInfo.pName,
+                                    products: [
+                                        {
+                                            name: _this.productInfo.pName,
+                                            imageUrl: "https://static.accupass.com/org/2011051025162614811630.jpg",
+                                            quantity: 1,
+                                            price: parseInt(_this.pPrice),
+                                        }
+                                    ]
+                                },
+                            ],
+                            RedirectUrls: {
+                                ConfirmUrl: "https://a0ec-111-242-180-163.jp.ngrok.io/confirm",
+                                CancelUrl: "https://c4f0-61-63-154-173.jp.ngrok.io/api/LinePay/Cancel",
+                            },
+                        };
+
+                        sessionStorage.setItem("payment", JSON.stringify(payment));
+                        // 送出交易申請至商家 server
+                        $.post({
+                            url: baseLoginPayUrl + "Create",
+                            dataType: "json",
+                            contentType: "application/json",
+                            data: JSON.stringify(payment),
+                            success: (res) => {
+                                window.location = res.info.paymentUrl.web;
+                            },
+                            error: (err) => {
+                                console.log(err);
+                            }
+                        })
+                    } catch (error) {
+                        console.log(error)
+                    }
+                },
+                next() {
+                    let _this = this;
+                    if (_this.selPay == 1) {
+                        _this.requestLinePayment();
+                    } else (_this.selPay == 2){
+                        alert("信用卡");
+                    }else{
+                        alert("尚未選擇付款方式");
+                    }
                 },
 
             },

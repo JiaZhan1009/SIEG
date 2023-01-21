@@ -1,0 +1,104 @@
+﻿@section Style{
+
+    }
+
+    <!-- 最上方的 bar -->
+    <div id="appVue">
+        <center>
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2">{{payment.name}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="2"><img src="https://static.accupass.com/org/2011051025162614811630.jpg"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"> 價格 : {{payment.amount}} </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"> 購買數量 : 1 </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: right;"> 總金額 : {{payment.amount}} </td>
+                    </tr>
+                    <tr>
+                        <td align="center" colspan="2"><button @@click="confirmPayment()"> 確認付款</button></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="Container">
+                <a id="paymentStatus">交易狀態 : 交易已授權，等待確認<a>
+            </div>
+        </center>
+    </div>
+    @section Scripts{
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/uuid@8.3.1/dist/umd/uuidv4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <!-- Template Javascript -->
+
+
+    <script>
+        // confirm page
+        var appVue = new Vue({
+            el: "#appVue",
+            data: {
+                baseLoginPayUrl: 'https://localhost:7052/api/LinePay/',
+                transactionId: "",
+                orderId: "",
+                payment: sessionStorage.getItem("payment"),
+            },
+            mounted() {
+                // 取出 query parameter 中的 transactionId & orderId
+                const params = new Proxy(new URLSearchParams(window.location.search), {
+                    get: (searchParams, prop) => searchParams.get(prop),
+                });
+
+                this.transactionId = params.transactionId;
+                this.orderId = params.orderId;
+            },
+            methods: {
+                confirmPayment() {
+                    let _this = this
+                    // 交易訂單假資料
+                    let payment = {
+                        amount: _this.payment.amount,
+                        currency: "TWD",
+                    };
+                    // 送出確認交易
+                    $.post({
+                        url: _this.baseLoginPayUrl + `Confirm?transactionId=${_this.transactionId}&orderId=${_this.orderId}`,
+                        dataType: "json",
+                        contentType: "application/json",
+                        data: JSON.stringify(payment),
+                        success: (res) => {
+                            $("#paymentStatus").text("交易狀態 : 成功")
+                            console.log(res);
+                            //setTimeout(() => {
+                            //    window.location = "https://a0ec-111-242-180-163.jp.ngrok.io/products";
+                            //}, 2000);
+                        },
+                        error: (err) => {
+                            console.log(err);
+                        }
+                    })
+                }
+            }
+        })
+    </script>
+
+
+    }
+

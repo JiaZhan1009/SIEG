@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol;
 using SIEG_API.DTO;
@@ -14,7 +15,7 @@ using SIEG_API.Parameters;
 namespace SIEG_API.Controllers
 {
     [EnableCors("AllowAny")]
-    [Route("api")]
+    [Route("api/J")]
     //[Route("api/[controller]")]
     [ApiController]
     public class J_ProductInfoController : ControllerBase
@@ -48,13 +49,14 @@ namespace SIEG_API.Controllers
         {
             var sizeAndPrice = await _context.Product
             .Join(_context.SellerAddProduct, product => product.ProductId, s => s.ProductId,
-            (p, s) => new { Product = p, seller = s })
+            (p, s) => new { Product = p, seller = s, sID = s.MemberId })
             .GroupBy(p => p.Product.Size)
             .Select(g => g.OrderBy(g => g.seller.Price)
             .First()).ToListAsync();
 
             List<J_PriceListDTO> priceList = sizeAndPrice.Select(p => new J_PriceListDTO
             {
+                sID = p.sID,
                 pID = p.Product.ProductId,
                 pPrice = p.seller.Price,
                 pSize = p.Product.Size
@@ -176,10 +178,10 @@ namespace SIEG_API.Controllers
             var maxBid = 0;
             var minQuote = 0;
             var bid = await _context.BuyerBid.Where(s => s.ProductId == pID)
-                .Select(s => s.Price).OrderByDescending(s=>s).FirstOrDefaultAsync();
+                .Select(s => s.Price).OrderByDescending(s => s).FirstOrDefaultAsync();
             var quote = await _context.SellerAddProduct.Where(s => s.ProductId == pID)
-                .Select(s=>s.Price).OrderBy(s=>s).FirstOrDefaultAsync();
-            if(bid != null)
+                .Select(s => s.Price).OrderBy(s => s).FirstOrDefaultAsync();
+            if (bid != null)
             {
                 maxBid = bid;
             }
@@ -187,13 +189,35 @@ namespace SIEG_API.Controllers
             {
                 minQuote = quote;
             }
-
             var list = new
             {
                 maxBid = maxBid,
                 minQuote = minQuote
             };
             return list;
+        }
+
+        [HttpPost("AddSellrrOrder")]
+        public void AddSellrrOrder([FromBody] J_AddSellrrOrder orderInfo)
+        {
+            var seller = _context.SellerAddProduct
+                .Where(s => s.ProductId == orderInfo.pID && s.Price == orderInfo.pPrice && s.ValIdity == true)
+                .OrderBy(s => s.AddTime).First();
+
+            Order order = new Order
+            {
+                SellerId = seller.MemberId,
+                BuyerId = orderInfo.bID,
+                ProductId = orderInfo.pID,
+                Price = orderInfo.pPrice,
+                State = "待出貨",
+                Pay = orderInfo.pay,
+                Receiver = orderInfo.receiver,
+                ReceivingPhone = orderInfo.receivingPhone,
+                ShippingAddress = orderInfo.shippingAddress,
+            };
+            _context.Order.Add(order);
+            _context.SaveChanges();
         }
     }
 }

@@ -146,7 +146,7 @@
     <script src="/js/main.js"></script>
 
     <script>
-        var webApiAddress = "https://localhost:7139";
+        var webApiAddress = "https://localhost:7139/api/J";
         var appVue = new Vue({
             el: "#appVue",
             data: {
@@ -179,7 +179,7 @@
                 async getProductInfo() {
                     try {
                         let _this = this;
-                        let response = await axios.get(`${webApiAddress}/api/ProductInfo/${_this.pID}`);
+                        let response = await axios.get(`${webApiAddress}/ProductInfo/${_this.pID}`);
                         _this.productInfo = response.data;
                     } catch (error) {
                         console.log(error)
@@ -188,7 +188,7 @@
                 async getSizeAndBid() {
                     try {
                         let _this = this;
-                        let response = await axios.get(`${webApiAddress}/api/GetSizeAndBid`);
+                        let response = await axios.get(`${webApiAddress}/GetSizeAndBid`);
                         _this.SizeAndPriceList = response.data;
                     } catch (error) {
                         console.log(error)
@@ -197,7 +197,7 @@
                 async getMaxMinPrice() {
                     try {
                         let _this = this;
-                        let response = await axios.get(`${webApiAddress}/api/GetMaxMinPrice/${_this.pID}`);
+                        let response = await axios.get(`${webApiAddress}/GetMaxMinPrice/${_this.pID}`);
                         _this.maxBid = response.data.maxBid;
                         _this.minQuote = response.data.minQuote;
                     } catch (error) {

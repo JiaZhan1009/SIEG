@@ -573,7 +573,7 @@
     <script src="/js/main.js"></script>
 
     <script>
-        var webApiAddress = "https://localhost:7139";
+        var webApiAddress = "https://localhost:7139/api/J";
         var appVue = new Vue({
             el: "#appVue",
             data: {
@@ -613,12 +613,12 @@
             methods: {
                 async getProductInfoDTO() {
                     let _this = this;
-                    var response = await axios.get(`${webApiAddress}/api/ProductInfo/${_this.pID}`);
+                    var response = await axios.get(`${webApiAddress}/ProductInfo/${_this.pID}`);
                     this.productInfo = response.data;
                 },
                 GetSizeAndQuote: function () {
                     let _this = this;
-                    axios.get(`${webApiAddress}/api/GetSizeAndQuote`).then(
+                    axios.get(`${webApiAddress}/GetSizeAndQuote`).then(
                         response => {
                             _this.SizeAndPriceList = response.data;
                             if (_this.pPrice == null) {
@@ -630,22 +630,22 @@
                 },
                 async getOrderList() { //交易記錄
                     let _this = this;
-                    let response = await axios.get(`${webApiAddress}/api/GetOrderList/${_this.pID}`);
+                    let response = await axios.get(`${webApiAddress}/GetOrderList/${_this.pID}`);
                     _this.TranList = response.data;
                 },
                 async getLastPrice() { //取得選取的 pID 最近一筆的成交價格
                     let _this = this;
-                    let response = await axios.get(`${webApiAddress}/api/GetLastDealPrice/${_this.pID}`);
+                    let response = await axios.get(`${webApiAddress}/GetLastDealPrice/${_this.pID}`);
                     _this.lastTimePrice = response.data;
                 },
                 async getQuotePrice() {
                     let _this = this;
-                    let response = await axios.get(`${webApiAddress}/api/QuotePriceList/${_this.pID}`);
+                    let response = await axios.get(`${webApiAddress}/QuotePriceList/${_this.pID}`);
                     _this.quotePriceList = response.data;
                 },
                 async getBidPrice() {
                     let _this = this;
-                    let response = await axios.get(`${webApiAddress}/api/BidPriceList/${_this.pID}`);
+                    let response = await axios.get(`${webApiAddress}/BidPriceList/${_this.pID}`);
                     _this.bidPriceList = response.data;
                 },
                 selectSizeItem(pSize, pPrice, index, pID) {

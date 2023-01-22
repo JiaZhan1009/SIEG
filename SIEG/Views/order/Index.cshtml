@@ -58,7 +58,7 @@
 
                                                 <!--  動態產生尺碼item  -->
                                                 <div class="sizePriceItem" @@click="activeIndex=index" v-for="(item, index) in DisplaySizeAndPriceList" :key="index">
-                                                    <div :class="['divSizeItem', 'sizeItem', {'active':activeIndex==index}]" @@click="showSelSize = !showSelSize;selectSizeItem(item.size,item.price,index,item.pID)">
+                                                    <div :class="['divSizeItem', 'sizeItem', {'active':activeIndex==index}]" @@click="showSelSize = !showSelSize;selectSizeItem(item.size,item.price,index,item.pID,item.sID)">
                                                         <div class="item">
                                                             <div class="fontBold">US {{item.size}}</div>
                                                             <div class="fontGreen">{{item.Fprice}}</div>
@@ -131,9 +131,9 @@
                                             <span>請選擇付款方式</span>
                                         </div>
                                         <div class="col-6">
-                                            <select value="1" class="selDay" v-model="selPay">
-                                                <option value="1">Line Pay</option>
-                                                <option value="3">信用卡</option>
+                                            <select value="LinePay" class="selDay" v-model="selPay">
+                                                <option value="LinePay">Line Pay</option>
+                                                <option value="信用卡">信用卡</option>
                                             </select>
                                         </div>
                                     </div>
@@ -302,7 +302,7 @@
     <script>
         // order page
         let baseLoginPayUrl = "https://localhost:7052/api/LinePay/";
-        var webApiAddress = "https://localhost:7139";
+        var webApiAddress = "https://localhost:7139/api/J";
         var appVue = new Vue({
             el: "#appVue",
             data: {
@@ -328,6 +328,7 @@
                 maxBid: null,
                 minQuote: null,
                 selPay: null,
+                sID: null,
             },
             mounted: function () {
                 let _this = this;
@@ -346,7 +347,7 @@
                 async getProductInfoDTO() {
                     try {
                         let _this = this;
-                        let response = await axios.get(`${webApiAddress}/api/ProductInfo/${_this.pID}`);
+                        let response = await axios.get(`${webApiAddress}/ProductInfo/${_this.pID}`);
                         this.productInfo = response.data;
                     } catch (error) {
                         console.log(error);
@@ -355,7 +356,7 @@
                 async getSizeAndQuote() {
                     try {
                         let _this = this;
-                        let response = await axios.get(`${webApiAddress}/api/GetSizeAndQuote`);
+                        let response = await axios.get(`${webApiAddress}/GetSizeAndQuote`);
                         _this.SizeAndPriceList = response.data;
                     } catch (error) {
                         console.log(error);
@@ -364,7 +365,7 @@
                 async getMemberInfo() {
                     try {
                         let _this = this;
-                        let response = await axios.get(`${webApiAddress}/api/GetMemberInfo/${_this.mID}`);
+                        let response = await axios.get(`${webApiAddress}/GetMemberInfo/${_this.mID}`);
                         _this.memberList = response.data;
                     } catch (error) {
                         console.log(error);
@@ -373,19 +374,20 @@
                 async getMaxMinPrice() {
                     try {
                         let _this = this;
-                        let response = await axios.get(`${webApiAddress}/api/GetMaxMinPrice/${_this.pID}`);
+                        let response = await axios.get(`${webApiAddress}/GetMaxMinPrice/${_this.pID}`);
                         _this.maxBid = response.data.maxBid;
                         _this.minQuote = response.data.minQuote;
                     } catch (error) {
                         console.log(error);
                     }
                 },
-                selectSizeItem: function (pSize, pPrice, index, pID) {
+                selectSizeItem: function (pSize, pPrice, index, pID, sID) {
                     let _this = this;
                     _this.pSize = pSize;
                     _this.pPrice = pPrice;
                     _this.tmpPrice = pPrice;
                     _this.pID = pID;
+                    _this.sID = sID;
                     sessionStorage.setItem("pSize", _this.pSize);
                     sessionStorage.setItem("pPrice", _this.pPrice);
                     sessionStorage.setItem("selIndex", index);
@@ -421,7 +423,7 @@
                                     products: [
                                         {
                                             name: _this.productInfo.pName,
-                                            imageUrl: "https://static.accupass.com/org/2011051025162614811630.jpg",
+                                            imageUrl: _this.productInfo.pImg,
                                             quantity: 1,
                                             price: parseInt(_this.pPrice),
                                         }
@@ -433,8 +435,20 @@
                                 CancelUrl: "https://c4f0-61-63-154-173.jp.ngrok.io/api/LinePay/Cancel",
                             },
                         };
+                        let orderInfo = {
+                            sID: _this.sID,
+                            bID: _this.mID,
+                            pPrice: _this.pPrice,
+                            pName: _this.productInfo.pName,
+                            pImg: _this.productInfo.pImg,
+                            pID: _this.pID,
+                            pay: _this.selPay,
+                            receiver: _this.memberList.mName,
+                            receivingPhone: _this.memberList.mPhone,
+                            shippingAddress: _this.memberList.mAddress,
+                        }
+                        window.name = JSON.stringify(orderInfo);
 
-                        sessionStorage.setItem("payment", JSON.stringify(payment));
                         // 送出交易申請至商家 server
                         $.post({
                             url: baseLoginPayUrl + "Create",
@@ -454,11 +468,11 @@
                 },
                 next() {
                     let _this = this;
-                    if (_this.selPay == 1) {
+                    if (_this.selPay == "LinePay") {
                         _this.requestLinePayment();
-                    } else (_this.selPay == 2){
+                    } else if (_this.selPay == "信用卡") {
                         alert("信用卡");
-                    }else{
+                    } else {
                         alert("尚未選擇付款方式");
                     }
                 },
@@ -511,6 +525,7 @@
                     get() {
                         return this.SizeAndPriceList.map(item => {
                             return {
+                                sID: item.sID,
                                 pID: item.pID,
                                 price: item.pPrice,
                                 size: item.pSize,

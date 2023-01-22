@@ -8,21 +8,21 @@
             <table>
                 <thead>
                     <tr>
-                        <th colspan="2">{{payment.name}}</th>
+                        <th colspan="2">{{orderInfo.pName}}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td colspan="2"><img src="https://static.accupass.com/org/2011051025162614811630.jpg"></td>
+                        <td colspan="2"><img :src=orderInfo.pImg></td>
                     </tr>
                     <tr>
-                        <td colspan="2"> 價格 : {{payment.amount}} </td>
+                        <td colspan="2"> 價格 : {{orderInfo.pPrice}} </td>
                     </tr>
                     <tr>
                         <td colspan="2"> 購買數量 : 1 </td>
                     </tr>
                     <tr>
-                        <td colspan="2" style="text-align: right;"> 總金額 : {{payment.amount}} </td>
+                        <td colspan="2" style="text-align: right;"> 總金額 : {{orderInfo.pPrice}} </td>
                     </tr>
                     <tr>
                         <td align="center" colspan="2"><button @@click="confirmPayment()"> 確認付款</button></td>
@@ -52,15 +52,17 @@
 
     <script>
         // confirm page
+        var webApiAddress = "https://localhost:7139/api/J";
         var appVue = new Vue({
             el: "#appVue",
             data: {
                 baseLoginPayUrl: 'https://localhost:7052/api/LinePay/',
                 transactionId: "",
                 orderId: "",
-                payment: sessionStorage.getItem("payment"),
+                orderInfo: JSON.parse(window.name),
             },
             mounted() {
+                console.log(this.orderInfo)
                 // 取出 query parameter 中的 transactionId & orderId
                 const params = new Proxy(new URLSearchParams(window.location.search), {
                     get: (searchParams, prop) => searchParams.get(prop),
@@ -74,7 +76,7 @@
                     let _this = this
                     // 交易訂單假資料
                     let payment = {
-                        amount: _this.payment.amount,
+                        amount: _this.orderInfo.pPrice,
                         currency: "TWD",
                     };
                     // 送出確認交易
@@ -84,17 +86,32 @@
                         contentType: "application/json",
                         data: JSON.stringify(payment),
                         success: (res) => {
-                            $("#paymentStatus").text("交易狀態 : 成功")
+                            $("#paymentStatus").text("交易狀態 : 成功");
+
                             console.log(res);
-                            //setTimeout(() => {
-                            //    window.location = "https://a0ec-111-242-180-163.jp.ngrok.io/products";
-                            //}, 2000);
+                            alert("付款成功, 等待 3 秒跳轉到訂單頁面")
+                            axios.post(`${webApiAddress}/AddSellrrOrder`, _this.orderInfo);
+                            let num = "";
+                            for (let i = 3; i >= 1; i--) {
+                                setTimeout(() => {
+                                    num = i + ".";
+                                    $("#paymentStatus").text(`交易狀態 : 成功  ${num}`);
+                                }, (3 - i) * 1000);
+                                for (let j = 1; j <= 2; j++) {
+                                    setTimeout(() => {
+                                        num += ".";
+                                        $("#paymentStatus").text(`交易狀態 : 成功  ${num}`);
+                                    }, ((3 - i) * 1000) + (j * (1000 / 3)));
+                                }
+                            }
+                            //location.replace("https://localhost:7002/Member/Member_buyerorder");
                         },
                         error: (err) => {
                             console.log(err);
                         }
                     })
-                }
+                },
+
             }
         })
     </script>

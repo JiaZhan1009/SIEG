@@ -66,7 +66,7 @@
                                             </td>
                                             <td data-title="報價">NT$<input v-model="item.price" /></td>
                                             <td data-title="最低報價">NT${{item.lowPrice}}</td>
-                                            <td data-title="最高出價">{{item.hightPrice}}</td>
+                                            <td data-title="最高出價">NT${{item.hightPrice}}</td>
                                             <td data-title="到期日">{{item.newShelfdate}}</td>
                                             <td data-title="">
                                                 <button type="button" class="btn btncolor" @@click="updatebid(item)">確定</button>
@@ -88,7 +88,7 @@
                                             </td>
                                             <td data-title="報價">NT${{item.price}}</td>
                                             <td data-title="最低報價">NT${{item.lowPrice}}</td>
-                                            <td data-title="最高出價">{{item.hightPrice}}</td>
+                                            <td data-title="最高出價">NT${{item.hightPrice}}</td>
                                             <td data-title="到期日">{{item.newShelfdate}}</td>
                                             <td data-title="">
                                                 <button type="button" class="btn btncolor" @@click="bidedit(item.sellerAddProductID)">修改出價</button>
@@ -243,6 +243,7 @@
             </div>
         </div>
     </div>
+    <partial name="_FooterPartial" />
 </div>
 
 @section Scripts

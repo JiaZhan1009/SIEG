@@ -75,6 +75,27 @@ namespace SIEG_API.Controllers
         }
 
 
+        [HttpGet("Sellerinformation/{Memberid}")]
+        public async Task<ActionResult<B_SellerinformationdDTO>> GetMember3(int Memberid)
+        {
+            var member = await _context.Member.FindAsync(Memberid);
+
+            if (member == null)
+            {
+                return NotFound();
+            }
+            B_SellerinformationdDTO Sellerinformation = new B_SellerinformationdDTO
+            {
+                MemberId = member.MemberId,
+                Name = member.Name,
+                BankCode = member.BankCode,
+                Phone = member.Phone,
+                BankAccount= member.BankAccount,
+            };
+            return Sellerinformation;
+        }
+
+
         // PUT: api/B_PaymentInformation/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{Memberid}")]
@@ -122,6 +143,38 @@ namespace SIEG_API.Controllers
            
             _context.Entry(Mailinginformation).State = EntityState.Modified;
           
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!MemberExists(Memberid))
+                {
+                    return "找不到欲修改紀錄";
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return "修改成功!";
+        }
+
+        [HttpPut("Sellerinformation/{Memberid}")]
+        public async Task<string> PutMember(int Memberid, B_SellerinformationdDTO member)
+        {
+            if (Memberid != member.MemberId)
+            {
+                return "不正確";
+            }
+            Member Sellerinformation = await _context.Member.FindAsync(member.MemberId);
+            Sellerinformation.BankCode = member.BankCode;
+            Sellerinformation.BankAccount = member.BankAccount;
+            _context.Entry(Sellerinformation).State = EntityState.Modified;
+
 
             try
             {

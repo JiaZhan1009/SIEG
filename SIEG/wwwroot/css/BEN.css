@@ -313,12 +313,13 @@ hr {
 
 .addressgroup {
     margin-top: 30px;
-    width: 500px;
+/*    width: 500px;*/
 }
 
 .addressgroup-1 {
     display: flex;
     margin-top: 30px;
+/*    width: 500px;*/
 }
 
 .addressgroup-2 {
@@ -578,6 +579,6 @@ hr {
     display: flex;
 }
 
-.nomodification {
-    display
+.PaymentInformation{
+    margin-bottom:60px;
 }

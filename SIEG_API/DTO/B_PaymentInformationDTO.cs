@@ -9,5 +9,11 @@
         public string? Name { get; set; }
         public string? BillingAddress { get; set; }
         public string? Phone { get; set; }
+
+        public string? Shippingaddress { get; set; }
+        public int? BankAccount { get; set; }
+        public string? BankCode { get; set; }
+
+        public string? Bankname { get; set; }
     }
 }

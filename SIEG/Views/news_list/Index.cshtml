@@ -11,7 +11,7 @@
             <h1 class="page_title">@ViewData["EnTitle"]</h1>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="index">Home</a></li>
                     <li class="breadcrumb-item active">@ViewData["Title"]</li>
                 </ol>
             </nav>
@@ -101,8 +101,6 @@
 </div>
 
 @section Scripts{
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
     <script>
 
         var webApiBaseAddress = "https://localhost:7139";

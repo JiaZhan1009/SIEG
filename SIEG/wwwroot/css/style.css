@@ -26,6 +26,7 @@ img {
 a {
     transition: 0.3s;
     text-decoration: none;
+    cursor: pointer;
 }
 
 button {
@@ -1429,4 +1430,30 @@ p:last-child {
 
 .contact_page .btn_style1 {
     margin-top: 50px;
+}
+
+/*sweetAlert*/
+
+.swal2-popup {
+    padding-bottom: 35px !important;
+}
+
+.swal2-title {
+    font-size: 30px !important;
+    font-weight: 500 !important;
+    letter-spacing: 1px;
+}
+
+.swal2-html-container {
+    color: #999 !important;
+    font-size: 17px !important;
+    letter-spacing: 1px;
+}
+
+.swal2-styled.swal2-confirm {
+    background-color: #aaa !important;
+}
+
+.swal2-styled.swal2-confirm:focus {
+    box-shadow: unset !important;
 }

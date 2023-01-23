@@ -11,7 +11,7 @@
             <h1 class="page_title">@ViewData["EnTitle"]</h1>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="index">Home</a></li>
                     <li class="breadcrumb-item active">@ViewData["Title"]</li>
                 </ol>
             </nav>
@@ -135,8 +135,6 @@
 <partial name="_footerPartial" />
 
 @section Scripts{
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
 
     <script>
 
@@ -287,40 +285,6 @@
                         );
                         sessionStorage.removeItem('pKeyword');
                     }
-                    //let request = {};
-                    //let x = $('#productlistName').val();
-                    //console.log(x)
-                    //console.log(this.Filter)
-                    //if (x || this.Filter) {
-                    //    let search = this.Filter != "" ? this.Filter : x;
-                    //    axios.get(`${webApiBaseAddress}/api/E_ProductList?name=${search}`).then(
-                    //        response => {
-                    //            this.ProductListDTO = response.data;
-                    //            var ProductList = [];
-                    //            for (let i = 0; i < this.ProductListDTO.length; i++) {
-                    //                let item = {};
-                    //                item = this.ProductListDTO[i];
-                    //                ProductList.push(item);
-                    //                item.productPrice = "$" + item.productlistPrice.toLocaleString();
-                    //            }
-                    //            this.ProductListDTO = ProductList;
-
-                    //            if (ProductList.length == 0) {
-                    //                $(".no_data").show();
-                    //                $("#pagination").hide();
-                    //            }
-                    //            else {
-                    //                $(".no_data").hide();
-                    //                $("#pagination").show();
-                    //            }
-                    //        }
-                    //    );
-                    //    //sessionStorage.removeItem('pKeyword');
-                    //} else {
-                    //    this.getProductListDTO();
-                    //    $('#productlistName').blur();
-                    //    $('.searchInput').blur();
-                    //}
                 },
                 filterProductSort: function (sort) {
                     let _this = this;

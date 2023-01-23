@@ -75,13 +75,13 @@
                                 <div>
                                     <div class="creditcard">
                                         <div> 銀行帳戶:</div>
-                                        <div> 尾號4碼為888的銀行帳戶</div>
-                                        <div> 銀行代號:123</div>
-                                        <div>銀行名稱:中國信託 </div>
+                                        <div> 尾號4碼為{{PaymentInformationDTOes.bankAccount}}的銀行帳戶</div>
+                                        <div> 銀行代號:{{PaymentInformationDTOes.bankCode}}</div>
+                                        <div>銀行名稱:{{PaymentInformationDTOes.bankname}} </div>
                                     </div>
                                     <div class="creditcard">
                                         <div> 持有人姓名:</div>
-                                        <div> 盧冠佑</div>
+                                        <div> {{PaymentInformationDTOes.name}}</div>
                                         <div><br></div>
                                         <div><br></div>
                                     </div>
@@ -125,7 +125,7 @@
                 PaymentInformationDTOes: {},
                 Filter: "",
                 creditCard4digits: "",
-
+                BankAccount4digits:"",
             },
             mounted: function () {
                 var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -143,7 +143,9 @@
                         response => {
                             _this.PaymentInformationDTOes = response.data;
                             var creditCardNumber = _this.PaymentInformationDTOes.creditCard;
-                            _this.creditCard4digits = creditCardNumber.slice(-4);
+                            var BankAccount = _this.PaymentInformationDTOes.bankAccount;
+                            _this.creditCard4digits =creditCardNumber.slice(-4);
+                            //_this.BankAccount4digits = BankAccount.slice(-4);
                         }
                     );
                 },

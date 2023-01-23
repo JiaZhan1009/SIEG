@@ -51,6 +51,9 @@ namespace SIEG_API.Controllers
                 BillingAddress = member.BillingAddress,
                 Phone = member.Phone,
                 Shippingaddress= member.Address,
+                BankAccount=member.BankAccount,
+                BankCode=member.BankCode,
+                Bankname=_context.Bank.Where(bn=>bn.BankCode== member.BankCode).Select(bn=>bn.Name).FirstOrDefault(),
             };
             return PaymentInformation;
         }
@@ -93,6 +96,25 @@ namespace SIEG_API.Controllers
                 BankAccount= member.BankAccount,
             };
             return Sellerinformation;
+        }
+
+
+        [HttpGet("Passwordmodification/{Memberid}")]
+        public async Task<ActionResult<B_PasswordmodificationDTO>> GetMember4(int Memberid)
+        {
+            var member = await _context.Member.FindAsync(Memberid);
+
+            if (member == null)
+            {
+                return NotFound();
+            }
+            B_PasswordmodificationDTO Passwordmodification = new B_PasswordmodificationDTO
+            {
+                MemberId = member.MemberId,
+                Email = member.Email,
+                Password = member.Password,
+            };
+            return Passwordmodification;
         }
 
 
@@ -174,6 +196,37 @@ namespace SIEG_API.Controllers
             Sellerinformation.BankCode = member.BankCode;
             Sellerinformation.BankAccount = member.BankAccount;
             _context.Entry(Sellerinformation).State = EntityState.Modified;
+
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!MemberExists(Memberid))
+                {
+                    return "找不到欲修改紀錄";
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return "修改成功!";
+        }
+
+        [HttpPut("Passwordmodification/{Memberid}")]
+        public async Task<string> PutMember(int Memberid, B_PasswordmodificationDTO member)
+        {
+            if (Memberid != member.MemberId)
+            {
+                return "不正確";
+            }
+            Member Passwordmodification = await _context.Member.FindAsync(member.MemberId);
+            Passwordmodification.Password = member.Password;
+            _context.Entry(Passwordmodification).State = EntityState.Modified;
 
 
             try

@@ -11,5 +11,9 @@
         public string? Phone { get; set; }
 
         public string? Shippingaddress { get; set; }
+        public int? BankAccount { get; set; }
+        public string? BankCode { get; set; }
+
+        public string? Bankname { get; set; }
     }
 }

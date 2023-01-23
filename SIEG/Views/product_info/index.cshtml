@@ -100,7 +100,7 @@
 
                                                             <div class="sizeAndPrice">
                                                                 <div @@click="activeIndex=index" :class="['sizePriceItem', {'active':activeIndex==index}]" v-for="(item, index) in DisplaySizeAndPriceList" :key="index">
-                                                                    <div class="sizeItem" @@click="showSelSize = !showSelSize;selectSizeItem(item.size, item.price, index, item.pID)">
+                                                                    <div class="sizeItem" @@click="showSelSize = !showSelSize;selectSizeItem(item.size, item.price, index, item.pID, item.sID)">
                                                                         <div class="item">
                                                                             <div class="fontBold">US {{item.size}}</div>
                                                                             <div class="fontGreen">{{item.fPrice}}</div>
@@ -302,107 +302,107 @@
         </div>
         </div>*@
 
-@*
-            <div class="titleDiv">
-                <p class="titleP">相關商品</p>
-                <div class="productInfo_likeProduct">
-                    <div class="container">
-                        <div class="owl-carousel owl-theme banner-carousel">
-                            <div class="row wow slideInUp">
-                                <div class="col-xl-3 col-md-4 col-12">
-                                    <div class="item">
-                                        <div class="product_col">
-                                            <div class="productInfo_card">
-                                                <div class="divLikeProduct">
-                                                    <a href="product_info.html">
-                                                        <img src="/images/jiazhan/products/600x600-3.jpg" alt="">
-                                                    </a>
-                                                </div>
-                                                <div class="productInfo_content">
-                                                    <!-- <a href="product_info.html" class="two-row"> -->
-                                                    <a href="product_info.html" class="">
-                                                        <div class="two-row">Jordan 1 Retro Low OG SPJordan 1 Retro Low OG SP</div>
-                                                        <div style="color:#999999;margin:0px">最低報價</div>
-                                                        <div class="minPrice fontSizeM">$1,780</div>
-                                                        <div class="listTimeSold">上次成交價 : $1,780</div>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+            @*
+        <div class="titleDiv">
+        <p class="titleP">相關商品</p>
+        <div class="productInfo_likeProduct">
+        <div class="container">
+        <div class="owl-carousel owl-theme banner-carousel">
+        <div class="row wow slideInUp">
+        <div class="col-xl-3 col-md-4 col-12">
+        <div class="item">
+        <div class="product_col">
+        <div class="productInfo_card">
+        <div class="divLikeProduct">
+        <a href="product_info.html">
+        <img src="/images/jiazhan/products/600x600-3.jpg" alt="">
+        </a>
+        </div>
+        <div class="productInfo_content">
+        <!-- <a href="product_info.html" class="two-row"> -->
+        <a href="product_info.html" class="">
+        <div class="two-row">Jordan 1 Retro Low OG SPJordan 1 Retro Low OG SP</div>
+        <div style="color:#999999;margin:0px">最低報價</div>
+        <div class="minPrice fontSizeM">$1,780</div>
+        <div class="listTimeSold">上次成交價 : $1,780</div>
+        </a>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
 
-                            <div class="col-xl-3 col-md-4 col-12">
-                                <div class="item">
-                                    <div class="product_col">
-                                        <div class="productInfo_card">
-                                            <div class="divLikeProduct">
-                                                <a href="product_info.html">
-                                                    <img src="/images/jiazhan/products/600x600-3.jpg" alt="">
-                                                </a>
-                                            </div>
-                                            <div class="productInfo_content">
-                                                <!-- <a href="product_info.html" class="two-row"> -->
-                                                <a href="product_info.html" class="">
-                                                    <div class="two-row">Jordan 1 Retro Low OG SPJordan 1 Retro Low OG SP</div>
-                                                    <div style="color:#999999;margin:0px">最低報價</div>
-                                                    <div class="minPrice fontSizeM">$1,780</div>
-                                                    <div class="listTimeSold">上次成交價 : $1,780</div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="col-xl-3 col-md-4 col-12">
-                                <div class="product_col">
-                                    <div class="productInfo_card">
-                                        <div class="divLikeProduct">
-                                            <a href="product_info.html">
-                                                <img src="/images/jiazhan/products/600x600-3.jpg" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="productInfo_content">
-                                            <!-- <a href="product_info.html" class="two-row"> -->
-                                            <a href="product_info.html" class="">
-                                                <div class="two-row">Jordan 1 Retro Low OG SPJordan 1 Retro Low OG SP</div>
-                                                <div style="color:#999999;margin:0px">最低報價</div>
-                                                <div class="minPrice fontSizeM">$1,780</div>
-                                                <div class="listTimeSold">上次成交價 : $1,780</div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-xl-3 col-md-4 col-12">
-                                <div class="product_col">
-                                    <div class="productInfo_card">
-                                        <div class="divLikeProduct">
-                                            <a href="product_info.html">
-                                                <img src="/images/jiazhan/products/600x600-3.jpg" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="productInfo_content">
-                                            <a href="product_info.html" class="">
-                                                <div class="two-row">Jordan 1 Retro Low OG SPJordan 1 Retro Low OG SP</div>
-                                                <div style="color:#999999;margin:0px">最低報價</div>
-                                                <div class="minPrice fontSizeM">$1,780</div>
-                                                <div class="listTimeSold">上次成交價 : $1,780</div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+        <div class="col-xl-3 col-md-4 col-12">
+        <div class="item">
+        <div class="product_col">
+        <div class="productInfo_card">
+        <div class="divLikeProduct">
+        <a href="product_info.html">
+        <img src="/images/jiazhan/products/600x600-3.jpg" alt="">
+        </a>
+        </div>
+        <div class="productInfo_content">
+        <!-- <a href="product_info.html" class="two-row"> -->
+        <a href="product_info.html" class="">
+        <div class="two-row">Jordan 1 Retro Low OG SPJordan 1 Retro Low OG SP</div>
+        <div style="color:#999999;margin:0px">最低報價</div>
+        <div class="minPrice fontSizeM">$1,780</div>
+        <div class="listTimeSold">上次成交價 : $1,780</div>
+        </a>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
 
 
-                        </div>
-                    </div>
-                </div>
-            </div>*@
+        <div class="col-xl-3 col-md-4 col-12">
+        <div class="product_col">
+        <div class="productInfo_card">
+        <div class="divLikeProduct">
+        <a href="product_info.html">
+        <img src="/images/jiazhan/products/600x600-3.jpg" alt="">
+        </a>
+        </div>
+        <div class="productInfo_content">
+        <!-- <a href="product_info.html" class="two-row"> -->
+        <a href="product_info.html" class="">
+        <div class="two-row">Jordan 1 Retro Low OG SPJordan 1 Retro Low OG SP</div>
+        <div style="color:#999999;margin:0px">最低報價</div>
+        <div class="minPrice fontSizeM">$1,780</div>
+        <div class="listTimeSold">上次成交價 : $1,780</div>
+        </a>
+        </div>
+        </div>
+        </div>
+        </div>
+
+        <div class="col-xl-3 col-md-4 col-12">
+        <div class="product_col">
+        <div class="productInfo_card">
+        <div class="divLikeProduct">
+        <a href="product_info.html">
+        <img src="/images/jiazhan/products/600x600-3.jpg" alt="">
+        </a>
+        </div>
+        <div class="productInfo_content">
+        <a href="product_info.html" class="">
+        <div class="two-row">Jordan 1 Retro Low OG SPJordan 1 Retro Low OG SP</div>
+        <div style="color:#999999;margin:0px">最低報價</div>
+        <div class="minPrice fontSizeM">$1,780</div>
+        <div class="listTimeSold">上次成交價 : $1,780</div>
+        </a>
+        </div>
+        </div>
+        </div>
+        </div>
+
+
+        </div>
+        </div>
+        </div>
+        </div>*@
             <hr>
             <!-- 最近瀏覽-->
             <div class="titleDiv">
@@ -577,7 +577,8 @@
         var appVue = new Vue({
             el: "#appVue",
             data: {
-                mID: sessionStorage.setItem("mID", 101),
+                //sID 預設值待解決
+                mID: sessionStorage.getItem("mID"),
                 //pID: 102,
                 pID: sessionStorage.getItem("pID"),
                 productInfo: {},
@@ -594,6 +595,7 @@
                 upDown: null,
                 TranList: [],
                 fontColor: '#006340',
+                sID: null,
             },
             mounted: function () {
                 _this = this;
@@ -648,15 +650,17 @@
                     let response = await axios.get(`${webApiAddress}/BidPriceList/${_this.pID}`);
                     _this.bidPriceList = response.data;
                 },
-                selectSizeItem(pSize, pPrice, index, pID) {
+                selectSizeItem(pSize, pPrice, index, pID, sID) {
                     let _this = this;
                     _this.pSize = pSize;
                     _this.pPrice = pPrice;
                     _this.pID = pID;
+                    _this.sID = sID;
                     sessionStorage.setItem("pSize", pSize);
                     sessionStorage.setItem("pPrice", pPrice);
                     sessionStorage.setItem("selIndex", index);
                     sessionStorage.setItem("pID", pID);
+                    sessionStorage.setItem("sID", sID);
                 },
                 BuyNow: function () {
                     sessionStorage.setItem("bool", false);
@@ -713,7 +717,8 @@
                                 pID: item.pID,
                                 size: item.pSize,
                                 fPrice: this.Format(item.pPrice),
-                                price: item.pPrice
+                                price: item.pPrice,
+                                sID: item.sID
                             }
                         });
                     }
@@ -751,7 +756,8 @@
                                 time: item.oTime.split('T')[1].split('.')[0],
                                 size: item.oSize,
                                 price: item.oPrice,
-                                fPrice: _this.Format(item.oPrice)
+                                fPrice: _this.Format(item.oPrice),
+
                             }
                         })
                     }

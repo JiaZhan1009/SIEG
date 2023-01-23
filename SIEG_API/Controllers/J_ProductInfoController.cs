@@ -197,28 +197,7 @@ namespace SIEG_API.Controllers
             return list;
         }
 
-        [HttpPost("AddSellrrOrder")]
-        public void AddSellrrOrder([FromBody] J_AddSellrrOrder orderInfo)
-        {
-            var seller = _context.SellerAddProduct
-                .Where(s => s.ProductId == orderInfo.pID && s.Price == orderInfo.pPrice && s.ValIdity == true)
-                .OrderBy(s => s.AddTime).First();
-
-            Order order = new Order
-            {
-                SellerId = seller.MemberId,
-                BuyerId = orderInfo.bID,
-                ProductId = orderInfo.pID,
-                Price = orderInfo.pPrice,
-                State = "待出貨",
-                Pay = orderInfo.pay,
-                Receiver = orderInfo.receiver,
-                ReceivingPhone = orderInfo.receivingPhone,
-                ShippingAddress = orderInfo.shippingAddress,
-            };
-            _context.Order.Add(order);
-            _context.SaveChanges();
-        }
+       
     }
 }
 

@@ -1,4 +1,4 @@
-﻿namespace LinePay.Dtos
+﻿namespace Payment.Dtos
 {
     public class PaymentRequestDto
     {

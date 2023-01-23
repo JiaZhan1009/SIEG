@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace LinePay.Providers
+namespace Payment.Providers
 {
     public class JsonProvider
     {

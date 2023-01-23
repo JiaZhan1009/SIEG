@@ -1,4 +1,4 @@
-namespace LinePay
+namespace Payment
 {
     public class WeatherForecast
     {

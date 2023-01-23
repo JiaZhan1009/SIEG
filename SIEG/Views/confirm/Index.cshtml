@@ -36,7 +36,6 @@
         </center>
     </div>
     @section Scripts{
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
@@ -90,7 +89,7 @@
 
                             console.log(res);
                             alert("付款成功, 等待 3 秒跳轉到訂單頁面")
-                            axios.post(`${webApiAddress}/AddSellrrOrder`, _this.orderInfo);
+                            axios.post(`${webApiAddress}/InsertBuyOrder`, _this.orderInfo);
                             let num = "";
                             for (let i = 3; i >= 1; i--) {
                                 setTimeout(() => {
@@ -104,7 +103,8 @@
                                     }, ((3 - i) * 1000) + (j * (1000 / 3)));
                                 }
                             }
-                            //location.replace("https://localhost:7002/Member/Member_buyerorder");
+                            $("#paymentStatus").text(`交易狀態 : 成功 `);
+                            location.replace("https://localhost:7002/Member/Member_buyerorder");
                         },
                         error: (err) => {
                             console.log(err);

@@ -58,7 +58,7 @@
 
                                                 <!--  動態產生尺碼item  -->
                                                 <div class="sizePriceItem" @@click="activeIndex=index" v-for="(item, index) in DisplaySizeAndPriceList" :key="index">
-                                                    <div :class="['divSizeItem', 'sizeItem', {'active':activeIndex==index}]" @@click="showSelSize = !showSelSize;selectSizeItem(item.size,item.price,index,item.pID,item.sID)">
+                                                    <div :class="['divSizeItem', 'sizeItem', {'active':activeIndex==index}]" @@click="selectSizeItem(item.size,item.price,index,item.pID,item.sID)">
                                                         <div class="item">
                                                             <div class="fontBold">US {{item.size}}</div>
                                                             <div class="fontGreen">{{item.Fprice}}</div>
@@ -189,21 +189,21 @@
                                 </div>
                                 <div class="addressgroup">
                                     <label>姓名</label>
-                                    <input v-model="memberList.mName" type="text" name="text" class="form-control" placeholder="請輸入全名">
+                                    <input v-model="mName" type="text" name="text" class="form-control" placeholder="請輸入全名">
                                 </div>
                                 <div class="addressgroup">
                                     <label>地址</label>
-                                    <input v-model="memberList.mAddress" type="text" name="text" class="form-control" placeholder="請輸入地址">
+                                    <input v-model="mAddress" type="text" name="text" class="form-control" placeholder="請輸入地址">
                                 </div>
                                 <div class="addressgroup">
                                     <label>電話號碼</label>
-                                    <input v-model="memberList.mPhone" type="tel" name="tel" class="form-control" placeholder="請輸入電話號碼">
+                                    <input v-model="mPhone" type="tel" name="tel" class="form-control" placeholder="請輸入電話號碼">
                                 </div>
                                 <div class="addressConcelAndNext">
                                     <button @@click="changeAddressDisplay" type="button" class="btnCancel">
                                         取消
                                     </button>
-                                    <input type="submit" class="btnNext" value="儲存">
+                                    <input @@click="saveMemberInfo" type="submit" class="btnNext" value="儲存">
                                 </div>
                             </div>
                         </div>
@@ -311,6 +311,7 @@
                 //hideInput: true,
                 showSelSize: true,
                 mID: sessionStorage.getItem("mID"),
+                sID: sessionStorage.getItem("sID"),
                 pID: sessionStorage.getItem("pID"),
                 pSize: sessionStorage.getItem("pSize"),
                 pPrice: sessionStorage.getItem("pPrice"),
@@ -328,7 +329,9 @@
                 maxBid: null,
                 minQuote: null,
                 selPay: null,
-                sID: null,
+                mName: null,
+                mPhone: null,
+                mAddress: null,
             },
             mounted: function () {
                 let _this = this;
@@ -367,6 +370,9 @@
                         let _this = this;
                         let response = await axios.get(`${webApiAddress}/GetMemberInfo/${_this.mID}`);
                         _this.memberList = response.data;
+                        _this.mName = _this.memberList.mName;
+                        _this.mPhone = _this.memberList.mPhone;
+                        _this.mAddress = _this.memberList.mAddress;
                     } catch (error) {
                         console.log(error);
                     }
@@ -383,6 +389,7 @@
                 },
                 selectSizeItem: function (pSize, pPrice, index, pID, sID) {
                     let _this = this;
+                    _this.showSelSize = !_this.showSelSize;
                     _this.pSize = pSize;
                     _this.pPrice = pPrice;
                     _this.tmpPrice = pPrice;
@@ -403,6 +410,23 @@
                 changePayDisplay: function () {
                     this.buyHide = this.buyHide ? false : true;
                     this.payHide = !this.buyHide;
+                },
+                saveMemberInfo() {
+                    let _this = this;
+                    if (_this.mPhone != "" && _this.mName != "" && _this.mAddress != "") {
+                        let request = {
+                            mID: _this.mID,
+                            mPhone: _this.mPhone,
+                            mName: _this.mName,
+                            mAddress: _this.mAddress
+                        };
+
+                        axios.put(`${webApiAddress}/UpdataMemberInfo/${_this.mID}`, request)
+                        alert("會員資料儲存成功!");
+                        _this.changeAddressDisplay();
+                    } else {
+                        alert("寄送資訊不完整, 請重新檢查")
+                    }
                 },
                 Format: function (val) { return numeral(val).format("$0,0"); },
                 linepay: function () {
@@ -468,12 +492,11 @@
                 },
                 next() {
                     let _this = this;
-                    if (_this.selPay == "LinePay") {
+                    if (_this.selPay == null) { alert("請選擇付款方式"); }
+                    else if (_this.mAddress != "" && _this.mPhone != "" && _this.mName != "") {
                         _this.requestLinePayment();
-                    } else if (_this.selPay == "信用卡") {
-                        alert("信用卡");
                     } else {
-                        alert("尚未選擇付款方式");
+                        alert("檢查收貨資訊, 有資料尚未填寫");
                     }
                 },
 
@@ -516,7 +539,7 @@
                     }
                 },
                 DisplayAddressInfo: {
-                    get() { return this.memberList.mAddress != null ? this.memberList.mAddress : "未提供郵寄資訊"; }
+                    get() { return this.mAddress != null ? this.mAddress : "未提供郵寄資訊"; }
                 },
                 DisplayTotalPrice() {
                     return this.Format(this.pPrice - this.specialOffer);

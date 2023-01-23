@@ -1,9 +1,9 @@
 ﻿using System;
-using LinePay.Dtos;
-using LinePay.LinePayService;
+using Payment.Dtos;
+using Payment.LinePayService;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
-using LinePay.Providers;
+using Payment.Providers;
 using System.Net.Mime;
 using Microsoft.AspNetCore.Cors;
 

@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace LinePay.Providers
+namespace Payment.Providers
 {
     public static class SignatureProvider
     {

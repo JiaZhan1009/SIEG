@@ -155,7 +155,7 @@
                             </span>
                         </div>
                         <!--內文圖-->
-                        <div v-if="PostDTOs.img != null" style="text-align: center;">
+                        <div v-if="PostDTOs.img != '/images/forum/post/none-img.jpg'" style="text-align: center;">
                             <img :src="PostDTOs.img" class="image">
                         </div>
                         <!--Like-->
@@ -168,7 +168,7 @@
                             <div class="placement" style="float: right;" @@click="like(PostDTOs)">
                                 <div class="heart"></div>
                             </div>
-                            <button type="button" class="book" style="float: right; right: 250px;bottom: 7px;">
+                            <button type="button" class="book" style="float: right;" @@click="book">
                                 <div class="wave"></div>
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -256 1792 1792">
                                     <path d="M1417.763 66.17h-1024v1242l423-406 89-85 89 85 423 406v-1242zm12-128q23 0 44 9 33 13 52.5 41t19.5 62v1289q0 34-19.5 62t-52.5 41q-19 8-44 8-48 0-83-32l-441-424-441 424q-36 33-83 33-23 0-44-9-33-13-52.5-41t-19.5-62v-1289q0-34 19.5-62t52.5-41q21-9 44-9h1048z"
@@ -183,7 +183,7 @@
                 <div id="ReplyVue" style="background-color: #f5f5f5;">
                     <div style="border-bottom: 1px solid #ddd;">
                         <span>
-                            <a class="total_message">共4則留言</a>
+                            <a class="total_message">共{{totalreply}}則留言</a>
                             <span>
                                 <button id="Reply_btn" class="Reply_btn" type="button">我要回復!</button>
                                 <div class="Reply_block">
@@ -324,6 +324,7 @@
                             item = _this.PostDTOs;
                             _this.Date = moment(item.addTime).format("YYYY年MM/DD A:hh:mm");
                             PostList.push(item);
+                            //console.log(response.data)
                         }
                     );
                 },
@@ -347,6 +348,18 @@
                         }
                     );
                 },
+                book: function () {
+                    var _this = this;
+                    var request = {};
+                    request.MemberId = 101;
+                    request.ValIdity = true;
+                    request.ForumArticleId = _this.PostDTOs.forumArticleId;
+                    axios.post(`${webApiBaseAddress}/api/G_FaviriteArticles`, request).then(
+                        response => {
+                        }
+                    );
+                },
+
             },
         });
     </script>
@@ -364,6 +377,7 @@
                 rp2Floor: [],
                 rp2LastFloor: [],
                 rp2Request: {},
+                totalreply: null,
                 Reply: null,
                 Reply2: null,
 
@@ -415,6 +429,7 @@
                             }
                             _this.ReplyDTOs = EmployeeList;
                             lastFloor = lastfloorList.slice(-1);
+                            _this.getTotalReply();
                         }
                     );
                 },
@@ -458,7 +473,20 @@
                         newArray.push(lookupObject[i]);
                     }
                     _this.rp2Floor = newArray;
-                    //console.log(_this.rp2Floor);
+                    _this.getTotalReply();
+                },
+                getTotalReply: function () {
+                    let _this = this;
+                    let x = 0;
+                    for (let i = 0; i < _this.rp2Floor.length; i++) {
+                        x += _this.rp2Floor[i].rpamount;
+                    }
+                    x += lastFloor[0] - 1;
+                    if(x >= 0){
+                        _this.totalreply = x;
+                    }else{
+                        _this.totalreply = 0;
+                    }
                 },
                 insert: function () {
                     var _this = this;
@@ -471,7 +499,7 @@
                         request.Floor = lastFloor[0];
                     }
                     request.ForumReplyContent = _this.Reply;
-                    console.log(request)
+                    //console.log(request)
                     axios.post(`${webApiBaseAddress}/api/G_ForumReply1`, request).then(
                         response => {
                             _this.Reply = null;
@@ -514,6 +542,7 @@
                             }, 500);
                             _this.getReply2DTOs();
                             _this.removeDuplicates();
+                            _this.getTotalReply();
                             setTimeout(function () {
                                 $(".more_button").on('click', function () {
                                     $(this).next(".showcontent").slideToggle();

@@ -24,7 +24,7 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                            <li class="breadcrumb-item"><a href="index.html">{{productInfo.pCategory}}</a></li>
+                            <li class="breadcrumb-item"><a href="index.html">{{productInfo.pCateName}}</a></li>
                             <li class="breadcrumb-item"><a href="index.html">{{productInfo.pBrand}}</a></li>
                             <li class="breadcrumb-item active">{{productInfo.pName}}</li>
                         </ol>
@@ -71,7 +71,7 @@
                             <div class="">
                                 <div class="sizeSelGroup">
                                     <div class="row">
-                                        <div class="col-12">
+                                        <div :class="['col-12', {'displayNone':pLength}]">
 
                                             <!--  下拉式選擇尺碼-->
                                             <div class="selSize" @@click="showSelSize = !showSelSize">
@@ -123,13 +123,13 @@
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-12">
                                             <div class="divBuy">
-                                                <button @@click="BuyNow" class="btnBuy btnGreen">以 {{DisplayselPrice}} 購買</button>
+                                                <button @@click="BuyNow" class="btnBuy btnGreen">{{DisplayselBuyPrice}}</button>
                                             </div>
                                         </div>
                                     </div>
                                     <hr>
                                     <div class="divBuyOrSubmit fontGreen fontBold">
-                                        <span @@click="Quote">以 {{DisplayselPrice}} 出售或提交報價 →</span>
+                                        <span style="font-size:18px;" @@click="Quote">出售或提交報價 →</span>
                                     </div>
                                 </div>
                             </div>
@@ -170,14 +170,14 @@
                                                     <thead>
                                                         <tr>
                                                             <td>報價</td>
-                                                            <td>尺碼</td>
+                                                            <td :class={displayNone:pLength}>尺碼</td>
                                                             <td>數量</td>
                                                         </tr>
                                                     </thead>
                                                     <tbody v-for="item in DisplayQuotePriceList">
                                                         <tr>
                                                             <td>{{item.fPrice}}</td>
-                                                            <td>{{item.size}}</td>
+                                                            <td :class={displayNone:pLength}>{{item.size}}</td>
                                                             <td>{{item.count}}</td>
                                                         </tr>
                                                     </tbody>
@@ -202,14 +202,14 @@
                                                     <thead>
                                                         <tr>
                                                             <td>出價</td>
-                                                            <td>尺碼</td>
+                                                            <td :class={displayNone:pLength}>尺碼</td>
                                                             <td>數量</td>
                                                         </tr>
                                                     </thead>
                                                     <tbody v-for="item in DisplayBidPrice">
                                                         <tr>
                                                             <td>{{item.fPrice}}</td>
-                                                            <td>{{item.size}}</td>
+                                                            <td :class={displayNone:pLength}>{{item.size}}</td>
                                                             <td>{{item.count}}</td>
                                                         </tr>
                                                     </tbody>
@@ -235,7 +235,7 @@
                                                         <tr>
                                                             <td>日期</td>
                                                             <td>時間</td>
-                                                            <td>尺碼</td>
+                                                            <td :class={displayNone:pLength}>尺碼</td>
                                                             <td>成交價格</td>
                                                         </tr>
                                                     </thead>
@@ -243,7 +243,7 @@
                                                         <tr>
                                                             <td>{{item.date}}</td>
                                                             <td>{{item.time}}</td>
-                                                            <td>{{item.size}}</td>
+                                                            <td :class={displayNone:pLength}>{{item.size}}</td>
                                                             <td>{{item.fPrice}}</td>
                                                         </tr>
                                                     </tbody>
@@ -273,9 +273,7 @@
                         </a>
                     </div>
                 </div>
-            </div>
-
-            <hr>
+            </div>  
             <!-- 相關商品-->
             @*Deom*@
 
@@ -581,7 +579,7 @@
                 mID: sessionStorage.getItem("mID"),
                 //pID: 102,
                 pID: sessionStorage.getItem("pID"),
-                productInfo: {},
+                productInfo: [],
                 quotePriceList: [],
                 bidPriceList: [],
                 SizeAndPriceList: [],
@@ -596,11 +594,11 @@
                 TranList: [],
                 fontColor: '#006340',
                 sID: null,
+                pLength: null,
+                pCateID: null,
             },
             mounted: function () {
                 _this = this;
-                _this.getProductInfoDTO();
-                _this.GetSizeAndQuote();
                 _this.getOrderList();
                 $('.banner-carousel').owlCarousel({
                     loop: true,
@@ -610,35 +608,55 @@
                     dots: false,
                     nav: false,
                 })
-
+                _this.getProductInfo();
             },
             methods: {
-                async getProductInfoDTO() {
+                async getProductInfo() {
                     let _this = this;
-                    var response = await axios.get(`${webApiAddress}/ProductInfo/${_this.pID}`);
-                    this.productInfo = response.data;
+                    var response = await axios.get(`${webApiAddress}/GetProductInfo/${_this.pID}`);
+                    _this.productInfo = response.data;
+                    if (_this.productInfo.length == 1) {
+                        _this.productInfo = _this.productInfo[0];
+                        _this.pLength = true;
+                        sessionStorage.setItem("pLength", _this.pLength);
+                    } else {
+                        _this.productInfo = _this.productInfo[0];
+                        _this.pLength = false;
+                        sessionStorage.setItem("pLength", _this.pLength);
+                    }
+
+                    _this.pCateID = _this.productInfo.pCateID;
+                    console.log(`_this.pCateID:${_this.pCateID}`);
+                    _this.GetSizeAndQuote();
+                    _this.getLastPrice();
                 },
-                GetSizeAndQuote: function () {
+                async GetSizeAndQuote() {
                     let _this = this;
-                    axios.get(`${webApiAddress}/GetSizeAndQuote`).then(
-                        response => {
-                            _this.SizeAndPriceList = response.data;
-                            if (_this.pPrice == null) {
-                                //呼叫時給一個預設選取的 pID
-                                _this.selectSizeItem(_this.SizeAndPriceList[0].pSize, _this.SizeAndPriceList[0].pPrice, 0, _this.SizeAndPriceList[0].pID);
-                            }
-                        }
-                    )
+                    var response = await axios.get(`${webApiAddress}/GetSizeAndQuote/${_this.pCateID}`);
+                    if (response.data.length >= 1) {
+                        _this.SizeAndPriceList = response.data;
+                        _this.pPrice = _this.SizeAndPriceList[0].pPrice;
+                    } else {
+                        _this.pPrice = "";
+                    }
                 },
                 async getOrderList() { //交易記錄
-                    let _this = this;
-                    let response = await axios.get(`${webApiAddress}/GetOrderList/${_this.pID}`);
-                    _this.TranList = response.data;
+                    try {
+                        let _this = this;
+                        let response = await axios.get(`${webApiAddress}/GetOrderList/${_this.pID}`);
+                        _this.TranList = response.data;
+                    } catch (error) {
+                        console.log(error);
+                    }
                 },
                 async getLastPrice() { //取得選取的 pID 最近一筆的成交價格
-                    let _this = this;
-                    let response = await axios.get(`${webApiAddress}/GetLastDealPrice/${_this.pID}`);
-                    _this.lastTimePrice = response.data;
+                    try {
+                        let _this = this;
+                        let response = await axios.get(`${webApiAddress}/GetLastDealPrice/${_this.pID}`);
+                        _this.lastTimePrice = response.data;
+                    } catch (error) {
+                        console.log(error);
+                    }
                 },
                 async getQuotePrice() {
                     let _this = this;
@@ -663,9 +681,14 @@
                     sessionStorage.setItem("sID", sID);
                 },
                 BuyNow: function () {
-                    sessionStorage.setItem("bool", false);
-                    sessionStorage.setItem("pID", _this.pID);
-                    window.location = "/order";
+                    if (_this.DisplayselBuyPrice == "無報價記錄") {
+                        alert(`此商品無報價記錄, 請使用"提交出價"`);
+                    } else {
+                        sessionStorage.setItem("bool", false);
+                        sessionStorage.setItem("pID", _this.pID);
+                        window.location = "/order";
+                    }
+
                 },
                 Quote: function () {
                     window.location = "/sell";
@@ -683,33 +706,37 @@
             watch: {
                 pID: {
                     handler: function () {
-                        this.getProductInfoDTO();
+                        this.getProductInfo();
                         this.getLastPrice();
+                        console.log(`pID_Watch`)
                     }
                 }
             },
             computed: {
-                DispalyLastDealPrice: {
-                    get() { return this.lastTimePrice == 0 ? "無成交記錄" : this.Format(this.lastTimePrice); }
+                DispalyLastDealPrice() {
+                    return this.lastTimePrice == 0 ? "無成交記錄" : this.Format(this.lastTimePrice);
                 },
-                GetDifference: {
-                    get() { return this.lastTimePrice == 0 ? "" : this.pPrice - this.lastTimePrice; }
+                GetDifference() {
+                    return this.lastTimePrice == 0 ? "" : this.pPrice - this.lastTimePrice;
                 },
-                DispalyDifference: {
-                    get() { return this.lastTimePrice == 0 ? "" : this.Format(this.pPrice - this.lastTimePrice); }
+                DispalyDifference() {
+                    return this.lastTimePrice == 0 ? "" : this.Format(this.pPrice - this.lastTimePrice);
                 },
-                GetPercentage: {
-                    get() { return this.lastTimePrice == 0 ? 0 : ((this.pPrice - this.lastTimePrice) / this.lastTimePrice * 100).toFixed(2); }
+                GetPercentage() {
+                    return this.lastTimePrice == 0 ? 0 : ((this.pPrice - this.lastTimePrice) / this.lastTimePrice * 100).toFixed(2);
                 },
-                GetUpDown: {
-                    get() { return this.GetDifference > 0 ? "▲ " : this.GetDifference < 0 ? "▼ " : "  " }
+                GetUpDown() {
+                    return this.GetDifference > 0 ? "▲ " : this.GetDifference < 0 ? "▼ " : "  "
                 },
-                GetFontColor: {
-                    get() { return this.GetDifference > 0 ? "#006340" : this.GetDifference < 0 ? "#df2b14" : "#333" }
+                GetFontColor() {
+                    return this.GetDifference > 0 ? "#006340" : this.GetDifference < 0 ? "#df2b14" : "#333"
                 },
-                DisplayselPrice: {
-                    get() { return this.Format(this.pPrice) }
+                DisplayselBuyPrice() {
+                    return this.pPrice == "" ? "無報價記錄" : `以 ${this.Format(this.pPrice)} 購買`
                 },
+                //DisplayselSellPrice: {
+
+                //},
                 DisplaySizeAndPriceList: {
                     get() {
                         return this.SizeAndPriceList.map(item => {

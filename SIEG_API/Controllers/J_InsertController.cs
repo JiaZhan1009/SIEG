@@ -42,10 +42,26 @@ namespace SIEG_API.Controllers
                 ReceivingPhone = orderInfo.receivingPhone,
                 ShippingAddress = orderInfo.shippingAddress,
                 UpdateTime = DateTime.Now,
-                DoneTime = DateTime.Now,
+                DoneTime = DateTime.Now, // 正式版要拿掉
                 AddTime = DateTime.Now,
             };
+            // 正式版要連同賣價一起完成
+            
             _context.Order.Add(order);
+            _context.SaveChanges();
+        }
+
+
+        [HttpPost("AddMemberQuotePrice")]
+        public void AddMemberQuoteInfo([FromBody] J_AddQuotePrice quote)
+        {
+            SellerAddProduct sQuote = new SellerAddProduct
+            {
+                ProductId= quote.pID,
+                MemberId = quote.mID,
+                Price = quote.pPrice,
+            };
+            _context.SellerAddProduct.Add(sQuote);
             _context.SaveChanges();
         }
 

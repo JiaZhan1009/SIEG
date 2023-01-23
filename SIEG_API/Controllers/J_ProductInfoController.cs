@@ -27,29 +27,32 @@ namespace SIEG_API.Controllers
         }
 
         // GET: api/Product
-        [HttpGet("ProductInfo/{pID}")]
-        public async Task<J_ProductInfoDTO> getProductInfo(int pID)
+        [HttpGet("GetProductInfo/{pID}")]
+        public async Task<IEnumerable<J_ProductInfoDTO>> getProductInfo(int pID)
         {
-            var list = await _context.Product.Include(p => p.ProductCategory)
-            .SingleOrDefaultAsync(p => p.ProductId == pID);
-
-            return new J_ProductInfoDTO
+            var pCateID = await _context.Product.Where(p => p.ProductId == pID).Select(p => p.ProductCategoryId).SingleOrDefaultAsync();
+            var list = await _context.Product.Include(p => p.ProductCategory).Where(p => p.ProductCategoryId == pCateID).Select(p => new J_ProductInfoDTO
             {
-                pID = list.ProductId,
-                pCategory = list.ProductCategory.CategoryName,
-                pName = list.ProductCategory.ProductName,
-                pImg = list.ImgFront,
-                pBrand = list.ProductCategory.BrandName,
-                pSize = list.Size,
-            };
+                pID = pID,
+                pName = p.ProductCategory.ProductName,
+                pBrand = p.ProductCategory.BrandName,
+                pCateID = pCateID,
+                pCateName = p.ProductCategory.CategoryName,
+                pImg = p.ImgFront,
+                pSize = p.Size,
+                pModel = p.Model
+            })
+            .ToListAsync();
+            return list;
         }
 
-        [HttpGet("GetSizeAndQuote")]
-        public async Task<List<J_PriceListDTO>> GetSizeAndQuote()
+        [HttpGet("GetSizeAndQuote/{pCateID}")]
+        public async Task<List<J_PriceListDTO>> GetSizeAndQuote(int pCateID)
         {
             var sizeAndPrice = await _context.Product
             .Join(_context.SellerAddProduct, product => product.ProductId, s => s.ProductId,
             (p, s) => new { Product = p, seller = s, sID = s.MemberId })
+            .Where(p => p.seller.Price != 0 && p.Product.ProductCategoryId == pCateID)
             .GroupBy(p => p.Product.Size)
             .Select(g => g.OrderBy(g => g.seller.Price)
             .First()).ToListAsync();
@@ -63,14 +66,15 @@ namespace SIEG_API.Controllers
             }).ToList();
             return priceList;
         }
-        [HttpGet("GetSizeAndBid")]
-        public async Task<List<J_PriceListDTO>> GetSizeAndBid()
+        [HttpGet("GetSizeAndBid/{pCateID}")]
+        public async Task<List<J_PriceListDTO>> GetSizeAndBid(int pCateID)
         {
             var sizeAndPrice = await _context.Product
             .Join(_context.BuyerBid, product => product.ProductId, b => b.ProductId,
             (p, b) => new { Product = p, Buyer = b })
+            .Where(p => p.Product.ProductCategoryId == pCateID)
             .GroupBy(p => p.Product.Size)
-            .Select(g => g.OrderBy(g => g.Buyer.Price)
+            .Select(g => g.OrderByDescending(g => g.Buyer.Price)
             .First()).ToListAsync();
 
             List<J_PriceListDTO> priceList = sizeAndPrice.Select(p => new J_PriceListDTO
@@ -85,7 +89,6 @@ namespace SIEG_API.Controllers
         [HttpGet("BidPriceList/{pID}")]
         public async Task<IEnumerable<J_PriceListDTO>> getBidPrice([FromRoute] PriceParameter val)
         {
-
             var productName = _context.Product.Include(p => p.ProductCategory).Where(p => p.ProductId == val.pID).ToList()[0].ProductCategory.ProductName;
             var BidInfo = await _context.BuyerBid
                 .Include(b => b.Product)
@@ -179,7 +182,7 @@ namespace SIEG_API.Controllers
             var minQuote = 0;
             var bid = await _context.BuyerBid.Where(s => s.ProductId == pID)
                 .Select(s => s.Price).OrderByDescending(s => s).FirstOrDefaultAsync();
-            var quote = await _context.SellerAddProduct.Where(s => s.ProductId == pID)
+            var quote = await _context.SellerAddProduct.Where(s => s.ProductId == pID && s.Price != 0)
                 .Select(s => s.Price).OrderBy(s => s).FirstOrDefaultAsync();
             if (bid != null)
             {
@@ -197,7 +200,7 @@ namespace SIEG_API.Controllers
             return list;
         }
 
-       
+
     }
 }
 

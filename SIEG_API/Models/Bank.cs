@@ -7,8 +7,14 @@ namespace SIEG_API.Models
 {
     public partial class Bank
     {
-        public int BankId { get; set; }
-        public int Code { get; set; }
+        public Bank()
+        {
+            Member = new HashSet<Member>();
+        }
+
+        public string BankCode { get; set; }
         public string Name { get; set; }
+
+        public virtual ICollection<Member> Member { get; set; }
     }
 }

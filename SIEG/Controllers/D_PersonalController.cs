@@ -21,10 +21,10 @@ namespace SIEG.Controllers
         {
             return View();
         }
-        public IActionResult NewsInfo()
-        {
-            return View();
-        }
+        //public IActionResult NewsInfo()
+        //{
+        //    return View();
+        //}
         
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

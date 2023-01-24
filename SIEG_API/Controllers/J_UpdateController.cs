@@ -25,7 +25,7 @@ namespace SIEG_API.Controllers
       
         // PUT: api/J_Update/5
         [HttpPut("UpdataMemberInfo/{id}")]
-        public async Task<IActionResult> PutMember(int id, J_MenberInfo member)
+        public async Task<IActionResult> UpdataMemberInfo(int id, J_MenberInfo member)
         {
             var memberList = _context.Member.Find(id);
             memberList.MemberId = id;
@@ -52,7 +52,32 @@ namespace SIEG_API.Controllers
                     throw;
                 }
             }
+            return NoContent();
+        }
+        [HttpPut("UpdataMemberBankInfo")]
+        public async Task<IActionResult> UpdataMemberBankInfo(J_MemberBankInfoDTO list)
+        {
+            var memberList = _context.Member.Find(list.mID);
+            memberList.MemberId = list.mID;
+            memberList.BankCode = list.mBankCode;
+            memberList.BankAccount = list.mBankAccount;
 
+            _context.Member.Update(memberList);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!MemberExists(list.mID))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
             return NoContent();
         }
 

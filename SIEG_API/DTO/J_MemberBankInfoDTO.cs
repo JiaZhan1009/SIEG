@@ -5,7 +5,7 @@
         public int mID { get; set; }
         public string mBankCode { get; set; }
         public string mBankName { get; set; }
-        public int? mBankAccount { get; set; }
+        public string mBankAccount { get; set; }
 
     }
 }

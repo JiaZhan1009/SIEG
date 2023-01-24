@@ -79,6 +79,7 @@ namespace SIEG_API.Controllers
 
             List<J_PriceListDTO> priceList = sizeAndPrice.Select(p => new J_PriceListDTO
             {
+                bID = p.Buyer.Price != 0 ? p.Buyer.MemberId : 0, // 價格為 0 = 預設尺寸選項
                 pID = p.Product.ProductId,
                 pPrice = p.Buyer.Price,
                 pSize = p.Product.Size
@@ -132,7 +133,7 @@ namespace SIEG_API.Controllers
         {
             var productName = _context.Product.Include(p => p.ProductCategory).Where(p => p.ProductId == val.pID).ToList()[0].ProductCategory.ProductName;
             var list = await _context.Order.Include(o => o.Product)
-                .Where(o => o.Product.ProductCategory.ProductName == productName && o.DoneTime != null)//&& o.State == "已完成" 
+                .Where(o => o.Product.ProductCategory.ProductName == productName && o.DoneTime != null)//之後補上  && o.State == "已完成" )
                 .OrderByDescending(o => o.DoneTime)
                 .Select(x => new J_OrderListDTO
                 {
@@ -149,7 +150,7 @@ namespace SIEG_API.Controllers
         public async Task<int?> GetLastDealPrice(int pID)
         {
             var lastPrice = 0;
-            var price = await _context.Order.Where(o => o.ProductId == pID && o.State == "已完成")
+            var price = await _context.Order.Where(o => o.ProductId == pID && o.DoneTime != null)//之後補上 && o.State == "已完成" )
                .OrderByDescending(o => o.DoneTime).Select(o => o.Price)
                .FirstOrDefaultAsync();
             if (price != null)
@@ -179,22 +180,31 @@ namespace SIEG_API.Controllers
         public async Task<J_MemberBankInfoDTO> GetMemberBankInfo(int mID)
         {
             var Member = await _context.Member
-                .Join(_context.Bank, m=>m.BankCode, b=>b.BankCode, (m, b) => new {member = m, bank = b })
+                .Join(_context.Bank, m => m.BankCode, b => b.BankCode, (m, b) => new { member = m, bank = b })
                 .Where(m => m.member.MemberId == mID)
-                .Select(o=>o).SingleOrDefaultAsync();
-            if (Member == null)
+                .Select(o => o).SingleOrDefaultAsync();
+            if (Member != null)
             {
-                return null;
+                var mDTO = new J_MemberBankInfoDTO
+                {
+                    mID = Member.member.MemberId,
+                    mBankName = Member.bank.Name,
+                    mBankCode = Member.member.BankCode,
+                    mBankAccount = Member.member.BankAccount.ToString(),
+                };
+                return mDTO;
             }
-            var mDTO = new J_MemberBankInfoDTO
+            else
             {
-                mID = Member.member.MemberId,
-                mBankName = Member.bank.Name,
-                mBankCode = Member.member.BankCode,
-                mBankAccount = Member.member.BankAccount
-            };
-
-            return mDTO;
+                var mDTO = new J_MemberBankInfoDTO
+                {
+                    mID = mID,
+                    mBankName = "",
+                    mBankCode = "",
+                    mBankAccount = ""
+                };
+                return mDTO;
+            }
         }
 
         [HttpGet("GetMaxMinPrice/{pID}")]

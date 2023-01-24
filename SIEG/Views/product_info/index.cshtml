@@ -177,7 +177,7 @@
                                                     <tbody v-for="item in DisplayQuotePriceList">
                                                         <tr>
                                                             <td>{{item.fPrice}}</td>
-                                                            <td :class={displayNone:pLength}>{{item.size}}</td>
+                                                            <td :class={displayNone:pLength}>US {{item.size}}</td>
                                                             <td>{{item.count}}</td>
                                                         </tr>
                                                     </tbody>
@@ -209,7 +209,7 @@
                                                     <tbody v-for="item in DisplayBidPrice">
                                                         <tr>
                                                             <td>{{item.fPrice}}</td>
-                                                            <td :class={displayNone:pLength}>{{item.size}}</td>
+                                                            <td :class={displayNone:pLength}>US {{item.size}}</td>
                                                             <td>{{item.count}}</td>
                                                         </tr>
                                                     </tbody>
@@ -243,7 +243,7 @@
                                                         <tr>
                                                             <td>{{item.date}}</td>
                                                             <td>{{item.time}}</td>
-                                                            <td :class={displayNone:pLength}>{{item.size}}</td>
+                                                            <td :class={displayNone:pLength}>US {{item.size}}</td>
                                                             <td>{{item.fPrice}}</td>
                                                         </tr>
                                                     </tbody>
@@ -273,7 +273,7 @@
                         </a>
                     </div>
                 </div>
-            </div>  
+            </div>
             <!-- 相關商品-->
             @*Deom*@
 
@@ -574,31 +574,35 @@
         var webApiAddress = "https://localhost:7139/api/J";
         var appVue = new Vue({
             el: "#appVue",
-            data: {
-                //sID 預設值待解決
-                mID: sessionStorage.getItem("mID"),
-                //pID: 102,
-                pID: sessionStorage.getItem("pID"),
-                productInfo: [],
-                quotePriceList: [],
-                bidPriceList: [],
-                SizeAndPriceList: [],
-                showSelSize: true,
-                pSize: sessionStorage.getItem("pSize"),
-                pPrice: sessionStorage.getItem("pPrice"),
-                activeIndex: sessionStorage.getItem("selIndex"),
-                lastTimePrice: null,
-                //Difference: null,
-                //Percentage: null,
-                upDown: null,
-                TranList: [],
-                fontColor: '#006340',
-                sID: null,
-                pLength: null,
-                pCateID: null,
+            data() {
+                return {
+                    mID: 103,
+                    pID: sessionStorage.getItem("pID"),
+                    //pID: 102,
+                    productInfo: [],
+                    quotePriceList: [],
+                    bidPriceList: [],
+                    SizeAndPriceList: [],
+                    showSelSize: true,
+                    pSize: null,
+                    pPrice: null,
+                    activeIndex: 0,
+                    lastTimePrice: null,
+                    upDown: null,
+                    TranList: [],
+                    fontColor: '#006340',
+                    sID: null,
+                    pLength: null,
+                    pCateID: null,
+                }
             },
-            mounted: function () {
+            mounted() {
                 _this = this;
+                sessionStorage.setItem("mID", _this.mID);
+                // --
+                if (_this.mID == null || _this.pID == null) {
+                    alert(`No pID:${_this.pID}, mID:${_this.mID}`)
+                }
                 _this.getOrderList();
                 $('.banner-carousel').owlCarousel({
                     loop: true,
@@ -616,35 +620,47 @@
                     var response = await axios.get(`${webApiAddress}/GetProductInfo/${_this.pID}`);
                     _this.productInfo = response.data;
                     if (_this.productInfo.length == 1) {
+
                         _this.productInfo = _this.productInfo[0];
                         _this.pLength = true;
                         sessionStorage.setItem("pLength", _this.pLength);
                     } else {
+
                         _this.productInfo = _this.productInfo[0];
                         _this.pLength = false;
                         sessionStorage.setItem("pLength", _this.pLength);
                     }
-
                     _this.pCateID = _this.productInfo.pCateID;
+
                     console.log(`_this.pCateID:${_this.pCateID}`);
+
                     _this.GetSizeAndQuote();
-                    _this.getLastPrice();
+                    //_this.getLastPrice();
                 },
                 async GetSizeAndQuote() {
                     let _this = this;
                     var response = await axios.get(`${webApiAddress}/GetSizeAndQuote/${_this.pCateID}`);
+                    _this.SizeAndPriceList = response.data;
+
                     if (response.data.length >= 1) {
-                        _this.SizeAndPriceList = response.data;
-                        _this.pPrice = _this.SizeAndPriceList[0].pPrice;
-                    } else {
+                        console.log(`GetSizeAndQuote_start_pPrice:${_this.pPrice}`)
+                        if (_this.pPrice == "" || _this.pPrice == null) { // 第一次進頁面給初始選取
+                            _this.pPrice = _this.SizeAndPriceList[0].pPrice;
+                            _this.selectSizeItem(_this.SizeAndPriceList[0].pSize, _this.SizeAndPriceList[0].pPrice, _this.activeIndex, _this.SizeAndPriceList[0].pID, _this.SizeAndPriceList[0].sID)
+                        }
+
+                    } else { // 商品無報價記錄
                         _this.pPrice = "";
+                        sessionStorage.removeItem("sID");
                     }
+                    console.log(`GetSizeAndQuote_end_pPrice:${_this.pPrice}`)
                 },
                 async getOrderList() { //交易記錄
                     try {
                         let _this = this;
                         let response = await axios.get(`${webApiAddress}/GetOrderList/${_this.pID}`);
                         _this.TranList = response.data;
+
                     } catch (error) {
                         console.log(error);
                     }
@@ -654,6 +670,7 @@
                         let _this = this;
                         let response = await axios.get(`${webApiAddress}/GetLastDealPrice/${_this.pID}`);
                         _this.lastTimePrice = response.data;
+                        console.log(`getLastPrice:${_this.lastTimePrice}`)
                     } catch (error) {
                         console.log(error);
                     }
@@ -679,8 +696,9 @@
                     sessionStorage.setItem("selIndex", index);
                     sessionStorage.setItem("pID", pID);
                     sessionStorage.setItem("sID", sID);
+                    console.log(`selectSizeItem_pPrice:${_this.pPrice}`)
                 },
-                BuyNow: function () {
+                BuyNow() {
                     if (_this.DisplayselBuyPrice == "無報價記錄") {
                         alert(`此商品無報價記錄, 請使用"提交出價"`);
                     } else {
@@ -688,27 +706,31 @@
                         sessionStorage.setItem("pID", _this.pID);
                         window.location = "/order";
                     }
-
-                },
-                Quote: function () {
-                    window.location = "/sell";
-                },
-                Format: function (val) {
-                    return numeral(val).format("$0,0");
+                    sessionStorage.removeItem("bID");
                 },
                 submitPrice() {
-                    //sessionStorage.setItem("pPrice", "");
+                    sessionStorage.removeItem("bID");
                     sessionStorage.setItem("bool", true);
                     window.location = "/order";
                 },
+                Quote() {
+                    sessionStorage.removeItem("sID");
+                    sessionStorage.setItem("pPrice", 0);
+                    window.location = "/sell";
+                },
+                Format(val) {
+                    return numeral(val).format("$0,0");
+                },
+
 
             },
             watch: {
                 pID: {
-                    handler: function () {
+                    handler() {
+                        console.log(`pID_Watch_start`)
                         this.getProductInfo();
                         this.getLastPrice();
-                        console.log(`pID_Watch`)
+
                     }
                 }
             },
@@ -732,69 +754,55 @@
                     return this.GetDifference > 0 ? "#006340" : this.GetDifference < 0 ? "#df2b14" : "#333"
                 },
                 DisplayselBuyPrice() {
-                    return this.pPrice == "" ? "無報價記錄" : `以 ${this.Format(this.pPrice)} 購買`
+                    return this.pPrice == "" ? "無報價記錄" : this.pPrice == null ? "購買" : `以 ${this.Format(this.pPrice)} 購買`
                 },
-                //DisplayselSellPrice: {
+                DisplaySizeAndPriceList() {
+                    return this.SizeAndPriceList.map(item => {
+                        return {
+                            pID: item.pID,
+                            size: item.pSize,
+                            fPrice: this.Format(item.pPrice),
+                            price: item.pPrice,
+                            sID: item.sID
+                        }
+                    });
+                },
+                DisplayQuotePriceList() {
+                    return this.quotePriceList.map(item => {
+                        return {
+                            size: item.pSize,
+                            price: item.pPrice,
+                            count: item.pCount,
+                            fPrice: this.Format(item.pPrice)
+                        }
+                    })
+                },
+                DisplayBidPrice() {
+                    return this.bidPriceList.map(item => {
+                        return {
+                            size: item.pSize,
+                            price: item.pPrice,
+                            count: item.pCount,
+                            fPrice: this.Format(item.pPrice)
+                        }
+                    })
+                },
+                DisplayTranList() {
+                    var _this = this;
+                    return _this.TranList.map(item => {
+                        return {
+                            date: item.oTime.split('T')[0],
+                            time: item.oTime.split('T')[1].split('.')[0],
+                            size: item.oSize,
+                            price: item.oPrice,
+                            fPrice: _this.Format(item.oPrice),
 
-                //},
-                DisplaySizeAndPriceList: {
-                    get() {
-                        return this.SizeAndPriceList.map(item => {
-                            return {
-                                pID: item.pID,
-                                size: item.pSize,
-                                fPrice: this.Format(item.pPrice),
-                                price: item.pPrice,
-                                sID: item.sID
-                            }
-                        });
-                    }
-                },
-                DisplayQuotePriceList: {
-                    get() {
-                        return this.quotePriceList.map(item => {
-                            return {
-                                size: item.pSize,
-                                price: item.pPrice,
-                                count: item.pCount,
-                                fPrice: this.Format(item.pPrice)
-                            }
-                        })
-                    }
-                },
-                DisplayBidPrice: {
-                    get() {
-                        return this.bidPriceList.map(item => {
-                            return {
-                                size: item.pSize,
-                                price: item.pPrice,
-                                count: item.pCount,
-                                fPrice: this.Format(item.pPrice)
-                            }
-                        })
-                    }
-                },
-                DisplayTranList: {
-                    get() {
-                        var _this = this;
-                        return _this.TranList.map(item => {
-                            return {
-                                date: item.oTime.split('T')[0],
-                                time: item.oTime.split('T')[1].split('.')[0],
-                                size: item.oSize,
-                                price: item.oPrice,
-                                fPrice: _this.Format(item.oPrice),
-
-                            }
-                        })
-                    }
+                        }
+                    })
                 },
 
             },
 
         });
-
-
-
     </script>
     }

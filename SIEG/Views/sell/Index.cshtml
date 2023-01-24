@@ -24,7 +24,7 @@
                         <div class="product_buy_Right">
                             <div :class=['selSize',{displayNone:pLength}] @@click="clickShowSize">
                                 @*<div @@click="showSelSize = !showSelSize" class="selSize">*@
-                                <div>尺碼&nbsp;:&nbsp;&nbsp;<span class="fontBold">US {{pSize}}</span></div>
+                                <div>尺碼&nbsp;:&nbsp;&nbsp;<span class="fontBold">US {{productInfo.pSize}}</span></div>
                                 <img src="https://stockx-assets.imgix.net/svg/icons/pencil.svg?auto=compress,format">
                             </div>
 
@@ -39,7 +39,7 @@
 
                                                 <!--  動態產生尺碼item  -->
                                                 <div class="sizePriceItem" @@click="activeIndex=index" v-for="(item, index) in DisplaySizeAndPriceList" :key="index">
-                                                    <div :class="['divSizeItem', 'sizeItem', {'active':activeIndex==index}]" @@click="clickShowSize();selectSizeItem(item.size,item.price,index,item.pID)">
+                                                    <div :class="['divSizeItem', 'sizeItem', {'active':activeIndex==index}]" @@click="clickShowSize();selectSizeItem(item.size,item.price,index,item.pID, item.bID)">
                                                         <div class="item">
                                                             <div class="fontBold">US {{item.size}}</div>
                                                             <div class="fontGreen">{{item.fPrice}}</div>
@@ -84,10 +84,11 @@
                                 </div>
                             </div>
                             <div class="priceContent">
-                                <div class="specialOffer2">
+                                <div class="specialOffer2">                                    
                                     <span>收款資訊</span>
+                                    <span>{{DisplayBankAccount}}</span>
                                     <!-- ↓↓↓　若有卡片資訊，文字改為編輯　↓↓↓ -->
-                                    <span class="add_card">新增</span>
+                                    <span class="add_card">{{DisplayEdit}}</span>
                                 </div>
                                 <div class="credit_card_form">
                                     <div class="credit_card_btn">
@@ -153,37 +154,48 @@
         var webApiAddress = "https://localhost:7139/api/J";
         var appVue = new Vue({
             el: "#appVue",
-            data: {
-                productInfo: {},
-                SizeAndPriceList: [],
-                pID: sessionStorage.getItem("pID"),
-                mID: sessionStorage.getItem("mID"),
-                pSize: sessionStorage.getItem("pSize"),
-                pPrice: sessionStorage.getItem("pPrice"),
-                activeIndex: sessionStorage.getItem("selIndex"),
-                pLength: sessionStorage.getItem("pLength"),
-                showSelSize: true,
-                freightFee: 100,
-                specialOffer: 3,
-                maxBid: null,
-                minQuote: null,
-                DisplayPriceState: null,
-                pCateID: null,
-                bankCode: null,
-                bankName: null,
-                bankAccount: null,
-
+            data() {
+                return {
+                    productInfo: {},
+                    SizeAndPriceList: [],
+                    pID: sessionStorage.getItem("pID"),
+                    mID: sessionStorage.getItem("mID"),
+                    pSize: null,
+                    pPrice: sessionStorage.getItem("pPrice"),
+                    activeIndex: sessionStorage.getItem("selIndex"),
+                    pLength: sessionStorage.getItem("pLength"),
+                    showSelSize: true,
+                    freightFee: 100,
+                    specialOffer: 3,
+                    maxBid: 0,
+                    minQuote: null,
+                    DisplayPriceState: null,
+                    pCateID: null,
+                    bankCode: null,
+                    bankName: null,
+                    bankAccount: "",
+                    bID: null,
+            
+                }
             },
-            mounted: function () {
+            mounted() {
                 let _this = this;
+                // --
+                if (_this.mID == null || _this.pID == null) {
+                    alert(`No pID:${_this.pID}, mID:${_this.mID}`)
+                }
+
                 $('.credit_card_form').hide();
                 $(".add_card").click(function () {
                     $(this).parent().next().slideToggle();
                 });
+
                 $('.selSizeHide').hide();
+
                 _this.getProductInfo();
                 _this.getMaxMinPrice();
-
+                _this.selectSizeItem(_this.pSize, _this.pPrice, _this.selIndex, _this.pID)
+                _this.getMemberBankInfo();
 
             },
             methods: {
@@ -192,15 +204,19 @@
                         let _this = this;
                         let response = await axios.get(`${webApiAddress}/GetProductInfo/${_this.pID}`);
                         _this.productInfo = response.data;
+
                         if (_this.pLength == "true") {
                             _this.pLength = true;
 
                         } else {
                             _this.pLength = false;
                         }
+
                         _this.productInfo = _this.productInfo[0];
                         _this.pCateID = _this.productInfo.pCateID;
+                        _this.pSize = _this.productInfo.pSize;
                         console.log(`_this.pCateID: ${_this.pCateID}`)
+
                         _this.getSizeAndBid();
                     } catch (error) {
                         console.log(error)
@@ -223,6 +239,11 @@
                         let response = await axios.get(`${webApiAddress}/GetMaxMinPrice/${_this.pID}`);
                         _this.maxBid = response.data.maxBid;
                         _this.minQuote = response.data.minQuote;
+                        if (_this.maxBid == 0){
+                            _this.DisplayPriceState = "此商品目前沒有買家提交出價";
+                        }else{
+                            _this.pPrice = _this.maxBid;
+                        }
                         console.log(`_this.maxBid: ${_this.maxBid}`)
                         console.log(`_this.minQuote: ${_this.minQuote}`)
                     } catch (error) {
@@ -233,46 +254,62 @@
                     try {
                         let _this = this;
                         let response = await axios.get(`${webApiAddress}/GetMemberBankInfo/${_this.mID}`);
-                        if (response.data != "") {
+                        if (response.data.mBankCode != "") {
                             let res = response.data;
-                            _this.bankCode = res.bankCode;
-                            _this.bankName = res.bankName;
-                            _this.bankAccount = res.bankAccount;
-                        } else {
+                            _this.bankCode = res.mBankCode;
+                            _this.bankName = res.mBankName;
+                            _this.bankAccount = res.mBankAccount.toString();
+                            console.log(typeof _this.bankAccount)
+                            
+                        }
+                        else {
                             _this.bankCode = "";
                             _this.bankName = "";
                             _this.bankAccount = "";
+
                         }
                     } catch (error) {
                         console.log(error);
                     }
                 },
-                selectSizeItem: function (pSize, pPrice, index, pID) {
+                selectSizeItem(pSize, pPrice, index, pID, bID) {
                     let _this = this;
                     _this.pSize = pSize;
                     _this.pPrice = pPrice;
                     _this.pID = pID;
+                    _this.bID = bID;
                     sessionStorage.setItem("pSize", _this.pSize);
                     sessionStorage.setItem("pPrice", _this.pPrice);
                     sessionStorage.setItem("selIndex", index);
                     sessionStorage.setItem("pID", pID);
+                    sessionStorage.setItem("bID", bID);
+                },
+                saveBankAccount() {
+                    let _this = this;
+                    if (_this.bankCode == "" || _this.bankName == "" || _this.bankAccount == "") {
+                        alert("請檢查收款帳戶是否填寫正確")
+                    } else {
+                        let request = {
+                            mID: _this.mID,
+                            mBankCode: _this.bankCode,
+                            mBankName: _this.bankName,
+                            mBankAccount: _this.bankAccount
+                        };
+                        try {
+                            axios.put(`${webApiAddress}/UpdataMemberBankInfo`, request)
+                           
+                            $('.credit_card_form').hide();
+                        } catch (error) {
+                            console.log(error);
+                        }
+
+                    }
                 },
                 back: function () {
                     window.location = "/product_info"
                 },
                 next() {
                     let _this = this;
-                    //axios.get(`${webApiAddres}/CheckMemberQuoteExist/`${ _this.mID })
-                    //    .then(response => {
-                    //        if (response.data) {
-                    //            axios.put(`${webApiAddress}/UpdataMemberQuoteInfo/${_this.mID}`, request)
-                    //        } else {
-                    //            axios.post(`${webApiAddress}/AddMemberQuoteInfo`, request)
-                    //        }
-                    //    })
-                    //    .catch(error => {
-                    //        console.log(error);
-                    //    });
                     if (_this.bankCode == "" || _this.bankName == "" || _this.bankAccount == "") {
                         alert("請檢查收款帳戶是否填寫正確")
                     } else {
@@ -288,33 +325,11 @@
                             console.log(error);
                         }
                     }
-
                 },
-                saveBankAccount() {
-                    let _this = this;
-                    if (_this.bankCode == "" || _this.bankName == "" || _this.bankAccount == "") {
-
-                    } else {
-                        let request = {
-                            mID: _this.mID,
-                            mBankCode: _this.bankCode,
-                            mBankName: _this.bankName,
-                            mBankAccount: _this.bankAccount
-                        };
-                        try {
-                            axios.put(`${webApiAddress}/UpdataMemberBankInfo`, request)
-                            alert("儲存成功");
-
-                        } catch (error) {
-                            console.log(error);
-                        }
-
-                    }
-                },
-                clickShowSize: function () {
+                clickShowSize() {
                     $('.selSizeHide').slideToggle();
                 },
-                Format: function (val) {
+                Format(val) {
                     return numeral(val).format("$0,0");
                 }
 
@@ -327,17 +342,17 @@
                     }
                 },
                 pPrice: {
-                    handler: function (newVal, oldVal) {
-                        if (this.maxBid != 0) {
+                    handler(newVal, oldVal) {
+                        if (this.maxBid != 0 && this.pPrice != 0) {
                             if (newVal >= this.maxBid) {
                                 this.pPrice = this.maxBid;
-                                this.DisplayPriceState = "您將以最高出價購買此商品";
-                            } else {
+                                this.DisplayPriceState = "您將以最高出價出售此商品";
+                            } else { // 可加入規則判斷與最高出價級距
                                 this.pPrice = newVal;
                                 this.DisplayPriceState = "您並非最高報價者";
                             }
                         } else {
-                            this.DisplayPriceState = "您報價的商品目前沒有出價者";
+                            this.DisplayPriceState = "此商品目前沒有買家提交出價";
                         }
 
 
@@ -345,50 +360,51 @@
                 }
             },
             computed: {
-                TradeFee: {
-                    get() { return this.pPrice == 0 ? "" : this.pPrice * 0.1; }
+                TradeFee() {
+                    return this.pPrice == 0 ? "" : this.pPrice * 0.1;
                 },
-                TransferFee: {
-                    get() { return this.pPrice == 0 ? "" : this.pPrice * 0.03; }
+                TransferFee() {
+                    return this.pPrice == 0 ? "" : this.pPrice * 0.03;
                 },
-                TotalPrice: {
-                    get() {
-                        return this.pPrice == 0 ? "" :
-                            Math.round(this.pPrice - this.TradeFee - this.TransferFee - this.freightFee + this.TradeFee * this.specialOffer / 100);
-                    }
+                TotalPrice() {
+                    return this.pPrice == 0 ? "" :
+                        Math.round(this.pPrice - this.TradeFee - this.TransferFee - this.freightFee + this.TradeFee * this.specialOffer / 100);
                 },
-                DisplayTradeFee: {
-                    get() { return this.Format(this.TradeFee); }
+                DisplayTradeFee() {
+                    return this.Format(this.TradeFee);
                 },
-                DisplayTransFerFee: {
-                    get() { return this.Format(this.TransferFee); }
+                DisplayTransFerFee() {
+                    return this.Format(this.TransferFee);
                 },
-                DisplayTotalPrice: {
-                    get() { return this.Format(this.TotalPrice); }
+                DisplayTotalPrice() {
+                    return this.Format(this.TotalPrice);
                 },
-                DisplayfreightFee: {
-                    get() { return this.Format(this.freightFee); }
+                DisplayfreightFee() {
+                    return this.Format(this.freightFee);
                 },
-                DisplaySizeAndPriceList: {
-                    get() {
-                        return this.SizeAndPriceList.map(item => {
-                            return {
-                                pID: item.pID,
-                                size: item.pSize,
-                                price: item.pPrice,
-                                fPrice: item.pPrice != 0 ? this.Format(item.pPrice) : "無"
-                            }
-                        })
-                    }
+                DisplaySizeAndPriceList() {
+                    return this.SizeAndPriceList.map(item => {
+                        return {
+                            bID: item.bID != "" || item.bID != null ? item.bID : 0,
+                            pID: item.pID,
+                            size: item.pSize,
+                            price: item.pPrice,
+                            fPrice: item.pPrice != 0 ? this.Format(item.pPrice) : "無"
+                        }
+                    })
                 },
                 DisplayMaxBid() {
                     return this.maxBid == 0 ? " - " : this.Format(this.maxBid)
                 },
                 DisplayMinQuote() {
                     return this.minQuote == 0 ? " - " : this.Format(this.minQuote)
+                }, 
+                DisplayBankAccount(){
+                    return typeof this.bankAccount == "string" ? `帳號後 5 碼為 ${this.bankAccount.substr(-5)}` : ""
+                },
+                DisplayEdit(){
+                    return this.DisplayBankAccount == "" ? `新增` : `編輯`
                 }
-
-
 
             }
         })

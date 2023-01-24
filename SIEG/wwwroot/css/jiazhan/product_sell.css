@@ -245,6 +245,7 @@
     border-top: 1px dashed #aaa;
     padding-top: 15px;
     margin-top: 15px;
+
 }
 
     .credit_card_form input {
@@ -259,7 +260,7 @@
 }
 
     .credit_card_btn .addMemberInfo {
-        width: 16%;
+
         padding: 6px 8px;
         background-color: #006340;
         color: #fff;

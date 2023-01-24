@@ -60,7 +60,7 @@ namespace SIEG_API.Controllers
             var memberList = _context.Member.Find(list.mID);
             memberList.MemberId = list.mID;
             memberList.BankCode = list.mBankCode;
-            memberList.BankAccount = list.mBankAccount;
+            memberList.BankAccount = int.Parse(list.mBankAccount);
 
             _context.Member.Update(memberList);
             try

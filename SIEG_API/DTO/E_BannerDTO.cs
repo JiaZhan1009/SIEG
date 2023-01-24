@@ -6,5 +6,6 @@
         public string? BannerImg { get; set; }
         public string? BannerTitle { get; set; }
         public string? BannerLink { get; set; }
+        public bool? BannerValIdity { get; set; }
     }
 }

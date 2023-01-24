@@ -37,6 +37,20 @@ namespace SIEG_API.Controllers
                 }).ToList();
         }
 
+        // GET: api/E_Ad/Boss
+        [HttpGet("Boss")]
+        public async Task<IEnumerable<E_AdDTO>> BossGetAd()
+        {
+            return _context.Ad
+                .Select(ad => new E_AdDTO
+                {
+                    AdId = ad.AdId,
+                    AdImg = ad.Img,
+                    AdLink = ad.Link,
+                    AdValIdity = ad.ValIdity,
+                }).ToList();
+        }
+
         // GET: api/E_Ad/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Ad>> GetAd(int id)

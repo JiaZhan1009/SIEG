@@ -10,7 +10,7 @@
                 </a>
             </div>
             <div class="d-inline-block">
-                <a class="add_btn" asp-controller="Home" asp-action="add">
+                <a class="add_btn" asp-controller="ad" asp-action="add">
                     <i class="bx bx-plus"></i>
                     <span>新增</span>
                 </a>
@@ -18,35 +18,31 @@
         </div>
 
         <!-- 顯示資訊 -->
-        <div class="card" id="bannerVue">
+        <div class="card" id="adVue">
             <div class="table-responsive text-nowrap">
                 <table class="table banner_table">
                     <thead>
                         <tr>
                             <th class="img">圖片</th>
-                            <th class="title">標題</th>
                             <th class="link">連結</th>
                             <th class="state">狀態</th>
                             <th class="btn"></th>
                         </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
-                        <tr v-for="item in BannerDTO">
+                        <tr v-for="item in AdDTO">
                             <td>
-                                <img :src="item.bannerImg">
+                                <img :src="item.adImg">
                             </td>
                             <td>
-                                <div>{{item.bannerTitle}}</div>
+                                <div>{{item.adLink}}</div>
                             </td>
                             <td>
-                                <div>{{item.bannerLink}}</div>
-                            </td>
-                            <td>
-                                <div>{{item.bannerState}}</div>
+                                <div>{{item.adState}}</div>
                             </td>
                             <td>
                                 <div class="tb_btn edit">
-                                    <a href="banner_edit.html">
+                                    <a href="ad_edit.html">
                                         <i class="bx bx-pencil"></i>
                                     </a>
                                 </div>
@@ -64,6 +60,7 @@
     </div>
 </div>
 
+
 @section Scripts{
 
     <script>
@@ -72,39 +69,37 @@
 
         var webApiBaseAddress = "https://localhost:7139";
         var appVue = new Vue({
-            el: "#bannerVue",
-            name: "bannerVue",
+            el: "#adVue",
+            name: "adVue",
             data: {
-                BannerDTO: [],
+                AdDTO: [],
                 Filter: "",
-                BannerId: null,
-                BannerImg: null,
-                BannerTitle: null,
-                BannerLink: null,
-                BannerValIdity: null,
-                bannerState: null,
+                AdId: null,
+                AdImg: null,
+                AdLink: null,
+                adState: null,
             },
             mounted: function () {
                 let _this = this;
-                _this.getBannerDTO();
+                _this.getAdDTO();
             },
             methods: {
-                getBannerDTO: async function () {
+                getAdDTO: async function () {
                     let _this = this;
-                    let response = await axios.get(`${webApiBaseAddress}/api/E_Banner/Boss`);
-                    _this.BannerDTO = response.data;
-                    var BannerList = [];
-                    for (let i = 0; i < _this.BannerDTO.length; i++) {
+                    let response = await axios.get(`${webApiBaseAddress}/api/E_Ad/Boss`);
+                    _this.AdDTO = response.data;
+                    var AdList = [];
+                    for (let i = 0; i < _this.AdDTO.length; i++) {
                         let item = {};
-                        item = _this.BannerDTO[i];
-                        BannerList.push(item);
+                        item = _this.AdDTO[i];
+                        AdList.push(item);
 
-                        var str = item.bannerValIdity;
+                        var str = item.adValIdity;
                         if (str == false) {
-                            item.bannerState = "不顯示"
+                            item.adState = "不顯示"
                         }
                         else {
-                            item.bannerState = "顯示"
+                            item.adState = "顯示"
                         }
                     }
                 },

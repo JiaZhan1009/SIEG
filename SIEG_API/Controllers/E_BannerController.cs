@@ -38,6 +38,21 @@ namespace SIEG_API.Controllers
                 });
         }
 
+        // GET: api/E_Banner/Boss
+        [HttpGet("Boss")]
+        public async Task<IEnumerable<E_BannerDTO>> BossGetBanner()
+        {
+            return _context.Banner
+                .Select(banner => new E_BannerDTO
+                {
+                    BannerId = banner.BannerId,
+                    BannerImg = banner.Img,
+                    BannerTitle = banner.Title,
+                    BannerLink = banner.Link,
+                    BannerValIdity = banner.ValIdity,
+                });
+        }
+
         // GET: api/E_Banner/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Banner>> GetBanner(int id)

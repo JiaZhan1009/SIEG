@@ -46,7 +46,7 @@
                             </td>
                             <td>
                                 <div class="tb_btn edit">
-                                    <a href="banner_edit.html">
+                                    <a @@click="editBanner(item.bannerId)">
                                         <i class="bx bx-pencil"></i>
                                     </a>
                                 </div>
@@ -125,6 +125,10 @@
                             }
                         );
                     }
+                },
+                editBanner: function (bnID) {
+                    sessionStorage.setItem("bnID", bnID);
+                    window.location = "/Home/edit";
                 },
             },
         });

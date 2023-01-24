@@ -99,12 +99,20 @@ namespace SIEG_API.Controllers
         // POST: api/E_Ad
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Ad>> PostAd(Ad ad)
+        public async Task<Ad> PostAd(E_AdDTO ad)
         {
-            _context.Ad.Add(ad);
+
+            Ad x = new Ad
+            {
+                Img = ad.AdImg,
+                Link = ad.AdLink,
+                ValIdity = ad.AdValIdity,
+            };
+
+            _context.Ad.Add(x);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAd", new { id = ad.AdId }, ad);
+            return x;
         }
 
         // DELETE: api/E_Ad/5

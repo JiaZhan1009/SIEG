@@ -23,6 +23,11 @@ namespace SIEG_ADMIN.Controllers
             return View();
         }
 
+        public IActionResult edit()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

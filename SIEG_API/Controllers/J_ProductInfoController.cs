@@ -175,6 +175,28 @@ namespace SIEG_API.Controllers
             return mDTO;
         }
 
+        [HttpGet("GetMemberBankInfo/{mID}")]
+        public async Task<J_MemberBankInfoDTO> GetMemberBankInfo(int mID)
+        {
+            var Member = await _context.Member
+                .Join(_context.Bank, m=>m.BankCode, b=>b.BankCode, (m, b) => new {member = m, bank = b })
+                .Where(m => m.member.MemberId == mID)
+                .Select(o=>o).SingleOrDefaultAsync();
+            if (Member == null)
+            {
+                return null;
+            }
+            var mDTO = new J_MemberBankInfoDTO
+            {
+                mID = Member.member.MemberId,
+                mBankName = Member.bank.Name,
+                mBankCode = Member.member.BankCode,
+                mBankAccount = Member.member.BankAccount
+            };
+
+            return mDTO;
+        }
+
         [HttpGet("GetMaxMinPrice/{pID}")]
         public async Task<object> GetMaxMinQuote(int pID)
         {

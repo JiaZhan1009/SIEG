@@ -91,24 +91,24 @@
                                 </div>
                                 <div class="credit_card_form">
                                     <div class="credit_card_btn">
-                                        <button @@click="" class="addMemberInfo ">會員資料帶入</button>
+                                        <button @@click="getMemberBankInfo()" class="addMemberInfo ">會員資料帶入</button>
                                     </div>
-                                    
+
                                     <form>
                                         <div class="row">
                                             <div class="col-6">
-                                                <input type="text" class="form-control" placeholder="銀行代碼">
+                                                <input type="text" class="form-control" placeholder="銀行代碼" v-model="bankCode">
                                             </div>
                                             <div class="col-6">
-                                                <input type="text" class="form-control" placeholder="分行名稱">
+                                                <input type="text" class="form-control" placeholder="分行名稱" v-model="bankName">
                                             </div>
                                             <div class="col-12">
-                                                <input type="text" class="form-control" placeholder="銀行帳號">
+                                                <input type="text" class="form-control" placeholder="銀行帳號" v-model="bankAccount">
                                             </div>
                                         </div>
                                     </form>
                                     <div class="credit_card_btn">
-                                        <button class="save" type="submit">儲存帳戶</button>
+                                        <button class="save" type="submit" @@click="saveBankAccount">儲存帳戶</button>
                                     </div>
                                 </div>
 
@@ -169,6 +169,9 @@
                 minQuote: null,
                 DisplayPriceState: null,
                 pCateID: null,
+                bankCode: null,
+                bankName: null,
+                bankAccount: null,
 
             },
             mounted: function () {
@@ -226,6 +229,24 @@
                         console.log(error);
                     }
                 },
+                async getMemberBankInfo() {
+                    try {
+                        let _this = this;
+                        let response = await axios.get(`${webApiAddress}/GetMemberBankInfo/${_this.mID}`);
+                        if (response.data != "") {
+                            let res = response.data;
+                            _this.bankCode = res.bankCode;
+                            _this.bankName = res.bankName;
+                            _this.bankAccount = res.bankAccount;
+                        } else {
+                            _this.bankCode = "";
+                            _this.bankName = "";
+                            _this.bankAccount = "";
+                        }
+                    } catch (error) {
+                        console.log(error);
+                    }
+                },
                 selectSizeItem: function (pSize, pPrice, index, pID) {
                     let _this = this;
                     _this.pSize = pSize;
@@ -252,14 +273,43 @@
                     //    .catch(error => {
                     //        console.log(error);
                     //    });
-                    let request = {
-                        pID:  _this.pID,
-                        mID: _this.mID,
-                        pPrice: _this.pPrice
-                    };
-                    axios.post(`${webApiAddress}/AddMemberQuotePrice`, request)
-                    alert("您已完成出價");
-                   
+                    if (_this.bankCode == "" || _this.bankName == "" || _this.bankAccount == "") {
+                        alert("請檢查收款帳戶是否填寫正確")
+                    } else {
+                        let request = {
+                            pID: _this.pID,
+                            mID: _this.mID,
+                            pPrice: _this.pPrice
+                        };
+                        try {
+                            axios.post(`${webApiAddress}/AddMemberQuotePrice`, request)
+                            alert("您已完成出價");
+                        } catch (error) {
+                            console.log(error);
+                        }
+                    }
+
+                },
+                saveBankAccount() {
+                    let _this = this;
+                    if (_this.bankCode == "" || _this.bankName == "" || _this.bankAccount == "") {
+
+                    } else {
+                        let request = {
+                            mID: _this.mID,
+                            mBankCode: _this.bankCode,
+                            mBankName: _this.bankName,
+                            mBankAccount: _this.bankAccount
+                        };
+                        try {
+                            axios.put(`${webApiAddress}/UpdataMemberBankInfo`, request)
+                            alert("儲存成功");
+
+                        } catch (error) {
+                            console.log(error);
+                        }
+
+                    }
                 },
                 clickShowSize: function () {
                     $('.selSizeHide').slideToggle();

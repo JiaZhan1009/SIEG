@@ -54,8 +54,8 @@
                             <!--標題、內文-->
                             <div style="padding-top: 20px;">
                                 <div>
-                                    <textarea class="title" id="story" name="title" placeholder="標題" v-model="標題"></textarea>
-                                    <textarea class="describe" id="story" name="title" placeholder="敘述" v-model="內文"></textarea>
+                                    <textarea class="title" id="story" name="title" placeholder="標題" v-model="標題">{{Title}}</textarea>
+                                <textarea class="describe" id="story" name="title" placeholder="敘述" v-model="內文">{{NewsContent}}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -125,16 +125,18 @@
                 年月日: null,
             },
             mounted: function () {
-                var _this = this;
                 document.querySelector('.file').addEventListener('change', function (e) {
                     let files = e.target.files
                     _this.imgFile = files[0].name;
                 });
+                var _this = this;
+                _this.getD_NewsInfoDTO();
             },
             methods: {
                 getD_NewsInfoDTO: function () {
                     var nID = sessionStorage.getItem("nID")
                     let _this = this;
+                    console.log(nID)
                     axios.get(`${webApiBaseAddress}/api/D_NewsInfo/${nID}`).then(
                         response => {
                             console.log(response.data)
@@ -144,7 +146,7 @@
                             _this.NewsContent = _this.D_NewsInfoDTO[0].newsContent;
                             _this.CategoryName = _this.D_NewsInfoDTO[0].categoryName;
                             _this.AddTime = _this.D_NewsInfoDTO[0].addTime
-                            //_this.年月日 = moment(_this.AddTime).subtract(10, 'days').calendar();
+                            _this.年月日 = moment(_this.AddTime).subtract(10, 'days').calendar();
                         }
                     );
                 },

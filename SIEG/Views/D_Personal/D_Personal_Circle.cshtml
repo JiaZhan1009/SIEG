@@ -103,10 +103,10 @@
                     _this.getD_GradeBuyDTO();
                     //_this.getD_GradeSellDTO();
                     $(function () {
-                    setTimeout(function () {
+                        setTimeout(function () {
                             _this.getD_GradeSellDTO();
-                    }, 1000);
-                });
+                        }, 1000);
+                    });
                 },
                 methods: {
                     getD_GradeBuyDTO: function () {
@@ -248,17 +248,19 @@
                         );
                     },
                     updateB: function () {
-                        var mID = sessionStorage.getItem("mID");
                         let _this = this;
                         var request = {};
+                        var mID = sessionStorage.getItem("mID");
+                        console.log(mID)//yes 101
+
                         request.BuyerGrade = _this.BuyerGrade;
                         //request.SellerGrade = _this.SellerGrade;
-                        request.BuyerId = 0;
+                        request.BuyerId = mID;
                         request.SellerId = 0;
                         request.State = _this.State;
                         request.Price = _this.Price;
                         request.Count = _this.Count;
-                        console.log(request)
+                        console.log(request.BuyerId);
                         axios.put(`${webApiBaseAddress}/api/D_BuyerGrade/${mID}`, request).then(
                             response => {
                                 console.log("我是get賣家" + response.data)
@@ -271,13 +273,13 @@
                         );
                     },
                     updateS: function () {
-                        var mID = sessionStorage.getItem("mID");
                         let _this = this;
                         var request = {};
+                        var mID = sessionStorage.getItem("mID");
                         //request.BuyerGrade = _this.BuyerGrade;
                         request.SellerGrade = _this.SellerGrade;
                         request.BuyerId = 0;
-                        request.SellerId = 0;
+                        request.SellerId = mID;
                         request.State = _this.State;
                         request.Price = _this.Price;
                         request.Count = _this.Count;

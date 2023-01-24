@@ -11,7 +11,6 @@ namespace SIEG_API.Models
         {
             BuyerBid = new HashSet<BuyerBid>();
             ContactAddProduct = new HashSet<ContactAddProduct>();
-            ContactCustomerService = new HashSet<ContactCustomerService>();
             FaviriteArticle = new HashSet<FaviriteArticle>();
             FaviriteNews = new HashSet<FaviriteNews>();
             FaviriteProduct = new HashSet<FaviriteProduct>();
@@ -46,7 +45,6 @@ namespace SIEG_API.Models
         public virtual Bank BankCodeNavigation { get; set; }
         public virtual ICollection<BuyerBid> BuyerBid { get; set; }
         public virtual ICollection<ContactAddProduct> ContactAddProduct { get; set; }
-        public virtual ICollection<ContactCustomerService> ContactCustomerService { get; set; }
         public virtual ICollection<FaviriteArticle> FaviriteArticle { get; set; }
         public virtual ICollection<FaviriteNews> FaviriteNews { get; set; }
         public virtual ICollection<FaviriteProduct> FaviriteProduct { get; set; }

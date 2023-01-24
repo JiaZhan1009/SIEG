@@ -109,8 +109,11 @@
                                     </svg>
                                 </button>
                                 <!-- 點擊後加active -->
-                                <a class="like" href="#"><i class="fa fa-heart"></i>按讚</a>
-                                <a class="reply" href="#"><i class="fa fa-reply"></i>轉發至討論區</a>
+                                @*<a class="like" href="#"><i class="fa fa-heart"></i>按讚</a>*@
+                                <div class="placement" style="float: right;">
+                                    <div class="heart"></div>
+                                </div>
+                                <a @@click="GoForum" class="reply"><i class="fa fa-reply"></i>轉發至討論區</a>
                             </div>
                         </div>
                     </div>
@@ -155,6 +158,7 @@
                 _this.getNewsSortDTO();
                 _this.getNewsHotDTO();
                  _this.getD_NewsInfoDTO();
+                 //收藏
                 $(function () {
                     $(".book").on("mousedown", function () {
                         if (!$(this).hasClass('active')) {
@@ -167,6 +171,12 @@
                     $(".book").on("click", function () {
                         $(this).removeClass('pressed')
                         $(this).toggleClass('active')
+                    });
+                });
+                //愛心
+                $(function () {
+                    $(".heart").on("click", function () {
+                        $(this).toggleClass("is-active");
                     });
                 });
             },
@@ -298,7 +308,13 @@
                     sessionStorage.setItem("indexNSortName", sortName);
                     window.location = "/news_list";
                 },
-                
+                GoForum: function () {
+                    var nID = sessionStorage.getItem("nID");
+                    var mID = sessionStorage.getItem("mID");
+                    console.log(nID);
+                    console.log(mID);
+                    window.location = "/forum_post";
+                },
                 insert: function () {
                     //alert("eee")
                     var _this = this;

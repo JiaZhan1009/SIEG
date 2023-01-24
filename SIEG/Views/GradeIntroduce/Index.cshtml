@@ -22,7 +22,7 @@
                         <!-- wow fadeInLeft / wow fadeInRight / wow fadeInUp / wow fadeInDown -->
                         <div class="title_lev">SELLING ON S.E.I.G</div>
                         <h1 class="lev-h1">Sell. Get Paid. Repeat.</h1>
-                        <a href="index.html" target="_blank" class="btn-lev">
+                        <a asp-controller="Home" asp-action="index" target="_blank" class="btn-lev">
                             Get Started
                             +++++
                         </a>
@@ -105,7 +105,7 @@
                 <!-- 三區-按鈕區 -->
                 <div class="selling-pg_step-intro">
                     <h2 class="step-steps">通過 4 個簡單的步驟開始銷售</h2>
-                    <a href="signup.html" target="_blank" class="btn-step">
+                    <a target="_blank" class="btn-step" asp-controller="D_Personal" asp-action="index">
                         Get Started
                         +++++
                     </a>
@@ -220,7 +220,7 @@
                             詢價可讓您選擇您希望以何種價格出售您的物品。如果您的要價最低，則發出匹配出價的買家將自動向您購買。尋找更快的解決方案？在產品頁面上選擇“立即出售”以當場以最高出價出售您的物品。
                         </p>
                     </div>
-                    <a class="btn btn-lev-4 selling-pg__instrcutions-button" href="product_list.html"
+                    <a class="btn btn-lev-4 selling-pg__instrcutions-button" asp-controller="product_list" asp-action="index"
                        target="_self"><span>立即前往</span><span class="btn__plus"> Go Go Go</span></a>
                 </div>
             </div>
@@ -296,10 +296,10 @@
                             <p>15,000元</p>
                         </td>
                         <td class="selling-pg__levels-data user-generated user-generated--v2">
-                            <p>25,000元</p>
+                            <p>30,000元</p>
                         </td>
                         <td class="selling-pg__levels-data user-generated user-generated--v2">
-                            <p>35,000元</p>
+                            <p>45,000元</p>
                         </td>
                         <!-- <td class="selling-pg__levels-data user-generated user-generated--v2">
                             <p>15,000元</p>

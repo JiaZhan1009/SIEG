@@ -60,6 +60,20 @@ namespace SIEG.Controllers
             return View();
         }
 
+        public IActionResult Sellerinformation()
+        {
+            return View();
+        }
+
+        public IActionResult TEST()
+        {
+            return View();
+        }
+        public IActionResult Passwordmodification()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

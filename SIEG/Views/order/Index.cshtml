@@ -332,11 +332,13 @@
                 mName: null,
                 mPhone: null,
                 mAddress: null,
+                pCateID: null,
+                pLength: null,
             },
             mounted: function () {
                 let _this = this;
                 _this.getProductInfoDTO();
-                _this.getSizeAndQuote();
+
                 _this.getMemberInfo();
                 _this.getMaxMinPrice();
                 if (sessionStorage.getItem("bool") == "true") {
@@ -350,8 +352,19 @@
                 async getProductInfoDTO() {
                     try {
                         let _this = this;
-                        let response = await axios.get(`${webApiAddress}/ProductInfo/${_this.pID}`);
+                        let response = await axios.get(`${webApiAddress}/GetProductInfo/${_this.pID}`);
                         this.productInfo = response.data;
+                        if (_this.productInfo.length == 1) {
+                            _this.productInfo = _this.productInfo[0];
+                            _this.pLength = true;
+                            sessionStorage.setItem("pLength", _this.pLength);
+                        } else {
+                            _this.productInfo = _this.productInfo[0];
+                            _this.pLength = false;
+                            sessionStorage.setItem("pLength", _this.pLength);
+                        }
+                        _this.pCateID = _this.productInfo.pCateID;
+                        _this.getSizeAndQuote();
                     } catch (error) {
                         console.log(error);
                     }
@@ -359,7 +372,7 @@
                 async getSizeAndQuote() {
                     try {
                         let _this = this;
-                        let response = await axios.get(`${webApiAddress}/GetSizeAndQuote`);
+                        let response = await axios.get(`${webApiAddress}/GetSizeAndQuote/${_this.pCateID}`);
                         _this.SizeAndPriceList = response.data;
                     } catch (error) {
                         console.log(error);

@@ -1,0 +1,69 @@
+﻿@{
+    ViewData["Title"] = "首頁";
+}
+
+<!-- 右邊內容 -->
+<div class="content-wrapper">
+    <div class="container-xxl flex-grow-1 container-p-y">
+
+        <!-- 新增btn & 手機板選單 -->
+        <div class="top_nav justify-content-xl-end justify-content-between">
+            <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+                <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                    <i class="bx bx-menu bx-sm"></i>
+                </a>
+            </div>
+            <div class="d-inline-block">
+                <a class="add_btn" href="banner_add.html">
+                    <i class="bx bx-plus"></i>
+                    <span>新增</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- 顯示資訊 -->
+        <div class="card">
+            <div class="table-responsive text-nowrap">
+                <table class="table banner_table">
+                    <thead>
+                        <tr>
+                            <th class="img">圖片</th>
+                            <th class="title">標題</th>
+                            <th class="link">連結</th>
+                            <th class="state">狀態</th>
+                            <th class="btn"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                        <tr>
+                            <td>
+                                <img src="assets/images/1920x700-1.jpg">
+                            </td>
+                            <td>
+                                <div>title</div>
+                            </td>
+                            <td>
+                                <div>/about</div>
+                            </td>
+                            <td>
+                                <div>顯示</div>
+                            </td>
+                            <td>
+                                <div class="tb_btn edit">
+                                    <a href="banner_edit.html">
+                                        <i class="bx bx-pencil"></i>
+                                    </a>
+                                </div>
+                                <div class="tb_btn del">
+                                    <a>
+                                        <i class="bx bx-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

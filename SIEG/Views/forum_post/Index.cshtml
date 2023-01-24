@@ -8,89 +8,96 @@
     <link href="~/css/forumPost.css" rel="stylesheet">
 }
 
-<!--發文區塊-->
-<div id="postVue">
-    <div class="forum_space">
-        <div class="container">
-            <div class="row">
-                <!--組件區塊-->
-                <div class="col-lg-12 col-xl-12 order-lg-2 order-1">
-                    <div class="form_list_content">
-                        <div style="text-align: center; padding-bottom: 5px;">
-                            <span class="dropdown">
-                                <button class="btn dropdown-toggle kanban-btn" data-bs-toggle="dropdown">
-                                    請選擇發文看板
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a href="#" class="dropdown-item">高檔腕錶</a>
-                                    <a href="#" class="dropdown-item">潮流服飾</a>
-                                    <a href="#" class="dropdown-item">時尚包款</a>
-                                    <a href="#" class="dropdown-item">高檔鞋履</a>
-                                </div>
-                            </span>
-                            <span class="dropdown" style="padding-left: 10px;">
-                                <button class="btn dropdown-toggle class-btn" data-bs-toggle="dropdown">標題分類</button>
-                                <div class="dropdown-menu">
-                                    <a href="#" class="dropdown-item">IWC</a>
-                                    <a href="#" class="dropdown-item">Rolex</a>
-                                    <a href="#" class="dropdown-item">Seiko</a>
-                                    <a href="#" class="dropdown-item">Panerai</a>
-                                </div>
-                            </span>
-                        </div>
-                        <!--身分列-->
-                        <div style="padding-top: 5px; float: left;">
-                            <svg viewBox="0 0 40 40" focusable="false" width="32" height="32">
-                                <path fill="#81D4FA" d="M40 20a20 20 0 1 1-40 0 20 20 0 0 1 40 0"></path>
-                                <path fill="#2490BF"
+    <!--發文區塊-->
+    <div id="postVue">
+        <div class="forum_space">
+            <div class="container">
+                <div class="row">
+                    <!--組件區塊-->
+                    <div class="col-lg-12 col-xl-12 order-lg-2 order-1">
+                        <div class="form_list_content">
+                            <div style="text-align: center; padding-bottom: 5px;">
+                                <span class="dropdown">
+                                    <button class="btn dropdown-toggle kanban-btn" data-bs-toggle="dropdown">
+                                        請選擇發文看板
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a href="#" class="dropdown-item">高檔腕錶</a>
+                                        <a href="#" class="dropdown-item">潮流服飾</a>
+                                        <a href="#" class="dropdown-item">時尚包款</a>
+                                        <a href="#" class="dropdown-item">高檔鞋履</a>
+                                    </div>
+                                </span>
+                                <span class="dropdown" style="padding-left: 10px;">
+                                    <button class="btn dropdown-toggle class-btn" data-bs-toggle="dropdown">標題分類</button>
+                                    <div class="dropdown-menu">
+                                        <a href="#" class="dropdown-item">IWC</a>
+                                        <a href="#" class="dropdown-item">Rolex</a>
+                                        <a href="#" class="dropdown-item">Seiko</a>
+                                        <a href="#" class="dropdown-item">Panerai</a>
+                                    </div>
+                                </span>
+                            </div>
+                            <!--身分列-->
+                            <div style="padding-top: 5px; float: left;">
+                                <svg viewBox="0 0 40 40" focusable="false" width="32" height="32">
+                                    <path fill="#81D4FA" d="M40 20a20 20 0 1 1-40 0 20 20 0 0 1 40 0"></path>
+                                    <path fill="#2490BF"
                                       d="M16 7.9C12.4 7.4 9.3 6 9.3 6s5.5 4.3 5 5.3c-.4 1-4.2 0-4.2 0l4 2a9.7 9.7 0 0 0-1.5 4.6l.1 3.4a1.5 1.5 0 1 0 .8 2.9 8.3 8.3 0 0 0 6.2 5.3c.6 0 .6 2 .6 3.2-1.6 1-2.5 3-2 5v2.2a20.2 20.2 0 0 0 9.9-1.6l-.7-2.7v-.4l-.2-.4-.2-.4-.2-.3-.2-.3c-.7-1-1.7-1.6-2.9-1.8l.6-2.3s1.4-1 3-2.6l.4 1.3 1.4-2.5.9-1.8s3.8-10.3.8-13.9c-2.6-3-11-1.9-14.7-2.3">
-                                </path>
-                            </svg>
-                        </div>
-                        <div class="identity">
-                            <span class="identity">一個男人</span>
-                            <span class="identity">12月27日 22:38</span>
-                        </div>
-                        <!--標題、內文-->
-                        <div style="padding-top: 20px;">
-                            <div>
-                                <textarea class="title" id="story" name="title" placeholder="標題" v-model="標題"></textarea>
-                                <textarea class="describe" id="story" name="title" placeholder="敘述" v-model="內文"></textarea>
+                                    </path>
+                                </svg>
+                            </div>
+                            <div class="identity">
+                                <span class="identity">一個男人</span>
+                                <span class="identity">12月27日 22:38</span>
+                            </div>
+                            <!--標題、內文-->
+                            <div style="padding-top: 20px;">
+                                <div>
+                                    <textarea class="title" id="story" name="title" placeholder="標題" v-model="標題"></textarea>
+                                    <textarea class="describe" id="story" name="title" placeholder="敘述" v-model="內文"></textarea>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Footer -->
-    <div class="btn_footer">
-        <div class="container">
-            <div class="row align-items-center">
-                <!--送出鈕、圖片鈕-->
-                <div>
-                    <span class="image-input">
-                        <input type="file" accept="image/*" id="imageInput" class="file">
-                        <label for="imageInput" class="image-button"><i class="far fa-image"></i></label>
-                        <img src="" class="image-preview">
-                        <span class="change-image">換一張</span>
-                    </span>
-                    <button type="button" class="spin submit" id="submit" @@click=insert>
-                        <span>送出</span>
-                        <span>
-                            <svg viewBox="0 0 24 24">
-                                <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
-                            </svg>
-                        </span>
-                    </button>
+        <!-- Footer -->
+        <div class="btn_footer">
+            <div class="container">
+                <div class="row align-items-center">
+                    <!--送出鈕、圖片鈕-->
+                    <div>
+                        <form method="post" enctype="multipart/form-data"
+                          asp-controller="forum_post" asp-action="index2">
+                            <div class="form-group">
+                                <span class="image-input">
+                                    <input type="file" accept="image/*" id="imageInput" name="files" class="file" multiple>
+                                    <label for="imageInput" class="image-button"><i class="far fa-image"></i></label>
+                                    <img src="" class="image-preview">
+                                    <span class="change-image">換一張</span>
+                                </span>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="spin submit" id="submit" value="Upload" @@click=insert>
+                                    <span>送出</span>
+                                    <span>
+                                        <svg viewBox="0 0 24 24">
+                                            <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
+                                        </svg>
+                                    </span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 
-@section Scripts{
+    @section Scripts{
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
@@ -102,14 +109,45 @@
             el: "#postVue",
             name: "postVue",
             data: {
+                imgFile: "none-img.jpg",
                 標題: null,
                 內文: null,
                 類別: null,
+                //Dennis
+                D_NewsInfoDTO: [],
+                Filter: "",
+                NewsID: null,
+                Title: null,
+                Img: null,
+                NewsContent: null,
+                CategoryName: null,
+                AddTime: null,
+                年月日: null,
             },
             mounted: function () {
-
+                var _this = this;
+                document.querySelector('.file').addEventListener('change', function (e) {
+                    let files = e.target.files
+                    _this.imgFile = files[0].name;
+                });
             },
             methods: {
+                getD_NewsInfoDTO: function () {
+                    var nID = sessionStorage.getItem("nID")
+                    let _this = this;
+                    axios.get(`${webApiBaseAddress}/api/D_NewsInfo/${nID}`).then(
+                        response => {
+                            console.log(response.data)
+                            _this.D_NewsInfoDTO = response.data;
+                            _this.Title = _this.D_NewsInfoDTO[0].title;
+                            _this.Img = _this.D_NewsInfoDTO[0].img;
+                            _this.NewsContent = _this.D_NewsInfoDTO[0].newsContent;
+                            _this.CategoryName = _this.D_NewsInfoDTO[0].categoryName;
+                            _this.AddTime = _this.D_NewsInfoDTO[0].addTime
+                            //_this.年月日 = moment(_this.AddTime).subtract(10, 'days').calendar();
+                        }
+                    );
+                },
                 insert: function () {
                     var _this = this;
                     var request = {};
@@ -118,6 +156,8 @@
                     request.ProductCategoryID = 101;
                     request.Title = _this.標題;
                     request.ArticleContent = _this.內文;
+                    request.Img = "/images/forum/post/"+_this.imgFile;
+                    console.log(request.Img)
                     axios.post(`${webApiBaseAddress}/api/G_ForumArticles`, request).then(
                         response => {
                             //window.location = "/Forum/Forum_list"
@@ -127,36 +167,4 @@
             },
         });
     </script>
-
-    @*<script>
-        document.querySelector('.file').addEventListener('change', function (e) {
-            //1.可以通过this拿到这个file的DOM元素
-            console.log(this)
-            //1.  e 函数事件参数对象中也有这个file的DOM元素对象。使用e.target也可以直接拿到
-            //console.log(e.target)
-            //对开发人员屏蔽，所以直接 必须调用这个文件的DOM对象的files属性，返回一个数组
-            let files = e.target.files
-            console.log(files)
-            // console.log(files.item(0))
-            // console.log(files[0])
-            // 判断一手是否有文件
-            if (!files.length) return
-            // 上传文件 创建FormData
-            let formData = new FormData()
-            // upFile就是后台接收的key
-            formData.append('upFile', files[0], files[0].name)
-            // 将formdata发送到后台即可
-            // 我用的 axios.post('url', formData)
-            $.ajax({
-                url: '~/images/forum/post',
-                type:'POST',
-                cache:false,
-                data:formData,
-                processData:false,
-                contentType:false
-            }).done(function(res){
-            }).fail(function(res){});
-
-        });
-    </script>*@
-}
+    }

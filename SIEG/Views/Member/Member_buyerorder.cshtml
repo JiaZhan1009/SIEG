@@ -57,7 +57,7 @@
                                             <img :src="item.imgFront" class="imgWidth">
                                             <div class="imgMargin">
                                                 <div>{{item.productName}}</div>
-                                                    <span class="nameDilute">{{item.model}}</span>
+                                                <span class="nameDilute">{{item.model}}</span>
                                                 <div>
                                                     <p class=" badge rounded-pill Pcolor">us{{item.size}}</p>
                                                 </div>
@@ -78,7 +78,7 @@
                                             <img :src="item.imgFront" class="imgWidth">
                                             <div class="imgMargin">
                                                 <div>{{item.productName}}</div>
-                                                    <span class="nameDilute">{{item.model}}</span>
+                                                <span class="nameDilute">{{item.model}}</span>
                                                 <div>
                                                     <p class=" badge rounded-pill Pcolor">us{{item.size}}</p>
                                                 </div>
@@ -119,7 +119,7 @@
                                             <img :src="item.image" class="imgWidth">
                                             <div class="imgMargin">
                                                 <div>{{item.productName}}</div>
-                                                    <span class="nameDilute">{{item.model}}</span>
+                                                <span class="nameDilute">{{item.model}}</span>
                                                 <div>
                                                     <p class=" badge rounded-pill Pcolor">us{{item.SizeId}}</p>
                                                 </div>
@@ -140,7 +140,7 @@
                                             <img :src="item.image" class="imgWidth">
                                             <div class="imgMargin">
                                                 <div>{{item.productName}}</div>
-                                                    <span class="nameDilute">{{item.model}}</span>
+                                                <span class="nameDilute">{{item.model}}</span>
                                                 <div>
                                                     <p class=" badge rounded-pill Pcolor">us{{item.sizeId}}</p>
                                                 </div>
@@ -183,7 +183,7 @@
                                         <img :src="item.image" alt="Image" class="imgWidth" :id="item.orderId">
                                         <div class="imgMargin" :id="item.orderId">
                                             <div :id="item.orderId">{{item.productName}}</div>
-                                                <span :id="item.orderId" class="nameDilute">{{item.model}} </span>
+                                            <span :id="item.orderId" class="nameDilute">{{item.model}} </span>
                                             <div :id="item.orderId">
                                                 <p :id="item.orderId" class=" badge rounded-pill Pcolor">us{{item.sizeId}}</p>
                                             </div>
@@ -278,12 +278,13 @@
             },
             mounted: function () {
                 let _this = this;
+                localStorage.setItem("GETmID", _this.mIDD)
                 _this.getMemberDTOes();
                 _this.getBuyerBidsDTOes();
             },
 
             methods: {
-                getMemberDTOes: function () {       
+                getMemberDTOes: function () {
                     let _this = this;
                     axios.get(`${webApiBaseAddress}/api/B_BuyerOrders/${_this.mIDD}`).then(
                         response => {
@@ -293,8 +294,8 @@
                                 var item = {};
                                 item = _this.MemberDTOes[i];
                                 item.num = "A" + item.orderId;
-                               var str = item.completeTime;
-                                    item.newCompletetime = str.split("T")[0];
+                                var str = item.completeTime;
+                                item.newCompletetime = str.split("T")[0];
                                 MemberList.push(item);
 
                             }

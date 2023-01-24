@@ -39,7 +39,7 @@
                                             取消
                                         </button>
                                     </a>
-                                    <input type="submit" class="btn btncolor inputright" value="儲存">
+                                <input type="submit" class="btn btncolor inputright" value="儲存" @@click="update(MailinginformationDTOes)">
                                 </div>
                             </div>
 
@@ -47,6 +47,7 @@
                     </div>
             </div>
         </div>
+    <partial name="_FooterPartial" />
     </div>
 
     @section Scripts
@@ -78,6 +79,21 @@
 
                         }
                     );
+                },
+                update: function (Mailinginformation) {
+                    let _this = this;
+                    var request = {};
+                    request.MemberId = Mailinginformation.memberId;
+                    request.Shippingaddress = Mailinginformation.shippingaddress;
+                    var ret = confirm("確定要修改嗎?");
+                    if (ret == true) {
+                        axios.put(`${webApiBaseAddress}/api/B_PaymentInformation/Mailinginformation/${_this.mID}`, request).then(
+                            response => {
+                                alert(response.data);
+                                window.location = "/Member/SettingCreditcard"
+                            }
+                        );
+                    }
                 },
             },
         });

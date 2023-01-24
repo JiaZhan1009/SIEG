@@ -6,12 +6,15 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SIEG", "SIEG\SIEG.csproj", "{F437CF09-5E6E-4B57-A0B2-E25A5030823E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SIEG_API", "SIEG_API\SIEG_API.csproj", "{7D0E464A-8488-4E7E-9460-AEC08759A136}"
+<<<<<<< HEAD
 EndProject
 <<<<<<< HEAD
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payment", "Payment\Payment.csproj", "{651525FE-F1E1-432E-9C81-08F2AACC1DFF}"
 =======
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SIEG_ADMIN", "SIEG_ADMIN\SIEG_ADMIN.csproj", "{1FBF119D-EA31-4028-A8D7-432185977812}"
 >>>>>>> Ellie
+=======
+>>>>>>> Dennis
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

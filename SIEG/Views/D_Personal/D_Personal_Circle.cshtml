@@ -110,8 +110,10 @@
                 },
                 methods: {
                     getD_GradeBuyDTO: function () {
+                        var mID = sessionStorage.getItem("mID");
+                        console.log(mID)
                         let _this = this;
-                        axios.get(`${webApiBaseAddress}/api/D_BuyerGrade/${117}`).then(
+                        axios.get(`${webApiBaseAddress}/api/D_BuyerGrade/${mID}`).then(
                             response => {
                                 _this.D_GradeBuyDTO = response.data;
                                 _this.BuyerGrade = _this.D_GradeBuyDTO[0].buyerGrade
@@ -178,8 +180,9 @@
                         );
                     },
                     getD_GradeSellDTO: function () {
+                        var mID = sessionStorage.getItem("mID");
                         let _this = this;
-                        axios.get(`${webApiBaseAddress}/api/D_SellGrade/${112}`).then(
+                        axios.get(`${webApiBaseAddress}/api/D_SellGrade/${mID}`).then(
                             response => {
                                 _this.D_GradeSellDTO = response.data;
                                 //_this.BuyerGrade = _this.D_GradeSellDTO[0].buyerGrade
@@ -245,17 +248,18 @@
                         );
                     },
                     updateB: function () {
+                        var mID = sessionStorage.getItem("mID");
                         let _this = this;
                         var request = {};
                         request.BuyerGrade = _this.BuyerGrade;
                         //request.SellerGrade = _this.SellerGrade;
-                        request.BuyerId = 117;
+                        request.BuyerId = 0;
                         request.SellerId = 0;
                         request.State = _this.State;
                         request.Price = _this.Price;
                         request.Count = _this.Count;
                         console.log(request)
-                        axios.put(`${webApiBaseAddress}/api/D_BuyerGrade/${117}`, request).then(
+                        axios.put(`${webApiBaseAddress}/api/D_BuyerGrade/${mID}`, request).then(
                             response => {
                                 console.log("我是get賣家" + response.data)
                                 if (response.status == 200) {
@@ -267,18 +271,19 @@
                         );
                     },
                     updateS: function () {
+                        var mID = sessionStorage.getItem("mID");
                         let _this = this;
                         var request = {};
                         //request.BuyerGrade = _this.BuyerGrade;
                         request.SellerGrade = _this.SellerGrade;
                         request.BuyerId = 0;
-                        request.SellerId = 112;
+                        request.SellerId = 0;
                         request.State = _this.State;
                         request.Price = _this.Price;
                         request.Count = _this.Count;
                         console.log(request)
 
-                        axios.put(`${webApiBaseAddress}/api/D_SellGrade/${112}`, request).then(
+                        axios.put(`${webApiBaseAddress}/api/D_SellGrade/${mID}`, request).then(
                             response => {
                                 console.log(response.data)
                                 if (response.status == 200) {

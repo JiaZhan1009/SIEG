@@ -167,7 +167,7 @@
                             <img style="width: 30px; height:30px" src="~/images/forum/biglike.png">
                         </div>
                         <div style="padding-top:22px;">
-                            <span>{{PostDTOs.likeCount}}·留言 4</span>
+                                <span>{{PostDTOs.likeCount}}·留言 {{PostDTOs.replyCount}}</span>
                             <!--收藏按讚紐-->
                             <div class="placement" style="float: right;" @@click="like(PostDTOs)">
                                 <div class="heart"></div>
@@ -502,6 +502,7 @@
                 } else {
                     _this.totalreply = 0;
                 }
+                _this.articleReply();
             },
             insert: function () {
                 var _this = this;
@@ -522,6 +523,7 @@
                             $('.Reply_block').css('display', 'none');
                         }, 500);
                         _this.getReplyDTOs();
+                        _this.articleReply();
                     }
                 );
             },
@@ -565,6 +567,20 @@
                         }, 1000);
                     }
                 );
+            },
+            articleReply: function () {
+                    let _this = this;
+                    var request = {};
+                    let PostId = articleId;
+                    request.ForumArticleId = PostId;
+                    request.ReplyCount = _this.totalreply;
+                    axios.put(`${webApiBaseAddress}/api/G_ForumArticles/ReplyCount/${PostId}`, request).then(
+                        response => {
+                            setTimeout(function () {
+                                ArticleVue.getPostDTOs();
+                            }, 400);
+                        }
+                    );
             },
         }
     });

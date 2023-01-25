@@ -41,6 +41,7 @@ namespace SIEG_API.Controllers
                 AddTime = emp.AddTime,
                 Img = emp.Img,
                 ValIdity = emp.ValIdity,
+                ReplyCount = emp.ReplyCount,
             });
         }
 
@@ -65,7 +66,7 @@ namespace SIEG_API.Controllers
                 //ViewsCount = forumArticle.ViewsCount,
                 AddTime = forumArticle.AddTime,
                 Img = forumArticle.Img,
-
+                ReplyCount = forumArticle.ReplyCount,
             };
 
             return forumArticlesDTO;
@@ -111,6 +112,39 @@ namespace SIEG_API.Controllers
             return "修改成功";
         }
 
+        // PUT: api/G_ForumArticles/ReplyCount/id
+        [HttpPut("ReplyCount/{id}")]
+        public async Task<string> PutForumArticle(int id, G_ArticlesReplyCountDTO g_ArticlesReplyCountDTO)
+        {
+            if (id != g_ArticlesReplyCountDTO.ForumArticleId)
+            {
+                return "ID不正確";
+            }
+            ForumArticle pos = await _context.ForumArticle.FindAsync(id);
+            pos.ForumArticleId = id;
+            pos.ReplyCount = g_ArticlesReplyCountDTO.ReplyCount;
+
+            _context.Entry(pos).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ForumArticleExists(id))
+                {
+                    return "找不到欲修改的資料";
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return "修改成功";
+        }
+
         // POST: api/G_ForumArticles
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -124,6 +158,7 @@ namespace SIEG_API.Controllers
                 Title = forumArticle.Title,
                 ArticleContent = forumArticle.ArticleContent,
                 Img = forumArticle.Img,
+                ReplyCount = 0,
             };
 
             _context.ForumArticle.Add(pos);

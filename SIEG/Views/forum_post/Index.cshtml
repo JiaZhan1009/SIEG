@@ -159,7 +159,6 @@
                     request.Title = _this.標題;
                     request.ArticleContent = _this.內文;
                     request.Img = "/images/forum/post/"+_this.imgFile;
-                    console.log(request.Img)
                     axios.post(`${webApiBaseAddress}/api/G_ForumArticles`, request).then(
                         response => {
                             //window.location = "/Forum/Forum_list"

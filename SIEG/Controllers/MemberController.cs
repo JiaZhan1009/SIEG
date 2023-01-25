@@ -64,20 +64,47 @@ namespace SIEG.Controllers
         {
             return View();
         }
-
-        public IActionResult TEST()
-        {
-            return View();
-        }
         public IActionResult Passwordmodification()
         {
             return View();
         }
 
+        public IActionResult Kyccertified()
+        {
+            return View();
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+
+
+        [HttpPost("FileUpload")]
+        public async Task<IActionResult> Index2(List<IFormFile> image_uploads)
+        {
+            long size = image_uploads.Sum(f => f.Length);
+
+            var filePaths = new List<string>();
+            foreach (var formFile in image_uploads)
+            {
+                if (formFile.Length > 0)
+                {
+                    //臨時位置文件的完整路徑
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/forum/post", formFile.FileName);
+                    filePaths.Add(filePath);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await formFile.CopyToAsync(stream);
+                    }
+                }
+            }
+            //處理上傳的文件
+            //不要依賴或信任未經驗證的 FileName 屬性。
+            await Task.Delay(2900);
+            return View("~/Views/Member/Kyccertified.cshtml");
         }
     }
 }

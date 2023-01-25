@@ -91,6 +91,39 @@ namespace SIEG_API.Controllers
             return "修改成功!";
         }
 
+
+        [HttpPut("Kyccertified/{Memberid}")]
+        public async Task<string> PutMember2(int Memberid, B_KyccertifiedDTO member)
+        {
+            if (Memberid != member.MemberId)
+            {
+                return "不正確";
+            }
+            Member Kyccertified = await _context.Member.FindAsync(member.MemberId);
+            Kyccertified.MemberId = member.MemberId;
+            Kyccertified.IdCardFront = member.IdCardFront;
+            Kyccertified.IdCardBack = member.IdCardBack;
+            _context.Entry(Kyccertified).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!MemberExists(Memberid))
+                {
+                    return "找不到欲修改紀錄";
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return "修改成功!";
+        }
+
         // POST: api/B_personalinformation
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]

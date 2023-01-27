@@ -14,6 +14,7 @@
         public string? Img { get; set; }
         public bool? ValIdity { get; set; }
         public int? ReplyCount { get; set; }
+        public string? NickName { get; set; }
 
     }
 }

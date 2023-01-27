@@ -11,6 +11,7 @@
         public DateTime AddTime { get; set; }
         public bool? ValIdity { get; set; }
         public int LikeCount { get; set; }
+        public string? NickName { get; set; }
 
     }
 }

@@ -80,8 +80,7 @@ namespace SIEG.Controllers
         }
 
 
-
-        [HttpPost("FileUpload")]
+        [HttpPost("FileUploads")]
         public async Task<IActionResult> Index2(List<IFormFile> image_uploads)
         {
             long size = image_uploads.Sum(f => f.Length);
@@ -92,7 +91,7 @@ namespace SIEG.Controllers
                 if (formFile.Length > 0)
                 {
                     //臨時位置文件的完整路徑
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/forum/post", formFile.FileName);
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/Benicon/memberidcard", formFile.FileName);
                     filePaths.Add(filePath);
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
@@ -103,7 +102,8 @@ namespace SIEG.Controllers
             }
             //處理上傳的文件
             //不要依賴或信任未經驗證的 FileName 屬性。
-            await Task.Delay(2900);
+            //return Ok(new { count = image_uploads.Count, size, filePaths });
+            //await Task.Delay(2900);
             return View("~/Views/Member/Kyccertified.cshtml");
         }
     }

@@ -153,6 +153,7 @@
     padding: 30px;
     border-radius: 5px;
     margin-top: 15px;
+    border: 1px solid #ddd;
 }
 
 .selSize {
@@ -245,7 +246,6 @@
     border-top: 1px dashed #aaa;
     padding-top: 15px;
     margin-top: 15px;
-
 }
 
     .credit_card_form input {
@@ -256,18 +256,16 @@
 .credit_card_btn {
     position: relative;
     margin-top: 5px;
-    text-align:end;
+    text-align: end;
 }
 
     .credit_card_btn .addMemberInfo {
-
         padding: 6px 8px;
         background-color: #006340;
         color: #fff;
         border-radius: 5px;
         font-size: 14px;
         transition: 0.3s;
-
     }
 
     .credit_card_btn .save {

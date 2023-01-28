@@ -97,6 +97,14 @@
       {
          "Name": "[dbo].[SellerAddProduct]",
          "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[GetSizeAndBid]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[GetSizeAndQuote]",
+         "ObjectType": 1
       }
    ],
    "UiHint": "siegdb128.SIEG",

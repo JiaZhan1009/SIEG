@@ -10,6 +10,7 @@ namespace SIEG_API.Models
         public int BuyerBidId { get; set; }
         public int MemberId { get; set; }
         public int Price { get; set; }
+        public int? FinalPrice { get; set; }
         public DateTime BidTime { get; set; }
         public bool? ValIdity { get; set; }
         public int ProductId { get; set; }

@@ -89,7 +89,19 @@
 
                             console.log(res);
                             alert("付款成功, 等待 3 秒跳轉到訂單頁面")
-                            axios.post(`${webApiAddress}/InsertBuyOrder`, _this.orderInfo);
+                            if (_this.orderInfo.info == "buy") {
+
+                                axios.post(`${webApiAddress}/InsertBuyerOrder`, _this.orderInfo);
+                            }
+                            else if (_this.orderInfo.info == "bid") {
+
+                                axios.post(`${webApiAddress}/InsertBuyerBid`, _this.orderInfo);
+                            }
+                            //else if (_this.orderInfo.info == "sell") {
+
+                            //    axios.post(`${webApiAddress}/InsertSellerOrder`, _this.orderInfo);
+                            //}
+
                             let num = "";
                             for (let i = 3; i >= 1; i--) {
                                 setTimeout(() => {
@@ -110,6 +122,7 @@
                             console.log(err);
                         }
                     })
+
                 },
 
             }

@@ -9,7 +9,7 @@ namespace SIEG_API.Models
     {
         public int OrderId { get; set; }
         public int BuyerId { get; set; }
-        public int SellerId { get; set; }
+        public int? SellerId { get; set; }
         public int ProductId { get; set; }
         public int Price { get; set; }
         public DateTime AddTime { get; set; }

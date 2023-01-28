@@ -14,6 +14,7 @@ namespace SIEG_API.Models
         public DateTime AddTime { get; set; }
         public DateTime? SaleDate { get; set; }
         public int Price { get; set; }
+        public int? FinalPrice { get; set; }
         public bool? ValIdity { get; set; }
 
         public virtual Member Member { get; set; }

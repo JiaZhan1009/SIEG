@@ -88,16 +88,7 @@
                                                     <p>選擇 US 尺碼</p>
                                                     <hr />
                                                     <div class="sizeItemContoiner row">
-                                                        @*                                                    <div class="col-12">
-                                                    <div :class="['selectItem',{'active':activeIndex==-1}]" @@click="showSelSize = !showSelSize;activeIndex=-1;selectSizeItem(selAll)">
-                                                    {{selAll}}
-                                                    <div class="fontGreen">0</div>
-                                                    </div>
-
-                                                    </div>*@
                                                         <div class="col-12 ">
-
-
                                                             <div class="sizeAndPrice">
                                                                 <div @@click="activeIndex=index" :class="['sizePriceItem', {'active':activeIndex==index}]" v-for="(item, index) in DisplaySizeAndPriceList" :key="index">
                                                                     <div class="sizeItem" @@click="showSelSize = !showSelSize;selectSizeItem(item.size, item.price, index, item.pID, item.sID)">
@@ -108,7 +99,6 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -759,13 +749,13 @@
                 DisplaySizeAndPriceList() {
                     return this.SizeAndPriceList.map(item => {
                         return {
+                            sID: item.sID,
                             pID: item.pID,
-                            size: item.pSize,
-                            fPrice: this.Format(item.pPrice),
                             price: item.pPrice,
-                            sID: item.sID
+                            size: item.pSize,
+                            fPrice: item.pPrice != 0 ? this.Format(item.pPrice) : "無"
                         }
-                    });
+                    })
                 },
                 DisplayQuotePriceList() {
                     return this.quotePriceList.map(item => {

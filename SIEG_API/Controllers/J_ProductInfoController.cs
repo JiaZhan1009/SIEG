@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol;
 using SIEG_API.DTO;
@@ -47,44 +49,28 @@ namespace SIEG_API.Controllers
         }
 
         [HttpGet("GetSizeAndQuote/{pCateID}")]
-        public async Task<List<J_PriceListDTO>> GetSizeAndQuote(int pCateID)
+        public async Task<IEnumerable<J_PriceListDTO>> GetSizeAndQuote(int pCateID)
         {
-            var sizeAndPrice = await _context.Product
-            .Join(_context.SellerAddProduct, product => product.ProductId, s => s.ProductId,
-            (p, s) => new { Product = p, seller = s, sID = s.MemberId })
-            .Where(p => p.seller.Price != 0 && p.Product.ProductCategoryId == pCateID)
-            .GroupBy(p => p.Product.Size)
-            .Select(g => g.OrderBy(g => g.seller.Price)
-            .First()).ToListAsync();
-
-            List<J_PriceListDTO> priceList = sizeAndPrice.Select(p => new J_PriceListDTO
-            {
-                sID = p.sID,
-                pID = p.Product.ProductId,
-                pPrice = p.seller.Price,
-                pSize = p.Product.Size
-            }).ToList();
-            return priceList;
+            var list = await _context.Procedures.GetSizeAndQuoteAsync(pCateID);
+            return list.Select(x => new J_PriceListDTO {
+                pID = x.pID,
+                pSize = x.pSize,
+                pPrice = x.quotePrice,
+                sID = x.mID,
+            }).OrderBy(x => float.Parse(x.pSize));
         }
-        [HttpGet("GetSizeAndBid/{pCateID}")]
-        public async Task<List<J_PriceListDTO>> GetSizeAndBid(int pCateID)
-        {
-            var sizeAndPrice = await _context.Product
-            .Join(_context.BuyerBid, product => product.ProductId, b => b.ProductId,
-            (p, b) => new { Product = p, Buyer = b })
-            .Where(p => p.Product.ProductCategoryId == pCateID)
-            .GroupBy(p => p.Product.Size)
-            .Select(g => g.OrderByDescending(g => g.Buyer.Price)
-            .First()).ToListAsync();
 
-            List<J_PriceListDTO> priceList = sizeAndPrice.Select(p => new J_PriceListDTO
+        [HttpGet("GetSizeAndBid/{pCateID}")]
+        public async Task<IEnumerable<Object>> GetSizeAndBid(int pCateID)
+        {
+            var list = await _context.Procedures.GetSizeAndBidAsync(pCateID);
+            return list.Select(x => new J_PriceListDTO
             {
-                bID = p.Buyer.Price != 0 ? p.Buyer.MemberId : 0, // 價格為 0 = 預設尺寸選項
-                pID = p.Product.ProductId,
-                pPrice = p.Buyer.Price,
-                pSize = p.Product.Size
-            }).ToList();
-            return priceList;
+                pID = x.pID,
+                pSize = x.pSize,
+                pPrice = x.bidPrice,
+                bID = x.bID,
+            }).OrderBy(x => float.Parse(x.pSize));
         }
 
         [HttpGet("BidPriceList/{pID}")]
@@ -269,3 +255,24 @@ namespace SIEG_API.Controllers
 //                    g.Key,
 //                    最低價 = g.Min(x => x.s.Price)
 //                };
+
+//[HttpGet("GetSizeAndQuote/{pCateID}")]
+//public async Task<List<J_PriceListDTO>> GetSizeAndQuote(int pCateID)
+//{
+//    var sizeAndPrice = await _context.Product
+//    .Join(_context.SellerAddProduct, product => product.ProductId, s => s.ProductId,
+//    (p, s) => new { Product = p, seller = s, sID = s.MemberId })
+//    .Where(p => p.seller.Price != 0 && p.Product.ProductCategoryId == pCateID)
+//    .GroupBy(p => p.Product.Size)
+//    .Select(g => g.OrderBy(g => g.seller.Price)
+//    .First()).ToListAsync();
+
+//    List<J_PriceListDTO> priceList = sizeAndPrice.Select(p => new J_PriceListDTO
+//    {
+//        sID = p.sID,
+//        pID = p.Product.ProductId,
+//        pPrice = p.seller.Price,
+//        pSize = p.Product.Size
+//    }).ToList();
+//    return priceList;
+//}

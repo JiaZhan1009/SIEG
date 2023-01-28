@@ -92,3 +92,9 @@ hr {
     width: 25px;
     text-align: center;
 }
+
+/* -----  功能區  ----- */
+
+.displayNone {
+    display: none;
+}

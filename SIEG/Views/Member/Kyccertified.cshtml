@@ -60,7 +60,7 @@
 								<img src="/images/Benicon/close.png" class="AccountIcon">
 								<span>勿使用經過編輯或過期的文件</span>
 							</div>
-							<form method="post" enctype="multipart/form-data" asp-controller="Member" asp-action="index2">
+							<form method="post" enctype="multipart/form-data" asp-controller="Member" asp-action="index2" v-if="KyccertifiedDTO.idCardFront==null || KyccertifiedDTO.idCardFront==null">
 								<div class="KycImge">
 									<input type="file" id="image_uploads" name="image_uploads" class="IDcardimg" accept=".jpg, .jpeg, .png">
 									<div class="preview">
@@ -80,6 +80,10 @@
 									<input type="submit" class="btn btncolor submitDistance1" value="送出" @@click=insert>
 								</div>
 							</form>
+							<div v-else>
+								<h1 v-if="KyccertifiedDTO.access=='2'" class="text-3">已成為賣家</h1>
+								<h1 v-else class="text-3">驗證中</h1>
+							</div>
 						</div>
 					</div>
 			</div>
@@ -99,11 +103,13 @@
 			name: "appVue",
 			data: {
 				mID: sessionStorage.getItem("mID"),
+				KyccertifiedDTO: {},
 				IdCardFront: null,
 				IdCardBack: null,
 			},
 			mounted: function () {
 				let _this = this;
+				_this.getKyccertifiedDTOes();
 				var input = document.getElementById('image_uploads');
 				var preview = document.querySelector('.preview');
 				input.addEventListener('change', updateImageDisplay); function updateImageDisplay() {
@@ -158,12 +164,25 @@
 				insert: function () {
 					var _this = this;
 					var request = {};
+					//if (_this.IdCardFront == null || _this.IdCardBack == null) {
+					//	alert("請兩張照片一起上傳")
+					//}
+					//else {
 					request.MemberId = _this.mID;
 					request.IdCardFront = "/images/Benicon/memberidcard/" + _this.IdCardFront;
 					request.IdCardBack = "/images/Benicon/memberidcard/" + _this.IdCardBack;
 					axios.put(`${webApiBaseAddress}/api/B_personalinformation/Kyccertified/${_this.mID}`, request).then(
 						response => {
 							alert(response.data);
+						}
+					);
+					//}
+				},
+				getKyccertifiedDTOes: function () {
+					let _this = this;
+					axios.get(`${webApiBaseAddress}/api/B_personalinformation/Kyccertified/${_this.mID}`).then(
+						response => {
+							_this.KyccertifiedDTO = response.data
 						}
 					);
 				},

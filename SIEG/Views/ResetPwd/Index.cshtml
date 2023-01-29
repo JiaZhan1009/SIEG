@@ -5,6 +5,7 @@
 @section Style{
     <!--forum Article Stylesheet-->
     <link href="~/css/sign.css" rel="stylesheet" />
+    @*<link href="~/css/resetpwd.css" rel="stylesheet" />*@
 }
 <div id="Resetpwd">
     <div class="index_space about_sign">
@@ -13,11 +14,16 @@
                 <div>
                     <h3>重設密碼</h3>
                     <p>請輸入新的密碼</p>
-                        <input type="password" id="PassWord" placeholder="密碼*" required>
-                        <i class="far fa-eye" id="togglePassword" style="cursor: pointer;"></i>
-                    <button type="submit" class="btn btn-dark" @@click="update(D_MemberDTO)">確定</button>
+                    <input type="password" id="PassWord" placeholder="密碼*" required>
+                    <i class="far fa-eye" id="togglePassword" style="cursor: pointer;"></i>
+                    @*密碼確認*@
+                    <br />
+                    <br />
+                    <input type="password" id="PassWordAgain" placeholder="請再次輸入密碼*" required>
+                    <i class="far fa-eye" id="togglePassword" style="cursor: pointer;"></i>
+                    <br />
+                    <button type="submit" class="btn_resetbtn btn-dark" @@click="update(D_MemberDTO)">確定</button>
                 </div>
-
             </div>
         </div>
     </div>
@@ -51,24 +57,33 @@
                     update: function (D_MemberDTO) {
                         let _this = this;
                         var request = {};
+                        var Firstpwd = $("#PassWord").val();
+                        var Secondpwd = $("#PassWordAgain").val();
                         request.MemberId = _this.localmID;
                         //request.Name = D_MemberDTO.name;
                         //request.NickName = D_MemberDTO.nickName;
                         //request.Phone = D_MemberDTO.phone;
                         //request.Email = D_MemberDTO.email;
                         //request.Password = D_MemberDTO.password;
-                        request.Password= $("#PassWord").val();
-                        var ret = confirm("確定要修改嗎?");
+                        if (Firstpwd != "" || Secondpwd != "") {
+                            if (Firstpwd == Secondpwd) {
+                                request.Password = $("#PassWord").val();
+                                var ret = confirm("確定要修改嗎?");
 
-                        if (ret == true) {
-                            axios.put(`${webApiBaseAddress}/api/D_SignLogin/${_this.localmID}`, request).then(
-                                response => {
-                                    alert(response.data);
-                                    //_this.filterEmployeeDTOes();
-                                    //_this.getEmployeeDTOes();
-                                    //_this.cancel();
+                                if (ret == true) {
+                                    axios.put(`${webApiBaseAddress}/api/D_SignLogin/${_this.localmID}`, request).then(
+                                        response => {
+                                            window.location = "/D_Personal/index"
+                                            alert(response.data);
+                                        }
+                                    );
                                 }
-                            );
+                            } else {
+                                alert("第二次輸入不相符");
+                            }
+                        } else {
+                            alert("有地方空白喔")
+                            return;
                         }
                     },
                 },

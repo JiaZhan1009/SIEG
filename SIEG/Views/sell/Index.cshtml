@@ -22,7 +22,7 @@
                     </div>
                     <div class="col-xl-5 col-lg-6 col-12 offset-xl-1">
                         <div class="product_buy_Right">
-                            <div :class=['selSize',{displayNone:pLength}] @@click="clickShowSize">
+                            <div :class=['selSize',{'displayNone':pLength}] @@click="clickShowSize">
                                 @*<div @@click="showSelSize = !showSelSize" class="selSize">*@
                                 <div>尺碼&nbsp;:&nbsp;&nbsp;<span class="fontBold">US {{pSize}}</span></div>
                                 <img src="https://stockx-assets.imgix.net/svg/icons/pencil.svg?auto=compress,format">
@@ -122,7 +122,8 @@
                                 <div class="btnNext" @@click="next">送出</div>
                                 <div class="btnNext" @@click="getInfo">查看資料</div>
                             </div>
-                            <div>
+
+                          @*<div>
                                 <h2>模擬出價</h2>
                                 <div>
                                     <label>pID</label>
@@ -136,10 +137,7 @@
                                     <label>bID</label>
                                     <input type="number" v-model="bID" />
                                 </div>
-
-
-
-                            </div>
+                            </div>*@
                         </div>
 
                     </div>
@@ -224,7 +222,7 @@
                         let response = await axios.get(`${webApiAddress}/GetProductInfo/${_this.pID}`);
                         _this.productInfo = response.data;
 
-                        if (_this.pLength == "true") {
+                        if (_this.pLength == "true" || _this.pLength == true) {
                             _this.pLength = true;
 
                         } else {
@@ -234,9 +232,6 @@
                         _this.productInfo = _this.productInfo[0];
 
                         _this.pCateID = _this.productInfo.pCateID;
-
-                        console.log(`_this.pCateID: ${_this.pCateID}`)
-
 
                         _this.getSizeAndBid();
                     } catch (error) {
@@ -248,8 +243,7 @@
                         let _this = this;
                         let response = await axios.get(`${webApiAddress}/GetSizeAndBid/${_this.pCateID}`);
                         _this.SizeAndPriceList = response.data;
-                        console.log(`_this.SiezAndPriceList`)
-                        console.log(response.data);
+
                         let list = _this.SizeAndPriceList;
                         let i = _this.activeIndex;
 

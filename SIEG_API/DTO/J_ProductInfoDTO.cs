@@ -6,7 +6,7 @@
         public string pName { get; set; }
         public string pCateName { get; set; }
         public int pCateID { get; set; }
-        public string pSize { get; set; }
+        public string? pSize { get; set; }
         public string pImg { get; set; }
         public string pBrand { get; set; }
 

@@ -60,7 +60,7 @@
                                             <div class="sizeAndPrice">
 
                                                 <div @@click="activeIndex=index" :class="['sizePriceItem', {'active':activeIndex==index}]" v-for="(item, index) in DisplaySizeAndPriceList" :key="index">
-                                                    <div class="sizeItem" @@click="selectSizeItem(item.size,item.price,index,item.pID,item.sID)">
+                                                    <div class="sizeItem" @@click="selectSizeItem(item.size,item.price,index,item.pID,item.sID,item.quoteID)">
                                                         <div class="item">
                                                             <div class="fontBold">US {{item.size}}</div>
                                                             <div class="fontGreen">{{item.fPrice}}</div>
@@ -78,34 +78,34 @@
                             <!--  提交出價及立即購買  -->
                             <div class="priceContent">
                                 <div class="submitAndBuy">
-                                    <div @@click="btnIsBuyNow=true" id="submit" :class="['submit', {'bkcLightGray': !btnIsBuyNow}, 'col-6', {'bkcGreen': btnIsBuyNow}]">提交出價</div>
-                                    <div @@click="btnIsBuyNow=false;" id="buyNow" :class="['buyNow', {'bkcLightGray': btnIsBuyNow}, 'col-6',{'bkcGreen': !btnIsBuyNow}]">立即購買</div>
+                                    <div @@click="buyNow=true" id="submit" :class="['submit', {'bkcLightGray': !buyNow}, 'col-6', {'bkcGreen': buyNow}]">提交出價</div>
+                                    <div @@click="buyNow=false;" id="buyNow" :class="['buyNow', {'bkcLightGray': buyNow}, 'col-6',{'bkcGreen': !buyNow}]">立即購買</div>
                                 </div>
                                 <!-- showPrice -->
-                                <div :class="{'displayNone':btnIsBuyNow}">
+                                <div :class="{'displayNone':buyNow}">
                                     <h2 class="priceInfo">TWD{{DisplayPrice}}</h2>
                                 </div>
                                 <!-- inputPrice-->
-                                <div :class="[{'displayNone':!btnIsBuyNow}, 'inputPriceGroup']">
+                                <div :class="[{'displayNone':!buyNow}, 'inputPriceGroup']">
                                     <span class="inputSpan">＄</span>
-                                    <input placeholder="輸入出價" v-model="pPrice" type="number" class="inputPrice">
+                                    <input placeholder="輸入出價" v-model="pPrice" type="number" class="inputPrice" @@blur="checkPrice">
                                 </div>
                                 <div class="priceState">{{DisplayPriceState}}</div>
 
                                 <div class="calculateInfo">
-                                    <div :class="[{'displayNone':btnIsBuyNow}, 'specialOffer']">
+                                    <div :class="['specialOffer']">
                                         <span>優惠碼</span>
                                         <span class="fontGreen addDiscount">添加折扣</span>
                                     </div>
-                                    <div :class="[{'displayNone':btnIsBuyNow}, 'specialOffer']">
+                                    <div :class="['specialOffer']">
                                         <span>預計運費</span>
                                         <span>{{DisplayfreightFee}}</span>
                                     </div>
-                                    <div :class="[{'displayNone':!btnIsBuyNow}, 'specialOffer']">
+     @*                               <div :class="[{'displayNone':!buyNow}, 'specialOffer']">
                                         <span>商品價格</span>
                                         <span>{{DisplayPrice}}</span>
-                                    </div>
-                                    <div :class="[{'displayNone':btnIsBuyNow}, 'specialOffer']">
+                                    </div>*@
+                                    <div :class="['specialOffer']">
                                         <span>商品價格</span>
                                         <span>{{DisplayTotalPrice}}</span>
                                     </div>
@@ -117,7 +117,7 @@
                             </div>
 
                             <div class="buyInfo">
-                                <div :class="[{'displayNone':!btnIsBuyNow}, 'buyInfoBlock']">
+                                <div :class="[{'displayNone':!buyNow}, 'buyInfoBlock']">
                                     <div class="row align-items-center">
                                         <div class="col-6">
                                             <img src="https://stockx-assets.imgix.net/svg/icons/stopwatch.svg?auto=compress,format">
@@ -149,7 +149,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div :class="[{'displayNone':btnIsBuyNow}, 'buyInfoBlock']">
+                                <div :class="[{'displayNone':buyNow}, 'buyInfoBlock']">
                                     <div class="row align-items-center">
                                         <div class="col-9">
                                             <img src="https://stockx-assets.imgix.net/svg/icons/home_2.svg?auto=compress,format">
@@ -168,6 +168,7 @@
                                     <div @@click="back" class="btnCancel">返回</div>
                                 </a>
                                 <div @@click="next" class="btnNext">下一步</div>
+                                <div @@click="BidTest" class="btnNext">測試用</div>
                             </div>
                         </div>
 
@@ -316,7 +317,7 @@
                 pPrice: sessionStorage.getItem("pPrice"),
                 tmpPrice: null,
                 activeIndex: sessionStorage.getItem("selIndex"),
-                btnIsBuyNow: true,
+                buyNow: true,
                 inputPrice: 0,
                 selBidDay: 1,
                 buyHide: false,
@@ -324,9 +325,9 @@
                 payHide: true,
                 memberList: {},
                 specialOffer: 0,
-                DisplayPriceState: "",
-                maxBid: null,
-                minQuote: null,
+                //DisplayPriceState: "",
+                maxBid: 0,
+                minQuote: 0,
                 selPay: null,
                 mName: null,
                 mPhone: null,
@@ -334,6 +335,7 @@
                 pCateID: null,
                 pLength: null,
                 freightFee: 100,
+                quoteID: null,
             },
             mounted: function () {
                 let _this = this;
@@ -342,9 +344,9 @@
                 _this.getMemberInfo();
                 _this.getMaxMinPrice();
                 if (sessionStorage.getItem("bool") == "true") {
-                    _this.btnIsBuyNow = true;
+                    _this.buyNow = true;
                 } else {
-                    _this.btnIsBuyNow = false;
+                    _this.buyNow = false;
                 }
 
             },
@@ -374,6 +376,10 @@
                         let _this = this;
                         let response = await axios.get(`${webApiAddress}/GetSizeAndQuote/${_this.pCateID}`);
                         _this.SizeAndPriceList = response.data;
+                        let list = _this.SizeAndPriceList;
+                        let i = _this.activeIndex;
+                        //預設選取
+                        _this.selectSizeItem(list[i].pSize, list[i].pPrice, i, list[i].pID, list[i].sID, list[i].quoteID);
                     } catch (error) {
                         console.log(error);
                     }
@@ -400,14 +406,15 @@
                         console.log(error);
                     }
                 },
-                selectSizeItem(pSize, pPrice, index, pID, sID) {
+                selectSizeItem(pSize, pPrice, index, pID, sID, quoteID) {
                     let _this = this;
-                    _this.showSelSize = !_this.showSelSize;
+                    _this.showSelSize = true;
                     _this.pSize = pSize;
                     _this.pPrice = pPrice;
                     _this.tmpPrice = pPrice;
                     _this.pID = pID;
                     _this.sID = sID;
+                    _this.quoteID = quoteID;
                     sessionStorage.setItem("pSize", _this.pSize);
                     sessionStorage.setItem("pPrice", _this.pPrice);
                     sessionStorage.setItem("selIndex", index);
@@ -445,7 +452,22 @@
                 linepay() {
                     window.location = "/products"
                 },
-                async requestLinePayment(price, state, info) {
+                checkPayment(orderInfo) {
+                    let _this = this;
+                    if (_this.selPay == null) {
+                        alert("請選擇付款方式");
+                    }
+                    else if (_this.mAddress != "" && _this.mPhone != "" && _this.mName != "" && _this.selPay == "LinePay") {
+                        _this.requestLinePayment(_this.pPrice, orderInfo);
+                    }
+                    else if (_this.mAddress != "" && _this.mPhone != "" && _this.mName != "" && _this.selPay == "信用卡") {
+                        alert("信用卡");
+                    }
+                    else {
+                        alert("檢查收貨資訊, 有資料尚未填寫");
+                    }
+                },
+                async requestLinePayment(price, orderInfo) {
                     try {
                         let _this = this;
                         payment = {
@@ -454,7 +476,7 @@
                             orderId: Date.now().toString(), //使用 Timestamp 當作 orderId
                             packages: [
                                 {
-                                    id: "20191011I001",
+                                    id: Date.now().toString(),
                                     amount: parseInt(price),
                                     name: _this.productInfo.pName,
                                     products: [
@@ -473,7 +495,7 @@
                             },
                         };
 
-                        window.name = JSON.stringify(info);
+                        window.name = JSON.stringify(orderInfo);
 
                         // 送出交易申請至商家 server
                         $.post({
@@ -494,53 +516,72 @@
                 },
                 next() {
                     let _this = this;
-                    if (!_this.btnIsBuyNow) {
-                        let orderInfo = {
-                            info: "buy",
-                            sID: _this.sID,
-                            bID: _this.mID,
-                            pPrice: _this.pPrice,
-                            pName: _this.productInfo.pName,
-                            pImg: _this.productInfo.pImg,
-                            pID: _this.pID,
-                            pay: _this.selPay,
-                            receiver: _this.memberList.mName,
-                            receivingPhone: _this.memberList.mPhone,
-                            shippingAddress: _this.memberList.mAddress,
-                        }
-                        if (_this.selPay == null) { alert("請選擇付款方式"); }
-                        else if (_this.mAddress != "" && _this.mPhone != "" && _this.mName != "" && _this.selPay == "LinePay") {
-
-                            _this.requestLinePayment(_this.TotalPrice, orderInfo);
-
-                        }
-                        else if (_this.mAddress != "" && _this.mPhone != "" && _this.mName != "" && _this.selPay == "信用卡") {
-                            alert("信用卡")
-                        }
-                        else {
-                            alert("檢查收貨資訊, 有資料尚未填寫");
-                        }
-                    } else {
-                        let bidInfo = {
-                            info: "bid",
-                            pName: _this.productInfo.pName,
-                            pImg: _this.productInfo.pImg,
-                            pID: _this.pID,
-                            pPrice: _this.pPrice,
-                            mID: _this.mID
-                        }
-                        if (_this.selPay == "LinePay") {
-
-                            _this.requestLinePayment(_this.pPrice, bidInfo);
-
-                        } else if (_this.selPay == "信用卡") {
-                            alert("信用卡")
-                        }
-
-
+                    let orderInfo = {
+                        quoteID: _this.quoteID,
+                        bID: _this.mID,
+                        //pPrice: _this.pPrice,
+                        finalPrice: _this.TotalPrice,
+                        sellerPrice: _this.pPrice,
+                        buyerPrice: _this.pPrice,
+                        pName: _this.productInfo.pName,
+                        pImg: _this.productInfo.pImg,
+                        pID: _this.pID,
+                        pay: _this.selPay,
+                        receiver: _this.memberList.mName,
+                        receivingPhone: _this.memberList.mPhone,
+                        shippingAddress: _this.memberList.mAddress,
                     }
+                    if (!_this.buyNow) {
+                        orderInfo.info = "buy";
+                        orderInfo.sID = _this.sID;
+                    } else {
+                        orderInfo.info = "bid"
+                    }
+                    _this.checkPayment(orderInfo);
 
                 },
+                checkPrice() {
+                    let _this = this;
+                    if (_this.pPrice >= _this.minQuote && _this.minQuote != 0) {
+                        _this.pPrice = _this.minQuote;
+                        _this.buyNow = false;
+                    } else {
+                        _this.buyNow = true;
+                    }
+                },
+                BidTest(){
+                    let _this = this;
+                    let orderInfo = {
+                        quoteID: _this.quoteID,
+                        bID: _this.mID,
+                        //pPrice: _this.pPrice,
+                        finalPrice: _this.TotalPrice,
+                        sellerPrice: _this.pPrice,
+                        buyerPrice: _this.pPrice,
+                        pName: _this.productInfo.pName,
+                        pImg: _this.productInfo.pImg,
+                        pID: _this.pID,
+                        pay: _this.selPay,
+                        receiver: _this.memberList.mName,
+                        receivingPhone: _this.memberList.mPhone,
+                        shippingAddress: _this.memberList.mAddress,
+                    }
+                    if (!_this.buyNow) {
+                        orderInfo.info = "buy";
+                        orderInfo.sID = _this.sID;
+                    } else {
+                        orderInfo.info = "bid"
+                    }
+                    _this.checkPayment(orderInfo);
+                    try{
+                        axios.post(`${webApiAddress}/InsertBuyerOrder`, _this.orderInfo);
+                        alert(_this.orderInfo)
+                    }catch{
+                        alert("error")
+                    }
+                    
+                    
+                }
 
             },
             watch: {
@@ -550,25 +591,24 @@
                         this.getMaxMinPrice();
                     }
                 },
-                pPrice: {
-                    handler: function (newVal, oldVal) {
-                        if (newVal >= this.minQuote) {
-                            this.pPrice = this.minQuote;
-                            this.btnIsBuyNow = false;
-                            this.DisplayPriceState = "你將以最低報價購買此商品";
-                            if (this.tmpPrice != null) {
-                                this.pPrice = this.tmpPrice;
-                            }
-                            this.tmpPrice = null;
-                        } else {
-                            this.pPrice = newVal;
-                            this.DisplayPriceState = "你並非最高出價者";
-                        }
-                    },
-                }
+                //pPrice: {
+                //handler: function (newVal, oldVal) {
+                //    if (newVal >= this.minQuote) {
+                //        this.pPrice = this.minQuote;
+                //        this.buyNow = false;
+                //        this.DisplayPriceState = "你將以最低報價購買此商品";
+                //        if (this.tmpPrice != null) {
+                //            this.pPrice = this.tmpPrice;
+                //        }
+                //        this.tmpPrice = null;
+                //    } else {
+                //        this.pPrice = newVal;
+                //        this.DisplayPriceState = "你並非最高出價者";
+                //    }
+                //},
+                //}
             },
             computed: {
-                //SetInputPrice() { return this.Format(this.pPrice); },
                 SetBidPriceDate: {
                     get() {
                         var VDay = new Date();
@@ -576,11 +616,14 @@
                         return VDay.toLocaleString()
                     }
                 },
+                TotalPrice() {
+                    return this.pPrice - this.specialOffer + this.freightFee;
+                },
                 DisplayAddressInfo: {
                     get() { return this.mAddress != null ? this.mAddress : "未提供郵寄資訊"; }
                 },
                 DisplayTotalPrice() {
-                    return this.Format(this.pPrice - this.specialOffer + this.freightFee);
+                    return this.Format(this.TotalPrice);
                 },
                 DisplayPrice() {
                     return this.Format(this.pPrice);
@@ -593,7 +636,8 @@
                                 pID: item.pID,
                                 price: item.pPrice,
                                 size: item.pSize,
-                                fPrice: item.pPrice != 0 ? this.Format(item.pPrice) : "無"
+                                fPrice: item.pPrice != 0 ? this.Format(item.pPrice) : "無",
+                                quoteID: item.quoteID
                             }
                         })
                     }
@@ -607,9 +651,17 @@
                 DisplayfreightFee() {
                     return this.Format(this.freightFee);
                 },
-                TotalPrice() {
-                    return this.Format(this.pPrice - this.specialOffer + this.freightFee);
-                },
+                DisplayPriceState: {
+                    get() {
+                        return this.pPrice > this.minQuote && this.minQuote != 0 ? "輸入的出價不可高於最低報價"
+                            : this.pPrice == this.minQuote && this.minQuote != 0 ? "您將以最低報價購買此商品"
+                                : this.minQuote == 0 ? "目前沒有賣家提交報價" : this.DisplayPriceState = "";
+                    },
+                    set() {
+
+                    }
+
+                }
 
 
 

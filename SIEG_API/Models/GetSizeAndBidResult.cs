@@ -14,5 +14,7 @@ namespace SIEG_API.Models
         public int pCateID { get; set; }
         public DateTime? time { get; set; }
         public bool V { get; set; }
+        public int bidID { get; set; }
+        public int oID { get; set; }
     }
 }

@@ -100,6 +100,8 @@ namespace SIEG_API.Models
 
                 entity.Property(e => e.MemberId).HasColumnName("MemberID");
 
+                entity.Property(e => e.OrderId).HasColumnName("OrderID");
+
                 entity.Property(e => e.ProductId).HasColumnName("ProductID");
 
                 entity.Property(e => e.ValIdity)
@@ -110,13 +112,13 @@ namespace SIEG_API.Models
                     .WithMany(p => p.BuyerBid)
                     .HasForeignKey(d => d.MemberId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__BuyerBid__Member__224B023A");
+                    .HasConstraintName("FK__BuyerBid__Member__47D18CA4");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.BuyerBid)
                     .HasForeignKey(d => d.ProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__BuyerBid__Produc__233F2673");
+                    .HasConstraintName("FK__BuyerBid__Produc__48C5B0DD");
             });
 
             modelBuilder.Entity<ContactAddProduct>(entity =>
@@ -132,12 +134,12 @@ namespace SIEG_API.Models
                 entity.HasOne(d => d.Member)
                     .WithMany(p => p.ContactAddProduct)
                     .HasForeignKey(d => d.MemberId)
-                    .HasConstraintName("FK__ContactAd__Membe__24334AAC");
+                    .HasConstraintName("FK__ContactAd__Membe__49B9D516");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.ContactAddProduct)
                     .HasForeignKey(d => d.ProductId)
-                    .HasConstraintName("FK__ContactAd__Produ__25276EE5");
+                    .HasConstraintName("FK__ContactAd__Produ__4AADF94F");
             });
 
             modelBuilder.Entity<ContactCustomerService>(entity =>
@@ -209,13 +211,13 @@ namespace SIEG_API.Models
                     .WithMany(p => p.FaviriteArticle)
                     .HasForeignKey(d => d.ForumArticleId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__FaviriteA__Forum__261B931E");
+                    .HasConstraintName("FK__FaviriteA__Forum__4BA21D88");
 
                 entity.HasOne(d => d.Member)
                     .WithMany(p => p.FaviriteArticle)
                     .HasForeignKey(d => d.MemberId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__FaviriteA__Membe__270FB757");
+                    .HasConstraintName("FK__FaviriteA__Membe__4C9641C1");
             });
 
             modelBuilder.Entity<FaviriteNews>(entity =>
@@ -234,13 +236,13 @@ namespace SIEG_API.Models
                     .WithMany(p => p.FaviriteNews)
                     .HasForeignKey(d => d.MemberId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__FaviriteN__Membe__2803DB90");
+                    .HasConstraintName("FK__FaviriteN__Membe__4D8A65FA");
 
                 entity.HasOne(d => d.News)
                     .WithMany(p => p.FaviriteNews)
                     .HasForeignKey(d => d.NewsId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__FaviriteN__NewsI__28F7FFC9");
+                    .HasConstraintName("FK__FaviriteN__NewsI__4E7E8A33");
             });
 
             modelBuilder.Entity<FaviriteProduct>(entity =>
@@ -256,12 +258,12 @@ namespace SIEG_API.Models
                 entity.HasOne(d => d.Member)
                     .WithMany(p => p.FaviriteProduct)
                     .HasForeignKey(d => d.MemberId)
-                    .HasConstraintName("FK__FaviriteP__Membe__29EC2402");
+                    .HasConstraintName("FK__FaviriteP__Membe__4F72AE6C");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.FaviriteProduct)
                     .HasForeignKey(d => d.ProductId)
-                    .HasConstraintName("FK__FaviriteP__Produ__2AE0483B");
+                    .HasConstraintName("FK__FaviriteP__Produ__5066D2A5");
             });
 
             modelBuilder.Entity<ForumArticle>(entity =>
@@ -298,13 +300,13 @@ namespace SIEG_API.Models
                     .WithMany(p => p.ForumArticle)
                     .HasForeignKey(d => d.MemberId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__ForumArti__Membe__2BD46C74");
+                    .HasConstraintName("FK__ForumArti__Membe__515AF6DE");
 
                 entity.HasOne(d => d.ProductCategory)
                     .WithMany(p => p.ForumArticle)
                     .HasForeignKey(d => d.ProductCategoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__ForumArti__Produ__2CC890AD");
+                    .HasConstraintName("FK__ForumArti__Produ__524F1B17");
             });
 
             modelBuilder.Entity<ForumReply>(entity =>
@@ -331,13 +333,13 @@ namespace SIEG_API.Models
                     .WithMany(p => p.ForumReply)
                     .HasForeignKey(d => d.ForumArticleId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__ForumRepl__Forum__2DBCB4E6");
+                    .HasConstraintName("FK__ForumRepl__Forum__53433F50");
 
                 entity.HasOne(d => d.Member)
                     .WithMany(p => p.ForumReply)
                     .HasForeignKey(d => d.MemberId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__ForumRepl__Membe__2EB0D91F");
+                    .HasConstraintName("FK__ForumRepl__Membe__54376389");
             });
 
             modelBuilder.Entity<ForumReply2>(entity =>
@@ -366,13 +368,13 @@ namespace SIEG_API.Models
                     .WithMany(p => p.ForumReply2)
                     .HasForeignKey(d => d.ForumReplyId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__ForumRepl__Forum__2FA4FD58");
+                    .HasConstraintName("FK__ForumRepl__Forum__552B87C2");
 
                 entity.HasOne(d => d.Member)
                     .WithMany(p => p.ForumReply2)
                     .HasForeignKey(d => d.MemberId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__ForumRepl__Membe__30992191");
+                    .HasConstraintName("FK__ForumRepl__Membe__561FABFB");
             });
 
             modelBuilder.Entity<Member>(entity =>
@@ -426,7 +428,7 @@ namespace SIEG_API.Models
                 entity.HasOne(d => d.BankCodeNavigation)
                     .WithMany(p => p.Member)
                     .HasForeignKey(d => d.BankCode)
-                    .HasConstraintName("FK__Member__BankCode__318D45CA");
+                    .HasConstraintName("FK__Member__BankCode__5713D034");
             });
 
             modelBuilder.Entity<MemberCoupon>(entity =>
@@ -441,13 +443,13 @@ namespace SIEG_API.Models
                     .WithMany(p => p.MemberCoupon)
                     .HasForeignKey(d => d.CouponId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__MemberCou__Coupo__32816A03");
+                    .HasConstraintName("FK__MemberCou__Coupo__5807F46D");
 
                 entity.HasOne(d => d.Member)
                     .WithMany(p => p.MemberCoupon)
                     .HasForeignKey(d => d.MemberId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__MemberCou__Membe__33758E3C");
+                    .HasConstraintName("FK__MemberCou__Membe__58FC18A6");
             });
 
             modelBuilder.Entity<News>(entity =>
@@ -484,7 +486,7 @@ namespace SIEG_API.Models
                     .WithMany(p => p.News)
                     .HasForeignKey(d => d.NewsCategoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__News__NewsCatego__3469B275");
+                    .HasConstraintName("FK__News__NewsCatego__59F03CDF");
             });
 
             modelBuilder.Entity<NewsCategory>(entity =>
@@ -544,7 +546,7 @@ namespace SIEG_API.Models
                     .WithMany(p => p.Order)
                     .HasForeignKey(d => d.ProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Order__ProductID__355DD6AE");
+                    .HasConstraintName("FK__Order__ProductID__5AE46118");
             });
 
             modelBuilder.Entity<Product>(entity =>
@@ -583,7 +585,7 @@ namespace SIEG_API.Models
                     .WithMany(p => p.Product)
                     .HasForeignKey(d => d.ProductCategoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Product__Product__3651FAE7");
+                    .HasConstraintName("FK__Product__Product__5BD88551");
             });
 
             modelBuilder.Entity<ProductCategory>(entity =>
@@ -623,6 +625,8 @@ namespace SIEG_API.Models
 
                 entity.Property(e => e.MemberId).HasColumnName("MemberID");
 
+                entity.Property(e => e.OrderId).HasColumnName("OrderID");
+
                 entity.Property(e => e.ProductId).HasColumnName("ProductID");
 
                 entity.Property(e => e.SaleDate).HasColumnType("datetime");
@@ -635,13 +639,13 @@ namespace SIEG_API.Models
                     .WithMany(p => p.SellerAddProduct)
                     .HasForeignKey(d => d.MemberId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__SellerAdd__Membe__383A4359");
+                    .HasConstraintName("FK__SellerAdd__Membe__5DC0CDC3");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.SellerAddProduct)
                     .HasForeignKey(d => d.ProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__SellerAdd__Produ__392E6792");
+                    .HasConstraintName("FK__SellerAdd__Produ__5EB4F1FC");
             });
 
             OnModelCreatingGeneratedProcedures(modelBuilder);

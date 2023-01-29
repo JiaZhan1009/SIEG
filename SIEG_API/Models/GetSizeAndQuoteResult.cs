@@ -10,9 +10,11 @@ namespace SIEG_API.Models
         public string pSize { get; set; }
         public int quotePrice { get; set; }
         public int pID { get; set; }
-        public int mID { get; set; }
+        public int sID { get; set; }
         public int pCateID { get; set; }
         public DateTime? time { get; set; }
         public bool V { get; set; }
+        public int quoteID { get; set; }
+        public int oID { get; set; }
     }
 }

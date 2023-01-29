@@ -162,7 +162,7 @@ namespace SIEG_API.Controllers
                 productlistSellCount = g.Count(),
                 productlistName = g.Key.ProductName,
                 productlistImg = g.Key.ImgFront,
-                productlistPrice = g.Min(x => x.Price),
+                productlistPrice = g.Min(x => x.BuyerPrice),
             }).ToListAsync();
 
             return ProductList;

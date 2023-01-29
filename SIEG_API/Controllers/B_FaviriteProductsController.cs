@@ -42,9 +42,9 @@ namespace SIEG_API.Controllers
             foreach (var FaviriteId in ProductsFavirite)
             {
                 var ProductsId = _context.FaviriteProduct.Where(pc => pc.FaviriteProductId == FaviriteId).Select(pc => pc.ProductId).First();
-                var averageprice = _context.Order.Where(pc => pc.ProductId == ProductsId).Select(x => x.Price).Average();
+                var averageprice = _context.Order.Where(pc => pc.ProductId == ProductsId).Select(x => x.BuyerPrice).Average();
                 var lowprice = _context.SellerAddProduct.Where(lp => lp.ProductId == ProductsId).Select(lowprice => lowprice.Price).Min();
-                var finalprice = await _context.Order.Where(pc => pc.ProductId == ProductsId).OrderBy(x => x.Price).Select(x => x.Price).LastOrDefaultAsync();
+                var finalprice = await _context.Order.Where(pc => pc.ProductId == ProductsId).OrderBy(x => x.BuyerPrice).Select(x => x.BuyerPrice).LastOrDefaultAsync();
                 var ProductDTO = _context.Product.Where(x => x.ProductId == ProductsId).Select(y => new B_FaviriteProductsDTO
                 {
                     ProductName = y.ProductCategory.ProductName,

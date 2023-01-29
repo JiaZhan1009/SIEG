@@ -8,6 +8,7 @@ namespace SIEG_API.Models
     public partial class SellerAddProduct
     {
         public int SellerAddProductId { get; set; }
+        public int? OrderId { get; set; }
         public int ProductId { get; set; }
         public int Count { get; set; }
         public int MemberId { get; set; }

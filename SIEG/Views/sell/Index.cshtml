@@ -39,7 +39,7 @@
 
                                                 <!--  動態產生尺碼item  -->
                                                 <div class="sizePriceItem" @@click="activeIndex=index" v-for="(item, index) in DisplaySizeAndPriceList" :key="index">
-                                                    <div :class="['divSizeItem', 'sizeItem', {'active':activeIndex==index}]" @@click="clickShowSize();selectSizeItem(item.size,item.price,index,item.pID, item.bID)">
+                                                    <div :class="['divSizeItem', 'sizeItem', {'active':activeIndex==index}]" @@click="clickShowSize();selectSizeItem(item.size,item.price,index,item.pID, item.bID, item.bidID)">
                                                         <div class="item">
                                                             <div class="fontBold">US {{item.size}}</div>
                                                             <div class="fontGreen">{{item.fPrice}}</div>
@@ -187,14 +187,14 @@
                     freightFee: 100,
                     specialOffer: 3,
                     maxBid: 0,
-                    minQuote: null,
+                    minQuote: 0,
                     //DisplayPriceState: null,
                     pCateID: null,
                     bankCode: null,
                     bankName: null,
                     bankAccount: "",
                     bID: null,
-                    sellNow: null,
+                    buyNow: null,
 
                 }
             },
@@ -213,7 +213,6 @@
                 $('.selSizeHide').hide();
 
                 _this.getProductInfo();
-
 
                 _this.getMemberBankInfo();
 
@@ -251,15 +250,11 @@
                         _this.SizeAndPriceList = response.data;
                         console.log(`_this.SiezAndPriceList`)
                         console.log(response.data);
+                        let list = _this.SizeAndPriceList;
+                        let i = _this.activeIndex;
 
-                        if (_this.pSize == null) {
-                            _this.pID = _this.SizeAndPriceList[0].pID;
-                            _this.getMaxMinPrice();
-
-                            _this.pSize = _this.SizeAndPriceList[0].pSize;
-                            _this.pPrice = _this.SizeAndPriceList[0].pPrice;
-                            _this.selectSizeItem(_this.pSize, _this.pPrice, 0, _this.pID)
-                        }
+                        //預設選取
+                        _this.selectSizeItem(list[i].pSize, list[i].pPrice, i, list[i].pID, list[i].bID, list[i].bidID);
 
                     } catch (error) {
                         console.log(error)
@@ -271,7 +266,11 @@
                         let response = await axios.get(`${webApiAddress}/GetMaxMinPrice/${_this.pID}`);
                         _this.maxBid = response.data.maxBid;
                         _this.minQuote = response.data.minQuote;
-
+                        if (_this.pPrice == _this.maxBid && _this.maxBid != 0) {
+                            _this.buyNow = true;
+                        } else {
+                            _this.buyNow = false;
+                        }
                     } catch (error) {
                         console.log(error);
                     }
@@ -298,12 +297,13 @@
                         console.log(error);
                     }
                 },
-                selectSizeItem(pSize, pPrice, index, pID, bID) {
+                selectSizeItem(pSize, pPrice, index, pID, bID, bidID) {
                     let _this = this;
                     _this.pSize = pSize;
                     _this.pPrice = pPrice;
                     _this.pID = pID;
                     _this.bID = bID;
+                    _this.bidID = bidID;
                     sessionStorage.setItem("pSize", _this.pSize);
                     sessionStorage.setItem("pPrice", _this.pPrice);
                     sessionStorage.setItem("selIndex", index);
@@ -341,20 +341,28 @@
                         alert("請檢查收款帳戶是否填寫正確")
                     }
                     else {
-                        if (_this.sellNow) {
+                        if (_this.buyNow) {
                             let request = {
                                 info: "sell",
                                 pID: _this.pID,
                                 sID: _this.mID,
-                                pPrice: _this.TotalPrice,
                                 pName: _this.productInfo.pName,
                                 pImg: _this.productInfo.pImg,
-                                bID: _this.bID
+                                bID: _this.bID,
+                                finalPrice: _this.TotalPrice,
+                                sellerPrice: _this.pPrice,
+                                bidID: _this.bidID,
                             };
-                            axios.post(`${webApiAddress}/InsertOrder`, request);
+                            try {
+                                axios.post(`${webApiAddress}/InsertSellOrder`, request);
+                                alert("交易完成")
+                            } catch (error) {
+                                console.log(error)
+                            }
                         }
                         else {
                             let request = {
+                                info: "quote",
                                 pID: _this.pID,
                                 sID: _this.mID,
                                 pPrice: _this.pPrice,
@@ -379,6 +387,7 @@
                 getInfo() {
                     let _this = this;
                     console.log(`↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓`);
+                    console.log(`bidID: ${_this.bidID}`)
                     console.log(`pID: ${_this.pID}`);
                     console.log(`sID: ${_this.mID}`);
                     console.log(`bID: ${_this.bID}`);
@@ -397,9 +406,9 @@
                     let _this = this;
                     if (_this.pPrice <= _this.maxBid) {
                         _this.pPrice = _this.maxBid;
-                        this.sellNow = true;
+                        _this.buyNow = true;
                     } else {
-                        this.sellNow = false;
+                        _this.buyNow = false;
                     }
                 },
 
@@ -452,7 +461,8 @@
                             pID: item.pID,
                             size: item.pSize,
                             price: item.pPrice,
-                            fPrice: item.pPrice != 0 ? this.Format(item.pPrice) : "無"
+                            fPrice: item.pPrice != 0 ? this.Format(item.pPrice) : "無",
+                            bidID: item.bidID
                         }
                     })
                 },

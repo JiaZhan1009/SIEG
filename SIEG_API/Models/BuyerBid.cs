@@ -8,6 +8,7 @@ namespace SIEG_API.Models
     public partial class BuyerBid
     {
         public int BuyerBidId { get; set; }
+        public int? OrderId { get; set; }
         public int MemberId { get; set; }
         public int Price { get; set; }
         public int? FinalPrice { get; set; }

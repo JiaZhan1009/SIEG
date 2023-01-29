@@ -56,7 +56,8 @@ namespace SIEG_API.Controllers
                 pID = x.pID,
                 pSize = x.pSize,
                 pPrice = x.quotePrice,
-                sID = x.mID,
+                sID = x.sID,
+                quoteID = x.quoteID,                
             }).OrderBy(x => float.Parse(x.pSize));
         }
 
@@ -70,6 +71,7 @@ namespace SIEG_API.Controllers
                 pSize = x.pSize,
                 pPrice = x.bidPrice,
                 bID = x.bID,
+                bidID = x.bidID,
             }).OrderBy(x => float.Parse(x.pSize));
         }
 
@@ -78,15 +80,15 @@ namespace SIEG_API.Controllers
         {
             var productName = _context.Product.Include(p => p.ProductCategory).Where(p => p.ProductId == val.pID).ToList()[0].ProductCategory.ProductName;
             var BidInfo = await _context.BuyerBid
-                .Include(b => b.Product)
-                .Where(b => b.ValIdity == true && b.Product.ProductCategory.ProductName == productName)
-                .GroupBy(b => new { b.Product.Size, b.Price, b.Product.ProductCategory.ProductName })
+                .Include(b => b.Product).Join(_context.Order, b=>b.OrderId, o=>o.OrderId, (b, o) => new {b = b, o = o })
+                .Where(b => b.b.ValIdity == true && b.b.Product.ProductCategory.ProductName == productName && b.o.SellerId == null)
+                .GroupBy(b => new { b.b.Product.Size, b.b.Price, b.b.Product.ProductCategory.ProductName })
                 .Select(x => new J_PriceListDTO
                 {
                     pID = val.pID,
                     pPrice = x.Key.Price,
                     pSize = x.Key.Size,
-                    pCount = x.Sum(b => b.Count)
+                    pCount = x.Sum(b => b.b.Count)
                 })
                 .OrderBy(x => x.pPrice).ToListAsync();
 
@@ -100,7 +102,7 @@ namespace SIEG_API.Controllers
             var productName = _context.Product.Include(p => p.ProductCategory).Where(p => p.ProductId == val.pID).ToList()[0].ProductCategory.ProductName;
             var QuoteInfo = await _context.SellerAddProduct
                 .Include(s => s.Product)
-                .Where(s => s.ValIdity == true && s.Product.ProductCategory.ProductName == productName && s.SaleDate == null) // 待補上 s.SaleDate == null && 
+                .Where(s => s.ValIdity == true && s.Product.ProductCategory.ProductName == productName && s.OrderId == null) // 待補上 s.SaleDate == null && 
                 .GroupBy(s => new { s.Product.Size, s.Price, s.Product.ProductCategory.ProductName })
                 .Select(x => new J_PriceListDTO
                 {
@@ -119,12 +121,12 @@ namespace SIEG_API.Controllers
         {
             var productName = _context.Product.Include(p => p.ProductCategory).Where(p => p.ProductId == val.pID).ToList()[0].ProductCategory.ProductName;
             var list = await _context.Order.Include(o => o.Product)
-                .Where(o => o.Product.ProductCategory.ProductName == productName && o.DoneTime != null)//之後補上  && o.State == "已完成" )
+                .Where(o => o.Product.ProductCategory.ProductName == productName && o.DoneTime != null)//之後補上 && o.State == "已完成"
                 .OrderByDescending(o => o.DoneTime)
                 .Select(x => new J_OrderListDTO
                 {
                     oID = x.Product.ProductId,
-                    oPrice = x.Price,
+                    oPrice = x.BuyerPrice,
                     oTime = x.DoneTime,
                     oSize = x.Product.Size,
                 }).ToListAsync();
@@ -137,11 +139,11 @@ namespace SIEG_API.Controllers
         {
             var lastPrice = 0;
             var price = await _context.Order.Where(o => o.ProductId == pID && o.DoneTime != null)//之後補上 && o.State == "已完成" )
-               .OrderByDescending(o => o.DoneTime).Select(o => o.Price)
+               .OrderByDescending(o => o.DoneTime).Select(o => o.BuyerPrice)
                .FirstOrDefaultAsync();
             if (price != null)
             {
-                lastPrice = price;
+                lastPrice = (int)price;
             }
             //.MinAsync(o => o.價錢); 找最少的價格
             return lastPrice;
@@ -198,9 +200,10 @@ namespace SIEG_API.Controllers
         {
             var maxBid = 0;
             var minQuote = 0;
-            var bid = await _context.BuyerBid.Where(s => s.ProductId == pID)
+            var bid = await _context.BuyerBid.Where(b => b.ProductId == pID)
                 .Select(s => s.Price).OrderByDescending(s => s).FirstOrDefaultAsync();
-            var quote = await _context.SellerAddProduct.Where(s => s.ProductId == pID && s.Price != 0)
+            var quote = await _context.SellerAddProduct
+                .Where(s => s.ProductId == pID && s.Price != 0 && s.OrderId == null)
                 .Select(s => s.Price).OrderBy(s => s).FirstOrDefaultAsync();
             if (bid != null)
             {

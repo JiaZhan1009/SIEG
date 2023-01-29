@@ -34,7 +34,7 @@ namespace SIEG_API.Controllers
         [HttpGet("{id}")]
         public async Task<IEnumerable<D_GradeBuyDTO>> GetMember(int id)
         {
-            var productBAV = _context.Order.Where(pdo => pdo.BuyerId == id && pdo.State == "已完成").Select(a => a.Price).Sum();
+            var productBAV = _context.Order.Where(pdo => pdo.BuyerId == id && pdo.State == "已完成").Select(a => a.BuyerPrice).Sum();
             //var productSAV = _context.訂單.Where(pdo => pdo.賣家Id == id && pdo.狀態 == "已完成").Select(b => b.價錢).Sum();
             var buyerG = _context.Member.Where(p => p.MemberId == id).Select(b => b.BuyerGrade).First();
             var sellerG = _context.Member.Where(o => o.MemberId == id).Select(c => c.SellerGrade).First();

@@ -39,20 +39,16 @@ namespace SIEG_API.Controllers
         }
 
         [HttpPost("InsertBuyerOrder")]
-        public void InsertBuyerOrder([FromBody] J_OrderInfo orderInfo)
+        public async Task InsertBuyerOrderAsync([FromBody] J_OrderInfo orderInfo)
         {
-            // 先判斷是 buy 還是 bid
-            // 先新增 Order 再新增 bid 最後修改 seller           
-            
-            if (orderInfo.info == "buy")
+            try
             {
+                // insert Order 
                 Order order = new Order
                 {
-                    SellerId = orderInfo.sID,
                     BuyerId = orderInfo.bID,
                     ProductId = orderInfo.pID,
-                    Price = orderInfo.finalPrice,
-                    State = "待出貨",
+                    BuyerPrice = orderInfo.finalPrice,                    
                     Pay = orderInfo.pay,
                     Receiver = orderInfo.receiver,
                     ReceivingPhone = orderInfo.receivingPhone,
@@ -61,110 +57,100 @@ namespace SIEG_API.Controllers
                     //DoneTime = DateTime.Now, // 正式版要拿掉
                     AddTime = DateTime.Now,
                 };
-                //var seller = _context.SellerAddProduct.Where(s => s.ProductId == list.pID && s.Price == list.pPrice && s.ValIdity == true)
-                //    .OrderBy(s => s.AddTime).First();
-                //order.SellerId = seller.MemberId;
 
-                _context.Order.Add(order);
-                _context.SaveChanges();
-
-                BuyerBid bid = new BuyerBid
+                if (orderInfo.info == "buy")
                 {
-                    MemberId = orderInfo.bID,
-                    ProductId = orderInfo.pID,
-                    Price = orderInfo.pPrice,
-                    FinalPrice = orderInfo.finalPrice,
-                    EffectiveTime = DateTime.Now
-                };
-                _context.BuyerBid.Add(bid);
-                _context.SaveChanges();
+                    order.State = "待出貨";
+                    order.SellerId = orderInfo.sID;
+                    order.SellerPrice = orderInfo.sellerPrice;
+                    _context.Order.Add(order);
+                    await _context.SaveChangesAsync();
+
+                    // insert Bid
+                    BuyerBid bid = new BuyerBid
+                    {
+                        OrderId = order.OrderId,
+                        MemberId = orderInfo.bID,
+                        ProductId = orderInfo.pID,
+                        Price = (int)orderInfo.buyerPrice,
+                        FinalPrice = orderInfo.finalPrice,
+                        EffectiveTime = DateTime.Now
+                    };
+                    _context.BuyerBid.Add(bid);
+                    await _context.SaveChangesAsync();
+
+                    // update Quote
+                    var quote = await _context.SellerAddProduct.FirstOrDefaultAsync(x => x.SellerAddProductId == orderInfo.quoteID);
+                    quote.OrderId = order.OrderId;
+                    _context.SellerAddProduct.Update(quote);
+                    await _context.SaveChangesAsync();
+
+                }
+                else if (orderInfo.info == "bid")
+                {
+                    // insert Order 
+                    order.State = "出價中";
+                    _context.Order.Add(order);
+                    await _context.SaveChangesAsync();
+
+                    // insert Bid
+                    BuyerBid bid = new BuyerBid
+                    {
+                        OrderId = order.OrderId,
+                        MemberId = orderInfo.bID,
+                        ProductId = orderInfo.pID,
+                        Price = (int)orderInfo.buyerPrice,
+                        FinalPrice = orderInfo.finalPrice,
+                        EffectiveTime = DateTime.Now
+                    };
+                    _context.BuyerBid.Add(bid);
+                    await _context.SaveChangesAsync();
+                }
             }
-            else if (orderInfo.info == "bid")
-            {
-                Order order = new Order
-                {
-                    //SellerId = seller.MemberId,
-                    BuyerId = orderInfo.bID,
-                    ProductId = orderInfo.pID,
-                    Price = orderInfo.finalPrice,
-                    State = "出價中",
-                    Pay = orderInfo.pay,
-                    Receiver = orderInfo.receiver,
-                    ReceivingPhone = orderInfo.receivingPhone,
-                    ShippingAddress = orderInfo.shippingAddress,
-                    UpdateTime = DateTime.Now,
-                    //DoneTime = DateTime.Now, // 正式版要拿掉
-                    AddTime = DateTime.Now,
-                };
-                _context.Order.Add(order);
-                _context.SaveChanges();
-
-                BuyerBid bid = new BuyerBid
-                {
-                    MemberId = orderInfo.bID,
-                    ProductId = orderInfo.pID,
-                    Price = orderInfo.pPrice,
-                    FinalPrice = orderInfo.finalPrice,
-                    EffectiveTime = DateTime.Now
-                };
-                _context.BuyerBid.Add(bid);
-                _context.SaveChanges();
-            }       
-            // 正式版要連同賣價一起完成
+            catch (Exception ex)
+            {     
+                Console.WriteLine(ex.Message);
+            }
         }
+
 
         [HttpPost("InsertSellOrder")]
-        public void InsertSellOrder([FromBody] J_OrderInfo list)
+        public async Task InsertSellOrder([FromBody] J_OrderInfo orderInfo)
         {
-            // 新增 Order 資料表: 
+            // error check :
+            if (orderInfo.bidID == 0 || orderInfo.sID == 0 || orderInfo.quoteID == 0)
+                throw new Exception("無法取得訂單資訊");
 
+            var bid = await _context.BuyerBid.FindAsync(orderInfo.bidID);
+            if (bid == null)
+                throw new Exception("無法取得競標資訊");
 
+            // alter Order: 
+            var order = await _context.Order.Where(o => o.OrderId == bid.OrderId).SingleOrDefaultAsync();
+            if (order == null)
+                throw new Exception("無法取得訂單資訊");
 
-            // 修改 Quote 資料表: 填上 OrderID,
+            order.State = "待出貨";
+            order.SellerId = orderInfo.sID;
+            order.SellerPrice = orderInfo.finalPrice;
+            order.UpdateTime = DateTime.Now;
 
+            _context.Order.Update(order);
+            await _context.SaveChangesAsync();
 
-
-            // 修改 Bid 資料表: 根據 BuyerBidID 找到該筆資料, 填上 OrderID
-
-
-
-
-
-            Order order = new Order
+            // insert Quote : 填上 OrderID
+            SellerAddProduct quote = new SellerAddProduct
             {
-                //SellerId = seller.MemberId,
-                BuyerId = list.bID,
-                ProductId = list.pID,
-                Price = list.pPrice,
-                State = "待出貨",
-                Pay = list.pay,
-                Receiver = list.receiver,
-                ReceivingPhone = list.receivingPhone,
-                ShippingAddress = list.shippingAddress,
-                UpdateTime = DateTime.Now,
-                DoneTime = DateTime.Now, // 正式版要拿掉
-                AddTime = DateTime.Now,
+                OrderId = order.OrderId,
+                FinalPrice = orderInfo.finalPrice,
+                MemberId = orderInfo.sID,
+                Price = (int)orderInfo.sellerPrice,
+                ProductId = orderInfo.pID,
             };
 
-            if (list.info == "buy")
-            {
-                var seller = _context.SellerAddProduct.Where(s => s.ProductId == list.pID && s.Price == list.pPrice && s.ValIdity == true)
-                    .OrderBy(s => s.AddTime).First();
-                order.SellerId = seller.MemberId;
-            }
-            else if (list.info == "sell")
-            {
-                order.SellerId = list.sID;
-            }
-            // 正式版要連同賣價一起完成
-
-            _context.Order.Add(order);
-            _context.SaveChanges();
-
+            _context.SellerAddProduct.Add(quote);
+            await _context.SaveChangesAsync();
         }
-
-
-
 
         [HttpPost("InsertSellerQuote")]
         public void InsertSellerQuote([FromBody] J_AddQuotePrice quote)

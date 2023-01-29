@@ -9,7 +9,9 @@ namespace SIEG_API.DTO
         public int pID { get; set; }
         public int? pPrice { get; set; }
         public int? pCount { get; set; }
-        public string pSize { get; set; }
+        public string? pSize { get; set; }
+        public int? quoteID { get; set; }
+        public int bidID { get; set; }
 
     }
 }

@@ -16,13 +16,13 @@
                         <td colspan="2"><img :src=orderInfo.pImg></td>
                     </tr>
                     <tr>
-                        <td colspan="2"> 價格 : {{orderInfo.pPrice}} </td>
+                        <td colspan="2"> 價格 : {{orderInfo.finalPrice}} </td>
                     </tr>
                     <tr>
                         <td colspan="2"> 購買數量 : 1 </td>
                     </tr>
                     <tr>
-                        <td colspan="2" style="text-align: right;"> 總金額 : {{orderInfo.pPrice}} </td>
+                        <td colspan="2" style="text-align: right;"> 總金額 : {{orderInfo.finalPrice}} </td>
                     </tr>
                     <tr>
                         <td align="center" colspan="2"><button @@click="confirmPayment()"> 確認付款</button></td>
@@ -89,18 +89,8 @@
 
                             console.log(res);
                             alert("付款成功, 等待 3 秒跳轉到訂單頁面")
-                            if (_this.orderInfo.info == "buy") {
 
-                                axios.post(`${webApiAddress}/InsertBuyerOrder`, _this.orderInfo);
-                            }
-                            else if (_this.orderInfo.info == "bid") {
-
-                                axios.post(`${webApiAddress}/InsertBuyerBid`, _this.orderInfo);
-                            }
-                            //else if (_this.orderInfo.info == "sell") {
-
-                            //    axios.post(`${webApiAddress}/InsertSellerOrder`, _this.orderInfo);
-                            //}
+                            axios.post(`${webApiAddress}/InsertBuyerOrder`, _this.orderInfo);
 
                             let num = "";
                             for (let i = 3; i >= 1; i--) {
@@ -116,7 +106,7 @@
                                 }
                             }
                             $("#paymentStatus").text(`交易狀態 : 成功 `);
-                            location.replace("https://localhost:7002/Member/Member_buyerorder");
+                            //location.replace("https://localhost:7002/Member/Member_buyerorder");
                         },
                         error: (err) => {
                             console.log(err);

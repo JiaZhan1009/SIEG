@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Configuration;
 using SIEG_API.DTO;
 using SIEG_API.Models;
 
@@ -32,9 +34,21 @@ namespace SIEG_API.Controllers
 
         // GET: api/G_ForumReply1/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<ForumReply>>> GetForumReply(int id)
+        public async Task<ActionResult<IEnumerable<G_ForumReplyDTO>>> GetForumReply(int id)
         {
-            return await _context.ForumReply.Where(c => c.ForumArticleId == id).ToListAsync();
+            return await _context.ForumReply.Where(c => c.ForumArticleId == id).Join(_context.Member, rp1 => rp1.MemberId, member => member.MemberId,(rp1, member) => new G_ForumReplyDTO
+            {
+                ForumReplyId = rp1.ForumReplyId,
+                ForumArticleId = rp1.ForumArticleId,
+                MemberId = rp1.MemberId,
+                Floor = rp1.Floor,
+                ForumReplyContent = rp1.ForumReplyContent,
+                Img = rp1.Img,
+                AddTime = rp1.AddTime,
+                ValIdity = rp1.ValIdity,
+                LikeCount = rp1.LikeCount,
+                NickName = member.NickName,
+            }).ToListAsync();
         }
 
         // PUT: api/G_ForumReply1/5

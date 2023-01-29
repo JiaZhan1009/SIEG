@@ -27,48 +27,48 @@ namespace SIEG_API.Controllers
         [HttpGet]
         public async Task<IEnumerable<G_ForumArticlesDTO>> GetForumArticle()
         {
-            var valid = _context.ForumArticle.Where(article => article.ValIdity == true);
-            return valid.Select(emp => new G_ForumArticlesDTO
-            {
-                ForumArticleId = emp.ForumArticleId,
-                MemberId = emp.MemberId,
-                Category = emp.Category,
-                ProductCategoryId = emp.ProductCategoryId,
-                Title = emp.Title,
-                ArticleContent = emp.ArticleContent,
-                LikeCount = emp.LikeCount,
-                ViewsCount = emp.ViewsCount,
-                AddTime = emp.AddTime,
-                Img = emp.Img,
-                ValIdity = emp.ValIdity,
-            });
+            return await _context.ForumArticle
+                .Where(article => article.ValIdity == true)
+                .Join(_context.Member, art => art.MemberId,
+                member => member.MemberId, (art, member) => new G_ForumArticlesDTO
+                {
+                    ForumArticleId = art.ForumArticleId,
+                    MemberId = art.MemberId,
+                    Category = art.Category,
+                    ProductCategoryId = art.ProductCategoryId,
+                    Title = art.Title,
+                    ArticleContent = art.ArticleContent,
+                    LikeCount = art.LikeCount,
+                    ViewsCount = art.ViewsCount,
+                    AddTime = art.AddTime,
+                    Img = art.Img,
+                    ValIdity = art.ValIdity,
+                    ReplyCount = art.ReplyCount,
+                    NickName = member.NickName,
+                }).ToListAsync();
         }
 
         // GET: api/G_ForumArticles/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<G_ForumArticlesDTO>> GetForumArticle(int id)
+        public async Task<IEnumerable<G_ForumArticlesDTO>> GetForumArticle(int id)
         {
-            var forumArticle = await _context.ForumArticle.FindAsync(id);
-            if (forumArticle == null)
+            var Article = await _context.ForumArticle.Where(ArticleId => ArticleId.ForumArticleId == id).Join(_context.Member, art => art.MemberId, member => member.MemberId, (art, member) => new G_ForumArticlesDTO
             {
-                return NotFound();
-            }
-            G_ForumArticlesDTO forumArticlesDTO = new G_ForumArticlesDTO
-            {
-                ForumArticleId = forumArticle.ForumArticleId,
-                MemberId = forumArticle.MemberId,
-                Category = forumArticle.Category,
-                ProductCategoryId = forumArticle.ProductCategoryId,
-                Title = forumArticle.Title,
-                ArticleContent = forumArticle.ArticleContent,
-                LikeCount = forumArticle.LikeCount,
+                ForumArticleId = art.ForumArticleId,
+                MemberId = art.MemberId,
+                Category = art.Category,
+                ProductCategoryId = art.ProductCategoryId,
+                Title = art.Title,
+                ArticleContent = art.ArticleContent,
+                LikeCount = art.LikeCount,
                 //ViewsCount = forumArticle.ViewsCount,
-                AddTime = forumArticle.AddTime,
-                Img = forumArticle.Img,
+                AddTime = art.AddTime,
+                Img = art.Img,
+                ReplyCount = art.ReplyCount,
+                NickName = member.NickName
+            }).ToArrayAsync();
 
-            };
-
-            return forumArticlesDTO;
+            return Article;
         }
 
         // PUT: api/G_ForumArticles/5
@@ -111,6 +111,39 @@ namespace SIEG_API.Controllers
             return "修改成功";
         }
 
+        // PUT: api/G_ForumArticles/ReplyCount/id
+        [HttpPut("ReplyCount/{id}")]
+        public async Task<string> PutForumArticle(int id, G_ArticlesReplyCountDTO g_ArticlesReplyCountDTO)
+        {
+            if (id != g_ArticlesReplyCountDTO.ForumArticleId)
+            {
+                return "ID不正確";
+            }
+            ForumArticle pos = await _context.ForumArticle.FindAsync(id);
+            pos.ForumArticleId = id;
+            pos.ReplyCount = g_ArticlesReplyCountDTO.ReplyCount;
+
+            _context.Entry(pos).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ForumArticleExists(id))
+                {
+                    return "找不到欲修改的資料";
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return "修改成功";
+        }
+
         // POST: api/G_ForumArticles
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -124,6 +157,7 @@ namespace SIEG_API.Controllers
                 Title = forumArticle.Title,
                 ArticleContent = forumArticle.ArticleContent,
                 Img = forumArticle.Img,
+                ReplyCount = 0,
             };
 
             _context.ForumArticle.Add(pos);
@@ -146,6 +180,25 @@ namespace SIEG_API.Controllers
             await _context.SaveChangesAsync();
 
             return "刪除成功";
+        }
+
+        // SEARCH api/G_ForumArticles/Filter
+        [HttpPost("Filter")]
+        public async Task<IEnumerable<G_ForumArticlesDTO>> FilterEmployee([FromBody] G_ForumArticlesDTO g_ForumArticlesDTO)
+        {
+            return await _context.ForumArticle.Where(art => art.Title.Contains(g_ForumArticlesDTO.Title)||art.ArticleContent.Contains(g_ForumArticlesDTO.ArticleContent)).Select(art => new G_ForumArticlesDTO
+            {
+                ForumArticleId = art.ForumArticleId,
+                MemberId = art.MemberId,
+                Category = art.Category,
+                ProductCategoryId = art.ProductCategoryId,
+                Title = art.Title,
+                ArticleContent = art.ArticleContent,
+                LikeCount = art.LikeCount,
+                AddTime = art.AddTime,
+                Img = art.Img,
+                ReplyCount = art.ReplyCount,
+            }).ToListAsync();
         }
 
         private bool ForumArticleExists(int id)

@@ -118,7 +118,7 @@
                             <div class="news_content" style="width: calc(100% - 120px); float:left">
                                 <div style="font-size: 13px;">
                                     <p>
-                                        {{item.category}}‧{{item.memberId}}‧1小時前
+                                        {{item.category}}‧{{item.nickName}}‧1小時前
                                     </p>
                                 </div>
                                 <div class="article_title">
@@ -140,7 +140,7 @@
                                     </span>
                                 </span>
                                 <div class="like_quantity">
-                                    <p>123</p>
+                                        <p>{{item.likeCount}}</p>
                                 </div>
                             </div>
                             <div style="float: left; padding-left: 15px;">
@@ -155,7 +155,7 @@
                                     </span>
                                 </span>
                                 <div class="like_quantity">
-                                    <p>8</p>
+                                        <p>{{item.replyCount}}</p>
                                 </div>
                             </div>
                             <hr style="clear:both;">
@@ -205,7 +205,7 @@
                                 PostList.push(item);
 
                             }
-                            //console.log(PostList);
+                            console.log(PostList);
                             _this.PostDTOs = PostList;
                         }
                     );

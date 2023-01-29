@@ -5,7 +5,6 @@
 @section Style{
     <!--forum Article Stylesheet-->
     <link href="~/css/sign.css" rel="stylesheet" />
-
 }
 
 <!-- 按鈕 tab 登入&註冊 -->
@@ -15,10 +14,10 @@
             <div class="container">
                 <div class="card resetcard">
                     <div>
-                        <h3>重設密碼</h3>
-                        <p>請輸入在 S.I.E.G 當時註冊的電子信箱</p>
-                        <input type="email" placeholder="電子信箱*">
-                        <button type="submit" class="btn btn-dark" @@click="sent">傳送</button>
+                        <h3>忘記密碼</h3>
+                        <p>請輸入當時在 S.I.E.G 註冊的電子信箱</p>
+                        <input type="email" placeholder="電子信箱*" id="sendEmail">
+                        <button type="submit" class="btn btn-dark" @@click="sent()">傳送</button>
                     </div>
 
                 </div>
@@ -31,6 +30,10 @@
 @section Scripts{
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
+    <script type="text/javascript" src="~/js/email.min.js"></script>
+    <script type="text/javascript">
+        emailjs.init('vcA7SOb_hs8Bul8zy')
+    </script>
 
     <script>
         //var clearLogin = $("#loginEmail").val();
@@ -46,27 +49,73 @@
                 },
                 mounted: function () {
                     let _this = this;
-                    _this.getMemberDTO();
                 },
                 methods: {
-                    sent: function () {
-                        var _this = this;
+                    //sent: function () {
+                    //    var emailRegxp = /^\w+((-\w+)|(\.\w+))*\@@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+                    //    let sendEmail = $("#sendEmail").val();
+                    //    if (emailRegxp.test(sendEmail) == false) {
+                    //        alert("信箱格式錯誤")
+                    //        return;
+                    //    }
+                    //    else {
+                    //        var params = {
+                    //            to_name: "尊敬的會員",
+                    //            gmail: $("#sendEmail").val(),
+                    //            link: "https://localhost:7002/ResetPwd/",
+                    //        }
+                    //        emailjs.send("service_mj1ivks", "template_x67i0kk", params).then(function (res) {
+                    //            alert("以寄信至您的信箱");
+                    //        })
+                    //    }
+                    //},
+                    sent: async function () {
+                        let _this = this;
                         var request = {};
-                        request.ID = 0;
-                        request.Name = $("#FirstName").val();
-                        request.NickName = $("#NickName").val();
-                        request.Phone = $("#Phone").val();
-                        request.email = $("#SignEmail").val();
-                        request.Password = $("#PassWord").val();
-                        axios.post(`${webApiBaseAddress}/api/D_SignLogin`, request).then(
-                            response => {
-                                console.log(response.data)
-                                //window.location = "/Home"
-                            }
-                        );
+                        var emailRegxp = /^\w+((-\w+)|(\.\w+))*\@@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+                        let sendEmail = $("#sendEmail").val();
 
+                        if (emailRegxp.test(sendEmail) == false) {
+                            alert("信箱格式錯誤")
+                            return;
+                        }
+                        request.Id = 0;
+                        request.email = $("#sendEmail").val();
+                        try {
+                            let response = await axios.post(`${webApiBaseAddress}/api/D_SignLogin/Send`, request)
+                                .then(
+                                    response => {
+                                        if (response.status == 200) {
+                                            var params = {
+                                                to_name: "尊敬的會員",
+                                                gmail: $("#sendEmail").val(),
+                                                link: "https://localhost:7002/ResetPwd/",
+                                            }
+                                            emailjs.send("service_mj1ivks", "template_x67i0kk", params).then(function (res) {
+                                                alert("以寄信至您的信箱");
+                                                document.getElementById("sendEmail").value = "";
+                                            })
+
+
+                                            console.log(response.data)
+                                            var memberId = response.data.memberId
+                                            console.log(memberId)
+                                            sessionStorage.setItem("mID", memberId)
+
+                                            localStorage.setItem("localmID", memberId)
+                                            //window.location = "/Home/index" //正確的
+                                        }
+                                        else {
+                                            alert("失敗")
+                                        }
+                                    }
+                                );
+                        }
+                        catch {
+                            alert("失敗,請重新輸入");
+                            document.getElementById("sendEmail").value = "";
+                        };
                     },
-
                 },
             });
 

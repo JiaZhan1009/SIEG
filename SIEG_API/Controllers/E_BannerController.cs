@@ -101,12 +101,21 @@ namespace SIEG_API.Controllers
         // POST: api/E_Banner
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Banner>> PostBanner(Banner banner)
+        public async Task<Banner> PostBanner(E_BannerDTO banner)
         {
-            _context.Banner.Add(banner);
+
+            Banner bn = new Banner
+            {
+                Img = banner.BannerImg,
+                Title = banner.BannerTitle,
+                Link = banner.BannerLink,
+                ValIdity = banner.BannerValIdity,
+            };
+
+            _context.Banner.Add(bn);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetBanner", new { id = banner.BannerId }, banner);
+            return bn;
         }
 
         // DELETE: api/E_Banner/5

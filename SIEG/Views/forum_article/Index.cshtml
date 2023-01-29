@@ -139,14 +139,14 @@
                         <!--身分列-->
                         <div style="padding-top: 5px; float: left;">
                             <svg viewBox="0 0 40 40" focusable="false" width="32" height="32">
-                                <path fill="#81D4FA" d="M40 20a20 20 0 1 1-40 0 20 20 0 0 1 40 0"></path>
-                                <path fill="#2490BF"
+                                <path fill="#12ac76" d="M40 20a20 20 0 1 1-40 0 20 20 0 0 1 40 0"></path>
+                                    <path fill="#006340"
                                     d="M16 7.9C12.4 7.4 9.3 6 9.3 6s5.5 4.3 5 5.3c-.4 1-4.2 0-4.2 0l4 2a9.7 9.7 0 0 0-1.5 4.6l.1 3.4a1.5 1.5 0 1 0 .8 2.9 8.3 8.3 0 0 0 6.2 5.3c.6 0 .6 2 .6 3.2-1.6 1-2.5 3-2 5v2.2a20.2 20.2 0 0 0 9.9-1.6l-.7-2.7v-.4l-.2-.4-.2-.4-.2-.3-.2-.3c-.7-1-1.7-1.6-2.9-1.8l.6-2.3s1.4-1 3-2.6l.4 1.3 1.4-2.5.9-1.8s3.8-10.3.8-13.9c-2.6-3-11-1.9-14.7-2.3">
                                 </path>
                             </svg>
                         </div>
                         <div class="name">
-                            <span style="padding-left: 5px;">{{PostDTOs.memberId}}</span>
+                            <span style="padding-left: 5px;">{{PostDTOs.nickName}}</span>
                         </div>
                         <!--Title-->
                         <h3 style="padding-top: 15px;">{{PostDTOs.title}}</h3>
@@ -167,7 +167,7 @@
                             <img style="width: 30px; height:30px" src="~/images/forum/biglike.png">
                         </div>
                         <div style="padding-top:22px;">
-                            <span>{{PostDTOs.likeCount}}·留言 4</span>
+                                <span>{{PostDTOs.likeCount}}·留言 {{PostDTOs.replyCount}}</span>
                             <!--收藏按讚紐-->
                             <div class="placement" style="float: right;" @@click="like(PostDTOs)">
                                 <div class="heart"></div>
@@ -220,15 +220,14 @@
                         <!--留言身分列-->
                         <div style="padding-top: 5px; float: left;">
                             <svg viewBox="0 0 40 40" focusable="false" width="32" height="32">
-                                <path fill="#81D4FA" d="M40 20a20 20 0 1 1-40 0 20 20 0 0 1 40 0">
-                                </path>
-                                <path fill="#2490BF"
-                                    d="M16 7.9C12.4 7.4 9.3 6 9.3 6s5.5 4.3 5 5.3c-.4 1-4.2 0-4.2 0l4 2a9.7 9.7 0 0 0-1.5 4.6l.1 3.4a1.5 1.5 0 1 0 .8 2.9 8.3 8.3 0 0 0 6.2 5.3c.6 0 .6 2 .6 3.2-1.6 1-2.5 3-2 5v2.2a20.2 20.2 0 0 0 9.9-1.6l-.7-2.7v-.4l-.2-.4-.2-.4-.2-.3-.2-.3c-.7-1-1.7-1.6-2.9-1.8l.6-2.3s1.4-1 3-2.6l.4 1.3 1.4-2.5.9-1.8s3.8-10.3.8-13.9c-2.6-3-11-1.9-14.7-2.3">
+                                <path fill="#12ac76" d="M40 20a20 20 0 1 1-40 0 20 20 0 0 1 40 0"></path>
+                                <path fill="#006340"
+                                      d="M16 7.9C12.4 7.4 9.3 6 9.3 6s5.5 4.3 5 5.3c-.4 1-4.2 0-4.2 0l4 2a9.7 9.7 0 0 0-1.5 4.6l.1 3.4a1.5 1.5 0 1 0 .8 2.9 8.3 8.3 0 0 0 6.2 5.3c.6 0 .6 2 .6 3.2-1.6 1-2.5 3-2 5v2.2a20.2 20.2 0 0 0 9.9-1.6l-.7-2.7v-.4l-.2-.4-.2-.4-.2-.3-.2-.3c-.7-1-1.7-1.6-2.9-1.8l.6-2.3s1.4-1 3-2.6l.4 1.3 1.4-2.5.9-1.8s3.8-10.3.8-13.9c-2.6-3-11-1.9-14.7-2.3">
                                 </path>
                             </svg>
                         </div>
                         <div class="name" style="border-bottom: 1px solid #ddd;">
-                            <span style="padding-left: 5px;">{{item.memberId}}</span>
+                            <span style="padding-left: 5px;">{{item.nickName}}</span>
                             <!--留言-->
                             <div style="padding-left:37px;">
                                 <span
@@ -251,21 +250,21 @@
                                         <!--留言身分列-->
                                         <div style="padding-top: 5px; float: left;">
                                             <svg viewBox="0 0 40 40" focusable="false" width="32" height="32">
-                                                <path fill="#81D4FA" d="M40 20a20 20 0 1 1-40 0 20 20 0 0 1 40 0">
-                                                </path>
-                                                <path fill="#2490BF"
-                                                    d="M16 7.9C12.4 7.4 9.3 6 9.3 6s5.5 4.3 5 5.3c-.4 1-4.2 0-4.2 0l4 2a9.7 9.7 0 0 0-1.5 4.6l.1 3.4a1.5 1.5 0 1 0 .8 2.9 8.3 8.3 0 0 0 6.2 5.3c.6 0 .6 2 .6 3.2-1.6 1-2.5 3-2 5v2.2a20.2 20.2 0 0 0 9.9-1.6l-.7-2.7v-.4l-.2-.4-.2-.4-.2-.3-.2-.3c-.7-1-1.7-1.6-2.9-1.8l.6-2.3s1.4-1 3-2.6l.4 1.3 1.4-2.5.9-1.8s3.8-10.3.8-13.9c-2.6-3-11-1.9-14.7-2.3">
+                                                <path fill="#12ac76" d="M40 20a20 20 0 1 1-40 0 20 20 0 0 1 40 0"></path>
+                                                <path fill="#006340"
+                                                      d="M16 7.9C12.4 7.4 9.3 6 9.3 6s5.5 4.3 5 5.3c-.4 1-4.2 0-4.2 0l4 2a9.7 9.7 0 0 0-1.5 4.6l.1 3.4a1.5 1.5 0 1 0 .8 2.9 8.3 8.3 0 0 0 6.2 5.3c.6 0 .6 2 .6 3.2-1.6 1-2.5 3-2 5v2.2a20.2 20.2 0 0 0 9.9-1.6l-.7-2.7v-.4l-.2-.4-.2-.4-.2-.3-.2-.3c-.7-1-1.7-1.6-2.9-1.8l.6-2.3s1.4-1 3-2.6l.4 1.3 1.4-2.5.9-1.8s3.8-10.3.8-13.9c-2.6-3-11-1.9-14.7-2.3">
                                                 </path>
                                             </svg>
                                         </div>
                                         <div class="name">
-                                            <span style="padding-left: 5px;">丹尼斯</span>
+                                            <span style="padding-left: 5px;">{{rp2.nickName}}</span>
                                             <!--留言-->
                                             <div style="padding-left:37px;">
                                                 <span
                                                     style="word-break: break-all;white-space: pre-line;">{{rp2.forumReply2Content}}</span>
                                                 <p style="font-size: 13px;">
-                                                    B{{rp2.forumReplyFloor}}-{{rp2.floor}}·12月31日 15:30</p>
+                                                        B{{rp2.forumReplyFloor}}-{{rp2.floor}}·{{rp2.建立時間}}
+                                                    </p>
                                             </div>
                                         </div>
                                     </div>
@@ -333,11 +332,11 @@
                 let _this = this;
                 axios.get(`${webApiBaseAddress}/api/G_ForumArticles/${articleId}`).then(
                     response => {
-                        _this.PostDTOs = response.data;
+                        _this.PostDTOs = response.data[0];
                         var PostList = [];
                         let item = {};
                         item = _this.PostDTOs;
-                        _this.Date = moment(item.addTime).format("YYYY年MM/DD A:hh:mm");
+                        _this.Date = moment(item.addTime).add(8,'hours').format("YYYY年MM/DD A:hh:mm");
                         PostList.push(item);
                         //console.log(response.data)
                     }
@@ -437,7 +436,7 @@
                             let item = {};
                             let floor = {};
                             item = _this.ReplyDTOs[i];
-                            item.AddTime = moment(_this.ReplyDTOs[i].addTime).format("MM/DD hh:mma");
+                            item.AddTime = moment(_this.ReplyDTOs[i].addTime).add(8, 'hours').format("MM/DD A:hh:mm");
                             EmployeeList.push(item);
                             floor = _this.ReplyDTOs[i].floor + 1;
                             lastfloorList.push(floor);
@@ -445,6 +444,7 @@
                         _this.ReplyDTOs = EmployeeList;
                         lastFloor = lastfloorList.slice(-1);
                         _this.getTotalReply();
+                        //console.log(response.data)
                     }
                 );
             },
@@ -461,7 +461,7 @@
                             let floor = {};
                             item = _this.Reply2DTOs[i];
                             floor = _this.Reply2DTOs[i].forumReplyFloor;
-                            item.建立時間 = moment(_this.Reply2DTOs[i].建立時間).format("MM/DD hh:mma");
+                            item.建立時間 = moment(_this.Reply2DTOs[i].addTime).add(8, 'hours').format("MM/DD A:hh:mm");
                             EmployeeList.push(item);
                             FloorList.push(floor);
                             let rparray = {
@@ -471,7 +471,9 @@
                             RpList.push(rparray);
                         }
                         _this.Reply2DTOs = EmployeeList;
-                        _this.removeDuplicates(RpList, "rp1floor")
+                        _this.removeDuplicates(RpList, "rp1floor");
+                        //console.log(response.data);
+
                     }
                 );
             },
@@ -502,6 +504,7 @@
                 } else {
                     _this.totalreply = 0;
                 }
+                _this.articleReply();
             },
             insert: function () {
                 var _this = this;
@@ -522,6 +525,7 @@
                             $('.Reply_block').css('display', 'none');
                         }, 500);
                         _this.getReplyDTOs();
+                        _this.articleReply();
                     }
                 );
             },
@@ -565,6 +569,20 @@
                         }, 1000);
                     }
                 );
+            },
+            articleReply: function () {
+                    let _this = this;
+                    var request = {};
+                    let PostId = articleId;
+                    request.ForumArticleId = PostId;
+                    request.ReplyCount = _this.totalreply;
+                    axios.put(`${webApiBaseAddress}/api/G_ForumArticles/ReplyCount/${PostId}`, request).then(
+                        response => {
+                            setTimeout(function () {
+                                ArticleVue.getPostDTOs();
+                            }, 400);
+                        }
+                    );
             },
         }
     });

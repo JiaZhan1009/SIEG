@@ -29,7 +29,7 @@
                                     <input type="text" name="text" class="form-control cc-expiry-input" maxlength="5" placeholder="MM/YY" v-model="PaymentInformationDTOes.creditCardDate">
                                 </div>
                                 <div>
-                                    <input type="text" name="text" class="form-control cc-cvc-input" maxlength="3" placeholder="信用卡檢查碼" v-model="PaymentInformationDTOes.creditCardCCV">
+                                    <input type="text" name="text" class="form-control cc-cvc-input" maxlength="3" placeholder="信用卡檢查碼" oninput="value=value.replace(/[^\d]/g,'')" v-model="PaymentInformationDTOes.creditCardCCV">
                                 </div>
                             </div>
                             <div class="addressgroup-1">
@@ -211,14 +211,30 @@
                     request.CreditCard = PaymentInformation.creditCard;
                     request.CreditCardDate = PaymentInformation.creditCardDate;
                     request.CreditCardCcv = PaymentInformation.creditCardCCV;
-                    var ret = confirm("確定要修改嗎?");
-                    if (ret == true) {
-                        axios.put(`${webApiBaseAddress}/api/B_PaymentInformation/${_this.mID}`, request).then(
-                            response => {
-                                alert(response.data);
-                                window.location = "/Member/SettingCreditcard"
+                    if (PaymentInformation.creditCard.length == 19) {
+                        if (PaymentInformation.creditCardDate.length == 5) {
+                            if (PaymentInformation.creditCardCCV.length == 3) {
+                                var ret = confirm("確定要修改嗎?");
+                                if (ret == true) {
+                                    axios.put(`${webApiBaseAddress}/api/B_PaymentInformation/${_this.mID}`, request).then(
+                                        response => {
+                                            alert(response.data);
+                                            window.location = "/Member/SettingCreditcard"
+                                        }
+                                    );
+                                }
                             }
-                        );
+                            else {
+                                alert("驗證碼不正確")
+                            }
+                        }
+                        else {
+                            alert("日期不正確")
+                        }
+
+                    }
+                    else {
+                        alert("信用卡號不正確")
                     }
                 },
             },

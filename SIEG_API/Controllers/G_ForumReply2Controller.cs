@@ -32,10 +32,23 @@ namespace SIEG_API.Controllers
 
         // GET: api/G_ForumReply2/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<ForumReply2>>> GetForumReply2(int id)
+        public async Task<ActionResult<IEnumerable<G_ForumReply2DTO>>> GetForumReply(int id)
         {
-            return await _context.ForumReply2.Where(c => c.ForumArticleId == id).ToListAsync();
-
+            return await _context.ForumReply2.Where(c => c.ForumArticleId == id).Join(_context.Member, rp2 => rp2.MemberId, member => member.MemberId, (rp2, member) => new G_ForumReply2DTO
+            {
+                ForumReply2Id = rp2.ForumReply2Id,
+                ArticleId = rp2.ForumArticleId,
+                ForumReplyId = rp2.ForumReplyId,
+                MemberId = rp2.MemberId,
+                ForumReplyFloor = rp2.ForumReplyFloor,
+                Floor = rp2.Floor,
+                ForumReply2Content = rp2.ForumReply2Content,
+                Img = rp2.Img,
+                AddTime = rp2.AddTime,
+                ValIdity = rp2.ValIdity,
+                LikeCount = rp2.LikeCount,
+                NickName = member.NickName,
+            }).ToListAsync();
         }
 
         // PUT: api/G_ForumReply2/5

@@ -1,0 +1,80 @@
+﻿@{
+    ViewData["Title"] = "重設密碼";
+    ViewData["enTitle"] = "Reset";
+}
+@section Style{
+    <!--forum Article Stylesheet-->
+    <link href="~/css/sign.css" rel="stylesheet" />
+}
+<div id="Resetpwd">
+    <div class="index_space about_sign">
+        <div class="container">
+            <div class="card resetcard">
+                <div>
+                    <h3>重設密碼</h3>
+                    <p>請輸入新的密碼</p>
+                        <input type="password" id="PassWord" placeholder="密碼*" required>
+                        <i class="far fa-eye" id="togglePassword" style="cursor: pointer;"></i>
+                    <button type="submit" class="btn btn-dark" @@click="update(D_MemberDTO)">確定</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
+    <script src="~/js/seepassword.js"></script>
+
+    <script>
+        //var clearLogin = $("#loginEmail").val();
+        //var clearLoginpassword = $("#loginPassword").val();
+
+        var webApiBaseAddress = "https://localhost:7139";
+        var SignVue = new Vue
+            ({
+                el: "#Resetpwd",
+                name: "Resetpwd",
+                data: {
+                    //mID: sessionStorage.getItem("mID"),
+                    localmID: localStorage.getItem("localmID"),
+                    PersonalDTOes: {},
+                    Filter: "",
+                },
+                mounted: function () {
+                    let _this = this;
+                },
+                methods: {
+                    update: function (D_MemberDTO) {
+                        let _this = this;
+                        var request = {};
+                        request.MemberId = _this.localmID;
+                        //request.Name = D_MemberDTO.name;
+                        //request.NickName = D_MemberDTO.nickName;
+                        //request.Phone = D_MemberDTO.phone;
+                        //request.Email = D_MemberDTO.email;
+                        //request.Password = D_MemberDTO.password;
+                        request.Password= $("#PassWord").val();
+                        var ret = confirm("確定要修改嗎?");
+
+                        if (ret == true) {
+                            axios.put(`${webApiBaseAddress}/api/D_SignLogin/${_this.localmID}`, request).then(
+                                response => {
+                                    alert(response.data);
+                                    //_this.filterEmployeeDTOes();
+                                    //_this.getEmployeeDTOes();
+                                    //_this.cancel();
+                                }
+                            );
+                        }
+                    },
+                },
+            });
+
+    </script>
+
+}
+

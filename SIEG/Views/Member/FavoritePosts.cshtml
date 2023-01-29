@@ -18,8 +18,8 @@
 									<h4>貼文追蹤</h4>
 								</div>
 								<ul>
-									<template v-for="item in FavoritePostsDTOes" v-if="item.faviriteNewID == null">
-										<li class="noticecolor">
+									<template v-for="item in FavoritePostsDTOes" v-if="item.faviriteNewID == null" >
+										<li class="noticecolor" @@click="searchforum(item.faviriteArticleID)">
 											<div class="noticeDivimg">
 												<div class="news_collect">
 													<div class="news_collect-img">
@@ -38,7 +38,7 @@
 										</li>
 									</template>
 									<template v-else>
-										<li class="noticecolor">
+										<li class="noticecolor" @@click="newssearch(item.faviriteNewID)">
 											<div class="noticeDivimg">
 												<div class="news_collect">
 													<div class="news_collect-img">
@@ -127,6 +127,12 @@
 							}
 						);
 					}
+				},
+				searchforum: function (faviriteArticleID) {
+					alert(faviriteArticleID);
+				},
+				newssearch: function (faviriteNewID) {
+					alert(faviriteNewID);
 				},
 			},
 		});

@@ -71,10 +71,6 @@ namespace SIEG_API.Controllers
                 return "Id不正確";
             }
             Member member = await _context.Member.FindAsync(memDTO.MemberId);
-            member.Name = memDTO.Name;
-            member.NickName = memDTO.NickName;
-            member.Phone = memDTO.Phone;
-            member.Email = memDTO.Email;
             member.Password = memDTO.Password;
             _context.Entry(member).State = EntityState.Modified;
 
@@ -140,7 +136,6 @@ namespace SIEG_API.Controllers
                     //權限
                 }).First();
         }
-
         private static bool CheckLoginInfo(D_LoginDTO member, Member login)
         {
             //return login.Email.Contains(member.Email) && login.密碼 == member.密碼;
@@ -148,6 +143,29 @@ namespace SIEG_API.Controllers
             bool isPasswordCorrect = login. Password == member.Password;
             return isEmailCorrect && isPasswordCorrect;
         }
+
+        [HttpPost("Send")]
+        public async Task<D_LoginDTO> SendMember([FromBody] D_LoginDTO member)
+        {
+            var aa = _context.Member;
+            var aaa = _context.Member.Where(login => CheckSendInfo(member, login));
+            return _context.Member
+                .Where(login => login.Email.Contains(member.Email))
+                .Select(login => new D_LoginDTO
+                {
+                    MemberId = login.MemberId,
+                    Email = login.Email,
+                    //權限
+                }).First();
+        }
+        private static bool CheckSendInfo(D_LoginDTO member, Member login)
+        {
+            //return login.Email.Contains(member.Email) && login.密碼 == member.密碼;
+            bool isEmailCorrect = login.Email.Contains(member.Email);
+            bool isPasswordCorrect = login.Password == member.Password;
+            return isEmailCorrect && isPasswordCorrect;
+        }
+
 
         // DELETE: api/D_SignLogin/5
         [HttpDelete("{id}")]

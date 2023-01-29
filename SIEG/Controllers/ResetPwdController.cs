@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace SIEG_API.Controllers
+namespace SIEG.Controllers
 {
-    public class confirmController : Controller
+    public class ResetPwdController : Controller
     {
         public IActionResult Index()
         {

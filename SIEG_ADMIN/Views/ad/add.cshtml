@@ -13,35 +13,30 @@
         </div>
 
         <!-- 顯示資訊 -->
-        <div class="card" id="bannerVue">
+        <div class="card" id="adVue">
             <div class="card-body">
                 <div class="row">
                     <div class="col-lg-6 mb-3">
-                        <label class="form-label" for="banner_name">標題</label>
-                        <input type="text" class="form-control" id="banner_name" placeholder="Hello SIEG" />
+                        <label class="form-label" for="ad_link">連結</label>
+                        <input type="text" class="form-control" id="ad_link" placeholder="/About" />
                     </div>
                     <div class="col-lg-6 mb-3">
-                        <label class="form-label" for="banner_link">連結</label>
-                        <input type="text" class="form-control" id="banner_link" placeholder="/About" />
-                    </div>
-                    <div class="col-lg-6 mb-3">
-                        <label class="form-label" for="banner_state">狀態</label>
-                        <select id="banner_state" class="form-select">
+                        <label class="form-label" for="ad_state">狀態</label>
+                        <select id="ad_state" class="form-select">
                             <option value="true">顯示</option>
                             <option value="false">不顯示</option>
                         </select>
                     </div>
                     <div class="col-lg-6 mb-3">
-                        <label class="form-label" for="banner_img">圖片</label>
-                        <input class="form-control" type="file" id="banner_img">
+                        <label class="form-label" for="ad_img">圖片</label>
+                        <input class="form-control" type="file" id="ad_img">
                     </div>
                 </div>
-                <button type="button" class="btn btn-primary" @@click="addBanner">送出</button>
+                <button type="button" class="btn btn-primary" @@click="addAd">送出</button>
             </div>
         </div>
     </div>
 </div>
-
 
 @section Scripts{
 
@@ -51,37 +46,34 @@
 
         var webApiBaseAddress = "https://localhost:7139";
         var appVue = new Vue({
-            el: "#bannerVue",
-            name: "bannerVue",
+            el: "#adVue",
+            name: "adVue",
             data: {
-                bannerId: null,
-                bannerImg: null,
-                bannerTitle: null,
-                bannerLink: null,
-                bannerValIdity: null,
+                adId: null,
+                adImg: null,
+                adLink: null,
+                adValIdity: null,
             },
             mounted: function () {
                 let _this = this;
             },
             methods: {
-                addBanner: function () {
+                addAd: function () {
                     let _this = this;
 
-                    if ($('#banner_name').val() == "" || $('#banner_link').val() == "" || $('#banner_state').val() == "" || $('#banner_img').val() == "") {
+                    if ($('#ad_link').val() == "" || $('#ad_state').val() == "" || $('#ad_img').val() == "") {
                         Swal.fire({
                             icon: 'error',
                             title: '尚有欄位未填寫！',
                         })
                     } else {
-
                         var request = {};
-                        request.bannerId = 0;
-                        request.bannerImg = $('#banner_img').val();
-                        request.bannerTitle = $('#banner_name').val();
-                        request.bannerLink = $('#banner_link').val();
-                        request.bannerValIdity = $('#banner_state').val();
+                        request.adId = 0;
+                        request.adImg = $('#ad_img').val();
+                        request.adLink = $('#ad_link').val();
+                        request.adValIdity = $('#ad_state').val();
 
-                        axios.post(`${webApiBaseAddress}/api/E_Banner`, request).then(
+                        axios.post(`${webApiBaseAddress}/api/E_Ad`, request).then(
                             response => {
 
                                 Swal.fire({
@@ -91,10 +83,9 @@
                                     timer: 1500
                                 })
                                 //alert(response.data);
-                                $('#banner_img').val("");
-                                $('#banner_name').val("");
-                                $('#banner_link').val("");
-                                $('#banner_state').val("");
+                                $('#ad_img').val("");
+                                $('#ad_link').val("");
+                                $('#ad_state').val("");
                             }
                         );
                     }

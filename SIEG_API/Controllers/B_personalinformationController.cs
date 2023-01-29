@@ -55,6 +55,26 @@ namespace SIEG_API.Controllers
             return personal;
         }
 
+        [HttpGet("Kyccertified/{Memberid}")]
+        public async Task<ActionResult<B_KyccertifiedDTO>> GetMember2(int Memberid)
+        {
+            var member = await _context.Member.FindAsync(Memberid);
+
+            if (member == null)
+            {
+                return NotFound();
+            }
+            B_KyccertifiedDTO Kyccertified = new B_KyccertifiedDTO
+            {
+                MemberId = member.MemberId,
+                IdCardFront=member.IdCardFront,
+                IdCardBack=member.IdCardBack,
+                Access=member.Access,
+            };
+
+            return Kyccertified;
+        }
+
         // PUT: api/B_personalinformation/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{Memberid}")]
@@ -71,6 +91,39 @@ namespace SIEG_API.Controllers
             memberinformation.BillingAddress = member.BillingAddress;
             //memberinformation.Name = member.Name;
             _context.Entry(memberinformation).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!MemberExists(Memberid))
+                {
+                    return "找不到欲修改紀錄";
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return "修改成功!";
+        }
+
+
+        [HttpPut("Kyccertified/{Memberid}")]
+        public async Task<string> PutMember2(int Memberid, B_KyccertifiedDTO member)
+        {
+            if (Memberid != member.MemberId)
+            {
+                return "不正確";
+            }
+            Member Kyccertified = await _context.Member.FindAsync(member.MemberId);
+            Kyccertified.MemberId = member.MemberId;
+            Kyccertified.IdCardFront = member.IdCardFront;
+            Kyccertified.IdCardBack = member.IdCardBack;
+            _context.Entry(Kyccertified).State = EntityState.Modified;
 
             try
             {

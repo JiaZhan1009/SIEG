@@ -80,6 +80,9 @@
     font-size: 20px;
 }
 
+.text-3 {
+    margin: 20px 0px 0px 30px;
+}
 .KycFontSize {
     font-size: 30px;
 }
@@ -455,7 +458,7 @@ hr {
 .preview {
     /* float: left; */
     background: #cccccc;
-    height: 200px;
+    height: 205px;
     width: 400px;
     text-align: center;
     line-height: 200px
@@ -500,17 +503,10 @@ hr {
 
 
 
-
-
-
-
-
-
-
 .preview-2 {
     /* float: left; */
     background: #cccccc;
-    height: 200px;
+    height: 205px;
     width: 400px;
     text-align: center;
     line-height: 200px

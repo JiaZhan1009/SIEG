@@ -27,8 +27,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                                <tr class="detailbgcolor" v-for="item in FaviriteProductsDTOes" @@click="searchproduct(item.faviriteProductsId)">
-                                <td class="imgTd-1" data-title="商品">
+                                <tr class="detailbgcolor" v-for="item in FaviriteProductsDTOes">
+                                <td class="imgTd-1" data-title="商品" @@click="searchproduct(item.productId)">
                                     <img :src="item.imageFront" class="imgWidth">
                                     <div class="imgMargin">
                                         <div>{{item.productName}}</div>
@@ -109,8 +109,10 @@
                         );
                     }
                 },
-                searchproduct: function (faviriteProductsId) {
-                    alert(faviriteProductsId);
+                searchproduct: function (ProductfaviriteProductsId) {
+                    alert(ProductfaviriteProductsId);
+                    sessionStorage.setItem("pID", ProductfaviriteProductsId);
+                    window.location = "/product_info/index";
                 },
             },
         });

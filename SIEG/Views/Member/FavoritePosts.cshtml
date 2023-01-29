@@ -19,9 +19,9 @@
 								</div>
 								<ul>
 									<template v-for="item in FavoritePostsDTOes" v-if="item.faviriteNewID == null" >
-										<li class="noticecolor" @@click="searchforum(item.faviriteArticleID)">
+										<li class="noticecolor" >
 											<div class="noticeDivimg">
-												<div class="news_collect">
+												<div class="news_collect" @@click="searchforum(item.articleID)">
 													<div class="news_collect-img">
 														<img :src="item.img" class="a-1">
 													</div>
@@ -38,9 +38,9 @@
 										</li>
 									</template>
 									<template v-else>
-										<li class="noticecolor" @@click="newssearch(item.faviriteNewID)">
+										<li class="noticecolor">
 											<div class="noticeDivimg">
-												<div class="news_collect">
+												<div class="news_collect" @@click="newssearch(item.newID)">
 													<div class="news_collect-img">
 														<img :src="item.img" class="a-1">
 													</div>
@@ -128,11 +128,15 @@
 						);
 					}
 				},
-				searchforum: function (faviriteArticleID) {
-					alert(faviriteArticleID);
+				searchforum: function (articleID) {
+					alert(articleID);
+					sessionStorage.setItem("fID", articleID);
+					window.location = "/forum_article/index";
 				},
-				newssearch: function (faviriteNewID) {
-					alert(faviriteNewID);
+				newssearch: function (newID) {
+					alert(newID);
+					sessionStorage.setItem("nID", newID);
+					window.location = "/news_info/index";
 				},
 			},
 		});

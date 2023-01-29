@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -52,12 +53,13 @@ namespace SIEG_API.Controllers
         public async Task<IEnumerable<J_PriceListDTO>> GetSizeAndQuote(int pCateID)
         {
             var list = await _context.Procedures.GetSizeAndQuoteAsync(pCateID);
-            return list.Select(x => new J_PriceListDTO {
+            return list.Select(x => new J_PriceListDTO
+            {
                 pID = x.pID,
                 pSize = x.pSize,
                 pPrice = x.quotePrice,
                 sID = x.sID,
-                quoteID = x.quoteID,                
+                quoteID = x.quoteID,
             }).OrderBy(x => float.Parse(x.pSize));
         }
 
@@ -80,7 +82,7 @@ namespace SIEG_API.Controllers
         {
             var productName = _context.Product.Include(p => p.ProductCategory).Where(p => p.ProductId == val.pID).ToList()[0].ProductCategory.ProductName;
             var BidInfo = await _context.BuyerBid
-                .Include(b => b.Product).Join(_context.Order, b=>b.OrderId, o=>o.OrderId, (b, o) => new {b = b, o = o })
+                .Include(b => b.Product).Join(_context.Order, b => b.OrderId, o => o.OrderId, (b, o) => new { b = b, o = o })
                 .Where(b => b.b.ValIdity == true && b.b.Product.ProductCategory.ProductName == productName && b.o.SellerId == null)
                 .GroupBy(b => new { b.b.Product.Size, b.b.Price, b.b.Product.ProductCategory.ProductName })
                 .Select(x => new J_PriceListDTO
@@ -221,10 +223,72 @@ namespace SIEG_API.Controllers
             return list;
         }
 
+        [HttpGet("GetProductNote/{pCateID}")]
+        public async Task<IEnumerable<J_KeyValuePair>> GetProductNote(int pCateID)
+        {
+            var list = await _context.ProductCategory.FindAsync(pCateID);
+            string[] noteArray = list.Note.ToString().Split("|");
+            string info = list.Info.ToString();
 
+            List<J_KeyValuePair> items = new List<J_KeyValuePair>();
+
+            for (int i = 0; i < noteArray.Length; i += 2)
+            {
+                items.Add(new J_KeyValuePair
+                {
+                    key = noteArray[i],
+                    value = noteArray[i + 1],
+
+                });
+            }
+            items[0].info = info;
+
+            return items;
+        }
+
+        [HttpGet("GetHistoricalData/{pCateID}")]
+        public async Task<IEnumerable<J_HistoricalData>> GetHistoricalData(int pCateID)
+        {
+            var list = await _context.Product.Include(p => p.ProductCategory).Include(p => p.Order).Where(p => p.ProductCategoryId == pCateID).ToListAsync();
+
+            var minPrice = list.Select(p => p.Order.Min(o => o.BuyerPrice)).Min().ToString();
+            var maxPrice = list.Select(p => p.Order.Max(o => o.BuyerPrice)).Max().ToString();
+            var dealPrice = list.Select(p => p.Order.Sum(o => o.BuyerPrice)).Sum().ToString();
+            var avgPrice = list.Select(p => p.Order.Average(o => o.BuyerPrice)).Average().ToString();
+
+            List<J_HistoricalData> historList = new List<J_HistoricalData>
+            {
+                new J_HistoricalData { val1 = minPrice, val2 = maxPrice, val3 = "交易區間" },
+                new J_HistoricalData { val1 = dealPrice, val2 = "", val3 = "成交量" },
+                new J_HistoricalData { val1 = avgPrice, val2 = "", val3 = "平均交易價" },
+            };
+            return historList;
+        }
     }
 }
+//public class Item
+//{
+//    public string Key { get; set; }
+//    public string Value { get; set; }
+//}
+//[HttpGet("GetProductNote/{pCateID}")]
+//public async Task<IEnumerable<Item>> GetProductNote(int pCateID)
+//{
+//    var list = await _context.ProductCategory.FindAsync(pCateID);
+//    string[] noteArray = list.Note.ToString().Split("|");
 
+//    List<Item> items = new List<Item>();
+//    for (int i = 0; i < noteArray.Length; i += 2)
+//    {
+//        items.Add(new Item
+//        {
+//            Key = noteArray[i],
+//            Value = noteArray[i + 1]
+//        });
+//    }
+
+//    return items;
+//}
 
 
 

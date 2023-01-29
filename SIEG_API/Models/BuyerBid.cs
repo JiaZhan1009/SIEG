@@ -15,7 +15,8 @@ namespace SIEG_API.Models
         public DateTime BidTime { get; set; }
         public bool? ValIdity { get; set; }
         public int ProductId { get; set; }
-        public DateTime EffectiveTime { get; set; }
+        public DateTime? EffectiveTime { get; set; }
+        public DateTime? SaleTime { get; set; }
         public int Count { get; set; }
 
         public virtual Member Member { get; set; }

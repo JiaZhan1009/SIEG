@@ -1,4 +1,16 @@
 /* -----  Group  ----- */
+.article {
+    padding: 0px 40px 0px 20px;
+}
+.product_note {
+    font-size: 15px;
+}
+
+td, th {
+    padding: 8px;
+    text-align: left;
+}
+
 .sizePriceItem {
     width: 32%;
     margin: 0 0.6%;

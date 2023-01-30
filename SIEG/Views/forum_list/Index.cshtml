@@ -9,16 +9,16 @@
 }
 
 <!-- Page Banner -->
-<div class="page_banner" style="background-image: url(../images/forum/IWC.jpg)">
+<div class="page_banner" style="background-image: url(../images/forum/forum.jpg)">
     <div class="container">
         <div class="content">
-            <h1 class="page_title">IWC</h1>
+            <h1 class="page_title">FORUM</h1>
         </div>
     </div>
 </div>
 
 <!-- Content -->
-<div class="index_space news_list_page">
+<div class="index_space news_list_page" id="ForumListVue">
     <div class="container">
         <div class="row">
             <div class="col-lg-4 col-xl-3 order-lg-1 order-2 widget_area">
@@ -30,8 +30,8 @@
                             文章篩選
                         </button>
                         <span class="dropdown-menu">
-                            <a href="#" class="dropdown-item active">熱門</a>
-                            <a href="#" class="dropdown-item">最新</a>
+                            <a href="#" class="dropdown-item">熱門</a>
+                            <a href="#" class="dropdown-item active">最新</a>
                         </span>
                     </span>
                     <div style="float: right;">
@@ -41,8 +41,8 @@
                     <!-- 側欄搜尋 -->
                     <div class="widget widget_search" style="padding-top: 15px;">
                         <form class="search_form">
-                            <input type="text" placeholder="搜尋貼文">
-                            <button type="submit"><i class="bi bi-search"></i></button>
+                            <input type="text" placeholder="搜尋貼文" v-model="Filter">
+                            <button type="button" @@click="search"><i class="bi bi-search"></i></button>
                         </form>
                     </div>
                     <!-- 側欄分類 -->
@@ -109,7 +109,7 @@
                     </div>
                 </div>
             </div>
-            <div id="ForumListVue" class="col-lg-8 col-xl-9 order-lg-2 order-1">
+            <div class="col-lg-8 col-xl-9 order-lg-2 order-1">
                 <div class="form_list_content">
                     <!--文章列表-->
                     <div class="row">
@@ -118,7 +118,7 @@
                             <div class="news_content" style="width: calc(100% - 120px); float:left">
                                 <div style="font-size: 13px;">
                                     <p>
-                                        {{item.category}}‧{{item.nickName}}‧1小時前
+                                        {{item.category}}‧{{item.nickName}}‧{{item.addTime}}
                                     </p>
                                 </div>
                                 <div class="article_title">
@@ -140,7 +140,7 @@
                                     </span>
                                 </span>
                                 <div class="like_quantity">
-                                        <p>{{item.likeCount}}</p>
+                                    <p>{{item.likeCount}}</p>
                                 </div>
                             </div>
                             <div style="float: left; padding-left: 15px;">
@@ -155,11 +155,12 @@
                                     </span>
                                 </span>
                                 <div class="like_quantity">
-                                        <p>{{item.replyCount}}</p>
+                                    <p>{{item.replyCount}}</p>
                                 </div>
                             </div>
                             <hr style="clear:both;">
                         </div>
+                        <partial name="_NoDataPartial" class="no_data"/>
                     </div>
                 </div>
             </div>
@@ -173,6 +174,7 @@
 
 @section Scripts{
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
     <script src="~/js/forum_post.js"></script>
@@ -184,12 +186,11 @@
             name: "ForumListVue",
             data: {
                 PostDTOs: [],
-                Fliter: "",
+                Filter: "",
             },
             mounted: function () {
                 let _this = this;
                 _this.getPostDTOs();
-
             },
             methods: {
                 getPostDTOs: function () {
@@ -198,15 +199,19 @@
                         response => {
                             _this.PostDTOs = response.data.reverse();
                             var PostList = [];
-
                             for (let i = 0; i < _this.PostDTOs.length; i++) {
                                 let item = {};
                                 item = _this.PostDTOs[i];
+                                item.addTime = moment(item.addTime).add(8, 'hours').format("YYYY年M月D日 h:m A");
                                 PostList.push(item);
-
                             }
-                            console.log(PostList);
                             _this.PostDTOs = PostList;
+                            if (PostList.length == 0) {
+                                $(".no_data").show();
+                            }
+                            else {
+                                $(".no_data").hide();
+                            }
                         }
                     );
                 },
@@ -214,6 +219,31 @@
                     var PostId = itemid;
                     sessionStorage.setItem("fID", PostId);
                     window.location = "/forum_article";
+                },
+                search: function () {
+                    let _this = this;
+                    var request = {};
+                    request.Title = _this.Filter;
+                    axios.post(`${webApiBaseAddress}/api/G_ForumArticles/Filter`, request).then(
+                        response => {
+                            _this.PostDTOs = response.data;
+                            var PostList = [];
+                            for (let i = 0; i < _this.PostDTOs.length; i++) {
+                                let item = {};
+                                item = _this.PostDTOs[i];
+                                item.addTime = moment(item.addTime).add(8, 'hours').format("YYYY年M月D日 h:m A");
+                                PostList.push(item);
+                            }
+                            _this.PostDTOs = PostList.reverse();
+                            console.log(_this.PostDTOs.length)
+                            if (PostList.length == 0) {
+                                $(".no_data").show();
+                            }
+                            else {
+                                $(".no_data").hide();
+                            }
+                        }
+                    );
                 },
             },
         });

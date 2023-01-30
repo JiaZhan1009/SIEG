@@ -184,9 +184,9 @@ namespace SIEG_API.Controllers
 
         // SEARCH api/G_ForumArticles/Filter
         [HttpPost("Filter")]
-        public async Task<IEnumerable<G_ForumArticlesDTO>> FilterEmployee([FromBody] G_ForumArticlesDTO g_ForumArticlesDTO)
+        public async Task<IEnumerable<G_ForumArticlesDTO>> FilterEmployee([FromBody] G_ForumArticlesDTO ForumArticle)
         {
-            return await _context.ForumArticle.Where(art => art.Title.Contains(g_ForumArticlesDTO.Title)||art.ArticleContent.Contains(g_ForumArticlesDTO.ArticleContent)).Select(art => new G_ForumArticlesDTO
+            return await _context.ForumArticle.Where(art => (art.Title.Contains(ForumArticle.Title) || art.ArticleContent.Contains(ForumArticle.Title)) && art.ValIdity == true).Join(_context.Member, art => art.MemberId, member => member.MemberId, (art, member) => new G_ForumArticlesDTO
             {
                 ForumArticleId = art.ForumArticleId,
                 MemberId = art.MemberId,
@@ -198,6 +198,7 @@ namespace SIEG_API.Controllers
                 AddTime = art.AddTime,
                 Img = art.Img,
                 ReplyCount = art.ReplyCount,
+                NickName = member.NickName,
             }).ToListAsync();
         }
 

@@ -637,7 +637,7 @@
             computed: {
                 DisplayProductListDTO() {
                     if (this.ProductListDTO.length) {
-                        if (this.ProductListDTO[0].state == "all" ) {
+                        if (this.ProductListDTO[0].state == "all") {
                             return this.ProductListDTO.map(item => {
                                 return {
                                     productlistImg: item.productlistImg,
@@ -648,25 +648,15 @@
                             })
                         }
                         else if (this.ProductListDTO[0].state == "More2000") {
-                             var aa = []
-                                                 
-                            for(int i = 0;i< this.ProductListDTO.length;i++){
-                                if(this.ProductListDTO[i].state == 0){
-                                    break;
+                            var array = []
+                            for (let i = 0; i < this.ProductListDTO.length; i++) {
+                                if (this.ProductListDTO[i].productlistPrice != 0) {
+                                    array.push(this.ProductListDTO[i])
                                 }
-                                aa.push(ProductListDTO[i])
-                            }             
-                            
-                            return aa;   
-                            
+                            }
+                            return array;
                         }
-
-
                     }
-
-      
-
-
                 }
             }
         });

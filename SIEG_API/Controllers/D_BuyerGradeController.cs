@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SIEG_API.D_DTO;
 using SIEG_API.DTO;
 using SIEG_API.Models;
 
@@ -72,6 +73,40 @@ namespace SIEG_API.Controllers
             //sgrd.賣家等級 = 會員DTO.賣家等級;
 
             _context.Entry(mgrd).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!MemberExists(id))
+                {
+                    return "exit";
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return "ok";
+        }
+
+        //優惠券
+        [HttpPut("xxx/{id}")]
+        public async Task<string> PutMemberCoupon(int id, D_CouponDTO cpDTO)
+        {
+            if (id != cpDTO.MemberId)
+            {
+                return "不正確";
+            }
+
+            MemberCoupon mem = await _context.MemberCoupon.FindAsync(cpDTO.MemberId);
+
+            //mem.MemberId = cpDTO.MemberId;
+            mem.Count = cpDTO.Count;
+
+            _context.Entry(mem).State = EntityState.Modified;
 
             try
             {

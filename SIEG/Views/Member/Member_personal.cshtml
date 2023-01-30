@@ -185,6 +185,8 @@
                 _this.getPersonalDTOes();
                 //dennis
                 _this.getD_GradeBuyDTO();
+                
+
                 $(function () {
                     setTimeout(function () {
                         _this.getD_GradeSellDTO();
@@ -250,6 +252,15 @@
                                     }
                                 }
                             };
+                            //優惠券判斷
+                            if (_this.BuyerGrade == 2) {
+                                _this.Count =2
+                            } else if (_this.BuyerGrade == 3) {
+                                _this.Count = 3
+                            }else{
+                                _this.Count = 0
+                            }
+
                             //買家剩餘金額
                             if (_this.BuyerGrade == 0) {
                                 _this.BuyRemain = 5000 - _this.Price
@@ -281,6 +292,7 @@
                                 }
                             });
                             _this.updateB();
+                            _this.updateCP();
                         }
                     );
                 },
@@ -393,6 +405,27 @@
                             console.log(response.data)
                             if (response.status == 200) {
                                 //alert("成功")
+                            } else {
+                                alert("失敗")
+                            }
+                        }
+                    );
+                },
+                //優惠券
+                updateCP: function () {
+                    var mID = sessionStorage.getItem("mID");
+                    let _this = this;
+                    var request = {};
+                    request.MemberCouponId =0;
+                    request.CouponId = 102;
+                    request.MemberId = mID;
+                    request.Count = _this.Count;
+
+                    axios.put(`${webApiBaseAddress}/api/D_BuyerGrade/xxx/${mID}`, request).then(
+                        response => {
+                            console.log("我是優惠券" + response.data)
+                            if (response.status == 200) {
+                                alert("成功")
                             } else {
                                 alert("失敗")
                             }

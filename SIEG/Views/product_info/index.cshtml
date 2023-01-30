@@ -86,7 +86,9 @@
                                                 <div class="sizeItemContoiner row">
                                                     <div class="col-12 ">
                                                         <div class="sizeAndPrice">
-                                                            <div @@click="activeIndex=index" :class="['sizePriceItem', {'active':activeIndex==index}]" v-for="(item, index) in DisplaySizeAndPriceList" :key="index">
+                                                            <div @@click="activeIndex=index" :class="['sizePriceItem', {'active':activeIndex==index}]" v-for="(item, index) in Display
+
+" :key="index">
                                                                 <div class="sizeItem" @@click="showSelSize = !showSelSize;selectSizeItem(item.size, item.price, index, item.pID, item.sID)">
                                                                     <div class="item">
                                                                         <div class="fontBold">US {{item.size}}</div>
@@ -291,9 +293,9 @@
             <div class="productInfo_RelatedProduct">
                 <div class="container">
                     <div class="owl-carousel owl-theme banner-carousel">
-                        <div class="row wow slideInUp">
-                            <div class="col-xl-3 col-md-4 col-12">
-                                <div class="item">
+
+                                @*<div class="item">
+
                                     <div class="product_col">
                                         <div class="productInfo_card">
                                             <div class="divLikeProduct">
@@ -312,9 +314,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
+
+                                </div>*@
+
                     </div>
                 </div>
             </div>
@@ -439,14 +441,71 @@
                 if (_this.mID == null || _this.pID == null) {
                     alert(`No pID:${_this.pID}, mID:${_this.mID}`)
                 }
-                $('.banner-carousel').owlCarousel({
+
+                let _this = this;
+                //await _this.getNewsListDTO();
+
+                const datas = _this.NewsListDTO.map(item => {
+                    const { newslistId, newslistImg, newslistTitle, newslistContent, newslistSort, newslistTime, newslistviewcount } = item;
+                    return (`
+                                        <div class="item">
+
+                                            <div class="product_col">
+                                                <div class="productInfo_card">
+                                                    <div class="divLikeProduct">
+                                                        <a href="product_info.html">
+                                                            <img src="${xx}" alt="">
+                                                        </a>
+                                                    </div>
+                                                    <div class="productInfo_content">
+                                                        <!-- <a href="product_info.html" class="two-row"> -->
+                                                        <a href="product_info.html" class="">
+                                                            <div class="two-row">Jordan 1 Retro Low OG SPJordan 1 Retro Low OG SP</div>
+                                                            <div style="color:#999999;margin:0px">最低報價</div>
+                                                            <div class="minPrice fontSizeM">$1,780</div>
+                                                            <div class="listTimeSold">上次成交價 : $1,780</div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                            `)
+                })
+                $(".banner-carousel").html(datas.join(""));
+                $(".banner-carousel").owlCarousel({
                     loop: true,
                     autoplay: true,
                     smartSpeed: 1000,
-                    items: 1,
+                    items: 4,
+                    margin: 24,
                     dots: false,
                     nav: false,
-                })
+                    responsive: {
+                        0: {
+                            items: 1
+                        },
+                        768: {
+                            items: 2
+                        },
+                        992: {
+                            items: 3
+                        },
+                        1200: {
+                            items: 4
+                        }
+                    },
+                });
+
+
+                //$('.banner-carousel').owlCarousel({
+                //    loop: true,
+                //    autoplay: true,
+                //    smartSpeed: 1000,
+                //    items: 1,
+                //    dots: false,
+                //    nav: false,
+                //})
 
             },
             methods: {

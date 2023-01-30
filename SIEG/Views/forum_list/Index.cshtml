@@ -35,7 +35,8 @@
                         </span>
                     </span>
                     <div style="float: right;">
-                        <a asp-controller="forum_post" asp-action="Index"><img src="~/images/forum/pen.jpg"></a>
+                        @*asp-controller="forum_post" asp-action="Index"*@
+                        <a @@click="PostArticle"><img src="~/images/forum/pen.jpg"></a>
                     </div>
                     <hr>
                     <!-- 側欄搜尋 -->
@@ -244,6 +245,17 @@
                             }
                         }
                     );
+                },
+                PostArticle:function(){
+                    var mID = sessionStorage.getItem("mID")
+                    if(mID == null)
+                    {
+                        window.location = "/D_Personal";
+
+                    }else
+                    {
+                        window.location = "/forum_post";
+                    }
                 },
             },
         });

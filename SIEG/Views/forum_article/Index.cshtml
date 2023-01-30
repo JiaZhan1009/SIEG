@@ -84,7 +84,7 @@
                 </div>
             </div>
             <div class="col-lg-8 col-xl-9 order-lg-2 order-1">
-                <div id="DeleteVue" style="float:right">
+                <div id="DeleteVue" style="float:right" v-if="mID==MemberId">
                     <div class="list-container">
                         <button class="edit_button" aria-label="Menu Button">
                             <div class="menu-icon-wrapper">
@@ -186,7 +186,7 @@
                         <span>
                             <a class="total_message">共{{totalreply}}則留言</a>
                             <span>
-                                <button id="Reply_btn" class="Reply_btn" type="button">我要回復!</button>
+                                <button id="Reply_btn" class="Reply_btn" type="button" @@click="login">我要回復!</button>
                                 <div class="Reply_block">
                                     <textarea id="text" class="describe" placeholder="請勿帶有仇恨言論"
                                               v-model="Reply"></textarea>
@@ -235,8 +235,7 @@
                                 <span style="word-break: break-all;white-space: pre-line;">{{item.forumReplyContent}}</span>
 
                                 <p style="font-size: 13px;">
-                                    B{{item.floor}}·{{item.AddTime}} <button id="Reply2_btn"
-                                                                             style="background:none; color:#00000080 ;"
+                                    B{{item.floor}}·{{item.AddTime}} <button id="Reply2_btn" style="background:none; color:#00000080 ;"
                                                                              @@click="rp2Open(item.forumReplyId, item.floor, rp2Floor)">
                                         回覆
                                     </button>
@@ -365,9 +364,10 @@
                     );
                 },
                 book: function () {
+                    var mID = sessionStorage.getItem("mID");
                     var _this = this;
                     var request = {};
-                    request.MemberId = 101;
+                    request.MemberId = mID;
                     request.ValIdity = true;
                     request.ForumArticleId = _this.PostDTOs.forumArticleId;
                     axios.post(`${webApiBaseAddress}/api/G_FaviriteArticles`, request).then(
@@ -509,10 +509,11 @@
                     _this.articleReply();
                 },
                 insert: function () {
+                    var mID = sessionStorage.getItem("mID");
                     var _this = this;
                     var request = {};
                     request.ForumArticleId = articleid;
-                    request.MemberId = "101";
+                    request.MemberId = mID;
                     if (lastFloor[0] == null) {
                         request.Floor = 1;
                     } else {
@@ -532,22 +533,28 @@
                     );
                 },
                 rp2Open: function (Reply1Id, rp1Floor, rp2Floor) {
-                    var _this = this;
-                    $(".Reply2_block").slideToggle();
-                    _this.rp2Request.articleId = articleid;
-                    _this.rp2Request.forumReplyId = Reply1Id;
-                    _this.rp2Request.memberId = "101";
-                    _this.rp2Request.forumReplyFloor = rp1Floor;
-                    var rp2FloorObject = [];
-                    for (let i = 0; i < rp2Floor.length; i++) {
-                        if (rp2Floor[i].rp1floor == rp1Floor) {
-                            rp2FloorObject.push(rp2Floor[i]);
-                        }
-                    };
-                    if (rp2FloorObject.length == 0) {
-                        _this.rp2Request.Floor = 1;
+                    var mID = sessionStorage.getItem("mID");
+                    if (mID == null) {
+                        window.location = "/D_Personal";
+
                     } else {
-                        _this.rp2Request.Floor = rp2FloorObject[0].rpamount + 1;
+                        var _this = this;
+                        $(".Reply2_block").slideToggle();
+                        _this.rp2Request.articleId = articleid;
+                        _this.rp2Request.forumReplyId = Reply1Id;
+                        _this.rp2Request.memberId = mID;
+                        _this.rp2Request.forumReplyFloor = rp1Floor;
+                        var rp2FloorObject = [];
+                        for (let i = 0; i < rp2Floor.length; i++) {
+                            if (rp2Floor[i].rp1floor == rp1Floor) {
+                                rp2FloorObject.push(rp2Floor[i]);
+                            }
+                        };
+                        if (rp2FloorObject.length == 0) {
+                            _this.rp2Request.Floor = 1;
+                        } else {
+                            _this.rp2Request.Floor = rp2FloorObject[0].rpamount + 1;
+                        }
                     }
                 },
                 rp2insert: function () {
@@ -586,24 +593,49 @@
                         }
                     );
                 },
+                login: function () {
+                    var mID = sessionStorage.getItem("mID");
+                    if (mID == null) {
+                        window.location = "/D_Personal";
+
+                    }
+                },
             }
         });
     </script>
 
     <script>
         var articleid = sessionStorage.getItem("fID");
+        var mID = sessionStorage.getItem("mID");
         var webApiBaseAddress = "https://localhost:7139";
         var DeleteVue = new Vue({
             el: "#DeleteVue",
             name: "DeleteVue",
-            data: {},
+            data: {
+                mID: mID,
+                MemberId:"",
+            },
             mounted: function () {
-                /*刪除修改選單*/
-                document.querySelector('.edit_button').addEventListener('click', function () {
-                    document.querySelector('.list-container').classList.toggle('active');
+                let _this = this;
+                _this.getMemberId();
+                $(function () {
+                    setTimeout(function () {
+                        /*刪除修改選單*/
+                        document.querySelector('.edit_button').addEventListener('click', function () {
+                            document.querySelector('.list-container').classList.toggle('active');
+                        });
+                    }, 1000);
                 });
             },
             methods: {
+                getMemberId: function () {
+                    let _this = this;
+                    axios.get(`${webApiBaseAddress}/api/G_ForumArticles/${articleId}`).then(
+                        response => {
+                            _this.MemberId = response.data[0].memberId;
+                        }
+                    );
+                },
                 deleteArticle: function () {
                     let _this = this;
                     var ret = Swal.fire({

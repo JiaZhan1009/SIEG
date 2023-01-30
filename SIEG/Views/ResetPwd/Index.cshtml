@@ -20,7 +20,7 @@
                     <br />
                     <br />
                     <input type="password" id="PassWordAgain" placeholder="請再次輸入密碼*" required>
-                    <i class="far fa-eye" id="togglePassword" style="cursor: pointer;"></i>
+                    <i class="far fa-eye" id="togglePassword1" style="cursor: pointer;"></i>
                     <br />
                     <button type="submit" class="btn_resetbtn btn-dark" @@click="update(D_MemberDTO)">確定</button>
                 </div>
@@ -68,8 +68,26 @@
                         if (Firstpwd != "" || Secondpwd != "") {
                             if (Firstpwd == Secondpwd) {
                                 request.Password = $("#PassWord").val();
-                                var ret = confirm("確定要修改嗎?");
 
+                                //Swal.fire({
+                                //    title: 'Are you sure?',
+                                //    text: "You won't be able to revert this!",
+                                //    icon: 'warning',
+                                //    showCancelButton: true,
+                                //    confirmButtonColor: '#3085d6',
+                                //    cancelButtonColor: '#d33',
+                                //    confirmButtonText: 'Yes, delete it!'
+                                //}).then((result) => {
+                                //    if (result.isConfirmed) {
+                                //        Swal.fire(
+                                //            'Deleted!',
+                                //            'Your file has been deleted.',
+                                //            'success'
+                                //        )
+                                //    }
+                                //})
+
+                                var ret = confirm("確定要修改嗎?");
                                 if (ret == true) {
                                     axios.put(`${webApiBaseAddress}/api/D_SignLogin/${_this.localmID}`, request).then(
                                         response => {
@@ -90,6 +108,5 @@
             });
 
     </script>
-
 }
 

@@ -6,54 +6,54 @@
 @section Style{
     <link href="~/css/BEN.css" rel="stylesheet">
 }
-    <div id="appVue">
-        <partial name="_MemberBanner" />
-        <div class="container-fluid">
-            <div class="row">
-                <partial name="_Membersidebar">
-                    <div class="col-lg-7">
-                        <div class="orderTopWidth-3">
-                            <div>
-                                <h1>個人資料</h1>
-                                <p>更改你的個人資料設定</p>
+<div id="appVue">
+    <partial name="_MemberBanner" />
+    <div class="container-fluid">
+        <div class="row">
+            <partial name="_Membersidebar">
+                <div class="col-lg-7">
+                    <div class="orderTopWidth-3">
+                        <div>
+                            <h1>個人資料</h1>
+                            <p>更改你的個人資料設定</p>
                             @*    <div>
-                                    <label>名稱</label>
-                                    <input type="text" name="text" class="form-control" placeholder="請輸入名子" v-model="PersonalDTOes.name">
-                                </div>*@
-                                <div class="addressgroup">
-                                    <label>暱稱</label>
-                                    <input type="text" name="text" class="form-control" placeholder="請輸入用戶名稱" v-model="PersonalDTOes.nickName">
-                                </div>
-                                <div class="addressgroup">
-                                    <label>電話號碼</label>
-                                    <input type="tel" name="tel" class="form-control" placeholder="請輸入電話號碼" v-model="PersonalDTOes.phone">
-                                </div>
-                                <div class="addressgroup">
-                                    <label>收貨地址</label>
-                                    <input type="tel" name="tel" class="form-control" placeholder="請輸入收貨地址" v-model="PersonalDTOes.shippingaddress">
-                                </div>
-                                <div class="addressgroup">
-                                    <label>帳單地址</label>
-                                    <input type="tel" name="tel" class="form-control" placeholder="請輸入帳單地址" v-model="PersonalDTOes.billingAddress">
-                                </div>
-                                <div class="addressgroup">
-                                    <a asp-area="" asp-controller="Member" asp-action="Member_personal">
-                                        <button type="button" class="btn btncolor">
-                                            取消
-                                        </button>
-                                    </a>
-                                    <input type="submit" class="btn btncolor inputright" value="儲存" @@click="update(PersonalDTOes)">
-                                </div>
+                            <label>名稱</label>
+                            <input type="text" name="text" class="form-control" placeholder="請輸入名子" v-model="PersonalDTOes.name">
+                            </div>*@
+                            <div class="addressgroup">
+                                <label>暱稱</label>
+                                <input type="text" name="text" class="form-control" placeholder="請輸入用戶名稱" v-model="PersonalDTOes.nickName">
                             </div>
-
+                            <div class="addressgroup">
+                                <label>電話號碼</label>
+                                <input type="tel" name="tel" class="form-control" placeholder="請輸入電話號碼" v-model="PersonalDTOes.phone">
+                            </div>
+                            <div class="addressgroup">
+                                <label>收貨地址</label>
+                                <input type="tel" name="tel" class="form-control" placeholder="請輸入收貨地址" v-model="PersonalDTOes.shippingaddress">
+                            </div>
+                            <div class="addressgroup">
+                                <label>帳單地址</label>
+                                <input type="tel" name="tel" class="form-control" placeholder="請輸入帳單地址" v-model="PersonalDTOes.billingAddress">
+                            </div>
+                            <div class="addressgroup">
+                                <a asp-area="" asp-controller="Member" asp-action="Member_personal">
+                                    <button type="button" class="btn btncolor">
+                                        取消
+                                    </button>
+                                </a>
+                                <input type="submit" class="btn btncolor inputright" value="儲存" @@click="update(PersonalDTOes)">
+                            </div>
                         </div>
-                    </div>
-            </div>
-        </div>
-    <partial name="_FooterPartial" />
-    </div>
 
-    @section Scripts
+                    </div>
+                </div>
+        </div>
+    </div>
+    <partial name="_FooterPartial" />
+</div>
+
+@section Scripts
     {
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.2/axios.min.js"></script>
@@ -94,16 +94,32 @@
                     request.NickName = PersonalDTOes.nickName;
                     request.Phone = PersonalDTOes.phone;
                     request.Name = PersonalDTOes.name;
-                    var ret = confirm("確定要修改嗎?");
-                    if (ret == true) {
-                        axios.put(`${webApiBaseAddress}/api/B_personalinformation/${_this.mID}`, request).then(
-                            response => {
-                                alert(response.data);
-                                _this.getPersonalDTOes();
-                                window.location = "/Member/Member_personal"
-                            }
-                        );
-                    }
+                    //var ret = confirm("確定要修改嗎?");
+                    Swal.fire({
+                        title: '確定要修改嗎?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: '修改成功',
+                                showConfirmButton: false,
+                            })
+
+                            axios.put(`${webApiBaseAddress}/api/B_personalinformation/${_this.mID}`, request).then(
+                                response => {
+                                    //alert(response.data);
+                                    _this.getPersonalDTOes();
+                                    setTimeout(function () {
+                                        window.location = "/Member/Member_personal"
+                                    }, 1500);
+                                }
+                            );
+                        }
+                    })
                 },
             },
         });

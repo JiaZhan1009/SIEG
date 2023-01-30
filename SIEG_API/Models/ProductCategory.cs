@@ -19,6 +19,8 @@ namespace SIEG_API.Models
         public string ProductName { get; set; }
         public string Img { get; set; }
         public bool? ValIdity { get; set; }
+        public string Note { get; set; }
+        public string Info { get; set; }
 
         public virtual ICollection<ForumArticle> ForumArticle { get; set; }
         public virtual ICollection<Product> Product { get; set; }

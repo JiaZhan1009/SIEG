@@ -152,13 +152,13 @@ namespace SIEG_API.Controllers
         [HttpGet("TopProduct")]
         public async Task<IEnumerable<E_ProductListDTO>> TopProduct()
         {
-
             var ProductList = await _context.Order.Include(o => o.Product).Include(o => o.Product.SellerAddProduct).Include(o => o.Product.ProductCategory)
             .Where(x => x.Product.ValIdity == true && x.State == "已完成" )
-            .GroupBy(x => new { x.Product.ProductCategory.ProductName, x.Product.ImgFront })
+            .GroupBy(x => new { x.Product.ProductCategory.ProductName, x.Product.ImgFront, x.Product.ProductId })
             .OrderByDescending(x => x.Count()).Take(8)
             .Select(g => new E_ProductListDTO
-            {
+            { 
+                productlistId = g.Min(x=>x.ProductId),
                 productlistSellCount = g.Count(),
                 productlistName = g.Key.ProductName,
                 productlistImg = g.Key.ImgFront,

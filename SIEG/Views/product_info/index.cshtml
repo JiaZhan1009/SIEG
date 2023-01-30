@@ -10,94 +10,91 @@
     <link href="/css/BEN.css" rel="stylesheet">
     <style>
 
-
-
     </style>
 }
 
 
 
-    <div id="appVue">
-        <!-- Page Banner -->
-        <div class="page_banner" style="background-image: url(/images/1920x350-1.jpg)">
-            <div class="container">
-                <div class="content">
-                    <h1 class="page_title">@ViewData["EnTitle"]</h1>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                            <li class="breadcrumb-item"><a href="index.html">{{productInfo.pCateName}}</a></li>
-                            <li class="breadcrumb-item"><a href="index.html">{{productInfo.pBrand}}</a></li>
-                            <li class="breadcrumb-item active">{{productInfo.pName}}</li>
-                        </ol>
-                    </nav>
-                </div>
+<div id="appVue">
+    <!-- Page Banner -->
+    <div class="page_banner" style="background-image: url(/images/1920x350-1.jpg)">
+        <div class="container">
+            <div class="content">
+                <h1 class="page_title">@ViewData["EnTitle"]</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item"><a href="index.html">{{productInfo.pCateName}}</a></li>
+                        <li class="breadcrumb-item"><a href="index.html">{{productInfo.pBrand}}</a></li>
+                        <li class="breadcrumb-item active">{{productInfo.pName}}</li>
+                    </ol>
+                </nav>
             </div>
         </div>
-        <div class="container">
-            @*         <div class="pathGroup">
+    </div>
+    <div class="container">
+        @*         <div class="pathGroup">
         <a href="#"> Home /</a>
         <a href="#"> {{productInfo.pCategory}} /</a>
         <a href="#"> {{productInfo.pBrand}} /</a>
         <a href="#"> {{productInfo.pName}} </a>
         </div>*@
-            @*<div class="title">
+        @*<div class="title">
         <h4 class="mainTitle">{{productInfo.pName}}</h4>
         <h5 class="subTitle">White Black Panda (2021)</h5>
         </div>*@
-            <div class="productGroup">
-                <div class="row align-items-center">
+        <div class="productGroup">
+            <div class="row align-items-center">
 
-                    @*LeftImage*@
-                    <div class="col-xl-7 col-xs-7 col-12">
-                        <div class="imgGroup">
-                            @*<img src="/images/jiazhan/products/600x600-3.jpg" alt="">*@
-                            <img :src="productInfo.pImg" />
-                        </div>
+                @*LeftImage*@
+                <div class="col-xl-7 col-xs-7 col-12">
+                    <div class="imgGroup">
+                        @*<img src="/images/jiazhan/products/600x600-3.jpg" alt="">*@
+                        <img :src="productInfo.pImg" />
                     </div>
+                </div>
 
-                    @*RightProductInfo*@
-                    <div class="col-xl-5 col-xs-5 col-12">
-                        <div class="infoGroup ">
+                @*RightProductInfo*@
+                <div class="col-xl-5 col-xs-5 col-12">
+                    <div class="infoGroup ">
 
-                            <div class="title">
-                                <h4 class="mainTitle">{{productInfo.pName}}</h4>
-                                <h5 class="subTitle">White Black Panda (2021)</h5>
-                            </div>
+                        <div class="title">
+                            <h4 class="mainTitle">{{productInfo.pName}}</h4>
+                            <h5 class="subTitle">White Black Panda (2021)</h5>
+                        </div>
 
-                            <div class="stateGroup">
-                                <img src="/images/jiazhan/icon/SellingFastBadgeV3.gif">
-                                <p class="state"> 過去 3 天售出 2539 件 !</p>
-                            </div>
+                        <div class="stateGroup">
+                            <img src="/images/jiazhan/icon/SellingFastBadgeV3.gif">
+                            <p class="state"> 過去 3 天售出 2539 件 !</p>
+                        </div>
 
-                            <div class="">
-                                <div class="sizeSelGroup">
-                                    <div class="row">
-                                        <div :class="['col-12', {'displayNone':pLength}]">
+                        <div class="">
+                            <div class="sizeSelGroup">
+                                <div class="row">
+                                    <div :class="['col-12', {'displayNone':pLength}]">
 
-                                            <!--  下拉式選擇尺碼-->
-                                            <div class="selSize" @@click="showSelSize = !showSelSize">
-                                                <div>尺碼</div>
-                                                <div>
-                                                    <span>US {{pSize}}</span>
-                                                    <i class="bi bi-chevron-down"></i>
-                                                </div>
+                                        <!--  下拉式選擇尺碼-->
+                                        <div class="selSize" @@click="showSelSize = !showSelSize">
+                                            <div>尺碼</div>
+                                            <div>
+                                                <span>US {{pSize}}</span>
+                                                <i class="bi bi-chevron-down"></i>
                                             </div>
+                                        </div>
 
-                                            <!--  下拉式選單顯示頁面  -->
-                                            <div :class="{ displayNone: showSelSize }">
-                                                <div class="selSizeHide">
-                                                    <p>選擇 US 尺碼</p>
-                                                    <hr />
-                                                    <div class="sizeItemContoiner row">
-                                                        <div class="col-12 ">
-                                                            <div class="sizeAndPrice">
-                                                                <div @@click="activeIndex=index" :class="['sizePriceItem', {'active':activeIndex==index}]" v-for="(item, index) in DisplaySizeAndPriceList" :key="index">
-                                                                    <div class="sizeItem" @@click="showSelSize = !showSelSize;selectSizeItem(item.size, item.price, index, item.pID, item.sID)">
-                                                                        <div class="item">
-                                                                            <div class="fontBold">US {{item.size}}</div>
-                                                                            <div class="fontGreen">{{item.fPrice}}</div>
-                                                                        </div>
+                                        <!--  下拉式選單顯示頁面  -->
+                                        <div :class="{ displayNone: showSelSize }">
+                                            <div class="selSizeHide">
+                                                <p>選擇 US 尺碼</p>
+                                                <hr />
+                                                <div class="sizeItemContoiner row">
+                                                    <div class="col-12 ">
+                                                        <div class="sizeAndPrice">
+                                                            <div @@click="activeIndex=index" :class="['sizePriceItem', {'active':activeIndex==index}]" v-for="(item, index) in DisplaySizeAndPriceList" :key="index">
+                                                                <div class="sizeItem" @@click="showSelSize = !showSelSize;selectSizeItem(item.size, item.price, index, item.pID, item.sID)">
+                                                                    <div class="item">
+                                                                        <div class="fontBold">US {{item.size}}</div>
+                                                                        <div class="fontGreen">{{item.fPrice}}</div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -106,171 +103,172 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <!--  提交出價或直接購買按鈕  -->
-                                        <div class="col-md-6 col-sm-6 col-12">
-                                            <div class="divBuy">
-                                                <button class="btnBuy btnWhite" @@click="submitPrice">提交出價</button>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-sm-6 col-12">
-                                            <div class="divBuy">
-                                                <button @@click="BuyNow" class="btnBuy btnGreen">{{DisplayselBuyPrice}}</button>
-                                            </div>
+                                    <!--  提交出價或直接購買按鈕  -->
+                                    <div class="col-md-6 col-sm-6 col-12">
+                                        <div class="divBuy">
+                                            <button class="btnBuy btnWhite" @@click="submitPrice">提交出價</button>
                                         </div>
                                     </div>
-                                    <hr>
-                                    <div class="divBuyOrSubmit fontGreen fontBold">
-                                        <span style="font-size:18px;" @@click="Quote">出售或提交報價 →</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!--  價格按鈕區  -->
-                        <div class="divPriceInfo row">
-                            <div class="col-lg-5">
-                                <p>上次成交價: </p>
-                                <p class="fontBold" style="font-size:20px;">{{DispalyLastDealPrice}}</p>
-                                @*                            <p :class="['fontGreen', 'fontBold']" v-if="upDown='▲'">{{upDown}} ${{Difference}} ({{Percentage}}%)</p>
-                            <p :class="['fontRed', 'fontBold']" v-else>{{upDown}} ${{Difference}} ({{Percentage}}%)</p>*@
-                                <p :class="['fontRed', 'fontBold']" :style="{color:GetFontColor}">{{GetUpDown}} {{DispalyDifference}} ({{GetPercentage}}%)</p>
-                            </div>
-                            <div class="col-lg-7">
-                                <div class="divPrice">
-                                    <button class="btnWhite" data-bs-toggle="modal" data-bs-target="#showQuote" @@click="getQuotePrice">
-                                        查看報價
-                                    </button>
-                                    <button class="btnWhite" data-bs-toggle="modal" data-bs-target="#showBid" @@click="getBidPrice">
-                                        查看出價
-                                    </button>
-                                    <button class="btnWhite" data-bs-toggle="modal" data-bs-target="#showTCount">
-                                        查看成交量
-                                    </button>
-                                </div>
-
-                                <!-- Modal -->
-                                <div class="modal fade" id="showQuote" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-scrollable">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">報價資訊</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <table class="table table-stroped table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <td>報價</td>
-                                                            <td :class={displayNone:pLength}>尺碼</td>
-                                                            <td>數量</td>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody v-for="item in DisplayQuotePriceList">
-                                                        <tr>
-                                                            <td>{{item.fPrice}}</td>
-                                                            <td :class={displayNone:pLength}>US {{item.size}}</td>
-                                                            <td>{{item.count}}</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" @@click="" data-bs-dismiss="modal">Close</button>
-                                            </div>
+                                    <div class="col-md-6 col-sm-6 col-12">
+                                        <div class="divBuy">
+                                            <button @@click="BuyNow" class="btnBuy btnGreen">{{DisplayselBuyPrice}}</button>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="modal fade" id="showBid" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-scrollable">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">出價資訊</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <table class="table table-stroped table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <td>出價</td>
-                                                            <td :class={displayNone:pLength}>尺碼</td>
-                                                            <td>數量</td>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody v-for="item in DisplayBidPrice">
-                                                        <tr>
-                                                            <td>{{item.fPrice}}</td>
-                                                            <td :class={displayNone:pLength}>US {{item.size}}</td>
-                                                            <td>{{item.count}}</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="modal fade" id="showTCount" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-scrollable">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">交易資訊</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <table class="table table-stroped table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <td>日期</td>
-                                                            <td>時間</td>
-                                                            <td :class={displayNone:pLength}>尺碼</td>
-                                                            <td>成交價格</td>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody v-for="item in DisplayTranList">
-                                                        <tr>
-                                                            <td>{{item.date}}</td>
-                                                            <td>{{item.time}}</td>
-                                                            <td :class={displayNone:pLength}>US {{item.size}}</td>
-                                                            <td>{{item.fPrice}}</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <hr>
+                                <div class="divBuyOrSubmit fontGreen fontBold">
+                                    <span style="font-size:18px;" @@click="Quote">出售或提交報價 →</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!--  右下角分享區  -->
-                <div class="news_share" style="border:0px;justify-content:end">
-                    <div class="social">
-                        <!-- 點擊後加active -->
-                        <a class="like" href="#"><i class="fa fa-heart" style="height: 50px;"></i></a>
-                        <a class="fb" href="#">
-                            <img src="/images/icon-fb.png">
-                        </a>
-                        <a class="line" href="#">
-                            <img src="/images/icon-line.png">
-                        </a>
+                    <!--  價格按鈕區  -->
+                    <div class="divPriceInfo row">
+                        <div class="col-lg-5">
+                            <p>上次成交價: </p>
+                            <p class="fontBold" style="font-size:20px;">{{DispalyLastDealPrice}}</p>
+                            @*                            <p :class="['fontGreen', 'fontBold']" v-if="upDown='▲'">{{upDown}} ${{Difference}} ({{Percentage}}%)</p>
+                            <p :class="['fontRed', 'fontBold']" v-else>{{upDown}} ${{Difference}} ({{Percentage}}%)</p>*@
+                            <p :class="['fontRed', 'fontBold']" :style="{color:GetFontColor}">{{GetUpDown}} {{DispalyDifference}} ({{GetPercentage}}%)</p>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="divPrice">
+                                <button class="btnWhite" data-bs-toggle="modal" data-bs-target="#showQuote" @@click="getQuotePrice">
+                                    查看報價
+                                </button>
+                                <button class="btnWhite" data-bs-toggle="modal" data-bs-target="#showBid" @@click="getBidPrice">
+                                    查看出價
+                                </button>
+                                <button class="btnWhite" data-bs-toggle="modal" data-bs-target="#showTCount">
+                                    查看成交量
+                                </button>
+                            </div>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="showQuote" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">報價資訊</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <table class="table table-stroped table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <td>報價</td>
+                                                        <td :class={displayNone:pLength}>尺碼</td>
+                                                        <td>數量</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody v-for="item in DisplayQuotePriceList">
+                                                    <tr>
+                                                        <td>{{item.fPrice}}</td>
+                                                        <td :class={displayNone:pLength}>US {{item.size}}</td>
+                                                        <td>{{item.count}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" @@click="" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="showBid" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">出價資訊</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <table class="table table-stroped table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <td>出價</td>
+                                                        <td :class={displayNone:pLength}>尺碼</td>
+                                                        <td>數量</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody v-for="item in DisplayBidPrice">
+                                                    <tr>
+                                                        <td>{{item.fPrice}}</td>
+                                                        <td :class={displayNone:pLength}>US {{item.size}}</td>
+                                                        <td>{{item.count}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="showTCount" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">交易資訊</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <table class="table table-stroped table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <td>日期</td>
+                                                        <td>時間</td>
+                                                        <td :class={displayNone:pLength}>尺碼</td>
+                                                        <td>成交價格</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody v-for="item in DisplayTranList">
+                                                    <tr>
+                                                        <td>{{item.date}}</td>
+                                                        <td>{{item.time}}</td>
+                                                        <td :class={displayNone:pLength}>US {{item.size}}</td>
+                                                        <td>{{item.fPrice}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <!-- 相關商品-->
-            @*Deom*@
+
+            <!--  右下角分享區  -->
+            <div class="news_share" style="border:0px;justify-content:end">
+                <div class="social">
+                    <!-- 點擊後加active -->
+                    <a class="like" href="#"><i class="fa fa-heart" style="height: 50px;"></i></a>
+                    <a class="fb" href="#">
+                        <img src="/images/icon-fb.png">
+                    </a>
+                    <a class="line" href="#">
+                        <img src="/images/icon-line.png">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- 相關商品-->
+        @*Deom*@
 
 
-            @*<div class="owl-carousel owl-theme banner-carousel">
+        @*<div class="owl-carousel owl-theme banner-carousel">
         <div class="item">
         <img class="w-100" src="images/1920x700-1.jpg" alt="Image">
         <div class="carousel-caption">
@@ -291,31 +289,30 @@
         </div>
         </div>
         </div>*@
-            <hr>
-            <div class="titleDiv">
-                <p class="titleP">相關商品</p>
-                <div class="productInfo_RelatedProduct">
-                    <div class="container">
-                        <div class="owl-carousel owl-theme banner-carousel">
-                            <div class="row wow slideInUp">
-                                <div class="col-xl-3 col-md-4 col-12">
-                                    <div class="item">
-                                        <div class="product_col">
-                                            <div class="productInfo_card">
-                                                <div class="divLikeProduct">
-                                                    <a href="product_info.html">
-                                                        <img src="/images/jiazhan/products/600x600-3.jpg" alt="">
-                                                    </a>
-                                                </div>
-                                                <div class="productInfo_content">
-                                                    <!-- <a href="product_info.html" class="two-row"> -->
-                                                    <a href="product_info.html" class="">
-                                                        <div class="two-row">Jordan 1 Retro Low OG SPJordan 1 Retro Low OG SP</div>
-                                                        <div style="color:#999999;margin:0px">最低報價</div>
-                                                        <div class="minPrice fontSizeM">$1,780</div>
-                                                        <div class="listTimeSold">上次成交價 : $1,780</div>
-                                                    </a>
-                                                </div>
+        <hr>
+        <div class="titleDiv">
+            <p class="titleP">相關商品</p>
+            <div class="productInfo_RelatedProduct">
+                <div class="container">
+                    <div class="owl-carousel owl-theme banner-carousel">
+                        <div class="row wow slideInUp">
+                            <div class="col-xl-3 col-md-4 col-12">
+                                <div class="item">
+                                    <div class="product_col">
+                                        <div class="productInfo_card">
+                                            <div class="divLikeProduct">
+                                                <a href="product_info.html">
+                                                    <img src="/images/jiazhan/products/600x600-3.jpg" alt="">
+                                                </a>
+                                            </div>
+                                            <div class="productInfo_content">
+                                                <!-- <a href="product_info.html" class="two-row"> -->
+                                                <a href="product_info.html" class="">
+                                                    <div class="two-row">Jordan 1 Retro Low OG SPJordan 1 Retro Low OG SP</div>
+                                                    <div style="color:#999999;margin:0px">最低報價</div>
+                                                    <div class="minPrice fontSizeM">$1,780</div>
+                                                    <div class="listTimeSold">上次成交價 : $1,780</div>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -325,119 +322,72 @@
                     </div>
                 </div>
             </div>
-            <hr>
+        </div>
 
+        <hr>
 
-            <!-- 商品詳情-->
-            <div :class="{'displayNone':!productNote.length}">
-                <div class="titleDiv">
-                    <p class="titleP">商品詳情</p>
-                </div>
-
-                @*            <template v-if="productNote.length">
+        <!-- 商品詳情-->
+        <div :class="{'displayNone':!productNote.length}">
+            <div class="titleDiv">
+                <p class="titleP">商品詳情</p>
+            </div>
+            @*            <template v-if="productNote.length">
             <tr v-for="item in productNote">
             <td>{{item.key}}</td>
             <td>{{item.value}}</td>
             </tr>
             </template>*@
-
-                <div class="row">
-                    <div class="col-3">
-                        <table class="product_note">
-                            <tr v-for="item in productNote">
-                                <td>{{item.key}}</td>
-                                <td>{{item.value}}</td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <div class="col-9">
-                        <div class="article">
-                            <template v-if="productNote.length">
-                                <p v-for="article in pInfo">{{article}}</p>
-
-                            </template>
-                        </div>
-                        <div>
-                        </div>
-                    </div>
-
-
+            <div class="row">
+                <div class="col-3">
+                    <table class="product_note">
+                        <tr v-for="item in productNote">
+                            <td>{{item.key}}</td>
+                            <td>{{item.value}}</td>
+                        </tr>
+                    </table>
                 </div>
-                <hr>
+
+                <div class="col-9">
+                    <div class="article">
+                        <template v-if="productNote.length">
+                            <p v-for="article in pInfo">{{article}}</p>
+
+                        </template>
+                    </div>
+                    <div>
+                    </div>
+                </div>
+
             </div>
-
-
-
-
-
-            <!-- 價格記錄-->
-            <div class="titleDiv">
-                <p class="titleP">價格記錄</p>
-            </div>
-
-
             <hr>
+        </div>
 
-            <!-- 12 個月歷史記錄-->
-            <div class="titleDiv">
-                <p class="titleP">歷史記錄</p>
-            </div>
+        <!-- 價格記錄-->
+        <div class="titleDiv">
+            <p class="titleP">價格記錄</p>
+        </div>
 
-            <div class="productInfo_history">
-                <div class="row">
-                    <div class="col-md-4 col-sm-6 col-12" v-for="(item, index) in DispalyHistoricalData">
-                        <div class="historyBlock">
-                            <div class="historyContent">{{index == 0 ? item.val1 + " ~ " + item.val2 : item.val1}}</div>
-                            <div class="historyTitle">{{item.val3}}</div>
-                        </div>
+        <hr>
+
+        <!-- 12 個月歷史記錄-->
+        <div class="titleDiv">
+            <p class="titleP">歷史記錄</p>
+        </div>
+        <div class="productInfo_history">
+            <div class="row">
+                <div class="col-md-4 col-sm-6 col-12" v-for="(item, index) in DispalyHistoricalData">
+                    <div class="historyBlock">
+                        <div class="historyContent">{{index == 0 ? item.val1 + " ~ " + item.val2 : item.val1}}</div>
+                        <div class="historyTitle">{{item.val3}}</div>
                     </div>
-                    @*
-                <div class="col-md-4 col-sm-6 col-12">
-                <div class="historyBlock">
-                <div class="historyContent">$3000 - $5600</div>
-                <div class="historyTitle">歷史交易範圍</div>
-
-                </div>
-                </div>
-
-                <div class="col-md-4 col-sm-6 col-12">
-                <div class="historyBlock">
-                <div class="historyContent">9%</div>
-                <div class="historyTitle">價格波動性</div>
-
-                </div>
-                </div>
-
-                <div class="col-md-4 col-sm-6 col-12">
-                <div class="historyBlock">
-                <div class="historyContent">4210</div>
-                <div class="historyTitle">成交量</div>
-
-                </div>
-                </div>
-
-                <div class="col-md-4 col-sm-6 col-12">
-                <div class="historyBlock">
-                <div class="historyContent">368%</div>
-                <div class="historyTitle">溢價</div>
-
-                </div>
-                </div>
-
-                <div class="col-md-4 col-sm-6 col-12">
-                <div class="historyBlock">
-                <div class="historyContent">$6600</div>
-                <div class="historyTitle">平均成交價</div>
-                </div>
-                </div>*@
-                </div>
+                </div>           
             </div>
         </div>
     </div>
+</div>
 
 
-    @section Scripts{
+@section Scripts{
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     @*<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>*@

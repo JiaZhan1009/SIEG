@@ -56,12 +56,12 @@
             <div class="col-xl-3  col-md-4 col-6 product_col" v-for="item in ProductListDTO">
                 <div class="product_card">
                     <div class="product_img">
-                        <a @@click="hrefToInfo(item.productlistId,item.productlistViewcount)">
+                        <a @@click="hrefToInfo(item.productlistId)">
                             <img :src="item.productlistImg" alt="">
                         </a>
                     </div>
                     <div class="product_content">
-                        <h4><a @@click="hrefToInfo(item.productlistId,item.productlistViewcount)" class="two-row">{{item.productlistName}}</a></h4>
+                        <h4><a @@click="hrefToInfo(item.productlistId)" class="two-row">{{item.productlistName}}</a></h4>
                         <div class="sale">
                             <div class="price">{{item.productPrice}}</div>
                             <div class="sold">售出{{item.productlistSellCount}}件</div>
@@ -285,20 +285,20 @@
                         }
                     );
                 },
-                hrefToInfo: function (productId, viewCount) {
+                hrefToInfo: function (productId) {
 
                     let _this = this;
-                    var request = {};
+                    //var request = {};
 
-                    let productViewCount = viewCount + 1;
-                    request.productlistviewcount = productViewCount;
-                    request.productlistId = productId;
+                    //let productViewCount = viewCount + 1;
+                    //request.productlistviewcount = productViewCount;
+                    //request.productlistId = productId;
 
-                    axios.put(`${webApiBaseAddress}/api/E_ProductList/${productId}`, request).then(
-                        response => {
-                            //alert(response.data);
-                        }
-                    );
+                    //axios.put(`${webApiBaseAddress}/api/E_ProductList/${productId}`, request).then(
+                    //    response => {
+                    //        //alert(response.data);
+                    //    }
+                    //);
 
                     sessionStorage.setItem("pID", productId);
                     window.location = "/product_info";

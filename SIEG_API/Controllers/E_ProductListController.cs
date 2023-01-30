@@ -154,16 +154,24 @@ namespace SIEG_API.Controllers
         {
             var ProductList = await _context.Order.Include(o => o.Product).Include(o => o.Product.SellerAddProduct).Include(o => o.Product.ProductCategory)
             .Where(x => x.Product.ValIdity == true && x.State == "已完成" )
-            .GroupBy(x => new { x.Product.ProductCategory.ProductName, x.Product.ImgFront, x.Product.ProductId })
+            .GroupBy(x => new { x.ProductId, x.Product.ProductCategory.ProductName, x.Product.ImgFront })
             .OrderByDescending(x => x.Count()).Take(8)
             .Select(g => new E_ProductListDTO
             { 
-                productlistId = g.Min(x=>x.ProductId),
+                productlistId = g.Key.ProductId,
                 productlistSellCount = g.Count(),
                 productlistName = g.Key.ProductName,
                 productlistImg = g.Key.ImgFront,
                 productlistPrice = g.Min(x => x.BuyerPrice),
             }).ToListAsync();
+
+            //var list = _context.Product.Include(p => p.Order).Include(po => po.ProductCategory);
+
+            //var aa = list.Where(x=>x.Order.Select(x=>x.))
+
+            //var aa = list.Select(x => x.Order.Where(o => o.State == "已完成"))
+
+
 
             return ProductList;
         }

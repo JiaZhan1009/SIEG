@@ -11,7 +11,7 @@ namespace SIEG.Controllers
         {
             return View();
         }
-        public IActionResult D_Personal_Forgetpwd()
+        public IActionResult Forgetpwd()
         {
             return View();
         }
@@ -21,11 +21,6 @@ namespace SIEG.Controllers
         {
             return View();
         }
-        //public IActionResult NewsInfo()
-        //{
-        //    return View();
-        //}
-        
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

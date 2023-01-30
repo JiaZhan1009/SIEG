@@ -30,15 +30,16 @@ namespace SIEG_API.Controllers
         {
             var pIDs = await _context.Product.Select(x => new { x.ProductId, x.ProductCategory.ProductName }).ToListAsync();
 
-                var ProductList = await _context.Product.Include(o => o.ProductCategory)
+                var ProductList = await _context.Product.Include(o => o.ProductCategory).Include(o => o.SellerAddProduct)
                 .Where(x => x.ValIdity == true)
                 .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
                 .Select(g => new E_ProductListDTO
                 {
+                    state = "all",
                     productlistSellCount = g.Count(),
                     productlistName = g.Key.ProductName,
                     productlistImg = g.Key.ImgFront,
-                    productlistPrice = g.Min(x => x.Price),
+                    productlistPrice = g.Select(x=>x.SellerAddProduct.Min(x=>x.Price)).FirstOrDefault(),
                 }).ToListAsync();
 
             foreach(var list in ProductList)
@@ -62,15 +63,16 @@ namespace SIEG_API.Controllers
         [HttpGet("Below500")]
         public async Task<IEnumerable<E_ProductListDTO>> Below500()
         {
-            var ProductList = await _context.Product.Include(o => o.ProductCategory)
+            var ProductList = await _context.Product.Include(o => o.ProductCategory).Include(o => o.SellerAddProduct)
                 .Where(x => x.ValIdity == true && x.Price <= 500)
                 .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
                 .Select(g => new E_ProductListDTO
                 {
+                    //state = "Below500",
                     productlistSellCount = g.Count(),
                     productlistName = g.Key.ProductName,
                     productlistImg = g.Key.ImgFront,
-                    productlistPrice = g.Min(x => x.Price),
+                    productlistPrice = g.Select(x => x.SellerAddProduct.Min(x => x.Price)).FirstOrDefault(),
                 }).ToListAsync();
 
             return ProductList;
@@ -80,7 +82,7 @@ namespace SIEG_API.Controllers
         [HttpGet("Below1000")]
         public async Task<IEnumerable<E_ProductListDTO>> Below1000()
         {
-            var ProductList = await _context.Product.Include(o => o.ProductCategory)
+            var ProductList = await _context.Product.Include(o => o.ProductCategory).Include(o => o.SellerAddProduct)
                 .Where(x => x.ValIdity == true && x.Price <= 1000 && x.Price >= 500)
                 .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
                 .Select(g => new E_ProductListDTO
@@ -88,7 +90,7 @@ namespace SIEG_API.Controllers
                     productlistSellCount = g.Count(),
                     productlistName = g.Key.ProductName,
                     productlistImg = g.Key.ImgFront,
-                    productlistPrice = g.Min(x => x.Price),
+                    productlistPrice = g.Select(x => x.SellerAddProduct.Min(x => x.Price)).FirstOrDefault(),
                 }).ToListAsync();
 
             return ProductList;
@@ -98,7 +100,7 @@ namespace SIEG_API.Controllers
         [HttpGet("Below1500")]
         public async Task<IEnumerable<E_ProductListDTO>> Below1500()
         {
-            var ProductList = await _context.Product.Include(o => o.ProductCategory)
+            var ProductList = await _context.Product.Include(o => o.ProductCategory).Include(o => o.SellerAddProduct)
                 .Where(x => x.ValIdity == true && x.Price <= 1500 && x.Price >= 1000)
                 .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
                 .Select(g => new E_ProductListDTO
@@ -106,7 +108,7 @@ namespace SIEG_API.Controllers
                     productlistSellCount = g.Count(),
                     productlistName = g.Key.ProductName,
                     productlistImg = g.Key.ImgFront,
-                    productlistPrice = g.Min(x => x.Price),
+                    productlistPrice = g.Select(x => x.SellerAddProduct.Min(x => x.Price)).FirstOrDefault(),
                 }).ToListAsync();
 
             return ProductList;
@@ -116,7 +118,7 @@ namespace SIEG_API.Controllers
         [HttpGet("Below2000")]
         public async Task<IEnumerable<E_ProductListDTO>> Below2000()
         {
-            var ProductList = await _context.Product.Include(o => o.ProductCategory)
+            var ProductList = await _context.Product.Include(o => o.ProductCategory).Include(o => o.SellerAddProduct)
                 .Where(x => x.ValIdity == true && x.Price <= 2000 && x.Price >= 1500)
                 .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
                 .Select(g => new E_ProductListDTO
@@ -124,7 +126,7 @@ namespace SIEG_API.Controllers
                     productlistSellCount = g.Count(),
                     productlistName = g.Key.ProductName,
                     productlistImg = g.Key.ImgFront,
-                    productlistPrice = g.Min(x => x.Price),
+                    productlistPrice = g.Select(x => x.SellerAddProduct.Min(x => x.Price)).FirstOrDefault(),
                 }).ToListAsync();
 
             return ProductList;
@@ -134,15 +136,17 @@ namespace SIEG_API.Controllers
         [HttpGet("More2000")]
         public async Task<IEnumerable<E_ProductListDTO>> More2000()
         {
-            var ProductList = await _context.Product.Include(o => o.ProductCategory)
-                .Where(x => x.ValIdity == true && x.Price >= 2000)
+            var ProductList = await _context.Product.Include(o => o.ProductCategory).Include(o => o.SellerAddProduct)
+                .Where(x => x.ValIdity == true)
+                  //.Where(x => x.ValIdity == true && x.SellerAddProduct.Select(x => x.Price))
                 .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
                 .Select(g => new E_ProductListDTO
                 {
+                    state = "More2000",
                     productlistSellCount = g.Count(),
                     productlistName = g.Key.ProductName,
                     productlistImg = g.Key.ImgFront,
-                    productlistPrice = g.Min(x => x.Price),
+                    productlistPrice = g.Select(x => x.SellerAddProduct.Where(x=>x.Price>=2000).Min(x => x.Price)).FirstOrDefault(),
                 }).ToListAsync();
 
             return ProductList;

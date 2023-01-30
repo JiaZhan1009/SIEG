@@ -11,5 +11,7 @@
         public int productlistViewcount { get; set; }
         public int productlistSellCount { get; set; }
 
+        public string state { get; set; }
+
     }
 }

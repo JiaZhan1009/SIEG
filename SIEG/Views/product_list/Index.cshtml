@@ -92,7 +92,7 @@
                 <div class="product_list_content">
                     <!-- 一頁12筆資料 -->
                     <div class="row">
-                        <div class="col-xl-4 col-lg-6 col-md-4 col-6 product_col" v-for="item in ProductListDTO">
+                        <div class="col-xl-4 col-lg-6 col-md-4 col-6 product_col" v-for="item in DisplayProductListDTO">
                             <div class="product_card">
                                 <div class="product_img">
                                     <a @@click="hrefToInfo(item.productlistId)">
@@ -102,29 +102,28 @@
                                 <div class="product_content">
                                     <h4><a @@click="hrefToInfo(item.productlistId)" class="two-row">{{item.productlistName}}</a></h4>
                                     <div class="sale">
-                                        <div class="price">{{item.productPrice}}</div>
-                                        <div class="sold">剩餘{{item.productlistSellCount}}件</div>
+                                        <div class="price">{{item.productlistPrice}}</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!-- 頁碼 -->
-                    <nav aria-label="Page navigation" id="pagination">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item">
-                                <a class="page-link" href="product_list.html"><i class="bi bi-chevron-left"></i></a>
-                            </li>
-                            <li class="page-item active"><a class="page-link" href="product_list.html">1</a></li>
-                            <li class="page-item"><a class="page-link" href="product_list.html">2</a></li>
-                            <li class="page-item"><a class="page-link" href="product_list.html">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="product_list.html">
-                                    <i class="bi bi-chevron-right"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
+                    @*<nav aria-label="Page navigation" id="pagination">
+                    <ul class="pagination justify-content-center">
+                    <li class="page-item">
+                    <a class="page-link" href="product_list.html"><i class="bi bi-chevron-left"></i></a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="product_list.html">1</a></li>
+                    <li class="page-item"><a class="page-link" href="product_list.html">2</a></li>
+                    <li class="page-item"><a class="page-link" href="product_list.html">3</a></li>
+                    <li class="page-item">
+                    <a class="page-link" href="product_list.html">
+                    <i class="bi bi-chevron-right"></i>
+                    </a>
+                    </li>
+                    </ul>
+                    </nav>*@
                     <partial name="_NoDataPartial" class="no_data" />
                 </div>
             </div>
@@ -159,10 +158,24 @@
                 productsortBrand: null,
                 indexPSortName: sessionStorage.getItem('indexPSortName'),
                 indexPBrand: sessionStorage.getItem('indexPBrand'),
-                
-            },
-            mounted: function () {
 
+            },
+            //created:function(){
+            //    let _this=this;
+            //    _this.$nextTick(() => {_this.getProductListDTO()})
+            //},
+            mounted: function () {
+                this.getProductListDTO();
+
+
+                let _this = this;
+                //_this.getProductListDTO();
+                //_this.getProductSortDTO();
+                //_this.getProductBrandDTO();
+
+                _this.sort();
+
+                sessionStorage.removeItem("pPrice");
                 $(function () {
                     setTimeout(function () {
                         $(".sub_child").hide();
@@ -173,29 +186,21 @@
                         });
                     }, 100);
                 });
-
-
-                let _this = this;
-                //_this.getProductListDTO();
-                _this.getProductSortDTO();
-                _this.getProductBrandDTO();
-
-                _this.sort();
-
-                sessionStorage.removeItem("pPrice");
             },
             methods: {
                 sort: function () {
                     let _this = this;
                     if (_this.Filter == null && _this.indexPSortName == null && _this.indexPBrand == null) {
+                        console.log('1');
                         _this.getProductListDTO();
                     } else if (_this.Filter == null && _this.indexPSortName != null && _this.indexPBrand != null) {
                         _this.indexFilterBrand();
                     } else if (_this.Filter == null && _this.indexPSortName != null && _this.indexPBrand == null) {
                         _this.headerFilterSort();
-                    }else{
+                    } else {
                         _this.filterProductListDTO();
                     }
+                    console.log(_this.ProductListDTO);
                     //_this.headerFilterSort();
                     //_this.indexFilterBrand();
                     //_this.filterProductListDTO();
@@ -206,24 +211,24 @@
                     axios.get(`${webApiBaseAddress}/api/E_ProductList`).then(
                         response => {
                             _this.ProductListDTO = response.data;
-                            var ProductList = [];
-                            for (let i = 0; i < _this.ProductListDTO.length; i++) {
-                                let item = {};
-                                item = _this.ProductListDTO[i];
-                                ProductList.push(item);
-                                item.productPrice = "$" + item.productlistPrice.toLocaleString();
-                            }
-                            _this.ProductListDTO = ProductList;
-                            console.log(_this.ProductListDTO);
+                            //var ProductList = [];
+                            //for (let i = 0; i < _this.ProductListDTO.length; i++) {
+                            //    let item = {};
+                            //    item = _this.ProductListDTO[i];
+                            //    ProductList.push(item);
+                            //    item.productPrice = "$" + item.productlistPrice.toLocaleString();
+                            //}
+                            //_this.ProductListDTO = ProductList;
+                            //console.log(_this.ProductListDTO);
                             //console.log(ProductList.length);
-                            if (ProductList.length == 0) {
-                                $(".no_data").show();
-                                $("#pagination").hide();
-                            }
-                            else {
-                                $(".no_data").hide();
-                                $("#pagination").show();
-                            }
+                            //if (ProductList.length == 0) {
+                            //    $(".no_data").show();
+                            //    $("#pagination").hide();
+                            //}
+                            //else {
+                            //    $(".no_data").hide();
+                            //    $("#pagination").show();
+                            //}
                         }
                     );
                 },
@@ -535,33 +540,35 @@
                     var checkbox = document.getElementById('below2000');
 
                     if (checkbox.checked == true) {
+                        alert('t');
                         axios.get(`${webApiBaseAddress}/api/E_ProductList/Below2000`).then(
                             response => {
                                 _this.ProductListDTO = response.data;
-                                var ProductList = [];
-                                for (let i = 0; i < _this.ProductListDTO.length; i++) {
-                                    let item = {};
-                                    item = _this.ProductListDTO[i];
-                                    ProductList.push(item);
+                                //var ProductList = [];
+                                //for (let i = 0; i < _this.ProductListDTO.length; i++) {
+                                //    let item = {};
+                                //    item = _this.ProductListDTO[i];
+                                //    ProductList.push(item);
 
-                                    item.productPrice = "$" + item.productlistPrice.toLocaleString();
-                                }
-                                _this.ProductListDTO = ProductList;
+                                //    item.productPrice = "$" + item.productlistPrice.toLocaleString();
+                                //}
+                                //_this.ProductListDTO = ProductList;
                                 console.log(_this.ProductListDTO);
-                                //console.log(ProductList.length);
-                                if (ProductList.length == 0) {
-                                    $(".no_data").show();
-                                    $("#pagination").hide();
-                                }
-                                else {
-                                    $(".no_data").hide();
-                                    $("#pagination").show();
-                                }
+                                ////console.log(ProductList.length);
+                                //if (ProductList.length == 0) {
+                                //    $(".no_data").show();
+                                //    $("#pagination").hide();
+                                //}
+                                //else {
+                                //    $(".no_data").hide();
+                                //    $("#pagination").show();
+                                //}
                             }
                         );
                     }
                     else {
-                        _this.getProductListDTO();
+                        alert('f');
+                        //_this.getProductListDTO();
                     }
                 },
                 More2000: function () {
@@ -570,49 +577,44 @@
                     var checkbox = document.getElementById('more2000');
 
                     if (checkbox.checked == true) {
+                        alert('t');
                         axios.get(`${webApiBaseAddress}/api/E_ProductList/More2000`).then(
                             response => {
                                 _this.ProductListDTO = response.data;
-                                var ProductList = [];
-                                for (let i = 0; i < _this.ProductListDTO.length; i++) {
-                                    let item = {};
-                                    item = _this.ProductListDTO[i];
-                                    ProductList.push(item);
+                                //var ProductList = [];
+                                //for (let i = 0; i < _this.ProductListDTO.length; i++) {
+                                //    let item = {};
+                                //    item = _this.ProductListDTO[i];
+                                //    ProductList.push(item);
 
-                                    item.productPrice = "$" + item.productlistPrice.toLocaleString();
-                                }
-                                _this.ProductListDTO = ProductList;
+                                //    item.productPrice = "$" + item.productlistPrice.toLocaleString();
+                                //}
+                                //_this.ProductListDTO = ProductList;
                                 console.log(_this.ProductListDTO);
                                 //console.log(ProductList.length);
-                                if (ProductList.length == 0) {
-                                    $(".no_data").show();
-                                    $("#pagination").hide();
-                                }
-                                else {
-                                    $(".no_data").hide();
-                                    $("#pagination").show();
-                                }
+                                //if (ProductList.length == 0) {
+                                //    $(".no_data").show();
+                                //    $("#pagination").hide();
+                                //}
+                                //else {
+                                //    $(".no_data").hide();
+                                //    $("#pagination").show();
+                                //}
                             }
                         );
                     }
                     else {
-                        _this.getProductListDTO();
+                        alert('f');
+                        //_this.getProductListDTO();
                     }
+                },
+                add(val) {
+                    return "$" + val.toLocaleString();
                 },
                 hrefToInfo: function (productId) {
 
                     let _this = this;
                     var request = {};
-
-                    //let productViewCount = viewCount + 1;
-                    //request.productlistviewcount = productViewCount;
-                    //request.productlistId = productId;
-
-                    //axios.put(`${webApiBaseAddress}/api/E_ProductList/${productId}`, request).then(
-                    //    response => {
-                    //        //alert(response.data);
-                    //    }
-                    //);
 
                     sessionStorage.setItem("pID", productId);
                     window.location = "/product_info";
@@ -632,6 +634,41 @@
                     });
                 },
             },
+            computed: {
+                DisplayProductListDTO() {
+                    if (this.ProductListDTO.length) {
+                        if (this.ProductListDTO[0].state == "all" ) {
+                            return this.ProductListDTO.map(item => {
+                                return {
+                                    productlistImg: item.productlistImg,
+                                    productlistId: item.productlistId,
+                                    productlistName: item.productlistName,
+                                    productlistPrice: item.productlistPrice != 0 ? this.add(item.productlistPrice) : "暫無賣家出價"
+                                }
+                            })
+                        }
+                        else if (this.ProductListDTO[0].state == "More2000") {
+                             var aa = []
+                                                 
+                            for(int i = 0;i< this.ProductListDTO.length;i++){
+                                if(this.ProductListDTO[i].state == 0){
+                                    break;
+                                }
+                                aa.push(ProductListDTO[i])
+                            }             
+                            
+                            return aa;   
+                            
+                        }
+
+
+                    }
+
+      
+
+
+                }
+            }
         });
 
     </script>

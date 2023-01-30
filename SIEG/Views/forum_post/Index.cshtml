@@ -49,7 +49,7 @@
                             </div>
                             <div class="identity">
                                 <span class="identity">一個男人</span>
-                                <span class="identity">12月27日 22:38</span>
+                            <span class="identity">{{nowDay}} {{nowTime}}</span>
                             </div>
                             <!--標題、內文-->
                             <div style="padding-top: 20px;">
@@ -113,6 +113,9 @@
                 標題: null,
                 內文: null,
                 類別: null,
+                nowDay: "",
+                nowTime: "",
+                //name: null,
                 //Dennis
                 D_NewsInfoDTO: [],
                 Filter: "",
@@ -130,7 +133,10 @@
                     _this.imgFile = files[0].name;
                 });
                 var _this = this;
+                //_this.getMemberName(),
                 _this.getD_NewsInfoDTO();
+                //時間
+                _this.nowTimes();
             },
             methods: {
                 getD_NewsInfoDTO: function () {
@@ -150,6 +156,14 @@
                         }
                     );
                 },
+                //getMemberName:function(){
+                //    var mID = sessionStorage.getItem("mID")
+                //    axios.get(`${webApiBaseAddress}/api/B_personalinformation/${mID}`).then(
+                //        response => {
+                //            console.log(response.data)
+                //        }
+                //    );
+                //},
                 insert: function () {
                     var _this = this;
                     var request = {};
@@ -164,6 +178,25 @@
                             //window.location = "/Forum/Forum_list"
                         }
                     );
+                },
+                //時間
+                nowTimes:function() {
+                    let self = this;
+                    self.timeFormate(new Date());
+                    setInterval(function () {
+                        self.timeFormate(new Date());
+                    }, 30000);
+                },
+                timeFormate:function(timeStamp) {
+                    let newdate = new Date(timeStamp);
+
+                    let month = newdate.getMonth() + 1 < 10 ? "0" + (newdate.getMonth() + 1) : newdate.getMonth() + 1;
+                    let date = newdate.getDate() < 10 ? "0" + newdate.getDate() : newdate.getDate();
+                    let hh = newdate.getHours() < 10 ? "0" + newdate.getHours() : newdate.getHours();
+                    let mm = newdate.getMinutes() < 10 ? "0" + newdate.getMinutes() : newdate.getMinutes();
+
+                    this.nowTime = hh + ":" + mm;
+                    this.nowDay = month + "月" + date + "日";
                 },
             },
         });

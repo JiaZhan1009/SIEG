@@ -34,7 +34,7 @@ namespace SIEG_API.Controllers
         [HttpGet("{BuyerBidmID}")]
         public async Task<IEnumerable<B_BuyerBidsDTO>> GetBuyerBid(int BuyerBidmID)
         {
-            var buyerbid = _context.BuyerBid.Where(bb => bb.MemberId == BuyerBidmID && bb.ValIdity == true).Select(pdId => pdId.BuyerBidId).ToArray();
+            var buyerbid = _context.BuyerBid.Where(bb => bb.MemberId == BuyerBidmID && bb.ValIdity == true && bb.SaleTime == null).Select(pdId => pdId.BuyerBidId).ToArray();
             Console.WriteLine(buyerbid);
             var ProductCollection = new List<B_BuyerBidsDTO>();
             foreach (var bId in buyerbid)
@@ -42,6 +42,7 @@ namespace SIEG_API.Controllers
                 var ProductId = _context.BuyerBid.Where(bb => bb.MemberId == BuyerBidmID && bb.BuyerBidId == bId).Select(pdId => pdId.ProductId).First();
                 var Buyerdatetime = _context.BuyerBid.Where(bb => bb.MemberId == BuyerBidmID && bb.BuyerBidId == bId).Select(pdId => pdId.BidTime).First();
                 var SellerlowPrice = await _context.SellerAddProduct.Where(pdId => pdId.ProductId == ProductId && pdId.ValIdity == true && pdId.OrderId == null).OrderBy(a => a.Price).Select(lp => lp.Price).FirstOrDefaultAsync();
+                var SellerAddProductID= await _context.SellerAddProduct.Where(SPID =>SPID.ProductId == ProductId  && SPID.OrderId == null&& SPID.Price== SellerlowPrice).OrderBy(time => time.AddTime).Select(SPID => SPID.SellerAddProductId).FirstOrDefaultAsync();
                 //var SellerlowPrice1 = _context.SellerAddProduct.Where(pdId => pdId.ProductId == bId && pdId.ValIdity == true).Select(lp => lp.Price).Min() ?? 0;
                 var buyerbid2 = _context.BuyerBid.Where(bb => bb.MemberId == BuyerBidmID && bb.BuyerBidId == bId).Select(pdId => pdId.Price).First();
                 var Productname = _context.Product.Where(pn => pn.ProductId == ProductId).Select(y => new B_BuyerBidsDTO
@@ -56,6 +57,7 @@ namespace SIEG_API.Controllers
                     Size = y.Size,
                     BidTime = Buyerdatetime,
                     Model = y.Model,
+                    SellerAddProductID= SellerAddProductID,
                 }).First();
                 ProductCollection.Add(Productname);
             }
@@ -73,9 +75,12 @@ namespace SIEG_API.Controllers
             }
             BuyerBid pricemodification = await _context.BuyerBid.FindAsync(BuyerBidid1.BuyerBidId);
             pricemodification.Price = BuyerBidid1.Price;
+            pricemodification.FinalPrice = BuyerBidid1.FinalPrice;
             pricemodification.BidTime = DateTime.Now;
+            Order order = await _context.Order.FindAsync(pricemodification.OrderId);
+            order.BuyerPrice= BuyerBidid1.FinalPrice;
             _context.Entry(pricemodification).State = EntityState.Modified;
-
+            _context.Entry(order).State = EntityState.Modified;
             try
             {
                 await _context.SaveChangesAsync();

@@ -12,5 +12,8 @@
         public string? Size { get; set; }
         public DateTime? BidTime { get; set; }
         public string? Model { get; set; }
+        public int? SellerAddProductID { get; set; }
+
+        public int? FinalPrice { get; set; }
     }
 }

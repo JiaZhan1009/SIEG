@@ -13,5 +13,6 @@
         public string? Size { get; set; }
         public DateTime? Shelfdate { get; set; }
         public string? Model { get; set; }
+        public int? BuyerBidID { get; set; }
     }
 }

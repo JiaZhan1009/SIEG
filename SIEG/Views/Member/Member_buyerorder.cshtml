@@ -161,7 +161,7 @@
                     <!-- 已完成訂單 -->
                     <div class="tab-pane fade" id="history" role="tabpanel">
                         <div class="searchlocation">
-                                <input class="form-control" type="text" placeholder="搜尋訂單標號" id="aaaa" v-model="FilterBuyerOrders" @@keyup.enter="filter">
+                            <input class="form-control" type="text" placeholder="搜尋訂單標號" id="aaaa" v-model="FilterBuyerOrders" @@keyup.enter="filter">
                             <button type="button" class="btn" id="btnlocation" @@click="filter">篩選</button>
                         </div>
                         <hr>
@@ -338,25 +338,30 @@
                     request.size = item.size;
                     request.memberId = item.memberId;
                     request.lowPrice = item.lowPrice;
-                    if (item.price >= item.lowPrice)
-                    {
-                        //sessionStorage.setItem("fID", articleID);
+                    request.FinalPrice = parseInt(item.price)+ (100);
+                    if (item.price >= item.lowPrice) {
+                        //alert(item.productId);
+                        //alert(item.sellerAddProductID);
+                        sessionStorage.setItem("pID", item.productId);
+                        sessionStorage.setItem("quoteID", item.sellerAddProductID);
                         window.location = "/order/index";
                     }
-                    axios.put(`${webApiBaseAddress}/api/B_BuyerBids/${item.buyerBidId}`, request).then(
-                        response => {
-                            Swal.fire({
-                                icon: 'success',
-                                title: '修改成功',
-                                showConfirmButton: false,
-                                timer: 1500
-                            })
-                            //alert(response.data);
-                            //_this.filterEmployeeDTOes();
-                            _this.getBuyerBidsDTOes();
-                            _this.cancel();
-                        }
-                    );
+                    else {
+                        axios.put(`${webApiBaseAddress}/api/B_BuyerBids/${item.buyerBidId}`, request).then(
+                            response => {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: '修改成功',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                })
+                                //alert(response.data);
+                                //_this.filterEmployeeDTOes();
+                                _this.getBuyerBidsDTOes();
+                                _this.cancel();
+                            }
+                        );
+                    }
                 },
                 updateOrder: function (ProductConfirmation) {
                     let _this = this;

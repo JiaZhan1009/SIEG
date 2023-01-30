@@ -30,23 +30,22 @@ namespace SIEG_API.Controllers
         {
             var pIDs = await _context.Product.Select(x => new { x.ProductId, x.ProductCategory.ProductName }).ToListAsync();
 
-                var ProductList = await _context.Product.Include(o => o.ProductCategory).Include(o => o.SellerAddProduct)
-                .Where(x => x.ValIdity == true)
-                .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
-                .Select(g => new E_ProductListDTO
-                {
-                    state = "all",
-                    productlistSellCount = g.Count(),
-                    productlistName = g.Key.ProductName,
-                    productlistImg = g.Key.ImgFront,
-                    productlistPrice = g.Select(x=>x.SellerAddProduct.Min(x=>x.Price)).FirstOrDefault(),
-                }).ToListAsync();
-
-            foreach(var list in ProductList)
+            var ProductList = await _context.Product.Include(o => o.ProductCategory)
+            .Where(x => x.ValIdity == true)
+            .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
+            .Select(g => new E_ProductListDTO
             {
-                foreach(var pID in pIDs)
+                productlistSellCount = g.Count(),
+                productlistName = g.Key.ProductName,
+                productlistImg = g.Key.ImgFront,
+                productlistPrice = g.Min(x => x.Price),
+            }).ToListAsync();
+
+            foreach (var list in ProductList)
+            {
+                foreach (var pID in pIDs)
                 {
-                    if(list.productlistName == pID.ProductName)
+                    if (list.productlistName == pID.ProductName)
                     {
                         list.productlistId = pID.ProductId;
                     }
@@ -59,123 +58,113 @@ namespace SIEG_API.Controllers
             return ProductList;
         }
 
-        // Below500: api/E_ProductListDTO/Below500
-        [HttpGet("Below500")]
-        public async Task<IEnumerable<E_ProductListDTO>> Below500()
-        {
-            var ProductList = await _context.Product.Include(o => o.ProductCategory).Include(o => o.SellerAddProduct)
-                .Where(x => x.ValIdity == true && x.Price <= 500)
-                .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
-                .Select(g => new E_ProductListDTO
-                {
-                    //state = "Below500",
-                    productlistSellCount = g.Count(),
-                    productlistName = g.Key.ProductName,
-                    productlistImg = g.Key.ImgFront,
-                    productlistPrice = g.Select(x => x.SellerAddProduct.Min(x => x.Price)).FirstOrDefault(),
-                }).ToListAsync();
-
-            return ProductList;
-        }
-
-        // Below1000: api/E_ProductListDTO/Below1000
-        [HttpGet("Below1000")]
-        public async Task<IEnumerable<E_ProductListDTO>> Below1000()
-        {
-            var ProductList = await _context.Product.Include(o => o.ProductCategory).Include(o => o.SellerAddProduct)
-                .Where(x => x.ValIdity == true && x.Price <= 1000 && x.Price >= 500)
-                .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
-                .Select(g => new E_ProductListDTO
-                {
-                    productlistSellCount = g.Count(),
-                    productlistName = g.Key.ProductName,
-                    productlistImg = g.Key.ImgFront,
-                    productlistPrice = g.Select(x => x.SellerAddProduct.Min(x => x.Price)).FirstOrDefault(),
-                }).ToListAsync();
-
-            return ProductList;
-        }
-
         // Below1500: api/E_ProductListDTO/Below1500
         [HttpGet("Below1500")]
         public async Task<IEnumerable<E_ProductListDTO>> Below1500()
         {
-            var ProductList = await _context.Product.Include(o => o.ProductCategory).Include(o => o.SellerAddProduct)
-                .Where(x => x.ValIdity == true && x.Price <= 1500 && x.Price >= 1000)
+            var ProductList = await _context.Product.Include(o => o.ProductCategory)
+                .Where(x => x.ValIdity == true && x.Price <= 1000)
                 .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
                 .Select(g => new E_ProductListDTO
                 {
                     productlistSellCount = g.Count(),
                     productlistName = g.Key.ProductName,
                     productlistImg = g.Key.ImgFront,
-                    productlistPrice = g.Select(x => x.SellerAddProduct.Min(x => x.Price)).FirstOrDefault(),
+                    productlistPrice = g.Min(x => x.Price),
                 }).ToListAsync();
 
             return ProductList;
         }
 
-        // Below2000: api/E_ProductListDTO/Below2000
-        [HttpGet("Below2000")]
-        public async Task<IEnumerable<E_ProductListDTO>> Below2000()
+        // Below3000: api/E_ProductListDTO/Below3000
+        [HttpGet("Below3000")]
+        public async Task<IEnumerable<E_ProductListDTO>> Below3000()
         {
-            var ProductList = await _context.Product.Include(o => o.ProductCategory).Include(o => o.SellerAddProduct)
-                .Where(x => x.ValIdity == true && x.Price <= 2000 && x.Price >= 1500)
+            var ProductList = await _context.Product.Include(o => o.ProductCategory)
+                .Where(x => x.ValIdity == true && x.Price <= 3000 && x.Price >= 1500)
                 .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
                 .Select(g => new E_ProductListDTO
                 {
                     productlistSellCount = g.Count(),
                     productlistName = g.Key.ProductName,
                     productlistImg = g.Key.ImgFront,
-                    productlistPrice = g.Select(x => x.SellerAddProduct.Min(x => x.Price)).FirstOrDefault(),
+                    productlistPrice = g.Min(x => x.Price),
                 }).ToListAsync();
 
             return ProductList;
         }
 
-        // More2000: api/E_ProductListDTO/More2000
-        [HttpGet("More2000")]
-        public async Task<IEnumerable<E_ProductListDTO>> More2000()
+        // Below4500: api/E_ProductListDTO/Below4500
+        [HttpGet("Below4500")]
+        public async Task<IEnumerable<E_ProductListDTO>> Below4500()
         {
-            var ProductList = await _context.Product.Include(o => o.ProductCategory).Include(o => o.SellerAddProduct)
-                .Where(x => x.ValIdity == true)
-                  //.Where(x => x.ValIdity == true && x.SellerAddProduct.Select(x => x.Price))
+            var ProductList = await _context.Product.Include(o => o.ProductCategory)
+                .Where(x => x.ValIdity == true && x.Price <= 4500 && x.Price >= 3000)
                 .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
                 .Select(g => new E_ProductListDTO
                 {
-                    state = "More2000",
                     productlistSellCount = g.Count(),
                     productlistName = g.Key.ProductName,
                     productlistImg = g.Key.ImgFront,
-                    productlistPrice = g.Select(x => x.SellerAddProduct.Where(x=>x.Price>=2000).Min(x => x.Price)).FirstOrDefault(),
+                    productlistPrice = g.Min(x => x.Price),
                 }).ToListAsync();
 
             return ProductList;
         }
 
-        // More2000: api/E_ProductListDTO/TopProduct
+        // Below6000: api/E_ProductListDTO/Below6000
+        [HttpGet("Below6000")]
+        public async Task<IEnumerable<E_ProductListDTO>> Below6000()
+        {
+            var ProductList = await _context.Product.Include(o => o.ProductCategory)
+                .Where(x => x.ValIdity == true && x.Price <= 6000 && x.Price >= 4500)
+                .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
+                .Select(g => new E_ProductListDTO
+                {
+                    productlistSellCount = g.Count(),
+                    productlistName = g.Key.ProductName,
+                    productlistImg = g.Key.ImgFront,
+                    productlistPrice = g.Min(x => x.Price),
+                }).ToListAsync();
+
+            return ProductList;
+        }
+
+        // More6000: api/E_ProductListDTO/More6000
+        [HttpGet("More6000")]
+        public async Task<IEnumerable<E_ProductListDTO>> More6000()
+        {
+            var ProductList = await _context.Product.Include(o => o.ProductCategory)
+                .Where(x => x.ValIdity == true && x.Price >= 6000)
+                .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
+                .Select(g => new E_ProductListDTO
+                {
+                    productlistSellCount = g.Count(),
+                    productlistName = g.Key.ProductName,
+                    productlistImg = g.Key.ImgFront,
+                    productlistPrice = g.Min(x => x.Price),
+                }).ToListAsync();
+
+            return ProductList;
+        }
+
+        // TopProduct: api/E_ProductListDTO/TopProduct
         [HttpGet("TopProduct")]
         public async Task<IEnumerable<E_ProductListDTO>> TopProduct()
         {
+
             var ProductList = await _context.Order.Include(o => o.Product).Include(o => o.Product.SellerAddProduct).Include(o => o.Product.ProductCategory)
-            .Where(x => x.Product.ValIdity == true && x.State == "已完成" )
-            .GroupBy(x => new { x.ProductId, x.Product.ProductCategory.ProductName, x.Product.ImgFront })
+            .Where(x => x.Product.ValIdity == true && x.State == "已完成")
+            .GroupBy(x => new { x.Product.ProductCategory.ProductName, x.Product.ImgFront })
             .OrderByDescending(x => x.Count()).Take(8)
             .Select(g => new E_ProductListDTO
-            { 
-                productlistId = g.Key.ProductId,
+            {
+                productlistId = g.Min(x => x.Product.ProductId),
                 productlistSellCount = g.Count(),
                 productlistName = g.Key.ProductName,
                 productlistImg = g.Key.ImgFront,
-                productlistPrice = g.Min(x => x.BuyerPrice),
+                productlistPrice = g.Min(x => x.Product.Price),
             }).ToListAsync();
-
-            //var list = _context.Product.Include(p => p.Order).Include(po => po.ProductCategory);
-
-            //var aa = list.Where(x=>x.Order.Select(x=>x.))
-
-            //var aa = list.Select(x => x.Order.Where(o => o.State == "已完成"))
-
-
 
             return ProductList;
         }
@@ -196,37 +185,37 @@ namespace SIEG_API.Controllers
 
         // PUT: api/E_ProductList/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct(int id, E_ProductListDTO E_ProductViewDTO)
-        {
-            if (id != E_ProductViewDTO.productlistId)
-            {
-                return BadRequest();
-            }
-            Product ProductView = await _context.Product.FindAsync(E_ProductViewDTO.productlistId);
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> PutProduct(int id, E_ProductListDTO E_ProductViewDTO)
+        //{
+        //    if (id != E_ProductViewDTO.productlistId)
+        //    {
+        //        return BadRequest();
+        //    }
+        //    Product ProductView = await _context.Product.FindAsync(E_ProductViewDTO.productlistId);
 
-            ProductView.ViewsCount = E_ProductViewDTO.productlistViewcount;
+        //    ProductView.ViewsCount = E_ProductViewDTO.productlistViewcount;
 
-            _context.Entry(ProductView).State = EntityState.Modified;
+        //    _context.Entry(ProductView).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!ProductExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
         // POST: api/E_ProductList
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

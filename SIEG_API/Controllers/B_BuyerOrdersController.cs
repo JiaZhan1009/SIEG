@@ -34,7 +34,7 @@ namespace SIEG_API.Controllers
         [HttpGet("{id}")]
         public async Task<IEnumerable<B_BuyerOrdersDTO>> GetOrder(int id)
         {
-            var productIDs = _context.Order.Where(pd => pd.BuyerId == id);
+            var productIDs = _context.Order.Where(pd => pd.BuyerId == id );
             var Products = productIDs.OrderByDescending(time => time.DoneTime)
                 .Join(_context.Product, pd => pd.ProductId, pds => pds.ProductId, (pd, pds) => new {pd, pds})
                 .Join(_context.ProductCategory, x => x.pds.ProductCategoryId, pc => pc.ProductCategoryId, (x, pc) => 

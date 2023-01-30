@@ -41,10 +41,10 @@ namespace SIEG_API.Controllers
             {
                 var ProductId = _context.SellerAddProduct.Where(bb => bb.MemberId == MemberId && bb.SellerAddProductId == SellerAddId).Select(pdId => pdId.ProductId).First();
                 //var ID = _context.SellerAddProduct.Where(bb => bb.MemberId == MemberId && bb.ProductId == ProductId).Select(pdId => pdId.ProductId).First();
-                var datetime = _context.SellerAddProduct.Where(bb => bb.MemberId == MemberId && bb.ProductId == ProductId).Select(pdId => pdId.AddTime).First();
+                var datetime = _context.SellerAddProduct.Where(bb => bb.MemberId == MemberId && bb.ProductId == ProductId && bb.OrderId == null).Select(pdId => pdId.AddTime).First();
                 var BuylowPrice = await _context.BuyerBid.Where(pdId => pdId.ProductId == ProductId && pdId.ValIdity == true).OrderBy(lp => lp.Price).Select(lp => lp.Price).FirstOrDefaultAsync();
                 var BuyhighPrice = await _context.BuyerBid.Where(pdId => pdId.ProductId == ProductId && pdId.ValIdity == true).OrderBy(lp => lp.Price).Select(lp => lp.Price).LastOrDefaultAsync();
-                var sellPrice = _context.SellerAddProduct.Where(bb => bb.MemberId == MemberId && bb.ProductId == ProductId).Select(pdId => pdId.Price).First();
+                var sellPrice = _context.SellerAddProduct.Where(bb => bb.MemberId == MemberId && bb.ProductId == ProductId && bb.OrderId == null ).Select(pdId => pdId.Price).First();
                 var allmessages = _context.Product.Where(pn => pn.ProductId == ProductId).Select(y => new B_SellerAddProductsDTO
                 {
                     SellerAddProductID = SellerAddId,

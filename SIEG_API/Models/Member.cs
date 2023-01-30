@@ -39,7 +39,7 @@ namespace SIEG_API.Models
         public int? BankAccount { get; set; }
         public string CreditCard { get; set; }
         public string CreditCardDate { get; set; }
-        public int? CreditCardCcv { get; set; }
+        public string CreditCardCcv { get; set; }
         public string BillingAddress { get; set; }
 
         public virtual Bank BankCodeNavigation { get; set; }

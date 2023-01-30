@@ -119,15 +119,38 @@
                     request.MemberId = Sellerinformationdtoes.memberId
                     request.BankCode = _this.Bankcode;
                     request.BankAccount = Sellerinformationdtoes.bankAccount;
-                    var ret = confirm("確定要修改嗎?");
-                    if (ret == true) {
-                        axios.put(`${webApiBaseAddress}/api/B_PaymentInformation/Sellerinformation/${_this.mID}`, request).then(
-                            response => {
-                                alert(response.data);
-                                window.location = "/Member/SettingCreditcard"
-                            }
-                        );
-                    }
+                    //var ret = confirm("確定要修改嗎?");
+                    Swal.fire({
+                        title: '確定要修改嗎?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: '修改成功',
+                                showConfirmButton: false,
+                            })
+                            axios.put(`${webApiBaseAddress}/api/B_PaymentInformation/Sellerinformation/${_this.mID}`, request).then(
+                                response => {
+                                    //alert(response.data);
+                                    setTimeout(function () {
+                                        window.location = "/Member/SettingCreditcard"
+                                    }, 1500);
+                                }
+                            );
+                        }
+                    })
+                    //if (ret == true) {
+                    //    axios.put(`${webApiBaseAddress}/api/B_PaymentInformation/Sellerinformation/${_this.mID}`, request).then(
+                    //        response => {
+                    //            alert(response.data);
+                    //            window.location = "/Member/SettingCreditcard"
+                    //        }
+                    //    );
+                    //}
                 },
             },
         });

@@ -397,7 +397,9 @@ namespace SIEG_API.Models
 
                 entity.Property(e => e.CreditCard).HasMaxLength(150);
 
-                entity.Property(e => e.CreditCardCcv).HasColumnName("CreditCardCCV");
+                entity.Property(e => e.CreditCardCcv)
+                    .HasMaxLength(150)
+                    .HasColumnName("CreditCardCCV");
 
                 entity.Property(e => e.CreditCardDate).HasMaxLength(150);
 

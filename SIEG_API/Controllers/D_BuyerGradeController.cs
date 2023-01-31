@@ -94,16 +94,15 @@ namespace SIEG_API.Controllers
 
         //優惠券
         [HttpPut("xxx/{id}")]
-        public async Task<string> PutMemberCoupon(int id, D_CouponDTO cpDTO)
+        public async Task<string> PutMember(int id, D_CouponDTO cpDTO)
         {
-            if (id != cpDTO.MemberId)
+            if (id != cpDTO.MemberId && 102!= cpDTO.CouponId)
             {
                 return "不正確";
             }
+            var zz =  _context.MemberCoupon.Where(A => A.MemberId == id && A.CouponId == 102).Select(A => A.MemberCouponId).FirstOrDefault();
+            MemberCoupon mem = await _context.MemberCoupon.FindAsync(zz);
 
-            MemberCoupon mem = await _context.MemberCoupon.FindAsync(cpDTO.MemberId);
-
-            //mem.MemberId = cpDTO.MemberId;
             mem.Count = cpDTO.Count;
 
             _context.Entry(mem).State = EntityState.Modified;
@@ -129,12 +128,26 @@ namespace SIEG_API.Controllers
         // POST: api/BuyerGrade
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Member>> PostMember(Member member)
+        public async Task<string> PostMember(D_CouponDTO cpDTO)
         {
-            _context.Member.Add(member);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetMember", new { id = member.MemberId }, member);
+            var msg = "";
+            MemberCoupon mcp = new MemberCoupon {
+            CouponId = cpDTO.CouponId,
+            MemberId = cpDTO.MemberId,
+            Count = cpDTO.Count,
+            };
+            bool repeat = _context.MemberCoupon.Any(e => e.MemberId == cpDTO.MemberId);
+            if (repeat == true)
+            {
+                msg = "已經有了";
+            }
+            else
+            {
+                msg = "還沒有";
+                _context.MemberCoupon.Add(mcp);
+                await _context.SaveChangesAsync();
+            }
+            return msg;
         }
 
         // DELETE: api/BuyerGrade/5

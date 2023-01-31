@@ -42,6 +42,26 @@ namespace SIEG_API.Controllers
                 }).ToListAsync();
         }
 
+        // GET: api/E_NewsList/Boss
+        [HttpGet("Boss")]
+        public async Task<IEnumerable<E_NewsListDTO>> BossGetNews()
+        {
+            return await _context.News
+                .Where(news => news.ValIdity == true)
+                .OrderByDescending(news => news.AddTime)
+                .Join(_context.NewsCategory, newslist => newslist.NewsCategoryId, newssort => newssort.NewsCategoryId, (newslist, newssort) => new E_NewsListDTO
+                {
+
+                    newslistId = newslist.NewsId,
+                    newslistImg = newslist.Img,
+                    newslistTitle = newslist.Title,
+                    newslistContent = newslist.NewsContent,
+                    newslistSort = newssort.CategoryName,
+                    newslistTime = newslist.AddTime,
+                    newslistviewcount = newslist.ViewsCount,
+                }).ToListAsync();
+        }
+
         // GET: api/E_NewsList/5
         [HttpGet("{id}")]
         public async Task<ActionResult<News>> GetNews(int id)

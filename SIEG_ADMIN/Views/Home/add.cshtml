@@ -79,7 +79,8 @@
                         request.bannerImg = $('#banner_img').val();
                         request.bannerTitle = $('#banner_name').val();
                         request.bannerLink = $('#banner_link').val();
-                        request.bannerValIdity = $('#banner_state').val();
+                        request.bannerValIdity = $('#banner_state').val() == "true" ? true : false;
+                        
 
                         axios.post(`${webApiBaseAddress}/api/E_Banner`, request).then(
                             response => {
@@ -94,7 +95,7 @@
                                 $('#banner_img').val("");
                                 $('#banner_name').val("");
                                 $('#banner_link').val("");
-                                $('#banner_state').val("");
+                                $('#banner_state')[0].selectedIndex = 0;
                             }
                         );
                     }

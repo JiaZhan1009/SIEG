@@ -1,0 +1,208 @@
+﻿
+<div class="col-lg-3 d-lg-block d-none" style="background-color: #fafafa;">
+    <div class="MemberFrame">
+        <div class="namefont">
+            {{MembersidebarDTOes.name}}
+        </div>
+        <a asp-area="" asp-controller="Member" asp-action="Kyccertified" class="Aelement">
+            <div class="MemberSidebar">
+                <div>
+                    @*  <img src="~/images/benicon/padlock.png" class="AccountIcon" />*@
+                    <img src="~/images/benicon/padlock.png" class="AccountIcon" />
+                </div>
+                <div>
+                    <div class="title">
+                        KYC權限認證
+                    </div>
+                    <div class="titlehint">
+                        賣家認證
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        <a asp-area="" asp-controller="Member" asp-action="Member_buyerorder" class="Aelement">
+            <div class="MemberSidebar">
+                <div>
+                    <img src="/images/Benicon/delivery-box.png" class="AccountIcon">
+                </div>
+                <div>
+                    <div class="title">
+                        購買
+                    </div>
+                    <div class="titlehint">
+                        有效出價、進行中、已完成訂單
+                    </div>
+                </div>
+            </div>
+        </a>
+
+
+        <a asp-area="" asp-controller="Member" asp-action="SellerAddProduct" class="Aelement">
+            <div class="MemberSidebar">
+                <div>
+                    <img src="~/images/Benicon/money.png" class="AccountIcon">
+                </div>
+                <div>
+                    <div class="title">
+                        出售
+                    </div>
+                    <div class="titlehint">
+                        有效出價、進行中、已完成訂單
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        <a asp-area="" asp-controller="Member" asp-action="Member_personal" class="Aelement">
+            <div class="MemberSidebar">
+                <div>
+                    <img src="~/images/Benicon/user.png" class="AccountIcon">
+                </div>
+                <div>
+                    <div class="title">
+                        個人資料
+                    </div>
+                    <div class="titlehint">
+                        了解您的獨特之處
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        <a asp-area="" asp-controller="Member" asp-action="Member_coupon" class="Aelement">
+            <div class="MemberSidebar">
+                <div>
+                    <img src="~/images/Benicon/Coupon.png" class="AccountIcon">
+                </div>
+                <div>
+                    <div class="title">
+                        優惠卷
+                    </div>
+                    <div class="titlehint">
+                        查詢優惠卷剩餘數量
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        @*<a href="notice.html" class="Aelement">
+        <div class="MemberSidebar">
+        <div>
+        <img src="~/images/Benicon/notification.png" class="AccountIcon">
+        </div>
+        <div>
+        <div class="title">
+        簡訊中心
+        </div>
+        <div class="titlehint">
+        查看最新簡訊
+        </div>
+        </div>
+        </div>
+        </a>*@
+
+        <a asp-area="" asp-controller="Member" asp-action="Member_ProductCollection" class="Aelement">
+            <div class="MemberSidebar">
+                <div>
+                    <img src="~/images/Benicon/heart.png" class="AccountIcon">
+                </div>
+                <div>
+                    <div class="title">
+                        商品收藏組合
+                    </div>
+                    <div class="titlehint">
+                        查看您的商品內容
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a asp-area="" asp-controller="Member" asp-action="FavoritePosts" class="Aelement">
+            <div class="MemberSidebar">
+                <div>
+                    <img src="~/images/benicon/portfolio.png" class="AccountIcon">
+                </div>
+                <div>
+                    <div class="title">
+                        貼文收藏組合
+                    </div>
+                    <div class="titlehint">
+                        查看您的貼文內容
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        <a asp-area="" asp-controller="Member" asp-action="SettingCreditcard" class="Aelement">
+            <div class="MemberSidebar">
+                <div>
+                    <img src="~/images/Benicon/settings.png" class="AccountIcon">
+                </div>
+                <div>
+                    <div class="title">
+                        設定
+                    </div>
+                    <div class="titlehint">
+                        預設付款、收款、地址
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        <a href="index.html" class="Aelement">
+            <div class="MemberSidebar">
+                <div>
+                    <img src="~/images/Benicon/exit.png" class="AccountIcon">
+                </div>
+                <div>
+                    <div class="title">
+                        登出
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+@section Scripts
+    {
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.2/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+        var webApiBaseAddress = "https://localhost:7139";
+        var appVue = new Vue({
+            el: "#appVue",
+            name: "appVue",
+            data: {
+                mID: sessionStorage.getItem("mID"),
+                MembersidebarDTOes: {},
+            },
+            mounted: function () {
+                let _this = this;
+                _this.getMembersidebarDTOes();
+            },
+            methods: {
+                getMembersidebarDTOes: function () {
+                    let _this = this;
+                    axios.get(`${webApiBaseAddress}/api/B_personalinformation/${_this.mID}`).then(
+                        response => {
+                            _this.MembersidebarDTOes = response.data
+                        }
+                    );
+                },
+            },
+        });
+    </script>
+
+    }
+
+
+
+
+
+
+
+
+
+
+

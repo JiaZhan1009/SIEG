@@ -81,12 +81,14 @@
             data: {
                 mID: sessionStorage.getItem("mID"),
                 PaymentInformationDTOes: {},
+                PersonalDTOes: {},
                 Filter: "",
 
             },
             mounted: function () {
                 let _this = this;
                 _this.getPaymentInformationDTOes();
+                _this.getPersonalDTOes();
                 let ccNumberInput = document.querySelector('.cc-number-input'),
                     ccNumberPattern = /^\d{0,16}$/g,
                     ccNumberSeparator = " ",
@@ -260,6 +262,14 @@
                         alert("信用卡號不正確")
                     }
                 },
+                getPersonalDTOes: function () {
+					let _this = this;
+					axios.get(`${webApiBaseAddress}/api/B_personalinformation/${_this.mID}`).then(
+						response => {
+							_this.PersonalDTOes = response.data						
+						}
+					);
+				},
             },
         });
 

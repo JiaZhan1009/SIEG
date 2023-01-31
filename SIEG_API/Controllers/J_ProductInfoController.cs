@@ -238,7 +238,6 @@ namespace SIEG_API.Controllers
                 {
                     key = noteArray[i],
                     value = noteArray[i + 1],
-
                 });
             }
             items[0].info = info;
@@ -265,25 +264,31 @@ namespace SIEG_API.Controllers
             return historList;
         }
 
-        //[HttpGet("GetRelatedProducts/{pCateID}")]
-        //public async Task<IEnumerable<J_HistoricalData>> GetRelatedProducts(int pCateID)
-        //{
-        //    int pID = 0;
-        //    var list = await _context.Product.Include(p => p.ProductCategory).Include(p => p.Order).Where(p => p.ProductCategoryId == pCateID).ToListAsync();
-        //    var productInfo = getProductInfo(pID);
+        [HttpGet("GetRelatedProducts/{pID}")]
+        public async Task<IEnumerable<J_ProductInfoDTO>> GetRelatedProducts(int pID)
+        {
+            var result = await _context.Product.Include(p => p.ProductCategory).Where(p => p.ProductId == pID)
+                .Select(i => new J_ProductInfoDTO
+                {
+                    pID = i.ProductId,
+                    pName = i.ProductCategory.ProductName,
+                    pImg = i.ImgFront
+                })
+                .ToArrayAsync();
 
-        //    var lastPrice = GetLastDealPrice(pID);
+            //var filterID = await _context.ProductCategory.Where(pc => pc.ProductCategoryId == pCateID).SingleOrDefaultAsync();
 
-        //    var minQuote = getQuotePrice(pID);
+            //var related = await _context.ProductCategory.Where(pc => pc.CategoryName == filterID.CategoryName).ToListAsync();
 
-        //    List<J_HistoricalData> historList = new List<J_HistoricalData>
-        //    {
-        //        new J_HistoricalData { val1 = minPrice, val2 = maxPrice, val3 = "交易區間" },
-        //        new J_HistoricalData { val1 = dealPrice, val2 = "", val3 = "成交量" },
-        //        new J_HistoricalData { val1 = avgPrice, val2 = "", val3 = "平均交易價" },
-        //    };
-        //    return historList;
-        //}
+            //var result = related.Join(_context.Product, pc => pc.ProductCategoryId, p => p.ProductCategoryId, (pc, p) => new { pc, p })
+            //    .Select(item => new J_ProductInfoDTO { 
+            //        pID = item.p.ProductId,
+            //        pName = item.pc.ProductName,
+            //        pImg = item.p.ImgFront
+            //    }).ToList();
+
+            return result;
+        }
     }
 }
 

@@ -21,13 +21,13 @@
                                     <button class="btn dropdown-toggle kanban-btn" data-bs-toggle="dropdown">
                                         請選擇發文看板
                                     </button>
-                                    <div class="dropdown-menu">
+                                    <div class="dropdown-menu choseSort">
                                         <a href="#" class="dropdown-item" v-for="item in ProductSortDTO" @@click="getProducts(item.productsortName)">{{item.productsortName}}</a>
                                     </div>
                                 </span>
                                 <span class="dropdown" style="padding-left: 10px;">
                                     <button class="btn dropdown-toggle class-btn" data-bs-toggle="dropdown">品牌分類</button>
-                                    <div class="dropdown-menu">
+                                    <div class="dropdown-menu choseBrand">
                                     <a href="#" class="dropdown-item" v-for="brand in BrandName" @@click="Brand(brand.productsortId)">{{brand.productsortBrand}}</a>
                                     </div>
                                 </span>
@@ -65,7 +65,7 @@
                     <div>
                         <form method="post" enctype="multipart/form-data"
                           asp-controller="forum_post" asp-action="index2">
-                            <div class="form-group">
+                            <div class="form-group" style="float:left;">
                                 <span class="image-input">
                                     <input type="file" accept="image/*" id="imageInput" name="files" class="file" multiple>
                                     <label for="imageInput" class="image-button"><i class="far fa-image"></i></label>
@@ -73,7 +73,7 @@
                                     <span class="change-image">換一張</span>
                                 </span>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" style="float:right;">
                                 <button type="submit" class="spin submit" id="submit" value="Upload" @@click=insert>
                                     <span>送出</span>
                                     <span>
@@ -131,6 +131,14 @@
                 document.querySelector('.file').addEventListener('change', function (e) {
                     let files = e.target.files
                     _this.imgFile = files[0].name;
+                });
+                $(function () {
+                    setTimeout(function () {
+                        $(".choseSort a").click(function () {
+                            $(".choseSort a").removeClass('active');
+                            $(this).addClass('active');
+                        });
+                    }, 800);
                 });
                 _this.getMemberName(),
                 _this.getD_NewsInfoDTO();

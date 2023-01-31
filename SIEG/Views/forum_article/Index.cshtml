@@ -148,7 +148,7 @@
                         <!--Title-->
                         <h3 style="padding-top: 15px;">{{PostDTOs.title}}</h3>
                         <!--分類、時間-->
-                        <p class="time"><a href="forum_list.html" class="sort">{{PostDTOs.category}}</a>·{{Date}}</p>
+                        <p class="time"><a href="forum_list.html" class="sort">{{PostDTOs.category}}</a>·{{PostDTOs.brandName}}·{{Date}}</p>
                         <!--內文-->
                         <div class="text">
                             <span>
@@ -386,7 +386,7 @@
                             item = _this.PostDTOs;
                             _this.Date = moment(item.addTime).add(8, 'hours').format("YYYY年M月D日 h:m A");
                             PostList.push(item);
-                            console.log(_this.PostDTOs)
+                            //console.log(_this.PostDTOs)
                         }
                     );
                 },

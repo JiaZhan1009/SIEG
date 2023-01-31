@@ -38,7 +38,6 @@
 </head>
 
 <body>
-
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
             <!-- 側欄選單 -->
@@ -113,6 +112,12 @@
                             <div data-i18n="Analytics">會員管理</div>
                         </a>
                     </li>
+                    <li class="menu-item back_forum">
+                        <a class="menu-link" asp-controller="Returns" asp-action="index">
+                            <i class="menu-icon tf-icons bx bxs-checkbox-minus"></i>
+                            <div data-i18n="Analytics">退貨專區</div>
+                        </a>
+                    </li>
                     <li class="menu-item back_coupon">
                         <a href="coupon.html" class="menu-link">
                             <i class="menu-icon tf-icons bx bxs-discount"></i>
@@ -121,10 +126,9 @@
                     </li>
                 </ul>
             </aside>
-
             <main role="main" class="layout-page">
                 @RenderBody()
-            </main>        
+            </main>
 
         </div>
         <div class="layout-overlay layout-menu-toggle"></div>

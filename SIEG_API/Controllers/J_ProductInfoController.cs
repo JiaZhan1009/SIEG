@@ -265,25 +265,25 @@ namespace SIEG_API.Controllers
             return historList;
         }
 
-        [HttpGet("GetRelatedProducts/{pCateID}")]
-        public async Task<IEnumerable<J_HistoricalData>> GetRelatedProducts(int pCateID)
-        {
-            int pID = 0;
-            var list = await _context.Product.Include(p => p.ProductCategory).Include(p => p.Order).Where(p => p.ProductCategoryId == pCateID).ToListAsync();
-            var productInfo = getProductInfo(pID);
+        //[HttpGet("GetRelatedProducts/{pCateID}")]
+        //public async Task<IEnumerable<J_HistoricalData>> GetRelatedProducts(int pCateID)
+        //{
+        //    int pID = 0;
+        //    var list = await _context.Product.Include(p => p.ProductCategory).Include(p => p.Order).Where(p => p.ProductCategoryId == pCateID).ToListAsync();
+        //    var productInfo = getProductInfo(pID);
 
-            var lastPrice = GetLastDealPrice(pID);
+        //    var lastPrice = GetLastDealPrice(pID);
 
-            var minQuote = getQuotePrice(pID);
+        //    var minQuote = getQuotePrice(pID);
 
-            List<J_HistoricalData> historList = new List<J_HistoricalData>
-            {
-                new J_HistoricalData { val1 = minPrice, val2 = maxPrice, val3 = "交易區間" },
-                new J_HistoricalData { val1 = dealPrice, val2 = "", val3 = "成交量" },
-                new J_HistoricalData { val1 = avgPrice, val2 = "", val3 = "平均交易價" },
-            };
-            return historList;
-        }
+        //    List<J_HistoricalData> historList = new List<J_HistoricalData>
+        //    {
+        //        new J_HistoricalData { val1 = minPrice, val2 = maxPrice, val3 = "交易區間" },
+        //        new J_HistoricalData { val1 = dealPrice, val2 = "", val3 = "成交量" },
+        //        new J_HistoricalData { val1 = avgPrice, val2 = "", val3 = "平均交易價" },
+        //    };
+        //    return historList;
+        //}
     }
 }
 

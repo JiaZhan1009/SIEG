@@ -65,10 +65,10 @@
                                         <span>交易費 (10.0%)</span>
                                         <span> {{DisplayTradeFee}}</span>
                                     </div>
-                                    <div class="specialOffer">
+@*                                    <div class="specialOffer">
                                         <span>轉帳手續費(3%)</span>
                                         <span>{{DisplayTransFerFee}}</span>
-                                    </div>
+                                    </div>*@
                                     <div class="specialOffer">
                                         <span>預計運費</span>
                                         <span>{{DisplayfreightFee}}</span>
@@ -430,7 +430,8 @@
                     return this.pPrice == 0 ? "" : this.pPrice * 0.1;
                 },
                 TransferFee() {
-                    return this.pPrice == 0 ? "" : this.pPrice * 0.03;
+                    return 0;
+                    //return this.pPrice == 0 ? "" : this.pPrice * 0.03;
                 },
                 TotalPrice() {
                     return this.pPrice == 0 ? "" :

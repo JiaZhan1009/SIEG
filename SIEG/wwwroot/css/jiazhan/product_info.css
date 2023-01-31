@@ -1,4 +1,8 @@
 /* -----  Group  ----- */
+.bannerImg {
+    max-width: 200px;
+    margin: auto;
+}
 .article {
     padding: 0px 40px 0px 20px;
 }
@@ -219,7 +223,7 @@ td, th {
 }
 
 .minPrice {
-    margin-left: 20px;
+    /*margin-left: 20px;*/
     margin-right: 20px;
     font-size: 1.8em;
     font-weight: bold;
@@ -331,7 +335,7 @@ tr > td > p {
     cursor: pointer;
 }
 
-.active {
+.selected {
     border: 2px solid #a3a3a3;
     font-weight: bold;
     background-color: #f1f1f1

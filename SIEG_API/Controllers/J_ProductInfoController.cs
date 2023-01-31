@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using NuGet.Protocol;
 using SIEG_API.DTO;
 using SIEG_API.Models;
@@ -267,27 +268,31 @@ namespace SIEG_API.Controllers
         [HttpGet("GetRelatedProducts/{pID}")]
         public async Task<IEnumerable<J_ProductInfoDTO>> GetRelatedProducts(int pID)
         {
-            var result = await _context.Product.Include(p => p.ProductCategory).Where(p => p.ProductId == pID)
-                .Select(i => new J_ProductInfoDTO
+            var pCateName = await _context.Product.Include(p => p.ProductCategory)
+                .Where(p => p.ProductId == pID).Select(p=>p.ProductCategory.CategoryName).FirstAsync();
+
+            var result = await _context.ProductCategory
+                .Join(_context.Product, pc => pc.ProductCategoryId, p => p.ProductCategoryId, (pc, p) => new { pc, p })
+                .Where(i => i.pc.CategoryName == pCateName).Select(i => new J_ProductInfoDTO
                 {
-                    pID = i.ProductId,
-                    pName = i.ProductCategory.ProductName,
-                    pImg = i.ImgFront
-                })
-                .ToArrayAsync();
+                    pID = i.p.ProductId,
+                    pName = i.pc.ProductName,
+                    pImg = i.p.ImgFront,
 
-            //var filterID = await _context.ProductCategory.Where(pc => pc.ProductCategoryId == pCateID).SingleOrDefaultAsync();
+                }).ToListAsync();
 
-            //var related = await _context.ProductCategory.Where(pc => pc.CategoryName == filterID.CategoryName).ToListAsync();
+            var HashSet = new HashSet<string>();
+            var filteredList = new List<J_ProductInfoDTO>();
 
-            //var result = related.Join(_context.Product, pc => pc.ProductCategoryId, p => p.ProductCategoryId, (pc, p) => new { pc, p })
-            //    .Select(item => new J_ProductInfoDTO { 
-            //        pID = item.p.ProductId,
-            //        pName = item.pc.ProductName,
-            //        pImg = item.p.ImgFront
-            //    }).ToList();
+            foreach (var item in result)
+            {
+                if (HashSet.Add(item.pName))
+                {
+                    filteredList.Add(item);
+                }
+            }
 
-            return result;
+            return filteredList;
         }
     }
 }

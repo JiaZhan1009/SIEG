@@ -86,7 +86,7 @@
                                                 <div class="sizeItemContoiner row">
                                                     <div class="col-12 ">
                                                         <div class="sizeAndPrice">
-                                                            <div @@click="activeIndex=index" :class="['sizePriceItem', {'active':activeIndex==index}]" v-for="(item, index) in DisplaySizeAndPriceList" :key="index">
+                                                            <div @@click="activeIndex=index" :class="['sizePriceItem', {'selected':activeIndex==index}]" v-for="(item, index) in DisplaySizeAndPriceList" :key="index">
                                                                 <div class="sizeItem" @@click="showSelSize = !showSelSize;selectSizeItem(item.size, item.price, index, item.pID, item.sID)">
                                                                     <div class="item">
                                                                         <div class="fontBold">US {{item.size}}</div>
@@ -380,6 +380,7 @@
             </div>
         </div>
     </div>
+    
 </div>
 
 <partial name="_footerPartial" />
@@ -425,7 +426,7 @@
                     fontColor: '#006340',
                     sID: null,
                     pLength: null,
-                    pCateID: 102,
+                    pCateID: null,
                     productNote: [],
                     pInfo: [],
                     tpCateID: null,
@@ -443,7 +444,7 @@
 
                 //await _this.getProductInfo();
                 await _this.getRelatedProducts();
-
+                
                 //await _this.getNewsListDTO();
 
                 const datas = _this.relatedProducts.map(item => {
@@ -453,8 +454,8 @@
                                         <div class="product_col">
                                             <div class="productInfo_card">
                                                 <div class="divLikeProduct">
-                                                    <a href="product_info.html">
-                                                                <img src="${item.pImg}" alt="">
+                                                    <a href="product_info">
+                                                              <img src="${item.pImg}" alt="" class="bannerImg">
                                                     </a>
                                                 </div>
                                                 <div class="productInfo_content">
@@ -463,7 +464,7 @@
                                                                 <div class="two-row">${item.pName}</div>
                                                         <div style="color:#999999;margin:0px">最低報價</div>
                                                         <div class="minPrice fontSizeM">$1,780</div>
-                                                        <div class="listTimeSold">上次成交價 : $1,780</div>
+        @*<div class="listTimeSold">上次成交價 : $1,780</div>*@
                                                     </a>
                                                 </div>
                                             </div>
@@ -627,6 +628,7 @@
                 pID: {
                     handler() {
                         if (this.pID) {
+                            //this.getRelatedProducts();
                             this.getProductInfo();
                             this.getOrderList();
                             this.getLastPrice();
@@ -635,13 +637,13 @@
                     }
                 },
                 pCateID: {
-                    handler() {
+                    handler: function() {
                         if (this.pCateID) {
-                            this.getRelatedProducts();
-                            this.getSizeAndQuote();
-                            this.getProductNote();
+                            //this.getRelatedProducts();
                             this.getHistoricalData();
-
+                            this.getSizeAndQuote();
+                            this.getProductNote();                            
+                            
                         }
 
                     }

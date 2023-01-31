@@ -110,18 +110,18 @@ namespace SIEG_API.Controllers
 
         // DELETE: api/G_ForumReply1/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteForumReply(int id)
+        public async Task<string> DeleteForumReply(int id)
         {
             var forumReply = await _context.ForumReply.FindAsync(id);
             if (forumReply == null)
             {
-                return NotFound();
+                return "找不到留言";
             }
-
-            _context.ForumReply.Remove(forumReply);
+            forumReply.ValIdity = false;
+            _context.ForumReply.Update(forumReply);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return "刪除成功";
         }
 
         private bool ForumReplyExists(int id)

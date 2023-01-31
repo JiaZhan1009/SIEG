@@ -52,6 +52,7 @@ namespace SIEG_API.Controllers
         [HttpGet("{id}")]
         public async Task<IEnumerable<G_ForumArticlesDTO>> GetForumArticle(int id)
         {
+
             var Article = await _context.ForumArticle.Where(ArticleId => ArticleId.ForumArticleId == id).Join(_context.Member, art => art.MemberId, member => member.MemberId, (art, member) => new G_ForumArticlesDTO
             {
                 ForumArticleId = art.ForumArticleId,
@@ -66,6 +67,7 @@ namespace SIEG_API.Controllers
                 Img = art.Img,
                 ReplyCount = art.ReplyCount,
                 NickName = member.NickName
+
             }).ToArrayAsync();
 
             return Article;

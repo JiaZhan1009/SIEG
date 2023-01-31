@@ -84,7 +84,7 @@
                 </div>
             </div>
             <div class="col-lg-8 col-xl-9 order-lg-2 order-1">
-                <div id="DeleteVue" style="float:right">
+                <div id="DeleteVue" style="float:right" v-if="mID==MemberId">
                     <div class="list-container">
                         <button class="edit_button" aria-label="Menu Button">
                             <div class="menu-icon-wrapper">
@@ -186,7 +186,7 @@
                         <span>
                             <a class="total_message">共{{totalreply}}則留言</a>
                             <span>
-                                <button id="Reply_btn" class="Reply_btn" type="button">我要回復!</button>
+                                <button id="Reply_btn" class="Reply_btn" type="button" @@click="login">我要回復!</button>
                                 <div class="Reply_block">
                                     <textarea id="text" class="describe" placeholder="請勿帶有仇恨言論"
                                               v-model="Reply"></textarea>
@@ -220,7 +220,7 @@
                     </div>
                     <template v-for="item in ReplyDTOs">
                         <!--留言身分列-->
-                        <div style="padding-top: 5px; float: left;">
+                        <div style="padding-top: 5px; float: left;" v-if="item.valIdity == true">
                             <svg viewBox="0 0 40 40" focusable="false" width="32" height="32">
                                 <path fill="#12ac76" d="M40 20a20 20 0 1 1-40 0 20 20 0 0 1 40 0"></path>
                                 <path fill="#006340"
@@ -228,17 +228,33 @@
                                 </path>
                             </svg>
                         </div>
+                        <!--刪除的留言身分列-->
+                        <div style="padding-top: 5px; float: left;" v-if="item.valIdity == false">
+                            <svg viewBox="0 0 40 40" focusable="false" width="32" height="32">
+                                <path fill="#000000" d="M40 20a20 20 0 1 1-40 0 20 20 0 0 1 40 0"></path>
+                                <path fill="#006340"
+                                      d="M16 7.9C12.4 7.4 9.3 6 9.3 6s5.5 4.3 5 5.3c-.4 1-4.2 0-4.2 0l4 2a9.7 9.7 0 0 0-1.5 4.6l.1 3.4a1.5 1.5 0 1 0 .8 2.9 8.3 8.3 0 0 0 6.2 5.3c.6 0 .6 2 .6 3.2-1.6 1-2.5 3-2 5v2.2a20.2 20.2 0 0 0 9.9-1.6l-.7-2.7v-.4l-.2-.4-.2-.4-.2-.3-.2-.3c-.7-1-1.7-1.6-2.9-1.8l.6-2.3s1.4-1 3-2.6l.4 1.3 1.4-2.5.9-1.8s3.8-10.3.8-13.9c-2.6-3-11-1.9-14.7-2.3">
+                                </path>
+                            </svg>
+                        </div>
                         <div class="name" style="border-bottom: 1px solid #ddd;">
-                            <span style="padding-left: 5px;">{{item.nickName}}</span>
+                            <span style="padding-left: 5px;" v-if="item.valIdity == true">{{item.nickName}}</span>
+                            <!--刪除的-->
+                            <span style="padding-left: 5px;" v-if="item.valIdity == false">這則留言已被刪除</span>
                             <!--留言-->
                             <div style="padding-left:37px;">
-                                <span style="word-break: break-all;white-space: pre-line;">{{item.forumReplyContent}}</span>
-
+                                <span style="word-break: break-all;white-space: pre-line;" v-if="item.valIdity == true">{{item.forumReplyContent}}</span>
+                                <!--刪除的-->
+                                <span style="word-break: break-all;white-space: pre-line;" v-if="item.valIdity == false">已經刪除的內容就像 SIEG 一樣，錯過是無法再相見的！</span>
                                 <p style="font-size: 13px;">
-                                    B{{item.floor}}·{{item.AddTime}} <button id="Reply2_btn"
-                                                                             style="background:none; color:#00000080 ;"
-                                                                             @@click="rp2Open(item.forumReplyId, item.floor, rp2Floor)">
-                                        回覆
+                                    B{{item.floor}}·{{item.AddTime}} <button id="Reply2_btn" style="background:none; color:#00000080;" v-if="item.valIdity == true" @@click="rp2Open(item.forumReplyId, item.floor, rp2Floor)">回覆</button>
+                                    <!--留言刪除鈕-->
+                                    <button type="button" style="background:none;float:right;color:red" v-if="item.valIdity == true && item.memberId==mID" @@click="delReply1(item.forumReplyId)">
+                                        <svg width="22px" height="18px" viewBox="0 0 32 32" id="i-trash"
+                                             xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentcolor"
+                                             stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                            <path d="M28 6 L6 6 8 30 24 30 26 6 4 6 M16 12 L16 24 M21 12 L20 24 M11 12 L12 24 M12 6 L13 2 19 2 20 6" />
+                                        </svg>
                                     </button>
                                 </p>
                             </div>
@@ -251,7 +267,7 @@
                                 <div class="showcontent" style="display: none;">
                                     <div v-if="rp2.forumReplyFloor == item.floor" v-for="rp2 in Reply2DTOs">
                                         <!--留言身分列-->
-                                        <div style="padding-top: 5px; float: left;">
+                                        <div style="padding-top: 5px; float: left;" v-if="rp2.valIdity == true">
                                             <svg viewBox="0 0 40 40" focusable="false" width="32" height="32">
                                                 <path fill="#12ac76" d="M40 20a20 20 0 1 1-40 0 20 20 0 0 1 40 0"></path>
                                                 <path fill="#006340"
@@ -259,11 +275,39 @@
                                                 </path>
                                             </svg>
                                         </div>
-                                        <div class="name">
+                                        <!--刪除的-->
+                                        <div style="padding-top: 5px; float: left;" v-if="rp2.valIdity == false">
+                                            <svg viewBox="0 0 40 40" focusable="false" width="32" height="32">
+                                                <path fill="#000000" d="M40 20a20 20 0 1 1-40 0 20 20 0 0 1 40 0"></path>
+                                                <path fill="#006340"
+                                                      d="M16 7.9C12.4 7.4 9.3 6 9.3 6s5.5 4.3 5 5.3c-.4 1-4.2 0-4.2 0l4 2a9.7 9.7 0 0 0-1.5 4.6l.1 3.4a1.5 1.5 0 1 0 .8 2.9 8.3 8.3 0 0 0 6.2 5.3c.6 0 .6 2 .6 3.2-1.6 1-2.5 3-2 5v2.2a20.2 20.2 0 0 0 9.9-1.6l-.7-2.7v-.4l-.2-.4-.2-.4-.2-.3-.2-.3c-.7-1-1.7-1.6-2.9-1.8l.6-2.3s1.4-1 3-2.6l.4 1.3 1.4-2.5.9-1.8s3.8-10.3.8-13.9c-2.6-3-11-1.9-14.7-2.3">
+                                                </path>
+                                            </svg>
+                                        </div>
+                                        <div class="name" v-if="rp2.valIdity == true">
                                             <span style="padding-left: 5px;">{{rp2.nickName}}</span>
                                             <!--留言-->
                                             <div style="padding-left:37px;">
                                                 <span style="word-break: break-all;white-space: pre-line;">{{rp2.forumReply2Content}}</span>
+                                                <p style="font-size: 13px;">
+                                                    B{{rp2.forumReplyFloor}}-{{rp2.floor}}·{{rp2.建立時間}}
+                                                    <!--留言刪除鈕-->
+                                                    <button type="button" style="background:none;float:right;color:red" v-if="rp2.valIdity == true&&rp2.memberId==mID" @@click="delReply2(rp2.forumReply2Id)">
+                                                        <svg width="22px" height="18px" viewBox="0 0 32 32" id="i-trash"
+                                                             xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentcolor"
+                                                             stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                                            <path d="M28 6 L6 6 8 30 24 30 26 6 4 6 M16 12 L16 24 M21 12 L20 24 M11 12 L12 24 M12 6 L13 2 19 2 20 6" />
+                                                        </svg>
+                                                    </button>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <!--刪除的-->
+                                        <div class="name" v-if="rp2.valIdity == false">
+                                            <span style="padding-left: 5px;">這則留言已被刪除</span>
+                                            <!--留言-->
+                                            <div style="padding-left:37px;">
+                                                <span style="word-break: break-all;white-space: pre-line;">已經刪除的內容就像 SIEG 一樣，錯過是無法再相見的！</span>
                                                 <p style="font-size: 13px;">
                                                     B{{rp2.forumReplyFloor}}-{{rp2.floor}}·{{rp2.建立時間}}
                                                 </p>
@@ -298,6 +342,7 @@
             el: "#ForumArticleVue",
             name: "ForumArticleVue",
             data: {
+                mID: "",
                 PostDTOs: [],
                 Date: [],
                 Fliter: "",
@@ -332,6 +377,7 @@
             methods: {
                 getPostDTOs: function () {
                     let _this = this;
+                    _this.mID = sessionStorage.getItem("mID");
                     axios.get(`${webApiBaseAddress}/api/G_ForumArticles/${articleId}`).then(
                         response => {
                             _this.PostDTOs = response.data[0];
@@ -340,40 +386,49 @@
                             item = _this.PostDTOs;
                             _this.Date = moment(item.addTime).add(8, 'hours').format("YYYY年M月D日 h:m A");
                             PostList.push(item);
-                            //console.log(response.data)
+                            console.log(_this.PostDTOs)
                         }
                     );
                 },
                 like: function (Post) {
                     //console.log(Post)
                     let _this = this;
-                    var request = {};
-                    let PostId = articleId;
-                    request.ForumArticleId = PostId;
-                    request.MemberId = Post.memberId;
-                    request.Category = Post.category;
-                    request.ProductCategoryId = Post.productCategoryId;
-                    request.Title = Post.title;
-                    request.ArticleContent = Post.articleContent;
-                    request.LikeCount = Post.likeCount + 1;
-                    request.Img = Post.img;
-                    axios.put(`${webApiBaseAddress}/api/G_ForumArticles/${PostId}`, request).then(
-                        response => {
-                            //alert(response.data);
-                            _this.getPostDTOs();
-                        }
-                    );
+                    if(_this.mID == null){
+                        window.location = "/D_Personal";
+                    }else{
+                        var request = {};
+                        let PostId = articleId;
+                        request.ForumArticleId = PostId;
+                        request.MemberId = Post.memberId;
+                        request.Category = Post.category;
+                        request.ProductCategoryId = Post.productCategoryId;
+                        request.Title = Post.title;
+                        request.ArticleContent = Post.articleContent;
+                        request.LikeCount = Post.likeCount + 1;
+                        request.Img = Post.img;
+                        axios.put(`${webApiBaseAddress}/api/G_ForumArticles/${PostId}`, request).then(
+                            response => {
+                                //alert(response.data);
+                                _this.getPostDTOs();
+                            }
+                        );
+                    }
                 },
                 book: function () {
-                    var _this = this;
-                    var request = {};
-                    request.MemberId = 101;
-                    request.ValIdity = true;
-                    request.ForumArticleId = _this.PostDTOs.forumArticleId;
-                    axios.post(`${webApiBaseAddress}/api/G_FaviriteArticles`, request).then(
-                        response => {
-                        }
-                    );
+                    var mID = sessionStorage.getItem("mID");
+                    if(mID == null){
+                        window.location = "/D_Personal";
+                    }else{
+                        var _this = this;
+                        var request = {};
+                        request.MemberId = mID;
+                        request.ValIdity = true;
+                        request.ForumArticleId = _this.PostDTOs.forumArticleId;
+                        axios.post(`${webApiBaseAddress}/api/G_FaviriteArticles`, request).then(
+                            response => {
+                            }
+                        );
+                    }
                 },
 
             },
@@ -387,6 +442,7 @@
             el: "#ReplyVue",
             name: "ReplyVue",
             data: {
+                mID:"",
                 ReplyDTOs: [],
                 Reply2DTOs: [],
                 lastFloor: [],
@@ -429,6 +485,7 @@
             methods: {
                 getReplyDTOs: function () {
                     let _this = this;
+                    _this.mID = sessionStorage.getItem("mID");
                     axios.get(`${webApiBaseAddress}/api/G_ForumReply1/${articleid}`).then(
                         response => {
                             _this.ReplyDTOs = response.data;
@@ -438,7 +495,7 @@
                                 let item = {};
                                 let floor = {};
                                 item = _this.ReplyDTOs[i];
-                                item.AddTime = moment(_this.ReplyDTOs[i].addTime).add(8, 'hours').format("M月D日 h:m A");
+                                item.AddTime = moment(_this.ReplyDTOs[i].addTime).add(8, 'hours').format("M月D日 h:mm A");
                                 EmployeeList.push(item);
                                 floor = _this.ReplyDTOs[i].floor + 1;
                                 lastfloorList.push(floor);
@@ -446,7 +503,7 @@
                             _this.ReplyDTOs = EmployeeList;
                             lastFloor = lastfloorList.slice(-1);
                             _this.getTotalReply();
-                            //console.log(response.data)
+                            //console.log(_this.ReplyDTOs)
                         }
                     );
                 },
@@ -463,7 +520,7 @@
                                 let floor = {};
                                 item = _this.Reply2DTOs[i];
                                 floor = _this.Reply2DTOs[i].forumReplyFloor;
-                                item.建立時間 = moment(_this.Reply2DTOs[i].addTime).add(8, 'hours').format("M月D日 h:m A");
+                                item.建立時間 = moment(_this.Reply2DTOs[i].addTime).add(8, 'hours').format("M月D日 h:mm A");
                                 EmployeeList.push(item);
                                 FloorList.push(floor);
                                 let rparray = {
@@ -509,10 +566,11 @@
                     _this.articleReply();
                 },
                 insert: function () {
+                    var mID = sessionStorage.getItem("mID");
                     var _this = this;
                     var request = {};
                     request.ForumArticleId = articleid;
-                    request.MemberId = "101";
+                    request.MemberId = mID;
                     if (lastFloor[0] == null) {
                         request.Floor = 1;
                     } else {
@@ -531,23 +589,50 @@
                         }
                     );
                 },
-                rp2Open: function (Reply1Id, rp1Floor, rp2Floor) {
-                    var _this = this;
-                    $(".Reply2_block").slideToggle();
-                    _this.rp2Request.articleId = articleid;
-                    _this.rp2Request.forumReplyId = Reply1Id;
-                    _this.rp2Request.memberId = "101";
-                    _this.rp2Request.forumReplyFloor = rp1Floor;
-                    var rp2FloorObject = [];
-                    for (let i = 0; i < rp2Floor.length; i++) {
-                        if (rp2Floor[i].rp1floor == rp1Floor) {
-                            rp2FloorObject.push(rp2Floor[i]);
+                delReply1: function (replyId) {
+                    let _this = this;
+                    var ret = Swal.fire({
+                        title: '確定要刪除留言?',
+                        text: "刪除便不可恢復!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            axios.delete(`${webApiBaseAddress}/api/G_ForumReply1/${replyId}`).then
+                            (
+                                response => {
+                                    _this.getReplyDTOs();
+                                }
+                            )
                         }
-                    };
-                    if (rp2FloorObject.length == 0) {
-                        _this.rp2Request.Floor = 1;
+                    });
+                },
+                rp2Open: function (Reply1Id, rp1Floor, rp2Floor) {
+                    var mID = sessionStorage.getItem("mID");
+                    if (mID == null) {
+                        window.location = "/D_Personal";
+
                     } else {
-                        _this.rp2Request.Floor = rp2FloorObject[0].rpamount + 1;
+                        var _this = this;
+                        $(".Reply2_block").slideToggle();
+                        _this.rp2Request.articleId = articleid;
+                        _this.rp2Request.forumReplyId = Reply1Id;
+                        _this.rp2Request.memberId = mID;
+                        _this.rp2Request.forumReplyFloor = rp1Floor;
+                        var rp2FloorObject = [];
+                        for (let i = 0; i < rp2Floor.length; i++) {
+                            if (rp2Floor[i].rp1floor == rp1Floor) {
+                                rp2FloorObject.push(rp2Floor[i]);
+                            }
+                        };
+                        if (rp2FloorObject.length == 0) {
+                            _this.rp2Request.Floor = 1;
+                        } else {
+                            _this.rp2Request.Floor = rp2FloorObject[0].rpamount + 1;
+                        }
                     }
                 },
                 rp2insert: function () {
@@ -572,6 +657,27 @@
                         }
                     );
                 },
+                delReply2: function (reply2Id) {
+                    let _this = this;
+                    var ret = Swal.fire({
+                        title: '確定要刪除留言?',
+                        text: "刪除便不可恢復!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            axios.delete(`${webApiBaseAddress}/api/G_ForumReply2/${reply2Id}`).then
+                            (
+                                response => {
+                                    _this.getReply2DTOs();
+                                }
+                            )
+                        }
+                    });
+                },
                 articleReply: function () {
                     let _this = this;
                     var request = {};
@@ -586,24 +692,49 @@
                         }
                     );
                 },
+                login: function () {
+                    var mID = sessionStorage.getItem("mID");
+                    if (mID == null) {
+                        window.location = "/D_Personal";
+
+                    }
+                },
             }
         });
     </script>
 
     <script>
         var articleid = sessionStorage.getItem("fID");
+        var mID = sessionStorage.getItem("mID");
         var webApiBaseAddress = "https://localhost:7139";
         var DeleteVue = new Vue({
             el: "#DeleteVue",
             name: "DeleteVue",
-            data: {},
+            data: {
+                mID: mID,
+                MemberId:"",
+            },
             mounted: function () {
-                /*刪除修改選單*/
-                document.querySelector('.edit_button').addEventListener('click', function () {
-                    document.querySelector('.list-container').classList.toggle('active');
+                let _this = this;
+                _this.getMemberId();
+                $(function () {
+                    setTimeout(function () {
+                        /*刪除修改選單*/
+                        document.querySelector('.edit_button').addEventListener('click', function () {
+                            document.querySelector('.list-container').classList.toggle('active');
+                        });
+                    }, 1000);
                 });
             },
             methods: {
+                getMemberId: function () {
+                    let _this = this;
+                    axios.get(`${webApiBaseAddress}/api/G_ForumArticles/${articleId}`).then(
+                        response => {
+                            _this.MemberId = response.data[0].memberId;
+                        }
+                    );
+                },
                 deleteArticle: function () {
                     let _this = this;
                     var ret = Swal.fire({

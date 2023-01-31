@@ -71,7 +71,7 @@
                         request.adId = 0;
                         request.adImg = $('#ad_img').val();
                         request.adLink = $('#ad_link').val();
-                        request.adValIdity = $('#ad_state').val();
+                        request.adValIdity = $('#ad_state').val() == "true" ? true : false;
 
                         axios.post(`${webApiBaseAddress}/api/E_Ad`, request).then(
                             response => {
@@ -85,7 +85,7 @@
                                 //alert(response.data);
                                 $('#ad_img').val("");
                                 $('#ad_link').val("");
-                                $('#ad_state').val("");
+                                $('#ad_state').val("")[0].selectedIndex = 0;
                             }
                         );
                     }

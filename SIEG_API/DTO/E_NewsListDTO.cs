@@ -9,5 +9,6 @@
         public string? newslistSort { get; set; }
         public DateTime? newslistTime { get; set; }
         public int newslistviewcount { get; set; }
+        public int newsValIdity { get; set; }
     }
 }

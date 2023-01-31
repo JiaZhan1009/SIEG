@@ -63,10 +63,11 @@ namespace SIEG_API.Controllers
         public async Task<IEnumerable<E_ProductListDTO>> Below1500()
         {
             var ProductList = await _context.Product.Include(o => o.ProductCategory)
-                .Where(x => x.ValIdity == true && x.Price <= 1000)
+                .Where(x => x.ValIdity == true && x.Price <= 1500)
                 .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
                 .Select(g => new E_ProductListDTO
                 {
+                    productlistId = g.Min(x => x.ProductId),
                     productlistSellCount = g.Count(),
                     productlistName = g.Key.ProductName,
                     productlistImg = g.Key.ImgFront,
@@ -85,6 +86,7 @@ namespace SIEG_API.Controllers
                 .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
                 .Select(g => new E_ProductListDTO
                 {
+                    productlistId = g.Min(x => x.ProductId),
                     productlistSellCount = g.Count(),
                     productlistName = g.Key.ProductName,
                     productlistImg = g.Key.ImgFront,
@@ -103,6 +105,7 @@ namespace SIEG_API.Controllers
                 .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
                 .Select(g => new E_ProductListDTO
                 {
+                    productlistId = g.Min(x => x.ProductId),
                     productlistSellCount = g.Count(),
                     productlistName = g.Key.ProductName,
                     productlistImg = g.Key.ImgFront,
@@ -121,6 +124,7 @@ namespace SIEG_API.Controllers
                 .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
                 .Select(g => new E_ProductListDTO
                 {
+                    productlistId = g.Min(x => x.ProductId),
                     productlistSellCount = g.Count(),
                     productlistName = g.Key.ProductName,
                     productlistImg = g.Key.ImgFront,
@@ -139,6 +143,7 @@ namespace SIEG_API.Controllers
                 .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
                 .Select(g => new E_ProductListDTO
                 {
+                    productlistId = g.Min(x => x.ProductId),
                     productlistSellCount = g.Count(),
                     productlistName = g.Key.ProductName,
                     productlistImg = g.Key.ImgFront,
@@ -253,6 +258,7 @@ namespace SIEG_API.Controllers
                 .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
                 .Select(g => new E_ProductListDTO
                 {
+                    productlistId = g.Min(x => x.ProductId),
                     productlistSellCount = g.Count(),
                     productlistName = g.Key.ProductName,
                     productlistImg = g.Key.ImgFront,
@@ -272,6 +278,7 @@ namespace SIEG_API.Controllers
                 .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
                 .Select(g => new E_ProductListDTO
                 {
+                    productlistId = g.Min(x => x.ProductId),
                     productlistSellCount = g.Count(),
                     productlistName = g.Key.ProductName,
                     productlistImg = g.Key.ImgFront,
@@ -291,6 +298,7 @@ namespace SIEG_API.Controllers
                 .GroupBy(x => new { x.ProductCategory.ProductName, x.ImgFront })
                 .Select(g => new E_ProductListDTO
                 {
+                    productlistId = g.Min(x => x.ProductId),
                     productlistSellCount = g.Count(),
                     productlistName = g.Key.ProductName,
                     productlistImg = g.Key.ImgFront,

@@ -68,6 +68,7 @@
             data: {
                 mID: sessionStorage.getItem("mID"),
                 FaviriteProductsDTOes: [],
+                PersonalDTOes: {},
                 //Filter: "",
                 //商品名稱: null,
                 //Image: null,
@@ -80,6 +81,7 @@
             mounted: function () {
                 let _this = this;
                 _this.getFaviriteProductsDTO();
+                _this.getPersonalDTOes();
             },
             methods: {
                 getFaviriteProductsDTO: function () {
@@ -114,6 +116,14 @@
                     sessionStorage.setItem("pID", ProductfaviriteProductsId);
                     window.location = "/product_info/index";
                 },
+                 getPersonalDTOes: function () {
+					let _this = this;
+					axios.get(`${webApiBaseAddress}/api/B_personalinformation/${_this.mID}`).then(
+						response => {
+							_this.PersonalDTOes = response.data						
+						}
+					);
+				},
             },
         });
 

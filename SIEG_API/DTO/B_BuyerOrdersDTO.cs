@@ -7,6 +7,7 @@
         public string? SizeId { get; set; }
         public int? Price { get; set; }
         public DateTime? CompleteTime { get; set; }
+        public DateTime? DoneTime { get; set; }
         public string? ShippingAddress { get; set; }
         public string? State { get; set; }
         public string? Receiver { get; set; }

@@ -55,6 +55,7 @@ namespace SIEG_API.Controllers
             return personal;
         }
 
+
         [HttpGet("Kyccertified/{Memberid}")]
         public async Task<ActionResult<B_KyccertifiedDTO>> GetMember2(int Memberid)
         {

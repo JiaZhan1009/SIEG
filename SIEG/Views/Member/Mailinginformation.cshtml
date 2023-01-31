@@ -63,12 +63,14 @@
             data: {
                 mID: sessionStorage.getItem("mID"),
                 MailinginformationDTOes: {},
+                PersonalDTOes: {},
                 Filter: "",
 
             },
             mounted: function () {
                 let _this = this;
                 _this.getMailinginformationDTOes();
+                _this.getPersonalDTOes();
             },
             methods: {
                 getMailinginformationDTOes: function () {
@@ -118,6 +120,14 @@
                     //    );
                     //}
                 },
+                getPersonalDTOes: function () {
+					let _this = this;
+					axios.get(`${webApiBaseAddress}/api/B_personalinformation/${_this.mID}`).then(
+						response => {
+							_this.PersonalDTOes = response.data						
+						}
+					);
+				},
             },
         });
 

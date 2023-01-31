@@ -66,6 +66,7 @@ namespace SIEG_API.Controllers
             }
             Order Buyer = await _context.Order.FindAsync(BuyerOrders.OrderId);
             Buyer.State= BuyerOrders.State;
+            Buyer.DoneTime = DateTime.Now;
             _context.Entry(Buyer).State = EntityState.Modified;
 
             try

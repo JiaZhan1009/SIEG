@@ -77,7 +77,7 @@ namespace SIEG_API.Controllers
             }
             SellerAddProduct pricemodification = await _context.SellerAddProduct.FindAsync(sellerAddProduct.SellerAddProductId);
             pricemodification.Price = sellerAddProduct.Price;
-            pricemodification.FinalPrice = pricemodification.FinalPrice;
+            pricemodification.FinalPrice = sellerAddProduct.FinalPrice;
             pricemodification.AddTime = DateTime.Now;
             _context.Entry(pricemodification).State = EntityState.Modified;
 

@@ -76,6 +76,7 @@
                 mID: sessionStorage.getItem("mID"),
                 Bankcode: null,
                 Sellerinformationdtoes: {},
+                PersonalDTOes: {},
                 BankCodesDTOes: [],
 
             },
@@ -83,6 +84,7 @@
                 let _this = this;
                 _this.getSellerinformationDTOes();
                 _this.getBankCodesDTOes();
+                _this.getPersonalDTOes();
             },
             methods: {
                 getSellerinformationDTOes: function () {
@@ -152,6 +154,14 @@
                     //    );
                     //}
                 },
+                getPersonalDTOes: function () {
+					let _this = this;
+					axios.get(`${webApiBaseAddress}/api/B_personalinformation/${_this.mID}`).then(
+						response => {
+							_this.PersonalDTOes = response.data						
+						}
+					);
+				},
             },
         });
 

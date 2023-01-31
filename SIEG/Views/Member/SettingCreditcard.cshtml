@@ -123,6 +123,7 @@
             data: {
                 mID: sessionStorage.getItem("mID"),
                 PaymentInformationDTOes: {},
+                PersonalDTOes: {},
                 Filter: "",
                 creditCard4digits: "",
                 BankAccount4digits:"",
@@ -134,6 +135,7 @@
                 })
                 let _this = this;
                 _this.getPaymentInformationDTOes();
+                _this.getPersonalDTOes();
 
             },
             methods: {
@@ -149,6 +151,14 @@
                         }
                     );
                 },
+                getPersonalDTOes: function () {
+					let _this = this;
+					axios.get(`${webApiBaseAddress}/api/B_personalinformation/${_this.mID}`).then(
+						response => {
+							_this.PersonalDTOes = response.data						
+						}
+					);
+				},
             },
         });
 

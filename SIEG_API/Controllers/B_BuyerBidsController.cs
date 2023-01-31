@@ -77,10 +77,10 @@ namespace SIEG_API.Controllers
             pricemodification.Price = BuyerBidid1.Price;
             pricemodification.FinalPrice = BuyerBidid1.FinalPrice;
             pricemodification.BidTime = DateTime.Now;
-            Order order = await _context.Order.FindAsync(pricemodification.OrderId);
-            order.BuyerPrice= BuyerBidid1.FinalPrice;
+            //Order order = await _context.Order.FindAsync(pricemodification.OrderId);
+            //order.BuyerPrice= BuyerBidid1.FinalPrice;
             _context.Entry(pricemodification).State = EntityState.Modified;
-            _context.Entry(order).State = EntityState.Modified;
+            //_context.Entry(order).State = EntityState.Modified;
             try
             {
                 await _context.SaveChangesAsync();
@@ -110,6 +110,7 @@ namespace SIEG_API.Controllers
             }
             Order Returns = await _context.Order.FindAsync(BuyerReturns.OrderId);
             Returns.State = BuyerReturns.State;
+            Returns.DoneTime = DateTime.Now;
             _context.Entry(Returns).State = EntityState.Modified;
 
             try

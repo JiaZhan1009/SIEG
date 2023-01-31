@@ -437,10 +437,7 @@
             mounted: async function () {
                 _this = this;
                 _this.pID = sessionStorage.getItem("pID");
-                sessionStorage.setItem("mID", _this.mID);
-                if (_this.mID == null || _this.pID == null) {
-                    alert(`No pID:${_this.pID}, mID:${_this.mID}`)
-                }
+                sessionStorage.setItem("mID", _this.mID);        
 
                 //await _this.getProductInfo();
                 await _this.getRelatedProducts();

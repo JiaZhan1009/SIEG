@@ -268,12 +268,12 @@ namespace SIEG_API.Controllers
         [HttpGet("GetRelatedProducts/{pID}")]
         public async Task<IEnumerable<J_ProductInfoDTO>> GetRelatedProducts(int pID)
         {
-            var pCateName = await _context.Product.Include(p => p.ProductCategory)
-                .Where(p => p.ProductId == pID).Select(p=>p.ProductCategory.CategoryName).FirstAsync();
+            var pCateList = await _context.Product.Include(p => p.ProductCategory)
+                .Where(p => p.ProductId == pID).Select(p=> new { p.ProductCategory.CategoryName, p.ProductCategoryId }).FirstAsync();
 
             var result = await _context.ProductCategory
                 .Join(_context.Product, pc => pc.ProductCategoryId, p => p.ProductCategoryId, (pc, p) => new { pc, p })
-                .Where(i => i.pc.CategoryName == pCateName).Select(i => new J_ProductInfoDTO
+                .Where(i => i.pc.CategoryName == pCateList.CategoryName).Select(i => new J_ProductInfoDTO
                 {
                     pID = i.p.ProductId,
                     pName = i.pc.ProductName,
@@ -291,6 +291,15 @@ namespace SIEG_API.Controllers
                     filteredList.Add(item);
                 }
             }
+            var quote = await GetSizeAndQuote(pCateList.ProductCategoryId);
+            filteredList.Join(quote, f => f.pID, q => q.pID, (f, q) => new J_ProductInfoDTO
+            {
+                pID = f.pID,
+                pName = f.pName,
+                pImg = f.pImg,
+
+            });
+
 
             return filteredList;
         }

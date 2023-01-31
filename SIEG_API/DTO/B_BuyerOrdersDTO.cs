@@ -12,7 +12,6 @@
         public string? State { get; set; }
         public string? Receiver { get; set; }
         public int OrderId { get; set; }
-
         public string? Model { get; set; }
     }
 }

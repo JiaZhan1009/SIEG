@@ -59,7 +59,7 @@ namespace SIEG_API.Controllers
                   Title = x.News.Title,
                   AddTime = x.News.AddTime,
                   Img = x.News.Img,
-              }).ToListAsync(); ;
+              }).ToListAsync(); 
             var PostFavorites = new List<B_FaviriteNewsDTO>() { };         
             foreach (var item in FaviriteAritcleAll)
             {

@@ -267,8 +267,7 @@
             el: "#appVue",
             name: "appVue",
             data: {
-                mID: sessionStorage.setItem("mID", 102),
-                mIDD: sessionStorage.getItem("mID"),
+                mID: sessionStorage.getItem("mID"),
                 MemberDTOes: [],
                 BuyerBidsDTOes: [],
                 PersonalDTOes: {},
@@ -280,6 +279,7 @@
             mounted: function () {
                 let _this = this;
                 //localStorage.setItem("GETmID", _this.mIDD)
+                $('.SidebarBuyerOrders').css("background", "#ededed");
                 _this.getMemberDTOes();
                 _this.getBuyerBidsDTOes();
                 _this.getPersonalDTOes();
@@ -288,7 +288,7 @@
             methods: {
                 getMemberDTOes: function () {
                     let _this = this;
-                    axios.get(`${webApiBaseAddress}/api/B_BuyerOrders/${_this.mIDD}`).then(
+                    axios.get(`${webApiBaseAddress}/api/B_BuyerOrders/${_this.mID}`).then(
                         response => {
                             _this.MemberDTOes = response.data;
                             var MemberList = [];
@@ -307,7 +307,7 @@
                 },
                 getBuyerBidsDTOes: function () {
                     let _this = this;
-                    axios.get(`${webApiBaseAddress}/api/B_BuyerBids/${_this.mIDD}`).then(
+                    axios.get(`${webApiBaseAddress}/api/B_BuyerBids/${_this.mID}`).then(
                         response => {
                             _this.BuyerBidsDTOes = response.data;
                             var BuyerBidsList = [];
@@ -498,7 +498,7 @@
                     }
                     else {
                         request.orderId = _this.FilterBuyerOrders;
-                        axios.post(`${webApiBaseAddress}/api/B_BuyerOrders/FilterBuyerOrders/${_this.mIDD}`, request).then(
+                        axios.post(`${webApiBaseAddress}/api/B_BuyerOrders/FilterBuyerOrders/${_this.mID}`, request).then(
                             response => {
                                 _this.MemberDTOes = response.data;
                                 var MemberList = [];
@@ -551,7 +551,7 @@
                 },
                 getPersonalDTOes: function () {
                     let _this = this;
-                    axios.get(`${webApiBaseAddress}/api/B_personalinformation/${_this.mIDD}`).then(
+                    axios.get(`${webApiBaseAddress}/api/B_personalinformation/${_this.mID}`).then(
                         response => {
                             _this.PersonalDTOes = response.data
                         }

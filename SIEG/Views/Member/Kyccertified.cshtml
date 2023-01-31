@@ -102,7 +102,8 @@
 			el: "#appVue",
 			name: "appVue",
 			data: {
-				mID: sessionStorage.getItem("mID"),
+				mID: sessionStorage.setItem("mID", 101),
+				mIDD: sessionStorage.getItem("mID"),
 				KyccertifiedDTO: {},
 				PersonalDTOes: {},
 				IdCardFront: null,
@@ -112,6 +113,7 @@
 				let _this = this;
 				_this.getKyccertifiedDTOes();
 				_this.getPersonalDTOes();
+				$('.SidebarKYC').css("background", "#ededed");
 				var input = document.getElementById('image_uploads');
 				var preview = document.querySelector('.preview');
 				input.addEventListener('change', updateImageDisplay); function updateImageDisplay() {
@@ -170,10 +172,10 @@
 					//	alert("請兩張照片一起上傳")
 					//}
 					//else {
-					request.MemberId = _this.mID;
+					request.MemberId = _this.mIDD;
 					request.IdCardFront = "/images/Benicon/memberidcard/" + _this.IdCardFront;
 					request.IdCardBack = "/images/Benicon/memberidcard/" + _this.IdCardBack;
-					axios.put(`${webApiBaseAddress}/api/B_personalinformation/Kyccertified/${_this.mID}`, request).then(
+					axios.put(`${webApiBaseAddress}/api/B_personalinformation/Kyccertified/${_this.mIDD}`, request).then(
 						response => {
 							alert(response.data);
 						}
@@ -182,7 +184,7 @@
 				},
 				getKyccertifiedDTOes: function () {
 					let _this = this;
-					axios.get(`${webApiBaseAddress}/api/B_personalinformation/Kyccertified/${_this.mID}`).then(
+					axios.get(`${webApiBaseAddress}/api/B_personalinformation/Kyccertified/${_this.mIDD}`).then(
 						response => {
 							_this.KyccertifiedDTO = response.data
 						}
@@ -190,9 +192,9 @@
 				},
 				getPersonalDTOes: function () {
 					let _this = this;
-					axios.get(`${webApiBaseAddress}/api/B_personalinformation/${_this.mID}`).then(
+					axios.get(`${webApiBaseAddress}/api/B_personalinformation/${_this.mIDD}`).then(
 						response => {
-							_this.PersonalDTOes = response.data						
+							_this.PersonalDTOes = response.data
 						}
 					);
 				},

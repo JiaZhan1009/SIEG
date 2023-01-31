@@ -46,7 +46,7 @@
                                 </div>
                                 <ul class="sub_child">
                                     <li v-for="subitem in ProductBrandDTO.filter(x => x.productsortName == item.productsortName)">
-                                        <a @@click="filterProductBrand(subitem.productsortBrandName, subitem.productsortName)">{{subitem.productsortBrand}}</a>
+                                        <a @@click="filterProductBrand(subitem.productsortBrand, subitem.productsortName)">{{subitem.productsortBrand}}</a>
                                     </li>
                                 </ul>
                             </li>
@@ -56,33 +56,33 @@
                     <div class="widget price_range">
                         <div class="widget_title">價格<span>範圍</span></div>
                         <div class="form-check" @@click="clickChkbox">
-                            <input class="form-check-input" type="checkbox" value="" id="below500" @@click="Below500">
-                            <label class="form-check-label" for="below500" @@click="Below500">
-                                500 以下
-                            </label>
-                        </div>
-                        <div class="form-check" @@click="clickChkbox">
-                            <input class="form-check-input" type="checkbox" value="" id="below1000" @@click="Below1000">
-                            <label class="form-check-label" for="below1000" @@click="Below1000">
-                                500 - 1000
-                            </label>
-                        </div>
-                        <div class="form-check" @@click="clickChkbox">
                             <input class="form-check-input" type="checkbox" value="" id="below1500" @@click="Below1500">
                             <label class="form-check-label" for="below1500" @@click="Below1500">
-                                1000 - 1500
+                                1500 以下
                             </label>
                         </div>
                         <div class="form-check" @@click="clickChkbox">
-                            <input class="form-check-input" type="checkbox" value="" id="below2000" @@click="Below2000">
-                            <label class="form-check-label" for="below2000" @@click="Below2000">
-                                1500 - 2000
+                            <input class="form-check-input" type="checkbox" value="" id="below3000" @@click="Below3000">
+                            <label class="form-check-label" for="below3000" @@click="Below3000">
+                                1500 - 3000
                             </label>
                         </div>
                         <div class="form-check" @@click="clickChkbox">
-                            <input class="form-check-input" type="checkbox" value="" id="more2000" @@click="More2000">
-                            <label class="form-check-label" for="more2000" @@click="More2000">
-                                2000 以上
+                            <input class="form-check-input" type="checkbox" value="" id="below4500" @@click="Below4500">
+                            <label class="form-check-label" for="below4500" @@click="Below4500">
+                                3000 - 4500
+                            </label>
+                        </div>
+                        <div class="form-check" @@click="clickChkbox">
+                            <input class="form-check-input" type="checkbox" value="" id="below6000" @@click="Below6000">
+                            <label class="form-check-label" for="below6000" @@click="Below6000">
+                                4500 - 6000
+                            </label>
+                        </div>
+                        <div class="form-check" @@click="clickChkbox">
+                            <input class="form-check-input" type="checkbox" value="" id="more6000" @@click="More6000">
+                            <label class="form-check-label" for="more6000" @@click="More6000">
+                                6000 以上
                             </label>
                         </div>
                     </div>
@@ -103,14 +103,14 @@
                                     <h4><a @@click="hrefToInfo(item.productlistId)" class="two-row">{{item.productlistName}}</a></h4>
                                     <div class="sale">
                                         <div class="price">{{item.productPrice}}</div>
-                                        <div class="sold">剩餘{{item.productlistSellCount}}件</div>
+                                        @*<div class="sold">剩餘{{item.productlistSellCount}}件</div>*@
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!-- 頁碼 -->
-                    <nav aria-label="Page navigation" id="pagination">
+                    @*<nav aria-label="Page navigation" id="pagination">
                         <ul class="pagination justify-content-center">
                             <li class="page-item">
                                 <a class="page-link" href="product_list.html"><i class="bi bi-chevron-left"></i></a>
@@ -124,7 +124,7 @@
                                 </a>
                             </li>
                         </ul>
-                    </nav>
+                    </nav>*@
                     <partial name="_NoDataPartial" class="no_data" />
                 </div>
             </div>
@@ -159,7 +159,7 @@
                 productsortBrand: null,
                 indexPSortName: sessionStorage.getItem('indexPSortName'),
                 indexPBrand: sessionStorage.getItem('indexPBrand'),
-                
+
             },
             mounted: function () {
 
@@ -182,7 +182,7 @@
 
                 _this.sort();
 
-                sessionStorage.removeItem("pPrice");
+
             },
             methods: {
                 sort: function () {
@@ -193,7 +193,7 @@
                         _this.indexFilterBrand();
                     } else if (_this.Filter == null && _this.indexPSortName != null && _this.indexPBrand == null) {
                         _this.headerFilterSort();
-                    }else{
+                    } else {
                         _this.filterProductListDTO();
                     }
                     //_this.headerFilterSort();
@@ -289,6 +289,7 @@
                 filterProductSort: function (sort) {
                     let _this = this;
                     var request = {};
+
 
                     sessionStorage.setItem("pKeyword", sort);
                     request.productlistSort = sort;
@@ -424,76 +425,6 @@
                     sessionStorage.removeItem('indexPBrand');
                     sessionStorage.removeItem('indexPSortName');
                 },
-                Below500: function () {
-                    let _this = this;
-
-                    var checkbox = document.getElementById('below500');
-
-                    if (checkbox.checked == true) {
-                        axios.get(`${webApiBaseAddress}/api/E_ProductList/Below500`).then(
-                            response => {
-                                _this.ProductListDTO = response.data;
-                                var ProductList = [];
-                                for (let i = 0; i < _this.ProductListDTO.length; i++) {
-                                    let item = {};
-                                    item = _this.ProductListDTO[i];
-                                    ProductList.push(item);
-
-                                    item.productPrice = "$" + item.productlistPrice.toLocaleString();
-                                }
-                                _this.ProductListDTO = ProductList;
-                                console.log(_this.ProductListDTO);
-                                //console.log(ProductList.length);
-                                if (ProductList.length == 0) {
-                                    $(".no_data").show();
-                                    $("#pagination").hide();
-                                }
-                                else {
-                                    $(".no_data").hide();
-                                    $("#pagination").show();
-                                }
-                            }
-                        );
-                    }
-                    else {
-                        _this.getProductListDTO();
-                    }
-                },
-                Below1000: function () {
-                    let _this = this;
-
-                    var checkbox = document.getElementById('below1000');
-
-                    if (checkbox.checked == true) {
-                        axios.get(`${webApiBaseAddress}/api/E_ProductList/Below1000`).then(
-                            response => {
-                                _this.ProductListDTO = response.data;
-                                var ProductList = [];
-                                for (let i = 0; i < _this.ProductListDTO.length; i++) {
-                                    let item = {};
-                                    item = _this.ProductListDTO[i];
-                                    ProductList.push(item);
-
-                                    item.productPrice = "$" + item.productlistPrice.toLocaleString();
-                                }
-                                _this.ProductListDTO = ProductList;
-                                console.log(_this.ProductListDTO);
-                                //console.log(ProductList.length);
-                                if (ProductList.length == 0) {
-                                    $(".no_data").show();
-                                    $("#pagination").hide();
-                                }
-                                else {
-                                    $(".no_data").hide();
-                                    $("#pagination").show();
-                                }
-                            }
-                        );
-                    }
-                    else {
-                        _this.getProductListDTO();
-                    }
-                },
                 Below1500: function () {
                     let _this = this;
 
@@ -529,13 +460,13 @@
                         _this.getProductListDTO();
                     }
                 },
-                Below2000: function () {
+                Below3000: function () {
                     let _this = this;
 
-                    var checkbox = document.getElementById('below2000');
+                    var checkbox = document.getElementById('below3000');
 
                     if (checkbox.checked == true) {
-                        axios.get(`${webApiBaseAddress}/api/E_ProductList/Below2000`).then(
+                        axios.get(`${webApiBaseAddress}/api/E_ProductList/Below3000`).then(
                             response => {
                                 _this.ProductListDTO = response.data;
                                 var ProductList = [];
@@ -564,13 +495,83 @@
                         _this.getProductListDTO();
                     }
                 },
-                More2000: function () {
+                Below4500: function () {
                     let _this = this;
 
-                    var checkbox = document.getElementById('more2000');
+                    var checkbox = document.getElementById('below4500');
 
                     if (checkbox.checked == true) {
-                        axios.get(`${webApiBaseAddress}/api/E_ProductList/More2000`).then(
+                        axios.get(`${webApiBaseAddress}/api/E_ProductList/Below4500`).then(
+                            response => {
+                                _this.ProductListDTO = response.data;
+                                var ProductList = [];
+                                for (let i = 0; i < _this.ProductListDTO.length; i++) {
+                                    let item = {};
+                                    item = _this.ProductListDTO[i];
+                                    ProductList.push(item);
+
+                                    item.productPrice = "$" + item.productlistPrice.toLocaleString();
+                                }
+                                _this.ProductListDTO = ProductList;
+                                console.log(_this.ProductListDTO);
+                                //console.log(ProductList.length);
+                                if (ProductList.length == 0) {
+                                    $(".no_data").show();
+                                    $("#pagination").hide();
+                                }
+                                else {
+                                    $(".no_data").hide();
+                                    $("#pagination").show();
+                                }
+                            }
+                        );
+                    }
+                    else {
+                        _this.getProductListDTO();
+                    }
+                },
+                Below6000: function () {
+                    let _this = this;
+
+                    var checkbox = document.getElementById('below6000');
+
+                    if (checkbox.checked == true) {
+                        axios.get(`${webApiBaseAddress}/api/E_ProductList/Below6000`).then(
+                            response => {
+                                _this.ProductListDTO = response.data;
+                                var ProductList = [];
+                                for (let i = 0; i < _this.ProductListDTO.length; i++) {
+                                    let item = {};
+                                    item = _this.ProductListDTO[i];
+                                    ProductList.push(item);
+
+                                    item.productPrice = "$" + item.productlistPrice.toLocaleString();
+                                }
+                                _this.ProductListDTO = ProductList;
+                                console.log(_this.ProductListDTO);
+                                //console.log(ProductList.length);
+                                if (ProductList.length == 0) {
+                                    $(".no_data").show();
+                                    $("#pagination").hide();
+                                }
+                                else {
+                                    $(".no_data").hide();
+                                    $("#pagination").show();
+                                }
+                            }
+                        );
+                    }
+                    else {
+                        _this.getProductListDTO();
+                    }
+                },
+                More6000: function () {
+                    let _this = this;
+
+                    var checkbox = document.getElementById('more6000');
+
+                    if (checkbox.checked == true) {
+                        axios.get(`${webApiBaseAddress}/api/E_ProductList/More6000`).then(
                             response => {
                                 _this.ProductListDTO = response.data;
                                 var ProductList = [];
@@ -602,10 +603,8 @@
                 hrefToInfo: function (productId) {
 
                     let _this = this;
-                    var request = {};
+                    //var request = {};
 
-                    //let productViewCount = viewCount + 1;
-                    //request.productlistviewcount = productViewCount;
                     //request.productlistId = productId;
 
                     //axios.put(`${webApiBaseAddress}/api/E_ProductList/${productId}`, request).then(

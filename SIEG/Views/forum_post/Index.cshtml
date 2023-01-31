@@ -22,19 +22,13 @@
                                         請選擇發文看板
                                     </button>
                                     <div class="dropdown-menu">
-                                        <a href="#" class="dropdown-item">高檔腕錶</a>
-                                        <a href="#" class="dropdown-item">潮流服飾</a>
-                                        <a href="#" class="dropdown-item">時尚包款</a>
-                                        <a href="#" class="dropdown-item">高檔鞋履</a>
+                                        <a href="#" class="dropdown-item" v-for="item in ProductSortDTO" @@click="getProducts(item.productsortName)">{{item.productsortName}}</a>
                                     </div>
                                 </span>
                                 <span class="dropdown" style="padding-left: 10px;">
-                                    <button class="btn dropdown-toggle class-btn" data-bs-toggle="dropdown">標題分類</button>
+                                    <button class="btn dropdown-toggle class-btn" data-bs-toggle="dropdown">品牌分類</button>
                                     <div class="dropdown-menu">
-                                        <a href="#" class="dropdown-item">IWC</a>
-                                        <a href="#" class="dropdown-item">Rolex</a>
-                                        <a href="#" class="dropdown-item">Seiko</a>
-                                        <a href="#" class="dropdown-item">Panerai</a>
+                                    <a href="#" class="dropdown-item" v-for="brand in BrandName" @@click="Brand(brand.productsortId)">{{brand.productsortBrand}}</a>
                                     </div>
                                 </span>
                             </div>
@@ -110,6 +104,11 @@
             name: "postVue",
             data: {
                 imgFile: "none-img.jpg",
+                ProductSortDTO: [],
+                ProductBrandDTO: [],
+                BrandName: [],
+                Sort:null,
+                BrandId:null,
                 標題: null,
                 內文: null,
                 類別: null,
@@ -137,15 +136,17 @@
                 _this.getD_NewsInfoDTO();
                 //時間
                 _this.nowTimes();
+                _this.getProductSortDTO();
+                _this.getProductBrandDTO();
             },
             methods: {
                 getD_NewsInfoDTO: function () {
                     var nID = sessionStorage.getItem("nID")
                     let _this = this;
-                    console.log(nID)
+                    //console.log(nID)
                     axios.get(`${webApiBaseAddress}/api/D_NewsInfo/${nID}`).then(
                         response => {
-                            console.log(response.data)
+                            //console.log(response.data)
                             _this.D_NewsInfoDTO = response.data;
                             _this.Title = _this.D_NewsInfoDTO[0].title;
                             _this.Img = _this.D_NewsInfoDTO[0].img;
@@ -165,12 +166,47 @@
                         }
                     );
                 },
+                getProductSortDTO: function () {
+                    let _this = this;
+                    axios.get(`${webApiBaseAddress}/api/E_ProductSort`).then(
+                        response => {
+                            _this.ProductSortDTO = response.data;
+                        }
+                    );
+                },
+                getProductBrandDTO: function () {
+                    let _this = this;
+                    axios.get(`${webApiBaseAddress}/api/E_ProductSort/Brand`).then(
+                        response => {
+                            _this.ProductBrandDTO = response.data;
+                        }
+                    );
+                },
+                getProducts: function (productsortName) {
+                    let _this = this;
+                    _this.Sort = productsortName;
+                    var BrandNameList = [];
+                    for (let i=0; i<_this.ProductBrandDTO.length;i++)
+                    {
+                        if (_this.ProductBrandDTO[i].productsortName == productsortName) {
+                            let productBrand = {};
+                            productBrand = _this.ProductBrandDTO[i]
+                            BrandNameList.push(productBrand)
+                        }
+                    }
+                    _this.BrandName = BrandNameList;
+                },
+                Brand: function (brandid) {
+                    let _this = this;
+                    _this.BrandId = brandid;
+                },
                 insert: function () {
+                    var mID = sessionStorage.getItem("mID")
                     var _this = this;
                     var request = {};
-                    request.MemberId = 101;
-                    request.Category = "精品腕錶";
-                    request.ProductCategoryID = 101;
+                    request.MemberId = mID;
+                    request.Category = _this.Sort;
+                    request.ProductCategoryID = _this.BrandId;
                     request.Title = _this.標題;
                     request.ArticleContent = _this.內文;
                     request.Img = "/images/forum/post/"+_this.imgFile;

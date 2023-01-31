@@ -342,6 +342,7 @@
             el: "#ForumArticleVue",
             name: "ForumArticleVue",
             data: {
+                mID: "",
                 PostDTOs: [],
                 Date: [],
                 Fliter: "",
@@ -376,6 +377,7 @@
             methods: {
                 getPostDTOs: function () {
                     let _this = this;
+                    _this.mID = sessionStorage.getItem("mID");
                     axios.get(`${webApiBaseAddress}/api/G_ForumArticles/${articleId}`).then(
                         response => {
                             _this.PostDTOs = response.data[0];
@@ -384,41 +386,49 @@
                             item = _this.PostDTOs;
                             _this.Date = moment(item.addTime).add(8, 'hours').format("YYYY年M月D日 h:m A");
                             PostList.push(item);
-                            //console.log(response.data)
+                            console.log(_this.PostDTOs)
                         }
                     );
                 },
                 like: function (Post) {
                     //console.log(Post)
                     let _this = this;
-                    var request = {};
-                    let PostId = articleId;
-                    request.ForumArticleId = PostId;
-                    request.MemberId = Post.memberId;
-                    request.Category = Post.category;
-                    request.ProductCategoryId = Post.productCategoryId;
-                    request.Title = Post.title;
-                    request.ArticleContent = Post.articleContent;
-                    request.LikeCount = Post.likeCount + 1;
-                    request.Img = Post.img;
-                    axios.put(`${webApiBaseAddress}/api/G_ForumArticles/${PostId}`, request).then(
-                        response => {
-                            //alert(response.data);
-                            _this.getPostDTOs();
-                        }
-                    );
+                    if(_this.mID == null){
+                        window.location = "/D_Personal";
+                    }else{
+                        var request = {};
+                        let PostId = articleId;
+                        request.ForumArticleId = PostId;
+                        request.MemberId = Post.memberId;
+                        request.Category = Post.category;
+                        request.ProductCategoryId = Post.productCategoryId;
+                        request.Title = Post.title;
+                        request.ArticleContent = Post.articleContent;
+                        request.LikeCount = Post.likeCount + 1;
+                        request.Img = Post.img;
+                        axios.put(`${webApiBaseAddress}/api/G_ForumArticles/${PostId}`, request).then(
+                            response => {
+                                //alert(response.data);
+                                _this.getPostDTOs();
+                            }
+                        );
+                    }
                 },
                 book: function () {
                     var mID = sessionStorage.getItem("mID");
-                    var _this = this;
-                    var request = {};
-                    request.MemberId = mID;
-                    request.ValIdity = true;
-                    request.ForumArticleId = _this.PostDTOs.forumArticleId;
-                    axios.post(`${webApiBaseAddress}/api/G_FaviriteArticles`, request).then(
-                        response => {
-                        }
-                    );
+                    if(mID == null){
+                        window.location = "/D_Personal";
+                    }else{
+                        var _this = this;
+                        var request = {};
+                        request.MemberId = mID;
+                        request.ValIdity = true;
+                        request.ForumArticleId = _this.PostDTOs.forumArticleId;
+                        axios.post(`${webApiBaseAddress}/api/G_FaviriteArticles`, request).then(
+                            response => {
+                            }
+                        );
+                    }
                 },
 
             },

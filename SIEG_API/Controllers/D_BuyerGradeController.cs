@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SIEG_API.D_DTO;
 using SIEG_API.DTO;
 using SIEG_API.Models;
 
@@ -91,15 +92,62 @@ namespace SIEG_API.Controllers
             return "ok";
         }
 
+        //優惠券
+        [HttpPut("xxx/{id}")]
+        public async Task<string> PutMember(int id, D_CouponDTO cpDTO)
+        {
+            if (id != cpDTO.MemberId && 102!= cpDTO.CouponId)
+            {
+                return "不正確";
+            }
+            var zz =  _context.MemberCoupon.Where(A => A.MemberId == id && A.CouponId == 102).Select(A => A.MemberCouponId).FirstOrDefault();
+            MemberCoupon mem = await _context.MemberCoupon.FindAsync(zz);
+
+            mem.Count = cpDTO.Count;
+
+            _context.Entry(mem).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!MemberExists(id))
+                {
+                    return "exit";
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return "ok";
+        }
+
         // POST: api/BuyerGrade
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Member>> PostMember(Member member)
+        public async Task<string> PostMember(D_CouponDTO cpDTO)
         {
-            _context.Member.Add(member);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetMember", new { id = member.MemberId }, member);
+            var msg = "";
+            MemberCoupon mcp = new MemberCoupon {
+            CouponId = cpDTO.CouponId,
+            MemberId = cpDTO.MemberId,
+            Count = cpDTO.Count,
+            };
+            bool repeat = _context.MemberCoupon.Any(e => e.MemberId == cpDTO.MemberId);
+            if (repeat == true)
+            {
+                msg = "已經有了";
+            }
+            else
+            {
+                msg = "還沒有";
+                _context.MemberCoupon.Add(mcp);
+                await _context.SaveChangesAsync();
+            }
+            return msg;
         }
 
         // DELETE: api/BuyerGrade/5

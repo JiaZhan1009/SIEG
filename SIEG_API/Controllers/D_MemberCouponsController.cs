@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SIEG_API.D_DTO;
 using SIEG_API.Models;
 
 namespace SIEG_API.Controllers
 {
+    [EnableCors("AllowAny")]
     [Route("api/[controller]")]
     [ApiController]
     public class D_MemberCouponsController : ControllerBase
@@ -44,7 +47,7 @@ namespace SIEG_API.Controllers
         // PUT: api/D_MemberCoupons/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMemberCoupon(int id, MemberCoupon memberCoupon)
+        public async Task<IActionResult> PutMemberCoupon(int id, D_CouponDTO memberCoupon)
         {
             if (id != memberCoupon.MemberCouponId)
             {

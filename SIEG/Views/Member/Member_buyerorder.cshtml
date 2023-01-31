@@ -267,7 +267,7 @@
             el: "#appVue",
             name: "appVue",
             data: {
-                mID: sessionStorage.setItem("mID", 101),
+                mID: sessionStorage.setItem("mID", 102),
                 mIDD: sessionStorage.getItem("mID"),
                 MemberDTOes: [],
                 BuyerBidsDTOes: [],
@@ -279,7 +279,7 @@
             },
             mounted: function () {
                 let _this = this;
-                localStorage.setItem("GETmID", _this.mIDD)
+                //localStorage.setItem("GETmID", _this.mIDD)
                 _this.getMemberDTOes();
                 _this.getBuyerBidsDTOes();
                 _this.getPersonalDTOes();

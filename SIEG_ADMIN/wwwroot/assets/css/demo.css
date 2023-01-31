@@ -259,6 +259,13 @@ a {
   width: 130px;
 }
 
+.one-row {
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+}
+
 /*sweetAlert*/
 
 .swal2-popup {

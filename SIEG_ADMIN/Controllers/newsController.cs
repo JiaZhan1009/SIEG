@@ -8,5 +8,21 @@ namespace SIEG_ADMIN.Controllers
         {
             return View();
         }
+        public IActionResult add()
+        {
+            return View();
+        }
+        public IActionResult edit()
+        {
+            return View();
+        }
+        public IActionResult category()
+        {
+            return View();
+        }
+        public IActionResult category_add()
+        {
+            return View();
+        }
     }
 }

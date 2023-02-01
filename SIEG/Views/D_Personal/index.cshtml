@@ -42,14 +42,14 @@
                             <i class="far fa-eye" id="togglePassword" style="cursor: pointer;"></i>
                         </div>
                         <p class="password-text">至少 8 個字元、1 個大寫字母、1 個數字和 1 個符號</p>
-                            <div class="mb-sm-3 mb-3">
-                                <input type="email" inputmode="email" class="form-control" id="SignEmail" placeholder="電子信箱*" required>
-                            </div>
-                            <div class="col-12 d-grid text-center">
-                                <button type="button" class="btn btn-dark" required="required" id="Signbtn" @@click="insert">確認註冊</button>
-                            </div>
+                        <div class="mb-sm-3 mb-3">
+                            <input type="email" inputmode="email" class="form-control" id="SignEmail" placeholder="電子信箱*" required>
+                        </div>
+                        <div class="col-12 d-grid text-center">
+                            <button type="button" class="btn btn-dark" required="required" id="Signbtn" @@click="insert">確認註冊</button>
+                        </div>
                         <div class="center-text">
-                           <hr />
+                            <hr />
                         </div>
                         <div class="card-footer">註冊即表示你同意<a href="#">服務條款</a>和<a href="#">隱私政策</a></div>
                     </div>
@@ -74,7 +74,8 @@
                         <div onclick="loginGoogle">
                             <div id="g_id_onload"
                                  data-client_id="23813313765-0k1levsqhmu1eritfbgbig3qnulbs3h5.apps.googleusercontent.com"
-                                 data-login_uri="https://localhost:7002/D_Personal/ValidGoogleLogin"
+                                 data-login_uri="https://localhost:7002"
+                                 @*data-login_uri="https://localhost:7002/D_Personal/ValidGoogleLogin"*@
                                  @*data-login_uri="https://localhost:7109/Member/ValidGoogleLogin"*@
                                  data-auto_prompt="false">
                             </div>
@@ -89,8 +90,8 @@
                         </div>
                         <hr />
                         @*<button type="submit" class="btn btn-light col-12 m-sm-1 d-grid text-center">
-                            <span></span>
-                            FB
+                        <span></span>
+                        FB
                         </button>*@
                         <div class="card-footer">註冊即表示你同意<a href="#">服務條款</a>和<a href="#">隱私政策</a></div>
                     </div>
@@ -116,7 +117,7 @@
                     MemberId: null,
                     Name: null,
                     NickName: null,
-                    Phone:null,
+                    Phone: null,
                     Email: null,
                     Password: null,
                 },
@@ -135,19 +136,47 @@
                         var telRegxp = /^09[0-9]{8}$/;
 
                         if (($("#FirstName").val() && $("#Phone").val() && $("#NickName").val() && $("#SignEmail").val() && $("#PassWord").val()) == "") {
-                            alert("有地方空白喔!")
-                            return;
+                            //alert("有地方空白喔!")
+                            Swal.fire({
+                                position: 'top:50% left:50%',
+                                icon: 'error',
+                                title: '有地方空白喔!',
+                                showConfirmButton: false,
+                                timer: 1500,
+
+                            })
                         }
                         else if (emailRegxp.test(emailcheck) == false) {
-                            alert("信箱格式錯誤")
+                            //alert("信箱格式錯誤")
+                            Swal.fire({
+                                position: 'top:50% left:50%',
+                                icon: 'error',
+                                title: '信箱格式錯誤!',
+                                showConfirmButton: false,
+                                timer: 1500,
+                            })
                             return;
                         }
                         else if (telRegxp.test(telcheck) == false) {
-                            alert("手機格式錯誤")
+                            //alert("手機格式錯誤")
+                            Swal.fire({
+                                position: 'top:50% left:50%',
+                                icon: 'error',
+                                title: '手機格式錯誤!',
+                                showConfirmButton: false,
+                                timer: 1500,
+                            })
                             return;
                         }
                         else if (pwdRegxp.test(pwdcheck) == false) {
-                            alert("密碼格式錯誤");
+                            //alert("密碼格式錯誤");
+                            Swal.fire({
+                                position: 'top:50% left:50%',
+                                icon: 'error',
+                                title: '密碼格式錯誤!',
+                                showConfirmButton: false,
+                                timer: 1500,
+                            })
                             return;
                         }
                         else {
@@ -159,14 +188,27 @@
                             request.Phone = $("#Phone").val();
                             request.email = $("#SignEmail").val();
                             request.Password = $("#PassWord").val();
-                            axios.post(`${webApiBaseAddress}/api/D_SignLogin`,request).then(
+                            axios.post(`${webApiBaseAddress}/api/D_SignLogin`, request).then(
                                 response => {
                                     if (response.data == "失敗") {
-                                        alert("重複");
-                                
+                                        //alert("重複");
+                                        Swal.fire({
+                                            position: 'top:50% left:50%',
+                                            icon: 'error',
+                                            title: '重複!',
+                                            showConfirmButton: false,
+                                            timer: 1500,
+                                        })
                                     } else {
                                         $("#FirstName").val() && $("#Phone").val() && $("#NickName").val() && $("#SignEmail").val() && $("#PassWord").val() == ""
-                                        alert("註冊成功")
+                                        //alert("註冊成功")
+                                        Swal.fire({
+                                            position: 'top:50% left:50%',
+                                            icon: 'error',
+                                            title: '註冊成功!',
+                                            showConfirmButton: false,
+                                            timer: 1500,
+                                        })
                                     }
                                     window.location = "/D_Personal"
                                 }
@@ -187,11 +229,22 @@
                                         //var loginId = response.data.id
                                         if (response.status == 200) {
                                             console.log(response.data)
-                                            alert("登入成功");
+                                            //alert("登入成功");
                                             var loginId = response.data.memberId
                                             console.log(loginId)//找到Id了
                                             sessionStorage.setItem("mID", loginId)
-                                            window.location = "/Home/index" //正確的
+
+                                            Swal.fire({
+                                                position: 'top:50% left:50%',
+                                                icon: 'success',
+                                                title: '登入成功',
+                                                showConfirmButton: false,
+                                                timer: 1500,
+                                            })
+                                            //window.location = "/Home/index" //正確的
+                                            setTimeout(function () {
+                                                window.location = "/Home/index"
+                                            }, 1500);
                                         }
                                         else {
                                             alert("失敗")
@@ -200,7 +253,14 @@
                                 );
                         }
                         catch {
-                            alert("登入失敗,請重新輸入");
+                            Swal.fire({
+                                position: 'top:50% left:50%',
+                                icon: 'error',
+                                title: '登入失敗,請確認',
+                                showConfirmButton: false,
+                                timer: 1500,
+
+                            })
                             document.getElementById("loginEmail").value = "";
                             document.getElementById("loginPassword").value = "";
                         };

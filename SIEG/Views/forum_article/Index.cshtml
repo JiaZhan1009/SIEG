@@ -13,7 +13,7 @@
 <div class="index_space news_list_page">
     <div class="container">
         <div class="row">
-            <div class="col-lg-4 col-xl-3 order-lg-1 order-2 widget_area">
+            <div id="SortVue" class="col-lg-4 col-xl-3 order-lg-1 order-2 widget_area">
                 <div class="sticky_sidebar">
                     <!-- 側欄分類 -->
                     <div class="widget widget_categories">
@@ -23,60 +23,17 @@
                         </div>
                         <div class="widget_title">S.E.I.G<span>精選看板</span></div>
                         <ul>
-                            <li>
+                            <li v-for="item in ProductSortDTO">
                                 <div class="has_child">
-                                    <a href="">高檔腕表</a>
+                                    <a>{{item.productsortName}}</a>
                                     <span class="has_child_btn">
                                         <i class="bi bi-chevron-right"></i>
                                     </span>
                                 </div>
                                 <ul class="sub_child">
-                                    <li><a href="">IWC</a></li>
-                                    <li><a href="">Rolex</a></li>
-                                    <li><a href="">Seiko</a></li>
-                                    <li><a href="">Panerai</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <div class="has_child">
-                                    <a href="">潮流服飾</a>
-                                    <span class="has_child_btn">
-                                        <i class="bi bi-chevron-right"></i>
-                                    </span>
-                                </div>
-                                <ul class="sub_child">
-                                    <li><a href="">Kaws</a></li>
-                                    <li><a href="">Stussy</a></li>
-                                    <li><a href="">Supreme</a></li>
-                                    <li><a href="">Yeezy</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <div class="has_child">
-                                    <a href="">精品包款</a>
-                                    <span class="has_child_btn">
-                                        <i class="bi bi-chevron-right"></i>
-                                    </span>
-                                </div>
-                                <ul class="sub_child">
-                                    <li><a href="">Kaws</a></li>
-                                    <li><a href="">Stussy</a></li>
-                                    <li><a href="">Supreme</a></li>
-                                    <li><a href="">Yeezy</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <div class="has_child">
-                                    <a href="">高級鞋履</a>
-                                    <span class="has_child_btn">
-                                        <i class="bi bi-chevron-right"></i>
-                                    </span>
-                                </div>
-                                <ul class="sub_child">
-                                    <li><a href="">Kaws</a></li>
-                                    <li><a href="">Stussy</a></li>
-                                    <li><a href="">Supreme</a></li>
-                                    <li><a href="">Yeezy</a></li>
+                                    <li v-for="subitem in ProductBrandDTO.filter(x => x.productsortName == item.productsortName)">
+                                        <a >{{subitem.productsortBrand}}</a>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>
@@ -431,6 +388,78 @@
                     }
                 },
 
+            },
+        });
+    </script>
+
+    <script>
+        var webApiBaseAddress = "https://localhost:7139";
+        var SortVue = new Vue({
+            el: "#SortVue",
+            name: "SortVue",
+            data: {
+                ProductSortDTO: [],
+                ProductBrandDTO: [],
+            },
+            mounted: function () {
+                let _this = this;
+                _this.getProductSortDTO();
+                _this.getProductBrandDTO();
+                $(function () {
+                    setTimeout(function () {
+                        $(".sub_child").hide();
+                        $(".has_child_btn").click(function () {
+                            $(this).toggleClass("active");
+                            $(this).parent().next().slideToggle();
+                            $(this).parent().parent().toggleClass("active");
+                        });
+                    }, 100);
+                });
+                /*文章頁發文鈕*/
+                let open = '@Url.Action("Forum_post", "Forum")';
+                var animateButton = function (e) {
+                
+                    e.preventDefault;
+                    e.target.classList.remove('animate');
+                
+                    e.target.classList.add('animate');
+                
+                
+                    setTimeout(function () {
+                        e.target.classList.remove('animate');
+                        var mID = sessionStorage.getItem("mID");
+                        if (mID == null) {
+                            window.location = "/D_Personal";
+                        }
+                        else {
+                            window.open('Forum_post');
+                        }
+                    }, 500);
+                };
+                
+                var bubblyButtons = document.getElementsByClassName("bubbly-button");
+                
+                for (var i = 0; i < bubblyButtons.length; i++) {
+                    bubblyButtons[i].addEventListener('click', animateButton, false);
+                }
+            },
+            methods: {
+                getProductSortDTO: function () {
+                    let _this = this;
+                    axios.get(`${webApiBaseAddress}/api/E_ProductSort`).then(
+                        response => {
+                            _this.ProductSortDTO = response.data;
+                        }
+                    );
+                },
+                getProductBrandDTO: function () {
+                    let _this = this;
+                    axios.get(`${webApiBaseAddress}/api/E_ProductSort/Brand`).then(
+                        response => {
+                            _this.ProductBrandDTO = response.data;
+                        }
+                    );
+                },
             },
         });
     </script>

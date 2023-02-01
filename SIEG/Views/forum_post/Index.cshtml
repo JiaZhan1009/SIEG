@@ -187,6 +187,8 @@
                     axios.get(`${webApiBaseAddress}/api/E_ProductSort/Brand`).then(
                         response => {
                             _this.ProductBrandDTO = response.data;
+                            //console.log(_this.ProductBrandDTO)
+
                         }
                     );
                 },

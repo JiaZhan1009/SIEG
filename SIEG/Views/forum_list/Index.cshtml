@@ -30,8 +30,8 @@
                             文章篩選
                         </button>
                         <span class="dropdown-menu">
-                            <a href="#" class="dropdown-item" @@click="hotarticles">熱門</a>
-                            <a href="#" class="dropdown-item active" @@click="newarticles">最新</a>
+                            <a id="hot" href="#" class="dropdown-item" @@click="hotarticles">熱門</a>
+                            <a id="new" href="#" class="dropdown-item active" @@click="newarticles">最新</a>
                         </span>
                     </span>
                     <div style="float: right;">
@@ -52,7 +52,7 @@
                         <ul>
                             <li v-for="item in ProductSortDTO">
                                 <div class="has_child">
-                                    <a>{{item.productsortName}}</a>
+                                    <a @@click="filterProductSort(item.productsortName)">{{item.productsortName}}</a>
                                     <span class="has_child_btn">
                                         <i class="bi bi-chevron-right"></i>
                                     </span>
@@ -144,6 +144,7 @@
             name: "ForumListVue",
             data: {
                 PostDTOs: [],
+                SortArticles: [],
                 ProductSortDTO: [],
                 ProductBrandDTO: [],
                 Filter: "",
@@ -182,6 +183,7 @@
                                 PostList.push(item);
                             }
                             _this.PostDTOs = PostList;
+                            _this.SortArticles = PostList;
                             if (PostList.length == 0) {
                                 $(".no_data").show();
                             }
@@ -250,7 +252,9 @@
                 },
                 newarticles:function(){
                     let _this = this;
-                    _this.getPostDTOs();
+                    _this.PostDTOs.sort(function (a, b) {
+                        return a.addTime < b.addTime ? 1 : -1;
+                    });
                 },
                 hotarticles: function () {
                     let _this = this;
@@ -258,7 +262,22 @@
                         return a.likeCount < b.likeCount ? 1 : -1;
                     });
                 },
-
+                filterProductSort: function (sortName) {
+                    let _this = this;
+                    _this.PostDTOs = _this.SortArticles;
+                    var filterResults = _this.PostDTOs.filter(function (item, index, array) {
+                        return item.category == sortName;
+                    });
+                    _this.PostDTOs = filterResults;
+                    $(".dropdown-menu a").removeClass('active');
+                    $("#new").addClass('active');
+                    if (filterResults.length == 0) {
+                        $(".no_data").show();
+                    }
+                    else {
+                        $(".no_data").hide();
+                    }
+                },
             },
         });
     </script>

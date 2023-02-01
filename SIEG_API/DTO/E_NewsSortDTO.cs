@@ -4,6 +4,6 @@
     {
         public int newssortId { get; set; }
         public string? newssortName { get; set; }
-        public string? productsortImg { get; set; }
+        public bool? newssortValIdity { get; set; }
     }
 }

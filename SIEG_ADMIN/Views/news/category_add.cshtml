@@ -13,18 +13,18 @@
         </div>
 
         <!-- 顯示資訊 -->
-        <div class="card">
+        <div class="card" id="newsVue">
             <div class="card-body">
                 <div class="row">
                     <div class="col-lg-6 mb-3">
-                        <label class="form-label" for="category_link">分類名稱</label>
-                        <input type="text" class="form-control" id="category_link" placeholder="最新資訊" />
+                        <label class="form-label" for="category_name">分類名稱</label>
+                        <input type="text" class="form-control" id="category_name" placeholder="最新資訊" />
                     </div>
                     <div class="col-lg-6 mb-3">
                         <label class="form-label" for="category_state">狀態</label>
                         <select id="category_state" class="form-select">
-                            <option value="1">顯示</option>
-                            <option value="0">不顯示</option>
+                            <option value="true">顯示</option>
+                            <option value="false">不顯示</option>
                         </select>
                     </div>
                 </div>
@@ -40,61 +40,52 @@
 
         $(".back_news").addClass('active');
 
-                //var webApiBaseAddress = "https://localhost:7139";
-                //var appVue = new Vue({
-                //    el: "#adVue",
-                //    name: "adVue",
-                //    data: {
-                //      NewsDTO: [],
-                //      newslistId: null,
-                //      newslistImg: null,
-                //      newslistTitle: null,
-                //      newslistContent: null,
-                //      newslistSort: null,
-                //      newslistTime: null,
-                //      newslistDate: null,
-                //      newslistviewcount: null,
-                //      newsState: null,
-                //    },
-                //    mounted: function () {
-                //        let _this = this;
-                //    },
-                //    methods: {
-                //        addNews: function () {
-                //            let _this = this;
+        var webApiBaseAddress = "https://localhost:7139";
+        var appVue = new Vue({
+            el: "#newsVue",
+            name: "newsVue",
+            data: {
+                newssortId: null,
+                newssortName: null,
+                newssortValIdity: null,
+            },
+            mounted: function () {
+                let _this = this;
+            },
+            methods: {
+                addNewsCategory: function () {
+                    let _this = this;
 
-                //            if ($('#ad_link').val() == "" || $('#ad_state').val() == "" || $('#ad_img').val() == "") {
-                //                Swal.fire({
-                //                    icon: 'error',
-                //                    title: '尚有欄位未填寫！',
-                //                })
-                //            } else {
-                //                var request = {};
-                //                request.adId = 0;
-                //                request.adImg = $('#ad_img').val();
-                //                request.adLink = $('#ad_link').val();
-                //                request.adValIdity = $('#ad_state').val() == "true" ? true : false;
+                    if ($('#category_name').val() == "" || $('#category_state').val() == "") {
+                        Swal.fire({
+                            icon: 'error',
+                            title: '尚有欄位未填寫！',
+                        })
+                    } else {
+                        var request = {};
+                        request.newssortId = 0;
+                        request.newssortName = $('#category_name').val();
+                        request.newssortValIdity = $('#category_state').val() == "true" ? true : false;
 
-                //                axios.post(`${webApiBaseAddress}/api/E_Ad`, request).then(
-                //                    response => {
+                        axios.post(`${webApiBaseAddress}/api/E_NewsSort`, request).then(
+                            response => {
 
-                //                        Swal.fire({
-                //                            icon: 'success',
-                //                            title: '送出成功！',
-                //                            showConfirmButton: false,
-                //                            timer: 1500
-                //                        })
-                //                        //alert(response.data);
-                //                        $('#ad_img').val("");
-                //                        $('#ad_link').val("");
-                //                        $('#ad_state').val("")[0].selectedIndex = 0;
-                //                    }
-                //                );
-                //            }
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: '送出成功！',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                })
+                                //alert(response.data);
+                                $('#category_name').val("");
+                                $('#category_state').val("")[0].selectedIndex = 0;
+                            }
+                        );
+                    }
 
-                //        },
-                //    },
-                //});
+                },
+            },
+        });
 
     </script>
 }

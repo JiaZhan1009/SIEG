@@ -65,10 +65,10 @@
                                         <span>交易費 (10.0%)</span>
                                         <span> {{DisplayTradeFee}}</span>
                                     </div>
-@*                                    <div class="specialOffer">
-                                        <span>轉帳手續費(3%)</span>
-                                        <span>{{DisplayTransFerFee}}</span>
-                                    </div>*@
+                                    @*                                    <div class="specialOffer">
+                                <span>轉帳手續費(3%)</span>
+                                <span>{{DisplayTransFerFee}}</span>
+                                </div>*@
                                     <div class="specialOffer">
                                         <span>預計運費</span>
                                         <span>{{DisplayfreightFee}}</span>
@@ -123,21 +123,21 @@
                                 <div class="btnNext" @@click="getInfo">查看資料</div>
                             </div>
 
-                          @*<div>
-                                <h2>模擬出價</h2>
-                                <div>
-                                    <label>pID</label>
-                                    <input type="number" v-model="pID" />
-                                </div>
-                                <div>
-                                    <label>sID</label>
-                                    <input type="number" v-model="mID" />
-                                </div>
-                                <div>
-                                    <label>bID</label>
-                                    <input type="number" v-model="bID" />
-                                </div>
-                            </div>*@
+                            @*<div>
+                        <h2>模擬出價</h2>
+                        <div>
+                        <label>pID</label>
+                        <input type="number" v-model="pID" />
+                        </div>
+                        <div>
+                        <label>sID</label>
+                        <input type="number" v-model="mID" />
+                        </div>
+                        <div>
+                        <label>bID</label>
+                        <input type="number" v-model="bID" />
+                        </div>
+                        </div>*@
                         </div>
 
                     </div>
@@ -193,15 +193,22 @@
                     bankAccount: "",
                     bID: null,
                     buyNow: null,
+                    memberQuote: [],
+                    selBid: {},
+                    bidID: sessionStorage.getItem("bidID"),
 
                 }
             },
             mounted() {
                 let _this = this;
+
                 // --
-                if (_this.mID == null || _this.pID == null) {
-                    alert(`No pID:${_this.pID}, mID:${_this.mID}`)
-                }
+                //if (_this.mID != null) {
+                //    _this.getMemberQuote();
+                //}else{
+                //    alert("發生錯誤未取得會員資料")
+                //}
+
 
                 $('.credit_card_form').hide();
                 $(".add_card").click(function () {
@@ -243,13 +250,22 @@
                         let _this = this;
                         let response = await axios.get(`${webApiAddress}/GetSizeAndBid/${_this.pCateID}`);
                         _this.SizeAndPriceList = response.data;
+                        if (_this.bidID) {
+                            let index, result;
+                            _this.DisplaySizeAndPriceList.forEach((item, i) => {
+                                if (item.bidID == _this.bidID) {
+                                    index = i;
+                                    result = item;
+                                }
+                            });
+                            _this.selectSizeItem(result.size, result.price, index, result.pID, result.bID, result.bidID);
 
-                        let list = _this.SizeAndPriceList;
-                        let i = _this.activeIndex;
-
-                        //預設選取
-                        _this.selectSizeItem(list[i].pSize, list[i].pPrice, i, list[i].pID, list[i].bID, list[i].bidID);
-
+                        } else {
+                            //預設選取
+                            let list = _this.SizeAndPriceList;
+                            let i = _this.activeIndex;
+                            _this.selectSizeItem(list[i].pSize, list[i].pPrice, i, list[i].pID, list[i].bID, list[i].bidID);
+                        }
                     } catch (error) {
                         console.log(error)
                     }
@@ -291,6 +307,15 @@
                         console.log(error);
                     }
                 },
+                //async getMemberQuote() {
+                //    try {
+                //        let _this = this;
+                //        let response = await axios.get(`${webApiAddress}/GetMemberQuote/${_this.mID}`);
+                //        this.memberQuote = response.data;
+                //    } catch (error) {
+                //        console.log(error);
+                //    }
+                //},
                 selectSizeItem(pSize, pPrice, index, pID, bID, bidID) {
                     let _this = this;
                     _this.pSize = pSize;
@@ -298,6 +323,22 @@
                     _this.pID = pID;
                     _this.bID = bID;
                     _this.bidID = bidID;
+                    //let result = _this.memberQuote.filter(m => m.pID == _this.pID); //多筆
+                    // let result = _this.memberQuote.find(m => m.pID == _this.pID);
+
+                    //if(result){
+                    //     _this.pPrice = result.pPrice;
+                    //     _this.mQuote.quoteID = result.quoteID;
+                    //     console.log(_this.mQuote)
+                    // }
+                    // else{
+                    //     console.log("查無記錄")
+                    // }
+
+
+
+
+
                     sessionStorage.setItem("pSize", _this.pSize);
                     sessionStorage.setItem("pPrice", _this.pPrice);
                     sessionStorage.setItem("selIndex", index);
@@ -421,6 +462,11 @@
                 },
                 maxBid: {
                     handler(newVal, oldVal) {
+                    }
+                },
+                mID: {
+                    handler() {
+
                     }
                 }
 

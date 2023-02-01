@@ -265,11 +265,12 @@ namespace SIEG_API.Controllers
             return historList;
         }
 
+
         [HttpGet("GetRelatedProducts/{pID}")]
         public async Task<IEnumerable<J_ProductInfoDTO>> GetRelatedProducts(int pID)
         {
             var pCateList = await _context.Product.Include(p => p.ProductCategory)
-                .Where(p => p.ProductId == pID).Select(p=> new { p.ProductCategory.CategoryName, p.ProductCategoryId }).FirstAsync();
+                .Where(p => p.ProductId == pID).Select(p => new { p.ProductCategory.CategoryName, p.ProductCategoryId }).FirstAsync();
 
             var result = await _context.ProductCategory
                 .Join(_context.Product, pc => pc.ProductCategoryId, p => p.ProductCategoryId, (pc, p) => new { pc, p })
@@ -299,10 +300,26 @@ namespace SIEG_API.Controllers
                 pImg = f.pImg,
 
             });
-
-
             return filteredList;
         }
+
+        [HttpGet("GetMemberQuote/{mID}")]
+        public async Task<object> GetMemberQuote(int mID)
+        {
+            return await _context.SellerAddProduct.Where(s => s.MemberId == mID)
+                .Select(s => new J_MemberQuoteBid
+                {
+                    mID = s.MemberId,
+                    quoteID = s.SellerAddProductId,
+                    pPrice = s.Price,
+                    pID = s.ProductId,
+
+                }).ToListAsync();
+
+
+
+        }
+
     }
 }
 

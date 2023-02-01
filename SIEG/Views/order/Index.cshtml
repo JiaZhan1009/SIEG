@@ -101,10 +101,10 @@
                                         <span>預計運費</span>
                                         <span>{{DisplayfreightFee}}</span>
                                     </div>
-     @*                               <div :class="[{'displayNone':!buyNow}, 'specialOffer']">
-                                        <span>商品價格</span>
-                                        <span>{{DisplayPrice}}</span>
-                                    </div>*@
+                                    @*                               <div :class="[{'displayNone':!buyNow}, 'specialOffer']">
+                                <span>商品價格</span>
+                                <span>{{DisplayPrice}}</span>
+                                </div>*@
                                     <div :class="['specialOffer']">
                                         <span>商品價格</span>
                                         <span>{{DisplayTotalPrice}}</span>
@@ -135,7 +135,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="buyInfoBlock">
+                                <div :class="[{'displayNone':buyNow}, 'buyInfoBlock']">
                                     <div class="row align-items-center">
                                         <div class="col-6">
                                             <img src="https://stockx-assets.imgix.net/svg/icons/stopwatch.svg?auto=compress,format">
@@ -149,6 +149,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div :class="[{'displayNone':buyNow}, 'buyInfoBlock']">
                                     <div class="row align-items-center">
                                         <div class="col-9">
@@ -168,7 +169,7 @@
                                     <div @@click="back" class="btnCancel">返回</div>
                                 </a>
                                 <div @@click="next" class="btnNext">下一步</div>
-                                <div @@click="BidTest" class="btnNext">測試用</div>
+                                @*                                <div @@click="BidTest" class="btnNext">測試用</div>*@
                             </div>
                         </div>
 
@@ -302,7 +303,7 @@
         // order page
         let baseLoginPayUrl = "https://localhost:7052/api/LinePay/";
         let webApiAddress = "https://localhost:7139/api/J";
-        let NgrokUrl = "https://8ecf-59-125-142-166.jp.ngrok.io"
+        let NgrokUrl = "https://ce25-111-242-186-4.jp.ngrok.io"
         var appVue = new Vue({
             el: "#appVue",
             data: {
@@ -333,13 +334,15 @@
                 mName: null,
                 mPhone: null,
                 mAddress: null,
-                
                 pLength: null,
                 freightFee: 100,
-                quoteID: null,
+                quoteID: sessionStorage.getItem("quoteID"),
             },
             mounted: function () {
                 let _this = this;
+
+                _this.quoteID = 129;
+
                 _this.getProductInfoDTO();
 
                 _this.getMemberInfo();
@@ -349,6 +352,9 @@
                 } else {
                     _this.buyNow = false;
                 }
+
+
+
 
             },
             methods: {
@@ -377,10 +383,22 @@
                         let _this = this;
                         let response = await axios.get(`${webApiAddress}/GetSizeAndQuote/${_this.pCateID}`);
                         _this.SizeAndPriceList = response.data;
-                        let list = _this.SizeAndPriceList;
-                        let i = _this.activeIndex;
-                        //預設選取
-                        _this.selectSizeItem(list[i].pSize, list[i].pPrice, i, list[i].pID, list[i].sID, list[i].quoteID);
+
+                        if (_this.quoteID) {
+                            let index, result;
+                            _this.DisplaySizeAndPriceList.forEach((item, i) => {
+                                if (item.quoteID == _this.quoteID) {
+                                    index = i;
+                                    result = item;
+                                }
+                            });
+                            _this.selectSizeItem(result.size, result.price, index, result.pID, result.sID, result.quoteID);
+                        } else {
+                            //預設選取
+                            let list = _this.SizeAndPriceList;
+                            let i = _this.activeIndex;
+                            _this.selectSizeItem(list[i].pSize, list[i].pPrice, i, list[i].pID, list[i].sID, list[i].quoteID);
+                        }
                     } catch (error) {
                         console.log(error);
                     }
@@ -456,17 +474,14 @@
                 },
                 checkPayment(orderInfo) {
                     let _this = this;
-                    if (_this.selPay == null) {
+                    if (_this.selPay == null && orderInfo.info == "buy") {
                         alert("請選擇付款方式");
-                    }
-                    else if (_this.mAddress != "" && _this.mPhone != "" && _this.mName != "" && _this.selPay == "LinePay") {
+                    } else if (_this.mAddress != "" && _this.mPhone != "" && _this.mName != "" && _this.selPay == "LinePay" && orderInfo.info == "buy") {
                         _this.requestLinePayment(_this.pPrice, orderInfo);
-                    }
-                    else if (_this.mAddress != "" && _this.mPhone != "" && _this.mName != "" && _this.selPay == "信用卡") {
+                    } else if (_this.mAddress != "" && _this.mPhone != "" && _this.mName != "" && _this.selPay == "信用卡" && orderInfo.info == "buy") {
                         alert("信用卡");
-                    }
-                    else {
-                        alert("檢查收貨資訊, 有資料尚未填寫");
+                    } else {
+                        //alert("檢查收貨資訊, 有資料尚未填寫");
                     }
                 },
                 async requestLinePayment(price, orderInfo) {
@@ -537,7 +552,14 @@
                         orderInfo.info = "buy";
                         orderInfo.sID = _this.sID;
                     } else {
-                        orderInfo.info = "bid"
+                        orderInfo.info = "bid"  
+                        try {
+                            console.log(orderInfo)
+                            axios.post(`${webApiAddress}/InsertBuyerOrder`, orderInfo);
+                            alert("完成出價")
+                        } catch (error) {
+                            console.log(error)
+                        }
                     }
                     _this.checkPayment(orderInfo);
 
@@ -551,7 +573,7 @@
                         _this.buyNow = true;
                     }
                 },
-                BidTest(){
+                BidTest() {
                     let _this = this;
                     let orderInfo = {
                         quoteID: _this.quoteID,
@@ -575,14 +597,14 @@
                         orderInfo.info = "bid"
                     }
                     _this.checkPayment(orderInfo);
-                    try{
+                    try {
                         axios.post(`${webApiAddress}/InsertBuyerOrder`, _this.orderInfo);
                         alert(_this.orderInfo)
-                    }catch{
+                    } catch {
                         alert("error")
                     }
-                    
-                    
+
+
                 }
 
             },

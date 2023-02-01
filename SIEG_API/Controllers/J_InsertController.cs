@@ -25,17 +25,33 @@ namespace SIEG_API.Controllers
         }
 
         [HttpPost("InsertBuyerBid")]
-        public void InsertBuyerBid([FromBody] J_AddBidPrice orderInfo)
+        public async Task InsertBuyerBid([FromBody] J_AddBidQuote orderInfo)
         {
+            // insert Bid
             BuyerBid bid = new BuyerBid
             {
                 MemberId = orderInfo.mID,
                 ProductId = orderInfo.pID,
-                Price = orderInfo.pPrice,
+                Price = (int)orderInfo.pPrice,
+                FinalPrice = orderInfo.finalPrice,
                 EffectiveTime = DateTime.Now
             };
             _context.BuyerBid.Add(bid);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+        }
+
+        [HttpPost("InsertSellerQuote")]
+        public async Task InsertSellerQuote([FromBody] J_AddBidQuote quote)
+        {
+            SellerAddProduct sQuote = new SellerAddProduct
+            {
+                ProductId = quote.pID,
+                MemberId = quote.sID,
+                Price = quote.pPrice,
+                FinalPrice = quote.finalPrice
+            };
+            _context.SellerAddProduct.Add(sQuote);
+            await _context.SaveChangesAsync();
         }
 
         [HttpPost("InsertBuyerOrder")]
@@ -43,23 +59,23 @@ namespace SIEG_API.Controllers
         {
             try
             {
-                // insert Order 
-                Order order = new Order
-                {
-                    BuyerId = orderInfo.bID,
-                    ProductId = orderInfo.pID,
-                    BuyerPrice = orderInfo.finalPrice,                    
-                    Pay = orderInfo.pay,
-                    Receiver = orderInfo.receiver,
-                    ReceivingPhone = orderInfo.receivingPhone,
-                    ShippingAddress = orderInfo.shippingAddress,
-                    UpdateTime = DateTime.Now,
-                    //DoneTime = DateTime.Now, // 正式版要拿掉
-                    AddTime = DateTime.Now,
-                };
-
                 if (orderInfo.info == "buy")
                 {
+                    // insert Order 
+                    Order order = new Order
+                    {
+                        BuyerId = orderInfo.bID,
+                        ProductId = orderInfo.pID,
+                        BuyerPrice = orderInfo.finalPrice,
+                        Pay = orderInfo.pay,
+                        Receiver = orderInfo.receiver,
+                        ReceivingPhone = orderInfo.receivingPhone,
+                        ShippingAddress = orderInfo.shippingAddress,
+                        UpdateTime = DateTime.Now,
+                        //DoneTime = DateTime.Now, // 正式版要拿掉
+                        AddTime = DateTime.Now,
+                    };
+
                     order.State = "待出貨";
                     order.SellerId = orderInfo.sID;
                     order.SellerPrice = orderInfo.sellerPrice;
@@ -76,6 +92,7 @@ namespace SIEG_API.Controllers
                         FinalPrice = orderInfo.finalPrice,
                         EffectiveTime = DateTime.Now
                     };
+
                     _context.BuyerBid.Add(bid);
                     await _context.SaveChangesAsync();
 
@@ -84,19 +101,17 @@ namespace SIEG_API.Controllers
                     quote.OrderId = order.OrderId;
                     _context.SellerAddProduct.Update(quote);
                     await _context.SaveChangesAsync();
-
                 }
                 else if (orderInfo.info == "bid")
                 {
-                    // insert Order 
-                    order.State = "出價中";
-                    _context.Order.Add(order);
-                    await _context.SaveChangesAsync();
+                    //// insert Order 
+                    //order.State = "出價中";
+                    //_context.Order.Add(order);
+                    //await _context.SaveChangesAsync();
 
                     // insert Bid
                     BuyerBid bid = new BuyerBid
                     {
-                        OrderId = order.OrderId,
                         MemberId = orderInfo.bID,
                         ProductId = orderInfo.pID,
                         Price = (int)orderInfo.buyerPrice,
@@ -152,19 +167,6 @@ namespace SIEG_API.Controllers
             await _context.SaveChangesAsync();
         }
 
-        [HttpPost("InsertSellerQuote")]
-        public void InsertSellerQuote([FromBody] J_AddQuotePrice quote)
-        {
-            SellerAddProduct sQuote = new SellerAddProduct
-            {
-                ProductId = quote.pID,
-                MemberId = quote.sID,
-                Price = quote.pPrice,
-                FinalPrice = quote.finalPrice
-            };
-            _context.SellerAddProduct.Add(sQuote);
-            _context.SaveChanges();
-        }
 
         private bool MemberExists(int id)
         {

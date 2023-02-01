@@ -409,7 +409,7 @@
             el: "#appVue",
             data() {
                 return {
-                    mID: 103,
+                    mID: sessionStorage.getItem("mID"),
                     pID: 0,
                     //pID: 102,
                     productInfo: [],
@@ -437,7 +437,7 @@
             mounted: async function () {
                 _this = this;
                 _this.pID = sessionStorage.getItem("pID");
-                sessionStorage.setItem("mID", _this.mID);        
+                //sessionStorage.setItem("mID", _this.mID);        
 
                 //await _this.getProductInfo();
                 await _this.getRelatedProducts();
@@ -459,7 +459,7 @@
                                                     <!-- <a href="product_info.html" class="two-row"> -->
                                                     <a href="product_info.html" class="">
                                                                 <div class="two-row">${item.pName}</div>
-                                                        <div style="color:#999999;margin:0px">最低報價</div>
+        @*  <div style="color:#999999;margin:0px">最低報價</div>
                                                         <div class="minPrice fontSizeM">$1,780</div>
         @*<div class="listTimeSold">上次成交價 : $1,780</div>*@
                                                     </a>

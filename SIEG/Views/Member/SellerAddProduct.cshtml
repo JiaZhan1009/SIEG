@@ -113,7 +113,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="item in SellOrderDTOes" v-if="item.state!='已完成'">
+                                    <tr v-for="item in SellOrderDTOes" v-if="item.state!='已完成' && item.state!='退貨已完成'">
                                         @* <template v-if="item.state=='商品已送達七天鑑賞'">
                                         <td class="imgTd" data-title="商品">
                                         <img :src="item.imgFront" class="imgWidth">
@@ -169,7 +169,7 @@
                                 </thead>
                                 <tbody>
 
-                                    <tr class="detailbgcolor" data-title="商品" v-for="item in SellOrderDTOes" v-if="item.state=='已完成'">
+                                    <tr class="detailbgcolor" data-title="商品" v-for="item in SellOrderDTOes" v-if="item.state=='已完成' || item.state=='退貨已完成'">
                                         <td class="imgTd-1" data-bs-toggle="modal" :data-bs-target="'#'+item.num" :id="item.orderId">
                                             <img :src="item.imgFront" class="imgWidth">
                                             <div class="imgMargin" :id="item.orderId">

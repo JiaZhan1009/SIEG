@@ -113,7 +113,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="item in MemberDTOes" v-if="item.state!='已完成'">
+                                <tr v-for="item in MemberDTOes" v-if="item.state!='已完成' && item.state!='退貨已完成'">
                                     <template v-if="item.state=='商品已送達七天鑑賞'">
                                         <td class="imgTd" data-title="名稱">
                                             <img :src="item.image" class="imgWidth">
@@ -174,11 +174,11 @@
                                     <th>購買價錢</th>
                                     <th>地址</th>
                                     <th>訂購人</th>
-                                    <th></th>
+                                    <th>狀態</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="detailbgcolor" data-title="名稱" v-for="item in MemberDTOes" v-if="item.state=='已完成'">
+                                <tr class="detailbgcolor" data-title="名稱" v-for="item in MemberDTOes" v-if="item.state=='已完成' || item.state=='退貨已完成'">
                                     <td class="imgTd-1" data-bs-toggle="modal" :data-bs-target="'#'+item.num" :id="item.orderId">
                                         <img :src="item.image" alt="Image" class="imgWidth" :id="item.orderId">
                                         <div class="imgMargin" :id="item.orderId">
@@ -194,6 +194,7 @@
                                     <td data-title="購買價錢">NT${{item.price}}</td>
                                     <td data-title="地址">{{item.shippingAddress}}</td>
                                     <td data-title="訂購人">{{item.receiver}}</td>
+                                    <td data-title="狀態">{{item.state}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -340,7 +341,7 @@
                     request.size = item.size;
                     request.memberId = item.memberId;
                     request.lowPrice = item.lowPrice;
-                    request.FinalPrice = parseInt(item.price)+ (100);
+                    request.FinalPrice = parseInt(item.price) + (100);
                     if (item.price >= item.lowPrice) {
                         //alert(item.productId);
                         //alert(item.sellerAddProductID);

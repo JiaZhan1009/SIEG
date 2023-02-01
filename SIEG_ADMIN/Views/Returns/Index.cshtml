@@ -4,16 +4,11 @@
     <div class="container-xxl flex-grow-1 container-p-y">
 
         <!-- 新增btn & 手機板選單 -->
+        <h1>退貨申請</h1>
         <div class="top_nav justify-content-xl-end justify-content-between">
             <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
                 <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
                     <i class="bx bx-menu bx-sm"></i>
-                </a>
-            </div>
-            <div class="d-inline-block">
-                <a class="add_btn" asp-controller="Home" asp-action="add">
-                    <i class="bx bx-plus"></i>
-                    <span>新增</span>
                 </a>
             </div>
         </div>
@@ -30,25 +25,26 @@
                             <th class="link">買家付款金額</th>
                             <th class="state">賣家ID</th>
                             <th class="state">賣家收款金額</th>
-                            <th class="btn"></th>
+                            <th class="state">退貨已完成</th>
                         </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
                         <tr v-for="item in ReturnDTOes">
+                            @* <td class="imgTd-1" data-bs-toggle="modal" :data-bs-target="'#'+item.num" :id="item.orderId">*@
                             <td class="imgTd">
-                                <img :src="item.image" class="imgWidth">
-                                <div class="imgMargin">
-                                    <div>{{item.productName}}</div>
-                                    <span class="nameDilute">{{item.model}}</span>
-                                    <div>
-                                        <p class=" badge rounded-pill Pcolor">us{{item.sizeId}}</p>
+                                <img :src="item.image" class="imgWidth" :id="item.orderId">
+                                <div class="imgMargin" :id="item.orderId" alt="Image">
+                                    <div :id="item.orderId">{{item.productName}}</div>
+                                    <span :id="item.orderId" class="nameDilute">{{item.model}}</span>
+                                    <div :id="item.orderId">
+                                        <p :id="item.orderId" class=" badge rounded-pill Pcolor">us{{item.sizeId}}</p>
                                     </div>
                                 </div>
                             </td>
                             <td>
                                 <div>{{item.orderId}}</div>
                             </td>
-                             <td>
+                            <td>
                                 <div>{{item.buyerId}}</div>
                             </td>
                             <td>
@@ -62,13 +58,8 @@
                             </td>
                             <td>
                                 <div class="tb_btn edit">
-                                    <a >
-                                        <i class="bx bx-pencil"></i>
-                                    </a>
-                                </div>
-                                <div class="tb_btn del">
-                                    <a >
-                                        <i class="bx bx-trash"></i>
+                                    <a>
+                                        <i class="bx bx-badge-check" @@click="updateOrder(item)"></i>
                                     </a>
                                 </div>
                             </td>
@@ -77,6 +68,57 @@
                 </table>
             </div>
         </div>
+        <!-- modal -->
+        @* <div v-for="item in ReturnDTOes">
+        <div class="modal fade" :id="item.num" tabindex="-1" aria-labelledby="examplemodallabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="examplemodallabel">訂單細節</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+        </div>
+        <div class="modal-body">
+        <img class="imgWidth" :src="item.image">
+        <div class="orderdetail">
+        <span>訂單編號:</span>
+        <span>{{item.orderId}}</span>
+        </div>
+        <div class="orderdetail">
+        <span>商品名稱:</span>
+        <span>{{item.productName}}</span>
+        </div>
+        <div class="orderdetail">
+        <span>商品尺寸:</span>
+        <span>us{{item.buyerId}}</span>
+        </div>
+        <div class="orderdetail">
+        <span>購買日期:</span>
+        <span>{{item.buyerPrice}}</span>
+        </div>
+        <div class="orderdetail">
+        <span>購買價錢:</span>
+        <span>NT${{item.sellerId}}</span>
+        </div>
+        <div class="orderdetail">
+        <span>訂購人:</span>
+        <span>{{item.sellerPrice}}</span>
+        </div>
+        <div class="orderdetail">
+        <span>收貨人:</span>
+        <span>盧冠佑</span>
+        </div>
+        <div class="orderdetail">
+        <span>寄送地址:</span>
+        <span>{{item.shippingAddress}}</span>
+        </div>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">close</button>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>*@
     </div>
 </div>
 
@@ -92,7 +134,8 @@
             name: "bannerVue",
             data: {
                 ReturnDTOes: [],
-                Filter: "",             
+                Filter: "",
+                num: null,
             },
             mounted: function () {
                 let _this = this;
@@ -104,42 +147,55 @@
                     axios.get(`${webApiBaseAddress}/api/B_BuyerOrders`).then(
                         response => {
                             _this.ReturnDTOes = response.data;
-                            //var ReturnList = [];
-                            //for (var i = 0; i < _this.ReturnDTOes.length; i++) {
-                            //    var item = {};
-                            //    item = _this.MemberDTOes[i];
-                            //    item.num = "A" + item.orderId;
-                            //    var str = item.completeTime;
-                            //    item.newCompletetime = str.split("T")[0];
-                            //    ReturnList.push(item);
+                            var ReturnList = [];
+                            for (var i = 0; i < _this.ReturnDTOes.length; i++) {
+                                var item = {};
+                                item = _this.ReturnDTOes[i];
+                                item.num = "A" + item.orderId;
+                                ReturnList.push(item);
 
-                            //}
-                            //_this.ReturnDTOes = ReturnList;
+                            }
+                            _this.ReturnDTOes = ReturnList;
                         }
                     );
                 },
-                //deleteBanner: function (id) {
-                //    let _this = this;
-                //    var ret = confirm("確定要刪除嗎?");
-                //    if (ret == true) {
-                //        axios.delete(`${webApiBaseAddress}/api/E_Banner/${id}`).then(
-                //            response => {
-                //                //alert(response.data);
-                //                Swal.fire({
-                //                    icon: 'success',
-                //                    title: '刪除成功！',
-                //                    showConfirmButton: false,
-                //                    timer: 1500
-                //                })
-                //                _this.getBannerDTO();
-                //            }
-                //        );
-                //    }
-                //},
-                //editBanner: function (bnID) {
-                //    sessionStorage.setItem("bnID", bnID);
-                //    window.location = "/Home/edit";
-                //},
+                updateOrder: function (ProductConfirmation) {
+                    let _this = this;
+                    var request = {};
+                    request.ProductName = ProductConfirmation.productName;
+                    request.Image = ProductConfirmation.image;
+                    request.SizeId = ProductConfirmation.sizeId;
+                    request.Price = ProductConfirmation.price;
+                    request.CompleteTime = ProductConfirmation.completeTime;
+                    request.ShippingAddress = ProductConfirmation.shippingAddress;
+                    request.State = "退貨已完成";
+                    request.Receiver = ProductConfirmation.receiver;
+                    request.orderId = ProductConfirmation.orderId;
+                    Swal.fire({
+                        title: '確認商品已完成退貨?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: '已完成退貨',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                            axios.put(`${webApiBaseAddress}/api/B_BuyerOrders/${ProductConfirmation.orderId}`, request).then(
+                                response => {
+                                    //alert(response.data);
+                                    setTimeout(function () {
+                                        _this.getReturnDTOes();
+                                    }, 1500);
+                                }
+                            );
+                        }
+                    })
+                },
             },
         });
 

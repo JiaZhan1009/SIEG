@@ -53,7 +53,7 @@ namespace SIEG_API.Controllers
         public async Task<IEnumerable<G_ForumArticlesDTO>> GetForumArticle(int id)
         {
 
-            var Article = await _context.ForumArticle.Where(ArticleId => ArticleId.ForumArticleId == id).Join(_context.Member, art => art.MemberId, member => member.MemberId, (art, member) => new G_ForumArticlesDTO
+            var Article = await _context.ForumArticle.Where(ArticleId => ArticleId.ForumArticleId == id).Include(ArticleId => ArticleId.ProductCategory).Join(_context.Member, art => art.MemberId, member => member.MemberId, (art, member) => new G_ForumArticlesDTO
             {
                 ForumArticleId = art.ForumArticleId,
                 MemberId = art.MemberId,
@@ -66,7 +66,8 @@ namespace SIEG_API.Controllers
                 AddTime = art.AddTime,
                 Img = art.Img,
                 ReplyCount = art.ReplyCount,
-                NickName = member.NickName
+                NickName = member.NickName,
+                BrandName = art.ProductCategory.BrandName,
 
             }).ToArrayAsync();
 

@@ -30,8 +30,8 @@
                             文章篩選
                         </button>
                         <span class="dropdown-menu">
-                            <a href="#" class="dropdown-item">熱門</a>
-                            <a href="#" class="dropdown-item active">最新</a>
+                            <a id="hot" href="#" class="dropdown-item" @@click="hotarticles">熱門</a>
+                            <a id="new" href="#" class="dropdown-item active" @@click="newarticles">最新</a>
                         </span>
                     </span>
                     <div style="float: right;">
@@ -192,6 +192,10 @@
             mounted: function () {
                 let _this = this;
                 _this.getPostDTOs();
+                $(".dropdown-menu a").click(function () {
+                        $(".dropdown-menu a").removeClass('active');
+                        $(this).addClass('active');
+                });
             },
             methods: {
                 getPostDTOs: function () {
@@ -257,6 +261,11 @@
                         window.location = "/forum_post";
                     }
                 },
+                newarticles:function(){
+                },
+                hotarticles: function () {
+                },
+
             },
         });
     </script>

@@ -15,6 +15,7 @@
         public bool? ValIdity { get; set; }
         public int? ReplyCount { get; set; }
         public string? NickName { get; set; }
+        public string? BrandName { get; set; }
 
     }
 }

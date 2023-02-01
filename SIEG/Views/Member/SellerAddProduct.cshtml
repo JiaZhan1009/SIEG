@@ -401,8 +401,8 @@
                     request.hightPrice = item.hightPrice;
                     request.finalPrice = parseInt(item.price) - (parseInt(item.price) * (0.1));
                     if (item.price >= item.hightPrice) {
-                        alert(item.productId);
-                        alert(item.buyerBidID);
+                        //alert(item.productId);
+                        //alert(item.buyerBidID);
                         sessionStorage.setItem("pID", item.productId);
                         sessionStorage.setItem("bidID", item.buyerBidID);
                         window.location = "/sell/index";

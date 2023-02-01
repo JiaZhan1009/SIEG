@@ -4,6 +4,7 @@
 }
 @section Style{
 
+@*    <link href="~/css/forumArticleStyle.css" rel="stylesheet">*@
     <link href="/css/jiazhan/product_info.css" rel="stylesheet">
     <link href="/css/jiazhan/general.css" rel="stylesheet">
     <link href="/css/BEN.css" rel="stylesheet">
@@ -250,13 +251,14 @@
             <div class="news_share" style="border:0px;justify-content:end">
                 <div class="social">
                     <!-- 點擊後加active -->
-                    <a class="like" href="#"><i class="fa fa-heart" style="height: 50px;"></i></a>
+                    <div class="placement" style="float: right;"><div class="heart"></div></div>
+@*                    <a class="like" href="#"><i class="fa fa-heart" style="height: 50px;"></i></a>
                     <a class="fb" href="#">
                         <img src="/images/icon-fb.png">
                     </a>
                     <a class="line" href="#">
                         <img src="/images/icon-line.png">
-                    </a>
+                    </a>*@
                 </div>
             </div>
         </div>
@@ -493,6 +495,13 @@
                         }
                     },
                 });
+                $(function () {
+                    $(".heart").on("click", function () {
+                        $(this).toggleClass("is-active");
+                    });
+                });
+
+
 
             },
             methods: {

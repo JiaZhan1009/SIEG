@@ -47,17 +47,14 @@ namespace SIEG_API.Controllers
         public async Task<IEnumerable<E_NewsListDTO>> BossGetNews()
         {
             return await _context.News
-                .Where(news => news.ValIdity == true)
                 .OrderByDescending(news => news.AddTime)
                 .Join(_context.NewsCategory, newslist => newslist.NewsCategoryId, newssort => newssort.NewsCategoryId, (newslist, newssort) => new E_NewsListDTO
                 {
-
                     newslistId = newslist.NewsId,
                     newslistImg = newslist.Img,
                     newslistTitle = newslist.Title,
-                    newslistContent = newslist.NewsContent,
-                    newslistSort = newssort.CategoryName,
                     newslistTime = newslist.AddTime,
+                    newsValIdity = newslist.ValIdity,
                     newslistviewcount = newslist.ViewsCount,
                 }).ToListAsync();
         }

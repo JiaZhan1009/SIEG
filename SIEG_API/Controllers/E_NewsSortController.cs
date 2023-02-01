@@ -36,6 +36,19 @@ namespace SIEG_API.Controllers
                 }).ToListAsync();
         }
 
+        // GET: api/E_NewsSort/Boss
+        [HttpGet("Boss")]
+        public async Task<IEnumerable<E_NewsSortDTO>> BossGetNewsCategory()
+        {
+            return await _context.NewsCategory
+                .Select(newssort => new E_NewsSortDTO
+                {
+                    newssortId = newssort.NewsCategoryId,
+                    newssortName = newssort.CategoryName,
+                    newssortValIdity = newssort.ValIdity,
+                }).ToListAsync();
+        }
+
         // GET: api/E_NewsSort/5
         [HttpGet("{id}")]
         public async Task<ActionResult<NewsCategory>> GetNewsCategory(int id)
@@ -84,12 +97,19 @@ namespace SIEG_API.Controllers
         // POST: api/E_NewsSort
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<NewsCategory>> PostNewsCategory(NewsCategory newsCategory)
+        public async Task<NewsCategory> PostNewsCategory(E_NewsSortDTO newsCategory)
         {
-            _context.NewsCategory.Add(newsCategory);
+
+            NewsCategory x = new NewsCategory
+            {
+                CategoryName = newsCategory.newssortName,
+                ValIdity = newsCategory.newssortValIdity,
+            };
+
+            _context.NewsCategory.Add(x);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetNewsCategory", new { id = newsCategory.NewsCategoryId }, newsCategory);
+            return x;
         }
 
         // DELETE: api/E_NewsSort/5

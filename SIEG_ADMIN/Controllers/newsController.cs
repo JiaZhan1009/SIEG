@@ -24,5 +24,9 @@ namespace SIEG_ADMIN.Controllers
         {
             return View();
         }
+        public IActionResult category_edit()
+        {
+            return View();
+        }
     }
 }

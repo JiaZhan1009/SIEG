@@ -68,7 +68,7 @@
                                     </div>
                                     <a class="nav-item nav-link" asp-controller="contact" asp-action="index">聯絡我們</a>
                                     <div class="nav-item dropdown d-block d-lg-none">
-                                        <a href="signup.html" class="nav-link">會員中心</a>
+                                        <a asp-controller="Member" asp-action="Kyccertified" class="nav-link">會員中心</a>
                                         <i class="bi bi-chevron-down dropdown-toggle" data-bs-toggle="dropdown"></i>
                                         <div class="dropdown-menu">
                                             <a class="dropdown-item" asp-controller="Member" asp-action="Kyccertified">KYC權限認證</a>
@@ -86,7 +86,7 @@
                         </div>
                         <ul class="header_icon">
                             <li class="header_user">
-                                <a href="Member/Member_buyerorder">
+                                <a href="Member/Kyccertified">
                                     <img src="~/images/icon-user.png" alt="img">
                                 </a>
                             </li>

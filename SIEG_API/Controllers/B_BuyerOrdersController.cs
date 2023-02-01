@@ -25,9 +25,27 @@ namespace SIEG_API.Controllers
 
         // GET: api/B_BuyerOrders
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Order>>> GetOrder()
+        public async Task<IEnumerable<B_ReturnDTO>> GetOrder()
         {
-            return await _context.Order.ToListAsync();
+            var Return = _context.Order
+                .Where(p => p.State == "申請退貨")              
+                .Include(p => p.Product)
+                .Include(p=>p.Product.ProductCategory)
+                .Select(x => new B_ReturnDTO
+                {
+                    OrderId=x.OrderId,
+                    BuyerId=x.BuyerId,
+                    BuyerPrice=x.BuyerPrice,
+                    SellerId=x.SellerId,
+                    SellerPrice=x.SellerPrice,
+                    DoneTime=x.DoneTime,
+                    State = x.State,
+                    Image = x.Product.ImgFront,
+                    Model=x.Product.Model,
+                    SizeId=x.Product.Size,
+                    ProductName=x.Product.ProductCategory.ProductName
+                });
+            return Return.OrderByDescending(time => time.DoneTime);
         }
 
         // GET: api/B_BuyerOrders/5

@@ -43,7 +43,7 @@
                     <tbody class="table-border-bottom-0">
                         <tr v-for="item in NewsDTO">
                             <td>
-                                <img :src="item.newslistImg">
+                                <img :src="'https://localhost:7002'+item.newslistImg">
                             </td>
                             <td>
                                 <div class="one-row">{{item.newslistTitle}}</div>

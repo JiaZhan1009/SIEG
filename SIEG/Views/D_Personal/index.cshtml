@@ -37,10 +37,15 @@
                         <div class="mb-sm-3 mb-3">
                             <input type="text" class="form-control" id="Phone" placeholder="手機*" maxlength="11" required>
                         </div>
-                        <div class="mb-sm-3 mb-3">
+                        <div class="mb-sm-3 mb-3" style="position: relative;">
                             <input type="password" class="form-control" id="PassWord" placeholder="密碼*" required>
-                            <i class="far fa-eye" id="togglePassword" style="cursor: pointer;"></i>
+                            <i class="far fa-eye" id="togglePassword" style="cursor: pointer;position: absolute;top: 12px;right: 15px;"></i>
                         </div>
+                        <div class="mb-sm-3 mb-3" style="position: relative;">
+                            <input type="password" class="form-control" id="PassWordAG" placeholder="再次輸入密碼*" required>
+                            <i class="far fa-eye" id="togglePasswordAG" style="cursor: pointer;position: absolute;top: 12px;right: 15px;"></i>
+                        </div>
+
                         <p class="password-text">至少 8 個字元、1 個大寫字母、1 個數字和 1 個符號</p>
                         <div class="mb-sm-3 mb-3">
                             <input type="email" inputmode="email" class="form-control" id="SignEmail" placeholder="電子信箱*" required>
@@ -89,10 +94,6 @@
                             </div>
                         </div>
                         <hr />
-                        @*<button type="submit" class="btn btn-light col-12 m-sm-1 d-grid text-center">
-                        <span></span>
-                        FB
-                        </button>*@
                         <div class="card-footer">註冊即表示你同意<a href="#">服務條款</a>和<a href="#">隱私政策</a></div>
                     </div>
                 </div>
@@ -128,6 +129,7 @@
                     insert: function () {
                         let emailcheck = $("#SignEmail").val()
                         let pwdcheck = $("#PassWord").val()
+                        let pwdcheckAG = $("#PassWordAG").val()
                         let telcheck = $("#Phone").val()
 
                         var emailRegxp = /^\w+((-\w+)|(\.\w+))*\@@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
@@ -143,7 +145,6 @@
                                 title: '有地方空白喔!',
                                 showConfirmButton: false,
                                 timer: 1500,
-
                             })
                         }
                         else if (emailRegxp.test(emailcheck) == false) {
@@ -174,6 +175,16 @@
                                 position: 'top:50% left:50%',
                                 icon: 'error',
                                 title: '密碼格式錯誤!',
+                                showConfirmButton: false,
+                                timer: 1500,
+                            })
+                            return;
+                        }
+                        else if (pwdcheckAG != pwdcheck) {
+                            Swal.fire({
+                                position: 'top:50% left:50%',
+                                icon: 'error',
+                                title: '第二次密碼輸入錯誤!',
                                 showConfirmButton: false,
                                 timer: 1500,
                             })
@@ -210,7 +221,9 @@
                                             timer: 1500,
                                         })
                                     }
-                                    window.location = "/D_Personal"
+                                    setTimeout(function () {
+                                        window.location = "/D_Personal"
+                                    }, 1500);
                                 }
                             );
                         }

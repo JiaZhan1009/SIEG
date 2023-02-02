@@ -27,7 +27,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 col-xl-3 order-lg-1 order-2 widget_area">
-                    <div class="sticky_sidebar" >
+                    <div class="sticky_sidebar">
                         <!-- 側欄搜尋 -->
                         <div class="widget widget_search">
                             <form class="search_form">
@@ -70,27 +70,27 @@
                         </div>
                         <div class="tx">
                             <p>{{NewsContent}}</p>
-                           @* <p>
-                                消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文。
+                            @* <p>
+                            消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文消息內文。
                             </p>*@
                         </div>
                         <div class="news_share">
                             <div class="social">
                                 <span>分享文章至</span>
-                               <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                                <!-- Go to www.addthis.com/dashboard to customize your tools -->
                                 <div class="addthis_inline_share_toolbox_qtfl"></div>
                             </div>
                             <div class="link">
-                              
-                               @* <button type="button" class="book" style="float: right;" @@click="insert">
-                                    <div class="wave"></div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -256 1792 1792">
-                                        <path d="M1417.763 66.17h-1024v1242l423-406 89-85 89 85 423 406v-1242zm12-128q23 0 44 9 33 13 52.5 41t19.5 62v1289q0 34-19.5 62t-52.5 41q-19 8-44 8-48 0-83-32l-441-424-441 424q-36 33-83 33-23 0-44-9-33-13-52.5-41t-19.5-62v-1289q0-34 19.5-62t52.5-41q21-9 44-9h1048z"
-                                              fill="currentColor" />
-                                    </svg>
+
+                                @* <button type="button" class="book" style="float: right;" @@click="insert">
+                                <div class="wave"></div>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -256 1792 1792">
+                                <path d="M1417.763 66.17h-1024v1242l423-406 89-85 89 85 423 406v-1242zm12-128q23 0 44 9 33 13 52.5 41t19.5 62v1289q0 34-19.5 62t-52.5 41q-19 8-44 8-48 0-83-32l-441-424-441 424q-36 33-83 33-23 0-44-9-33-13-52.5-41t-19.5-62v-1289q0-34 19.5-62t52.5-41q21-9 44-9h1048z"
+                                fill="currentColor" />
+                                </svg>
                                 </button>
                                 <div class="placement" style="float: right;">
-                                    <div class="heart"></div>
+                                <div class="heart"></div>
                                 </div>*@
                                 <!--收藏按讚紐-->
                                 <div class="placement" style="float: right;">
@@ -147,8 +147,8 @@
                 let _this = this;
                 _this.getNewsSortDTO();
                 _this.getNewsHotDTO();
-                 _this.getD_NewsInfoDTO();
-                 //收藏
+                _this.getD_NewsInfoDTO();
+                //收藏
                 $(function () {
                     $(".book").on("mousedown", function () {
                         if (!$(this).hasClass('active')) {
@@ -306,27 +306,31 @@
                     window.location = "/forum_post";
                 },
                 insert: function () {
-                    //alert("eee")
-                    var _this = this;
-                    var request = {};
                     var mID = sessionStorage.getItem("mID")
                     var nID = sessionStorage.getItem("nID")
-                    request.FaviriteNewsId = 0;
-                    request.NewsId = nID;
-                    request.MemberId = mID;
-                    console.log("我是nID" + nID)
-                    console.log("我是mID" + mID)
-                    axios.post(`${webApiBaseAddress}/api/D_NewsInfo`, request).then(
-                        response => {
-                            console.log(response.data)
-                            if (response.data == "失敗") {
-                                //alert("重複");
+                    if (mID == null) {
+                        window.location = "/D_Personal";
+                    } else {
+                        var _this = this;
+                        var request = {};
 
-                            } else {
-                                //alert("成功")
+                        request.ValIdity = true
+                        request.NewsId = nID;
+                        request.MemberId = mID;
+                        console.log("我是nID" + nID)
+                        console.log("我是mID" + mID)
+                        axios.post(`${webApiBaseAddress}/api/D_NewsInfo`, request).then(
+                            response => {
+                                //console.log(response.data)
+                                //if (response.data == "失敗") {
+                                //    //alert("重複");
+
+                                //} else {
+                                //    //alert("成功")
+                                //}
                             }
-                        }
-                    );
+                        );
+                    }
                 },
             },
         });

@@ -231,51 +231,67 @@
                     Login: async function () {
                         let _this = this;
                         var request = {};
+                        let LGemail = $("#loginEmail").val();
 
                         request.Id = 0;
                         request.email = $("#loginEmail").val();
                         request.Password = $("#loginPassword").val();
-                        try {
-                            let response = await axios.post(`${webApiBaseAddress}/api/D_SignLogin/Login`, request)
-                                .then(
-                                    response => {
-                                        //var loginId = response.data.id
-                                        if (response.status == 200) {
-                                            console.log(response.data)
-                                            //alert("登入成功");
-                                            var loginId = response.data.memberId
-                                            console.log(loginId)//找到Id了
-                                            sessionStorage.setItem("mID", loginId)
 
-                                            Swal.fire({
-                                                position: 'top:50% left:50%',
-                                                icon: 'success',
-                                                title: '登入成功',
-                                                showConfirmButton: false,
-                                                timer: 1500,
-                                            })
-                                            //window.location = "/Home/index" //正確的
-                                            setTimeout(function () {
-                                                window.location = "/Home/index"
-                                            }, 1500);
-                                        }
-                                        else {
-                                            alert("失敗")
-                                        }
-                                    }
-                                );
-                        }
-                        catch {
+                        if (emailRegxp.test(LGemail) == false) {
                             Swal.fire({
                                 position: 'top:50% left:50%',
                                 icon: 'error',
-                                title: '登入失敗,請確認',
+                                title: '信箱格式錯誤!',
                                 showConfirmButton: false,
                                 timer: 1500,
-
                             })
-                            document.getElementById("loginEmail").value = "";
-                            document.getElementById("loginPassword").value = "";
+                            return;
+                        } else {
+
+
+
+                            try {
+                                let response = await axios.post(`${webApiBaseAddress}/api/D_SignLogin/Login`, request)
+                                    .then(
+                                        response => {
+                                            //var loginId = response.data.id
+                                            if (response.status == 200) {
+                                                console.log(response.data)
+                                                //alert("登入成功");
+                                                var loginId = response.data.memberId
+                                                console.log(loginId)//找到Id了
+                                                sessionStorage.setItem("mID", loginId)
+
+                                                Swal.fire({
+                                                    position: 'top:50% left:50%',
+                                                    icon: 'success',
+                                                    title: '登入成功',
+                                                    showConfirmButton: false,
+                                                    timer: 1500,
+                                                })
+                                                //window.location = "/Home/index" //正確的
+                                                setTimeout(function () {
+                                                    window.location = "/Home/index"
+                                                }, 1500);
+                                            }
+                                            else {
+                                                alert("失敗")
+                                            }
+                                        }
+                                    );
+                            }
+                            catch {
+                                Swal.fire({
+                                    position: 'top:50% left:50%',
+                                    icon: 'error',
+                                    title: '登入失敗,請確認',
+                                    showConfirmButton: false,
+                                    timer: 1500,
+
+                                })
+                                document.getElementById("loginEmail").value = "";
+                                document.getElementById("loginPassword").value = "";
+                            };
                         };
                     },
                 },

@@ -294,7 +294,7 @@
                                 }
                             });
                             _this.updateB();
-                            _this.updateCP();
+                            _this.insert();
                         }
                     );
                 },
@@ -446,7 +446,7 @@
                     request.Count = _this.Count;
                     console.log("我是優惠券數量"+request.Count)
 
-                    axios.post(`${webApiBaseAddress}/api/BuyerGrade`, request).then(
+                    axios.post(`${webApiBaseAddress}/api/D_BuyerGrade`, request).then(
                         response => {
                             console.log(response.data);
                             if (response.data == "已經有了") {

@@ -734,13 +734,12 @@
 
     <script>
         var articleid = sessionStorage.getItem("fID");
-        var mID = sessionStorage.getItem("mID");
         var webApiBaseAddress = "https://localhost:7139";
         var DeleteVue = new Vue({
             el: "#DeleteVue",
             name: "DeleteVue",
             data: {
-                mID: mID,
+                mID: "",
                 MemberId:"",
             },
             mounted: function () {
@@ -758,6 +757,7 @@
             methods: {
                 getMemberId: function () {
                     let _this = this;
+                    _this.mID = sessionStorage.getItem("mID");
                     axios.get(`${webApiBaseAddress}/api/G_ForumArticles/${articleId}`).then(
                         response => {
                             _this.MemberId = response.data[0].memberId;

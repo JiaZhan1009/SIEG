@@ -145,6 +145,7 @@
                 _this.nowTimes();
                 _this.getProductSortDTO();
                 _this.getProductBrandDTO();
+                //dennis
                 $(function () {
                     setTimeout(function () {
                         _this.getD_NewsInfoDTO();
@@ -164,9 +165,9 @@
                             _this.Title = _this.D_NewsInfoDTO[0].title;
                             _this.Img = _this.D_NewsInfoDTO[0].img;
                             _this.NewsContent = _this.D_NewsInfoDTO[0].newsContent;
-                            _this.CategoryName = _this.D_NewsInfoDTO[0].categoryName;
-                            _this.AddTime = _this.D_NewsInfoDTO[0].addTime
-                            _this.年月日 = moment(_this.AddTime).subtract(10, 'days').calendar();
+                            //_this.CategoryName = _this.D_NewsInfoDTO[0].categoryName;
+                            //_this.AddTime = _this.D_NewsInfoDTO[0].addTime
+                            //_this.年月日 = moment(_this.AddTime).subtract(10, 'days').calendar();
                         }
                     );
                 },

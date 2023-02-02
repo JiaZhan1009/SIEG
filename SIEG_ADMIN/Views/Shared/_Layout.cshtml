@@ -41,7 +41,7 @@
             <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
                 <div class="app-brand demo">
                     <a class="app-brand-link" asp-controller="Home" asp-action="index">
-                        <img src="/images/logo.png" alt="logo-image" class="img-fluid">
+                        <img src="https://localhost:7002/images/logo.png" alt="logo-image" class="img-fluid">
                     </a>
                     <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
                         <i class="bx bx-chevron-left bx-sm align-middle"></i>
@@ -80,7 +80,7 @@
                         </a>
                     </li>
                     <li class="menu-item back_forum">
-                        <a href="forum.html" class="menu-link">
+                        <a class="menu-link" asp-controller="Forum" asp-action="index">
                             <i class="menu-icon tf-icons bx bx-hash"></i>
                             <div data-i18n="Analytics">討論區管理</div>
                         </a>
@@ -103,10 +103,10 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="menu-item back_member">
-                        <a href="member.html" class="menu-link">
+                    <li class="menu-item back_memberkyc">
+                        <a class="menu-link" asp-controller="Memberkyc" asp-action="index">
                             <i class="menu-icon tf-icons bx bxs-user-detail"></i>
-                            <div data-i18n="Analytics">會員管理</div>
+                            <div data-i18n="Analytics">會員認證管理</div>
                         </a>
                     </li>
                     <li class="menu-item back_Returns">

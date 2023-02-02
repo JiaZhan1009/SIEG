@@ -33,7 +33,7 @@
                     <tbody class="table-border-bottom-0">
                         <tr v-for="item in BannerDTO">
                             <td>
-                                <img :src="item.bannerImg">
+                                <img :src="'https://localhost:7002'+item.bannerImg">
                             </td>
                             <td>
                                 <div>{{item.bannerTitle}}</div>

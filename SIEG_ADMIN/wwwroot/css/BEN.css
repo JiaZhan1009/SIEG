@@ -583,3 +583,8 @@ hr {
 .PaymentInformation {
     margin-bottom: 60px;
 }
+
+.Memberkyc:hover {
+    background-color: #ededed;
+    cursor: pointer;
+}

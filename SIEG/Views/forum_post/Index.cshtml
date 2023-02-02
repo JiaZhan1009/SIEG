@@ -49,7 +49,7 @@
                             <div style="padding-top: 20px;">
                                 <div>
                                     <textarea class="title" id="story" name="title" placeholder="標題" v-model="標題">{{Title}}</textarea>
-                                <textarea class="describe" id="story" name="title" placeholder="敘述" v-model="內文">{{NewsContent}}</textarea>
+                                <textarea class="describe" id="story" name="title" placeholder="敘述" v-model="內文"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -141,11 +141,17 @@
                     }, 800);
                 });
                 _this.getMemberName(),
-                _this.getD_NewsInfoDTO();
                 //時間
                 _this.nowTimes();
                 _this.getProductSortDTO();
                 _this.getProductBrandDTO();
+                //dennis
+                $(function () {
+                    setTimeout(function () {
+                        _this.getD_NewsInfoDTO();
+                    }, 1000);
+                });
+                
             },
             methods: {
                 getD_NewsInfoDTO: function () {
@@ -159,9 +165,9 @@
                             _this.Title = _this.D_NewsInfoDTO[0].title;
                             _this.Img = _this.D_NewsInfoDTO[0].img;
                             _this.NewsContent = _this.D_NewsInfoDTO[0].newsContent;
-                            _this.CategoryName = _this.D_NewsInfoDTO[0].categoryName;
-                            _this.AddTime = _this.D_NewsInfoDTO[0].addTime
-                            _this.年月日 = moment(_this.AddTime).subtract(10, 'days').calendar();
+                            //_this.CategoryName = _this.D_NewsInfoDTO[0].categoryName;
+                            //_this.AddTime = _this.D_NewsInfoDTO[0].addTime
+                            //_this.年月日 = moment(_this.AddTime).subtract(10, 'days').calendar();
                         }
                     );
                 },
@@ -187,6 +193,8 @@
                     axios.get(`${webApiBaseAddress}/api/E_ProductSort/Brand`).then(
                         response => {
                             _this.ProductBrandDTO = response.data;
+                            //console.log(_this.ProductBrandDTO)
+
                         }
                     );
                 },

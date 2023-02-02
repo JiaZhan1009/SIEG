@@ -81,13 +81,21 @@
                                 <div class="addthis_inline_share_toolbox_qtfl"></div>
                             </div>
                             <div class="link">
-                                <!-- 點擊後加active -->
-                                @*<a class="collect" @@click="insert">
+                              
+                               @* <button type="button" class="book" style="float: right;" @@click="insert">
+                                    <div class="wave"></div>
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -256 1792 1792">
                                         <path d="M1417.763 66.17h-1024v1242l423-406 89-85 89 85 423 406v-1242zm12-128q23 0 44 9 33 13 52.5 41t19.5 62v1289q0 34-19.5 62t-52.5 41q-19 8-44 8-48 0-83-32l-441-424-441 424q-36 33-83 33-23 0-44-9-33-13-52.5-41t-19.5-62v-1289q0-34 19.5-62t52.5-41q21-9 44-9h1048z"
                                               fill="currentColor" />
-                                    </svg>收藏
-                                </a>*@
+                                    </svg>
+                                </button>
+                                <div class="placement" style="float: right;">
+                                    <div class="heart"></div>
+                                </div>*@
+                                <!--收藏按讚紐-->
+                                <div class="placement" style="float: right;">
+                                    <div class="heart"></div>
+                                </div>
                                 <button type="button" class="book" style="float: right;" @@click="insert">
                                     <div class="wave"></div>
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -256 1792 1792">
@@ -95,12 +103,7 @@
                                               fill="currentColor" />
                                     </svg>
                                 </button>
-                                <!-- 點擊後加active -->
-                                @*<a class="like" href="#"><i class="fa fa-heart"></i>按讚</a>*@
-                                <div class="placement" style="float: right;">
-                                    <div class="heart"></div>
-                                </div>
-                                <a @@click="GoForum" class="reply"><i class="fa fa-reply"></i>轉發至討論區</a>
+                                <a @@click="GoForum" class="reply" style="position: absolute;right: 140px;top: 35px;"><i class="fa fa-reply"></i>轉發至討論區</a>
                             </div>
                         </div>
                     </div>

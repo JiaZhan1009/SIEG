@@ -310,7 +310,7 @@
         // order page
         let baseLoginPayUrl = "https://localhost:7052/api/LinePay/";
         let webApiAddress = "https://localhost:7139/api/J";
-        let NgrokUrl = "https://311a-59-125-142-166.jp.ngrok.io"
+        let NgrokUrl = "https://c4e8-111-242-212-226.jp.ngrok.io"
         var appVue = new Vue({
             el: "#appVue",
             data: {
@@ -349,7 +349,7 @@
                 let _this = this;
                 _this.getProductInfoDTO();
 
-                _this.getMemberInfo();
+                //_this.getMemberInfo();
                 _this.getMaxMinPrice();
                 if (sessionStorage.getItem("bool") == "true") {
                     _this.buyNow = true;
@@ -416,7 +416,8 @@
                         } else {
                             Swal.fire({
                                 icon: 'error',
-                                title: '您未設定銀行帳戶<br>請填入銀行帳戶',
+                                title: '無法帶入資料',
+                                text:'由於您未在個人資料設定銀行帳戶請從下方填入銀行帳戶'
                             })
                         }
 
@@ -475,6 +476,7 @@
                         Swal.fire({
                             icon: 'success',
                             title: '會員資料儲存成功!',
+
                         })
                         _this.changeAddressDisplay();
                     } else {
@@ -598,7 +600,7 @@
                         var mBid = axios.get(`${webApiAddress}/CheckoutMemberBid/${_this.pID}/${_this.mID}`).then(function (response) {
                             var mBid = response.data;
 
-                            if (mBid.bidID != 0) {
+                            if (mBid.bidID != null) {
                                 Swal.fire({
                                     title: '您先前有提交過出價',
                                     text: `請問是否要將先前的 $${mBid.pPrice} 價格修改為 $${_this.pPrice} 呢?`,
@@ -637,11 +639,13 @@
                                     Swal.fire({
                                         icon: 'success',
                                         title: '完成出價!',
+                                        text: '會員中心可查看修改此次報價。'
                                     })
                                 } else {
                                     Swal.fire({
                                         icon: 'error',
-                                        title: '請輸入正確報價!',
+                                        title: '錯誤!',
+                                        text: '請輸入正確報價。'
                                     })
                                 }
                             }

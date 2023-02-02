@@ -219,7 +219,7 @@
                 //dennis
                 getD_GradeBuyDTO: function () {
                     var mID = sessionStorage.getItem("mID");
-                    console.log(mID)
+                    //console.log(mID)
                     let _this = this;
                     axios.get(`${webApiBaseAddress}/api/D_BuyerGrade/${mID}`).then(
                         response => {
@@ -229,7 +229,7 @@
                             _this.BuyRemain = _this.D_GradeBuyDTO[0].price
                             _this.Price = _this.D_GradeBuyDTO[0].price;
                             _this.Count = _this.D_GradeBuyDTO[0].count;
-                            console.log("我是買家價錢" + _this.Price)
+                            //console.log("我是買家價錢" + _this.Price)
 
                             //買家等級判斷
                             if (_this.Price < 5000) {
@@ -294,7 +294,7 @@
                                 }
                             });
                             _this.updateB();
-                            _this.insert();
+                            _this.updateCP();
                         }
                     );
                 },
@@ -444,7 +444,7 @@
                     request.CouponId = 102;
                     request.MemberId = mID;
                     request.Count = _this.Count;
-                    console.log(request.Count)
+                    console.log("我是優惠券數量"+request.Count)
 
                     axios.post(`${webApiBaseAddress}/api/BuyerGrade`, request).then(
                         response => {

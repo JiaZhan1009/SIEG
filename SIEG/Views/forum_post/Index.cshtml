@@ -21,13 +21,13 @@
                                     <button class="btn dropdown-toggle kanban-btn" data-bs-toggle="dropdown">
                                         請選擇發文看板
                                     </button>
-                                    <div class="dropdown-menu choseSort">
+                                    <div> class="dropdown-menu choseSort">
                                         <a href="#" class="dropdown-item" v-for="item in ProductSortDTO" @@click="getProducts(item.productsortName)">{{item.productsortName}}</a>
                                     </div>
                                 </span>
                                 <span class="dropdown" style="padding-left: 10px;">
                                     <button class="btn dropdown-toggle class-btn" data-bs-toggle="dropdown">品牌分類</button>
-                                    <div class="dropdown-menu choseBrand">
+                                    <div> class="dropdown-menu choseBrand">
                                     <a href="#" class="dropdown-item" v-for="brand in BrandName" @@click="Brand(brand.productsortId)">{{brand.productsortBrand}}</a>
                                     </div>
                                 </span>

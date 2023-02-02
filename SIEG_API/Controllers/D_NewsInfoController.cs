@@ -98,7 +98,6 @@ namespace SIEG_API.Controllers
             var msg = "";
             FaviriteNews news = new FaviriteNews
             {
-
                 NewsId = collectnews.NewsId,
                 MemberId = collectnews.MemberId,
                 ValIdity = collectnews.ValIdity,
@@ -107,13 +106,15 @@ namespace SIEG_API.Controllers
             bool exit1 = _context.FaviriteNews.Any(e => e.MemberId == collectnews.MemberId);
             if (exit == true && exit1==true)
             {
-                msg = "失敗";
-            }
-            else
-            {
                 msg = "成功";
                 _context.FaviriteNews.Add(news);
                 await _context.SaveChangesAsync();
+            }
+            else
+            {
+                //msg = "成功";
+                //_context.FaviriteNews.Add(news);
+                //await _context.SaveChangesAsync();
             }
             return msg;
         }

@@ -11,7 +11,14 @@
             <div class="row align-items-center">
                 <!-- 右側畫面 -->
                 <div class="col-xl-4 col-lg-5 col-12 offset-xl-2 offset-lg-1">
+
                     <div class="product_buy_Left">
+
+                        <!--   測試用  -->
+                        <label> 會員 ID</label>
+                        <input type="number" v-model="mID" />
+                        <!--   測試用  -->
+
                         <h2 class="fontBold">{{productInfo.pName}}</h2>
                         <h2 class="fontBold">{{productInfo.pModel}}</h2>
                         <div class="hightAndLowPrice">
@@ -402,7 +409,7 @@
                         let _this = this;
                         let response = await axios.get(`${webApiAddress}/GetMemberInfo/${_this.mID}`);
                         _this.memberList = response.data;
-                        if (_this.memberList.mName != null && _this.memberList.mPhone != null && _this._this.memberList.mAddress != null) {
+                        if (_this.memberList.mName != null && _this.memberList.mPhone != null && _this.memberList.mAddress != null) {
                             _this.mName = _this.memberList.mName;
                             _this.mPhone = _this.memberList.mPhone;
                             _this.mAddress = _this.memberList.mAddress;
@@ -647,6 +654,13 @@
                         this.getMaxMinPrice();
                     }
                 },
+                mID: {
+                    handler: function () {
+                        if (this.mID) {
+                            sessionStorage.setItem("mID", this.mID)
+                        }
+                    }
+                }
                 //pPrice: {
                 //handler: function (newVal, oldVal) {
                 //    if (newVal >= this.minQuote) {

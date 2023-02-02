@@ -106,8 +106,6 @@ namespace SIEG_API.Controllers
             await _context.SaveChangesAsync();
         }
 
-
-
         [HttpPost("InsertBuyerOrder")]
         public async Task InsertBuyerOrderAsync([FromBody] J_OrderInfo orderInfo)
         {

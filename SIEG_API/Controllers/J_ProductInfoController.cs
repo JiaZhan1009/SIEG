@@ -78,20 +78,42 @@ namespace SIEG_API.Controllers
             }).OrderBy(x => float.Parse(x.pSize));
         }
 
+        //[HttpGet("BidPriceList/{pID}")]
+        //public async Task<IEnumerable<J_PriceListDTO>> getBidPrice([FromRoute] PriceParameter val)
+        //{
+        //    var productName = _context.Product.Include(p => p.ProductCategory).Where(p => p.ProductId == val.pID).ToList()[0].ProductCategory.ProductName;
+        //    var BidInfo = await _context.BuyerBid
+        //        .Include(b => b.Product).Join(_context.Order, b => b.OrderId, o => o.OrderId, (b, o) => new { b = b, o = o })
+        //        .Where(b => b.b.ValIdity == true && b.b.Product.ProductCategory.ProductName == productName && b.o.SellerId == null)
+        //        .GroupBy(b => new { b.b.Product.Size, b.b.Price, b.b.Product.ProductCategory.ProductName })
+        //        .Select(x => new J_PriceListDTO
+        //        {
+        //            pID = val.pID,
+        //            pPrice = x.Key.Price,
+        //            pSize = x.Key.Size,
+        //            pCount = x.Sum(b => b.b.Count)
+        //        })
+        //        .OrderBy(x => x.pPrice).ToListAsync();
+
+        //    return BidInfo;
+        //    //return new List<J_PriceListDTO>();
+        //}
+
         [HttpGet("BidPriceList/{pID}")]
         public async Task<IEnumerable<J_PriceListDTO>> getBidPrice([FromRoute] PriceParameter val)
         {
             var productName = _context.Product.Include(p => p.ProductCategory).Where(p => p.ProductId == val.pID).ToList()[0].ProductCategory.ProductName;
             var BidInfo = await _context.BuyerBid
-                .Include(b => b.Product).Join(_context.Order, b => b.OrderId, o => o.OrderId, (b, o) => new { b = b, o = o })
-                .Where(b => b.b.ValIdity == true && b.b.Product.ProductCategory.ProductName == productName && b.o.SellerId == null)
-                .GroupBy(b => new { b.b.Product.Size, b.b.Price, b.b.Product.ProductCategory.ProductName })
+                .Include(b => b.Product)
+                //.Join(_context.Order, b => b.OrderId, o => o.OrderId, (b, o) => new { b = b, o = o })
+                .Where(b => b.ValIdity == true && b.Product.ProductCategory.ProductName == productName)
+                .GroupBy(b => new { b.Product.Size, b.Price, b.Product.ProductCategory.ProductName })
                 .Select(x => new J_PriceListDTO
                 {
                     pID = val.pID,
                     pPrice = x.Key.Price,
                     pSize = x.Key.Size,
-                    pCount = x.Sum(b => b.b.Count)
+                    pCount = x.Sum(b => b.Count)
                 })
                 .OrderBy(x => x.pPrice).ToListAsync();
 
@@ -118,6 +140,26 @@ namespace SIEG_API.Controllers
 
             return QuoteInfo;
         }
+
+        //[HttpGet("QuotePriceList/{pID}")]
+        //public async Task<IEnumerable<J_PriceListDTO>> getQuotePrice(int pID)
+        //{
+        //    var productName = _context.Product.Include(p => p.ProductCategory).Where(p => p.ProductId == pID).ToList()[0].ProductCategory.ProductName;
+        //    var QuoteInfo = await _context.SellerAddProduct
+        //        .Include(s => s.Product)
+        //        .Where(s => s.ValIdity == true && s.Product.ProductCategory.ProductName == productName && s.OrderId == null) // 待補上 s.SaleDate == null && 
+        //        .GroupBy(s => new { s.Product.Size, s.Price, s.Product.ProductCategory.ProductName })
+        //        .Select(x => new J_PriceListDTO
+        //        {
+        //            pID = pID,
+        //            pPrice = x.Key.Price,
+        //            pSize = x.Key.Size,
+        //            pCount = x.Sum(b => b.Count)
+        //        })
+        //        .OrderBy(x => x.pPrice).ToListAsync();
+
+        //    return QuoteInfo;
+        //}
 
         [HttpGet("GetOrderList/{pID}")]
         public async Task<IEnumerable<J_OrderListDTO>> GetOrderList([FromRoute] PriceParameter val)

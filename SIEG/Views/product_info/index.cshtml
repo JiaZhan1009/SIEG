@@ -42,9 +42,14 @@
         </div>*@
         <div class="productGroup">
             <div class="row align-items-center">
-
                 @*LeftImage*@
                 <div class="col-xl-7 col-xs-7 col-12">
+
+                    <!--   測試用  -->
+                    <label> 會員 ID</label>
+                    <input type="number" v-model="mID" />
+                    <!--   測試用  -->
+
                     <div class="imgGroup">
                         @*<img src="/images/jiazhan/products/600x600-3.jpg" alt="">*@
                         <img :src="productInfo.pImg" />
@@ -57,7 +62,7 @@
 
                         <div class="title">
                             <h4 class="mainTitle">{{productInfo.pName}}</h4>
-                            <h5 class="subTitle">{{productInfo.Model}}</h5>
+                            <h5 class="subTitle">{{productInfo.pModel}}</h5>
                         </div>
 
                         <div class="stateGroup">
@@ -461,9 +466,9 @@
                                                                                             <!-- <a href="product_info.html" class="two-row"> -->
                                                                                             <a href="product_info.html" class="">
                                                                                                         <div class="two-row">${item.pName}</div>
-        @*  <div style="color:#999999;margin:0px">最低報價</div>
-                                                                            <div class="minPrice fontSizeM">$1,780</div>
-                            @*<div class="listTimeSold">上次成交價 : $1,780</div>*@
+                                                                                        @*      <div style="color:#999999;margin:0px">最低報價</div>
+                                                                                                <div class="minPrice fontSizeM">$1,780</div>
+                                                                                                @*<div class="listTimeSold">上次成交價 : $1,780</div>*@
                                                                                             </a>
                                                                                         </div>
                                                                                     </div>
@@ -500,8 +505,6 @@
                         $(this).toggleClass("is-active");
                     });
                 });
-
-
 
             },
             methods: {
@@ -676,6 +679,7 @@
                             this.getProductInfo();
                             this.getOrderList();
                             this.getLastPrice();
+                            sessionStorage.setItem("pID", this.pID)
                         }
                     }
                 },
@@ -686,6 +690,14 @@
                             this.getHistoricalData();
                             this.getSizeAndQuote();
                             this.getProductNote();
+                            sessionStorage.setItem("pCateID", this.pCateID)
+                        }
+                    }
+                },
+                mID:{
+                    handler: function () {
+                        if (this.mID) {
+                            sessionStorage.setItem("mID", this.mID)
                         }
                     }
                 }

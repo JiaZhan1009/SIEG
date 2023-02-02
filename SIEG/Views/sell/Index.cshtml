@@ -10,8 +10,12 @@
             <div class="row align-items-center">
                 <div class="col-xl-4 col-lg-5 col-12 offset-xl-2 offset-lg-1">
                     <div class="product_buy_Left">
+                        <!--   測試用  -->
+                        <label> 會員 ID</label>
+                        <input type="number" v-model="mID" />
+                        <!--   測試用  -->
                         <h2 class="fontBold">{{productInfo.pName}}</h2>
-                        <h2 class="fontBold">Travis Scott Black Phantom</h2>
+                        <h2 class="fontBold">{{productInfo.pModel}}</h2>
                         <div class="hightAndLowPrice">
                             <span>最高出價&nbsp:<span class="hightPrice fontBold">&nbsp{{DisplayMaxBid}}&nbsp</span></span> &nbsp|&nbsp
                             <span>最低報價&nbsp:<span class="lowPrice fontBold">&nbsp{{DisplayMinQuote}}&nbsp</span></span>
@@ -196,6 +200,7 @@
                     memberQuote: [],
                     selBid: {},
                     bidID: sessionStorage.getItem("bidID"),
+  
 
                 }
             },
@@ -325,11 +330,6 @@
                     // else{
                     //     console.log("查無記錄")
                     // }
-
-
-
-
-
                     sessionStorage.setItem("pSize", _this.pSize);
                     sessionStorage.setItem("pPrice", _this.pPrice);
                     sessionStorage.setItem("selIndex", index);

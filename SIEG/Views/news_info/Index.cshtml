@@ -313,21 +313,12 @@
                     } else {
                         var _this = this;
                         var request = {};
-
                         request.ValIdity = true
                         request.NewsId = nID;
                         request.MemberId = mID;
-                        console.log("我是nID" + nID)
-                        console.log("我是mID" + mID)
                         axios.post(`${webApiBaseAddress}/api/D_NewsInfo`, request).then(
                             response => {
-                                //console.log(response.data)
-                                //if (response.data == "失敗") {
-                                //    //alert("重複");
-
-                                //} else {
-                                //    //alert("成功")
-                                //}
+                  
                             }
                         );
                     }

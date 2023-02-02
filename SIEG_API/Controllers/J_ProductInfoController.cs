@@ -165,14 +165,15 @@ namespace SIEG_API.Controllers
         public async Task<IEnumerable<J_OrderListDTO>> GetOrderList([FromRoute] PriceParameter val)
         {
             var productName = _context.Product.Include(p => p.ProductCategory).Where(p => p.ProductId == val.pID).ToList()[0].ProductCategory.ProductName;
+
             var list = await _context.Order.Include(o => o.Product)
-                .Where(o => o.Product.ProductCategory.ProductName == productName && o.DoneTime != null)//之後補上 && o.State == "已完成"
+                .Where(o => o.Product.ProductCategory.ProductName == productName && o.State != null)//之後補上 && o.State == "已完成"
                 .OrderByDescending(o => o.DoneTime)
                 .Select(x => new J_OrderListDTO
                 {
                     oID = x.Product.ProductId,
                     oPrice = x.BuyerPrice,
-                    oTime = x.DoneTime,
+                    oTime = x.UpdateTime,
                     oSize = x.Product.Size,
                 }).ToListAsync();
 
@@ -358,6 +359,20 @@ namespace SIEG_API.Controllers
 
                 }).ToListAsync();
         }
+
+        //[HttpGet("CheckoutMemberBid")]
+        //public async Task<J_BuyerBidDTO> CheckoutMemberBid(J_CheckoutMmember list)
+        //{
+        //    return await _context.BuyerBid
+        //        .Where(b => b.ProductId == list.pID && b.MemberId == list.mID)
+        //        .Select(b => new J_BuyerBidDTO
+        //        {
+        //            mID = b.MemberId,
+        //            pPrice = b.Price,
+        //            finalPrice = b.FinalPrice,
+        //            bidID = b.BuyerBidId
+        //        }).FirstOrDefaultAsync();
+        //}
     }
 }
 

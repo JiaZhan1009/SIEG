@@ -80,6 +80,16 @@ namespace SIEG_API.Controllers
             }
             return NoContent();
         }
+        [HttpPut("UpdataBuyerBid")]
+        public async Task UpdataBuyerBid(J_BuyerBidDTO list)
+        {
+            var buyerBid = _context.BuyerBid.Find(list.bidID);
+            buyerBid.Price = (int)list.pPrice;
+            buyerBid.FinalPrice = list.finalPrice;
+            _context.BuyerBid.Update(buyerBid);
+            await _context.SaveChangesAsync();      
+
+        }
 
 
         private bool MemberExists(int id)

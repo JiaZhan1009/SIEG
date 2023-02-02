@@ -59,7 +59,7 @@
                                                 <div class="imgMargin">
                                                     <div>{{item.productName}}</div>
                                                     <span class="nameDilute">{{item.model}}</span>
-                                                    <div>
+                                                    <div v-if="item.size!= 0">
                                                         <p class=" badge rounded-pill Pcolor">us{{item.size}}</p>
                                                     </div>
                                                 </div>
@@ -81,7 +81,7 @@
                                                 <div class="imgMargin">
                                                     <div>{{item.productName}}</div>
                                                     <span class="nameDilute">{{item.model}}</span>
-                                                    <div>
+                                                    <div v-if="item.size!= 0">
                                                         <p class=" badge rounded-pill Pcolor">us{{item.size}}</p>
                                                     </div>
                                                 </div>
@@ -138,7 +138,7 @@
                                             <div class="imgMargin">
                                                 <div>{{item.productName}}</div>
                                                 <span class="nameDilute">{{item.model}}</span>
-                                                <div>
+                                                <div v-if="item.size!= 0">
                                                     <p class=" badge rounded-pill Pcolor">us{{item.size}}</p>
                                                 </div>
                                             </div>
@@ -175,7 +175,7 @@
                                             <div class="imgMargin" :id="item.orderId">
                                                 <div :id="item.orderId">{{item.productName}}</div>
                                                 <span :id="item.orderId" class="nameDilute">{{item.model}}</span>
-                                                <div :id="item.orderId">
+                                                <div :id="item.orderId" v-if="item.size!= 0">
                                                     <p class=" badge rounded-pill Pcolor">us{{item.size}}</p>
                                                 </div>
                                             </div>
@@ -210,7 +210,7 @@
                                 <span>商品名稱:</span>
                                 <span>{{item.productName}}</span>
                             </div>
-                            <div class="orderdetail">
+                            <div class="orderdetail" v-if="item.size!= 0">
                                 <span>商品尺寸:</span>
                                 <span>us{{item.size}}</span>
                             </div>
@@ -252,6 +252,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.2/axios.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script>
+        $('.SidebarSellerAddProduct').css("background", "#ededed");
         var webApiBaseAddress = "https://localhost:7139";
         var appVue = new Vue({
             el: "#appVue",
@@ -269,7 +270,6 @@
             },
             mounted: function () {
                 let _this = this;
-                $('.SidebarSellerAddProduct').css("background", "#ededed");
                 _this.getSellOrderDTOes();
                 _this.getSellerAddProductsDTOes();
                 _this.getPersonalDTOes();

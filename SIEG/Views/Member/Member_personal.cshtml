@@ -182,6 +182,7 @@
             },
             mounted: function () {
                 let _this = this;
+                localStorage.setItem("GETmID", _this.mID)
                 $('.SidebarMember').css("background", "#ededed");
                 _this.getPersonalDTOes();
                 //dennis
@@ -212,8 +213,14 @@
                         to_name: _this.name,
                         email_id: _this.email,
                     }
-                    emailjs.send("service_fz555bc", "template_luei145", params).then(function (res) {
-                        alert("以寄信至您的信箱");
+                    emailjs.send("service_c7s971q", "template_luei145", params).then(function (res) {
+                        //alert("以寄信至您的信箱");
+                        Swal.fire({
+                            icon: 'success',
+                            title: '以寄信至您的信箱',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
                     })
                 },
                 //dennis

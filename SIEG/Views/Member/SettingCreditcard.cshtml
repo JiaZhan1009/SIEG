@@ -75,7 +75,7 @@
                                 <div>
                                     <div class="creditcard">
                                         <div> 銀行帳戶:</div>
-                                        <div> 尾號4碼為{{PaymentInformationDTOes.bankAccount}}的銀行帳戶</div>
+                                        <div> 尾號4碼為{{BankAccount4digits}}的銀行帳戶</div>
                                         <div> 銀行代號:{{PaymentInformationDTOes.bankCode}}</div>
                                         <div>銀行名稱:{{PaymentInformationDTOes.bankname}} </div>
                                     </div>
@@ -146,8 +146,10 @@
                         response => {
                             _this.PaymentInformationDTOes = response.data;
                             var creditCardNumber = _this.PaymentInformationDTOes.creditCard;
-                            var BankAccount = _this.PaymentInformationDTOes.bankAccount;
+                            var BankAccount = _this.PaymentInformationDTOes.bankAccount;                        
                             _this.creditCard4digits =creditCardNumber.slice(-4);
+                            var BankAccount4 = _this.PaymentInformationDTOes.bankAccount
+                            _this.BankAccount4digits = BankAccount4.slice(-4);
                             //_this.BankAccount4digits = BankAccount.slice(-4);
                         }
                     );
@@ -156,8 +158,9 @@
 					let _this = this;
 					axios.get(`${webApiBaseAddress}/api/B_personalinformation/${_this.mID}`).then(
 						response => {
-							_this.PersonalDTOes = response.data						
-						}
+							_this.PersonalDTOes = response.data
+                          
+                        }
 					);
 				},
             },

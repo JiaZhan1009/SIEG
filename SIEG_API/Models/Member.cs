@@ -36,7 +36,7 @@ namespace SIEG_API.Models
         public int BuyerGrade { get; set; }
         public int SellerGrade { get; set; }
         public string BankCode { get; set; }
-        public int? BankAccount { get; set; }
+        public string BankAccount { get; set; }
         public string CreditCard { get; set; }
         public string CreditCardDate { get; set; }
         public string CreditCardCcv { get; set; }

@@ -58,7 +58,7 @@
                                             <div class="imgMargin">
                                                 <div>{{item.productName}}</div>
                                                 <span class="nameDilute">{{item.model}}</span>
-                                                <div>
+                                                <div v-if="item.size!= 0">
                                                     <p class=" badge rounded-pill Pcolor">us{{item.size}}</p>
                                                 </div>
                                             </div>
@@ -79,7 +79,7 @@
                                             <div class="imgMargin">
                                                 <div>{{item.productName}}</div>
                                                 <span class="nameDilute">{{item.model}}</span>
-                                                <div>
+                                                <div v-if="item.size!= 0">
                                                     <p class=" badge rounded-pill Pcolor">us{{item.size}}</p>
                                                 </div>
                                             </div>
@@ -120,8 +120,8 @@
                                             <div class="imgMargin">
                                                 <div>{{item.productName}}</div>
                                                 <span class="nameDilute">{{item.model}}</span>
-                                                <div>
-                                                    <p class=" badge rounded-pill Pcolor">us{{item.SizeId}}</p>
+                                                <div v-if="item.sizeId!= 0">
+                                                    <p class=" badge rounded-pill Pcolor ">us{{item.sizeId}}</p>
                                                 </div>
                                             </div>
                                         </td>
@@ -141,7 +141,7 @@
                                             <div class="imgMargin">
                                                 <div>{{item.productName}}</div>
                                                 <span class="nameDilute">{{item.model}}</span>
-                                                <div>
+                                                <div v-if="item.sizeId!= 0">
                                                     <p class=" badge rounded-pill Pcolor">us{{item.sizeId}}</p>
                                                 </div>
                                             </div>
@@ -184,7 +184,7 @@
                                         <div class="imgMargin" :id="item.orderId">
                                             <div :id="item.orderId">{{item.productName}}</div>
                                             <span :id="item.orderId" class="nameDilute">{{item.model}} </span>
-                                            <div :id="item.orderId">
+                                            <div :id="item.orderId" v-if="item.sizeId!= 0">
                                                 <p :id="item.orderId" class=" badge rounded-pill Pcolor">us{{item.sizeId}}</p>
                                             </div>
                                         </div>
@@ -222,7 +222,7 @@
                                 <span>商品名稱:</span>
                                 <span>{{item.productName}}</span>
                             </div>
-                            <div class="orderdetail">
+                            <div class="orderdetail" v-if="item.sizeId!= 0">
                                 <span>商品尺寸:</span>
                                 <span>us{{item.sizeId}}</span>
                             </div>

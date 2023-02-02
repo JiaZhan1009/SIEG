@@ -64,7 +64,7 @@
                         </div>
                         <div class="mb-sm-3 mb-3">
                             <input type="password" class="form-control" id="loginPassword" placeholder="密碼*" required>
-                            <i class="far fa-eye" id="togglePassword" style="cursor: pointer;position: absolute;top: 125px;right: 35px;"></i>
+                            <i class="far fa-eye" id="togglePassword2" style="cursor: pointer;position: absolute;top: 125px;right: 35px;"></i>
                         </div>
 
                         <div class="login-f col-12 mb-3">
@@ -231,10 +231,26 @@
                     Login: async function () {
                         let _this = this;
                         var request = {};
+                        var emailRegxp = /^\w+((-\w+)|(\.\w+))*\@@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+                        let LGemail = $("#loginEmail").val();
 
                         request.Id = 0;
                         request.email = $("#loginEmail").val();
                         request.Password = $("#loginPassword").val();
+                        if (emailRegxp.test(LGemail) == false) {
+                             Swal.fire({
+                                position: 'top:50% left:50%',
+                                icon: 'error',
+                                title: '信箱格式錯誤!',
+                                showConfirmButton: false,
+                                timer: 1500,
+                            })
+                            $("#loginEmail").val() == "";
+                            $("#loginPassword").val() == "";
+
+                            return;
+                        }
+
                         try {
                             let response = await axios.post(`${webApiBaseAddress}/api/D_SignLogin/Login`, request)
                                 .then(
@@ -277,6 +293,7 @@
                             document.getElementById("loginEmail").value = "";
                             document.getElementById("loginPassword").value = "";
                         };
+
                     },
                 },
             });

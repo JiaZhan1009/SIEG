@@ -584,7 +584,6 @@ hr {
     margin-bottom: 60px;
 }
 
-.Memberkyc:hover {
-    background-color: #ededed;
-    cursor: pointer;
+.Memberkyc {
+    width: 300px;
 }

@@ -383,13 +383,17 @@ namespace SIEG_API.Models
             {
                 entity.Property(e => e.MemberId).HasColumnName("MemberID");
 
-                entity.Property(e => e.Access).HasMaxLength(150);
+                entity.Property(e => e.Access)
+                    .HasMaxLength(150)
+                    .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.AddTime)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Address).HasMaxLength(100);
+
+                entity.Property(e => e.BankAccount).HasMaxLength(150);
 
                 entity.Property(e => e.BankCode).HasMaxLength(100);
 

@@ -32,11 +32,12 @@ namespace SIEG_API.Controllers
                 .Where(m => m.Access == "1" && m.IdCardFront != null && m.IdCardBack != null)
                 .Select(x => new B_MemberkycDTO
                 {
-                    MemberId=x.MemberId,
-                    Name=x.Name,
-                    Access=x.Access,
-                    IdCardFront =x.IdCardFront,
-                    IdCardBack=x.IdCardBack,
+                    MemberId = x.MemberId,
+                    Name = x.Name,
+                    Access = x.Access,
+                    IdCardFront = x.IdCardFront,
+                    IdCardBack = x.IdCardBack,
+                    Email = x.Email,
                 });
             return Memberkyc;
         }
@@ -61,6 +62,7 @@ namespace SIEG_API.Controllers
                 BillingAddress = member.BillingAddress,
                 Phone = member.Phone,
                 Name = member.Name,
+                Access = member.Access,
             };
 
             return personal;
@@ -165,6 +167,8 @@ namespace SIEG_API.Controllers
             }
             Member Memberkyc = await _context.Member.FindAsync(member.MemberId);
             Memberkyc.MemberId = member.MemberId;
+            Memberkyc.IdCardFront = member.IdCardFront;
+            Memberkyc.IdCardBack = member.IdCardBack;
             Memberkyc.Access = member.Access;
             _context.Entry(Memberkyc).State = EntityState.Modified;
 

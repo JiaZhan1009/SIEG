@@ -33,11 +33,11 @@
                             @* <td class="imgTd-1" data-bs-toggle="modal" :data-bs-target="'#'+item.num" :id="item.orderId">*@
                             <td class="imgTd">
                                 <img :src="'https://localhost:7002'+item.image" class="imgWidth" :id="item.orderId">
-                                <div class="imgMargin" :id="item.orderId" alt="Image">
-                                    <div :id="item.orderId">{{item.productName}}</div>
-                                    <span :id="item.orderId" class="nameDilute">{{item.model}}</span>
-                                    <div :id="item.orderId" v-if="item.sizeId!= 0">
-                                        <p :id="item.orderId" class=" badge rounded-pill Pcolor">us{{item.sizeId}}</p>
+                                <div class="imgMargin" alt="Image">
+                                    <div>{{item.productName}}</div>
+                                    <span class="nameDilute">{{item.model}}</span>
+                                    <div v-if="item.sizeId!= 0">
+                                        <p class=" badge rounded-pill Pcolor">us{{item.sizeId}}</p>
                                     </div>
                                 </div>
                             </td>
@@ -68,57 +68,6 @@
                 </table>
             </div>
         </div>
-        <!-- modal -->
-        @* <div v-for="item in ReturnDTOes">
-        <div class="modal fade" :id="item.num" tabindex="-1" aria-labelledby="examplemodallabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-        <div class="modal-header">
-        <h5 class="modal-title" id="examplemodallabel">訂單細節</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
-        </div>
-        <div class="modal-body">
-        <img class="imgWidth" :src="item.image">
-        <div class="orderdetail">
-        <span>訂單編號:</span>
-        <span>{{item.orderId}}</span>
-        </div>
-        <div class="orderdetail">
-        <span>商品名稱:</span>
-        <span>{{item.productName}}</span>
-        </div>
-        <div class="orderdetail">
-        <span>商品尺寸:</span>
-        <span>us{{item.buyerId}}</span>
-        </div>
-        <div class="orderdetail">
-        <span>購買日期:</span>
-        <span>{{item.buyerPrice}}</span>
-        </div>
-        <div class="orderdetail">
-        <span>購買價錢:</span>
-        <span>NT${{item.sellerId}}</span>
-        </div>
-        <div class="orderdetail">
-        <span>訂購人:</span>
-        <span>{{item.sellerPrice}}</span>
-        </div>
-        <div class="orderdetail">
-        <span>收貨人:</span>
-        <span>盧冠佑</span>
-        </div>
-        <div class="orderdetail">
-        <span>寄送地址:</span>
-        <span>{{item.shippingAddress}}</span>
-        </div>
-        </div>
-        <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">close</button>
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>*@
     </div>
 </div>
 

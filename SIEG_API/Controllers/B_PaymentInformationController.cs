@@ -51,7 +51,7 @@ namespace SIEG_API.Controllers
                 BillingAddress = member.BillingAddress,
                 Phone = member.Phone,
                 Shippingaddress= member.Address,
-                BankAccount=member.BankAccount,
+                BankAccount = member.BankAccount,
                 BankCode=member.BankCode,
                 Bankname=_context.Bank.Where(bn=>bn.BankCode== member.BankCode).Select(bn=>bn.Name).FirstOrDefault(),
             };

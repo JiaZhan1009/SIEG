@@ -32,11 +32,11 @@
                         <tr v-for="item in ReturnDTOes">
                             @* <td class="imgTd-1" data-bs-toggle="modal" :data-bs-target="'#'+item.num" :id="item.orderId">*@
                             <td class="imgTd">
-                                <img :src="item.image" class="imgWidth" :id="item.orderId">
+                                <img :src="'https://localhost:7002'+item.image" class="imgWidth" :id="item.orderId">
                                 <div class="imgMargin" :id="item.orderId" alt="Image">
                                     <div :id="item.orderId">{{item.productName}}</div>
                                     <span :id="item.orderId" class="nameDilute">{{item.model}}</span>
-                                    <div :id="item.orderId">
+                                    <div :id="item.orderId" v-if="item.sizeId!= 0">
                                         <p :id="item.orderId" class=" badge rounded-pill Pcolor">us{{item.sizeId}}</p>
                                     </div>
                                 </div>

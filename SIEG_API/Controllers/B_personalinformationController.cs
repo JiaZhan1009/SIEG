@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,9 +26,19 @@ namespace SIEG_API.Controllers
 
         // GET: api/B_personalinformation
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Member>>> GetMember()
+        public async Task<IEnumerable<B_MemberkycDTO>> GetMember()
         {
-            return await _context.Member.ToListAsync();
+            var Memberkyc = _context.Member
+                .Where(m => m.Access == "1" && m.IdCardFront != null && m.IdCardBack != null)
+                .Select(x => new B_MemberkycDTO
+                {
+                    MemberId=x.MemberId,
+                    Name=x.Name,
+                    Access=x.Access,
+                    IdCardFront =x.IdCardFront,
+                    IdCardBack=x.IdCardBack,
+                });
+            return Memberkyc;
         }
 
         // GET: api/B_personalinformation/5
@@ -47,7 +58,7 @@ namespace SIEG_API.Controllers
                 Email = member.Email,
                 Password = member.Password,
                 Shippingaddress = member.Address,
-                BillingAddress= member.BillingAddress,
+                BillingAddress = member.BillingAddress,
                 Phone = member.Phone,
                 Name = member.Name,
             };
@@ -68,9 +79,9 @@ namespace SIEG_API.Controllers
             B_KyccertifiedDTO Kyccertified = new B_KyccertifiedDTO
             {
                 MemberId = member.MemberId,
-                IdCardFront=member.IdCardFront,
-                IdCardBack=member.IdCardBack,
-                Access=member.Access,
+                IdCardFront = member.IdCardFront,
+                IdCardBack = member.IdCardBack,
+                Access = member.Access,
             };
 
             return Kyccertified;
@@ -125,6 +136,37 @@ namespace SIEG_API.Controllers
             Kyccertified.IdCardFront = member.IdCardFront;
             Kyccertified.IdCardBack = member.IdCardBack;
             _context.Entry(Kyccertified).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!MemberExists(Memberid))
+                {
+                    return "找不到欲修改紀錄";
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return "修改成功!";
+        }
+
+        [HttpPut("MemberkycDTO/{Memberid}")]
+        public async Task<string> PutMember(int Memberid, B_MemberkycDTO member)
+        {
+            if (Memberid != member.MemberId)
+            {
+                return "不正確";
+            }
+            Member Memberkyc = await _context.Member.FindAsync(member.MemberId);
+            Memberkyc.MemberId = member.MemberId;
+            Memberkyc.Access = member.Access;
+            _context.Entry(Memberkyc).State = EntityState.Modified;
 
             try
             {

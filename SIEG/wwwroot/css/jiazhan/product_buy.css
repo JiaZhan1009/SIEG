@@ -439,3 +439,22 @@
         border:1px solid #ddd;  
     }
 }
+
+/*-----------------------------------*/
+
+@media (max-width: 991px) {
+    .line_confirm_info {
+        margin-left: 0;
+    }
+
+}
+
+@media (max-width: 575px) {
+    .line_confirm {
+        padding: 30px;
+    }
+
+    .line_confirm .title {
+        font-size: 28px;
+    }
+}

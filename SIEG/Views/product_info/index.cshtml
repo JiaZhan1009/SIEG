@@ -4,6 +4,7 @@
 }
 @section Style{
 
+    @*    <link href="~/css/forumArticleStyle.css" rel="stylesheet">*@
     <link href="/css/jiazhan/product_info.css" rel="stylesheet">
     <link href="/css/jiazhan/general.css" rel="stylesheet">
     <link href="/css/BEN.css" rel="stylesheet">
@@ -56,7 +57,7 @@
 
                         <div class="title">
                             <h4 class="mainTitle">{{productInfo.pName}}</h4>
-                            <h5 class="subTitle">White Black Panda (2021)</h5>
+                            <h5 class="subTitle">{{productInfo.Model}}</h5>
                         </div>
 
                         <div class="stateGroup">
@@ -250,13 +251,14 @@
             <div class="news_share" style="border:0px;justify-content:end">
                 <div class="social">
                     <!-- 點擊後加active -->
-                    <a class="like" href="#"><i class="fa fa-heart" style="height: 50px;"></i></a>
+                    <div class="placement" style="float: right;"><div class="heart"></div></div>
+                    @*                    <a class="like" href="#"><i class="fa fa-heart" style="height: 50px;"></i></a>
                     <a class="fb" href="#">
-                        <img src="/images/icon-fb.png">
+                    <img src="/images/icon-fb.png">
                     </a>
                     <a class="line" href="#">
-                        <img src="/images/icon-line.png">
-                    </a>
+                    <img src="/images/icon-line.png">
+                    </a>*@
                 </div>
             </div>
         </div>
@@ -359,11 +361,11 @@
         </div>
 
         <!-- 價格記錄-->
-        <div class="titleDiv">
-            <p class="titleP">價格記錄</p>
+        @*        <div class="titleDiv">
+        <p class="titleP">價格記錄</p>
         </div>
 
-        <hr>
+        <hr>*@
 
         <!-- 12 個月歷史記錄-->
         <div class="titleDiv">
@@ -380,7 +382,7 @@
             </div>
         </div>
     </div>
-    
+
 </div>
 
 <partial name="_footerPartial" />
@@ -437,37 +439,37 @@
             mounted: async function () {
                 _this = this;
                 _this.pID = sessionStorage.getItem("pID");
-                //sessionStorage.setItem("mID", _this.mID);        
+                //sessionStorage.setItem("mID", _this.mID);
 
                 //await _this.getProductInfo();
                 await _this.getRelatedProducts();
-                
+
                 //await _this.getNewsListDTO();
 
                 const datas = _this.relatedProducts.map(item => {
                     const { pID, pName, pImg } = item;
                     return (`
-                                    <div class="item">
-                                        <div class="product_col">
-                                            <div class="productInfo_card">
-                                                <div class="divLikeProduct">
-                                                    <a href="product_info">
-                                                              <img src="${item.pImg}" alt="" class="bannerImg">
-                                                    </a>
-                                                </div>
-                                                <div class="productInfo_content">
-                                                    <!-- <a href="product_info.html" class="two-row"> -->
-                                                    <a href="product_info.html" class="">
-                                                                <div class="two-row">${item.pName}</div>
+                                                                            <div class="item">
+                                                                                <div class="product_col">
+                                                                                    <div class="productInfo_card">
+                                                                                        <div class="divLikeProduct">
+                                                                                            <a href="product_info">
+                                                                                                      <img src="${item.pImg}" alt="" class="bannerImg">
+                                                                                            </a>
+                                                                                        </div>
+                                                                                        <div class="productInfo_content">
+                                                                                            <!-- <a href="product_info.html" class="two-row"> -->
+                                                                                            <a href="product_info.html" class="">
+                                                                                                        <div class="two-row">${item.pName}</div>
         @*  <div style="color:#999999;margin:0px">最低報價</div>
-                                                        <div class="minPrice fontSizeM">$1,780</div>
-        @*<div class="listTimeSold">上次成交價 : $1,780</div>*@
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                `)
+                                                                            <div class="minPrice fontSizeM">$1,780</div>
+                            @*<div class="listTimeSold">上次成交價 : $1,780</div>*@
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        `)
                 })
                 $(".banner-carousel").html(datas.join(""));
                 $(".banner-carousel").owlCarousel({
@@ -493,6 +495,13 @@
                         }
                     },
                 });
+                $(function () {
+                    $(".heart").on("click", function () {
+                        $(this).toggleClass("is-active");
+                    });
+                });
+
+
 
             },
             methods: {
@@ -516,7 +525,16 @@
                     try {
                         var response = await axios.get(`${webApiAddress}/GetProductNote/${_this.pCateID}`);
                         _this.productNote = response.data;
-                        _this.pInfo = _this.productNote[0].info.split("|");
+                        if (_this.productNote != null && _this.productNote[0].info != null) {
+                            _this.pInfo = _this.productNote[0].info.split("|");
+
+                        } else if (_this.productNote != null && _this.productNote[0].info == null) {
+                            _this.pInfo = ["", ""];
+                        } else {
+                            _this.pInfo = ["", ""];
+                            _this.productNote = ["", ""];
+                        }
+
                     } catch (error) {
                         console.error(error);
                         _this.productNote = [];
@@ -593,24 +611,54 @@
                     console.log(`selectSizeItem_pPrice:${_this.pPrice}`)
                 },
                 BuyNow() {
-                    if (_this.DisplayselBuyPrice == "無報價記錄") {
-                        alert(`此商品無報價記錄, 請使用"提交出價"`);
+                    let _this = this;
+                    if (_this.mID != null) {
+                        if (_this.DisplayselBuyPrice == "無報價記錄") {
+                            Swal.fire({
+                                icon: 'error',
+                                title: `此商品無報價記錄<br>請使用"提交出價"`,
+                            })
+                   
+                        } else {
+                            sessionStorage.setItem("bool", false);
+                            sessionStorage.setItem("pID", _this.pID);
+                            window.location = "/order";
+                        }
+                        sessionStorage.removeItem("bID");
                     } else {
-                        sessionStorage.setItem("bool", false);
-                        sessionStorage.setItem("pID", _this.pID);
-                        window.location = "/order";
+                        Swal.fire({
+                            icon: 'error',
+                            title: '您尚未登入會員<br>請先登入會員',
+                        })
                     }
-                    sessionStorage.removeItem("bID");
+
                 },
                 submitPrice() {
-                    sessionStorage.removeItem("bID");
-                    sessionStorage.setItem("bool", true);
-                    window.location = "/order";
+                    if (_this.mID != null) {
+                        sessionStorage.removeItem("bID");
+                        sessionStorage.setItem("bool", true);
+                        window.location = "/order";
+                        sessionStorage.removeItem("bID");
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: '您尚未登入會員<br>請先登入會員',
+                        })
+                    }
+
                 },
                 Quote() {
-                    sessionStorage.removeItem("sID");
-                    sessionStorage.setItem("pPrice", 0);
-                    window.location = "/sell";
+                    if (_this.mID != null) {
+                        sessionStorage.removeItem("sID");
+                        sessionStorage.setItem("pPrice", 0);
+                        window.location = "/sell";
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: '您尚未登入會員<br>請先登入會員',
+                        })
+                    }
+
                 },
                 Format(val) {
                     return numeral(val).format("$0,0");
@@ -619,7 +667,6 @@
                     let parsedValue = parseInt(value, 10);
                     return isNaN(parsedValue) ? value : this.Format(parsedValue);
                 },
-
             },
             watch: {
                 pID: {
@@ -630,19 +677,16 @@
                             this.getOrderList();
                             this.getLastPrice();
                         }
-
                     }
                 },
                 pCateID: {
-                    handler: function() {
+                    handler: function () {
                         if (this.pCateID) {
                             //this.getRelatedProducts();
                             this.getHistoricalData();
                             this.getSizeAndQuote();
-                            this.getProductNote();                            
-                            
+                            this.getProductNote();
                         }
-
                     }
                 }
             },
@@ -719,12 +763,7 @@
                         return item;
                     });
                 },
-
-
-
-
             },
-
         });
     </script>
     }

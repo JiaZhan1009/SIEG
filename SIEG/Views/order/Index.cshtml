@@ -4,280 +4,280 @@
     <link href="/css/jiazhan/product_address.css" rel="stylesheet" />
             @*<link href="/css/jiazhan/product_buy_left.css" rel="stylesheet">*@
     }
-    <div id="appVue">
-        <div class="product_buy">
-            <div>
+<div id="appVue">
+    <div class="product_buy">
+        <div>
 
-                <div class="row align-items-center">
-                    <!-- 右側畫面 -->
-                    <div class="col-xl-4 col-lg-5 col-12 offset-xl-2 offset-lg-1">
-                        <div class="product_buy_Left">
-                            <h2 class="fontBold">{{productInfo.pName}}</h2>
-                            <h2 class="fontBold">{{productInfo.pModel}}</h2>
-                            <div class="hightAndLowPrice">
-                                <span>最高出價&nbsp:<span class="hightPrice fontBold">&nbsp{{DisplayMaxBid}}&nbsp</span></span> &nbsp|&nbsp
-                                <span>最低報價&nbsp:<span class="lowPrice fontBold">&nbsp{{DisplayMinQuote}}&nbsp</span></span>
+            <div class="row align-items-center">
+                <!-- 右側畫面 -->
+                <div class="col-xl-4 col-lg-5 col-12 offset-xl-2 offset-lg-1">
+                    <div class="product_buy_Left">
+                        <h2 class="fontBold">{{productInfo.pName}}</h2>
+                        <h2 class="fontBold">{{productInfo.pModel}}</h2>
+                        <div class="hightAndLowPrice">
+                            <span>最高出價&nbsp:<span class="hightPrice fontBold">&nbsp{{DisplayMaxBid}}&nbsp</span></span> &nbsp|&nbsp
+                            <span>最低報價&nbsp:<span class="lowPrice fontBold">&nbsp{{DisplayMinQuote}}&nbsp</span></span>
 
-                                <p :class="{'displayNone':pLength}">US {{pSize}}</p>
+                            <p :class="{'displayNone':pLength}">US {{pSize}}</p>
 
-                            </div>
-                            <img :src="productInfo.pImg" alt="">
                         </div>
+                        <img :src="productInfo.pImg" alt="">
                     </div>
-                    <!-- 左側畫面 -->
-                    <div class="col-xl-5 col-lg-6 col-12 offset-xl-1">
+                </div>
+                <!-- 左側畫面 -->
+                <div class="col-xl-5 col-lg-6 col-12 offset-xl-1">
 
-                        <!--  出價資訊頁面   -->
-                        <div :class="['product_buy_Right', {'DisPlayNone':buyHide} ]">
-                            <!--  狀態顯示  -->
-                            <div class="stateGroup">
-                                <div class="state">
-                                    <img src="/images/jiazhan/icon/white_flame.gif">
-                                    <span>高需求</span>
-                                </div>
+                    <!--  出價資訊頁面   -->
+                    <div :class="['product_buy_Right', {'DisPlayNone':buyHide} ]">
+                        <!--  狀態顯示  -->
+                        <div class="stateGroup">
+                            <div class="state">
+                                <img src="/images/jiazhan/icon/white_flame.gif">
+                                <span>高需求</span>
                             </div>
-                            <div class="fontRed">
-                                2225 人對此商品感興趣
+                        </div>
+                        <div class="fontRed">
+                            2225 人對此商品感興趣
+                        </div>
+
+
+                        <!--  尺碼  -->
+                        <div :class="{'displayNone':pLength}">
+                            <div @@click="showSelSize = !showSelSize" :class="['selSize']" style="display:flex;justify-content: space-between;">
+                                <div>尺碼&nbsp;:&nbsp;&nbsp;<span class="fontBold">US {{pSize}}</span></div>
+                                <img src="https://stockx-assets.imgix.net/svg/icons/pencil.svg?auto=compress,format">
                             </div>
+                        </div>
 
+                        <!--  隱藏顯示尺碼item  -->
+                        <div :class="{ displayNone: showSelSize }">
 
-                            <!--  尺碼  -->
-                            <div :class="{'displayNone':pLength}">
-                                <div @@click="showSelSize = !showSelSize" :class="['selSize']" style="display:flex;justify-content: space-between;">
-                                    <div>尺碼&nbsp;:&nbsp;&nbsp;<span class="fontBold">US {{pSize}}</span></div>
-                                    <img src="https://stockx-assets.imgix.net/svg/icons/pencil.svg?auto=compress,format">
-                                </div>
-                            </div>
+                            <div class="selSizeHide">
+                                <p>選擇 US 尺碼</p>
+                                <hr />
+                                <div class="sizeItemContoiner row">
+                                    <div class="col-12">
+                                        <div class="sizeAndPrice">
 
-                            <!--  隱藏顯示尺碼item  -->
-                            <div :class="{ displayNone: showSelSize }">
-
-                                <div class="selSizeHide">
-                                    <p>選擇 US 尺碼</p>
-                                    <hr />
-                                    <div class="sizeItemContoiner row">
-                                        <div class="col-12">
-                                            <div class="sizeAndPrice">
-
-                                                <div @@click="activeIndex=index" :class="['sizePriceItem', {'active':activeIndex==index}]" v-for="(item, index) in DisplaySizeAndPriceList" :key="index">
-                                                    <div class="sizeItem" @@click="selectSizeItem(item.size,item.price,index,item.pID,item.sID,item.quoteID)">
-                                                        <div class="item">
-                                                            <div class="fontBold">US {{item.size}}</div>
-                                                            <div class="fontGreen">{{item.fPrice}}</div>
-                                                        </div>
+                                            <div @@click="activeIndex=index" :class="['sizePriceItem', {'active':activeIndex==index}]" v-for="(item, index) in DisplaySizeAndPriceList" :key="index">
+                                                <div class="sizeItem" @@click="selectSizeItem(item.size,item.price,index,item.pID,item.sID,item.quoteID)">
+                                                    <div class="item">
+                                                        <div class="fontBold">US {{item.size}}</div>
+                                                        <div class="fontGreen">{{item.fPrice}}</div>
                                                     </div>
                                                 </div>
-
                                             </div>
+
                                         </div>
                                     </div>
-
                                 </div>
+
                             </div>
+                        </div>
 
-                            <!--  提交出價及立即購買  -->
-                            <div class="priceContent">
-                                <div class="submitAndBuy">
-                                    <div @@click="buyNow=true" id="submit" :class="['submit', {'bkcLightGray': !buyNow}, 'col-6', {'bkcGreen': buyNow}]">提交出價</div>
-                                    <div @@click="buyNow=false;" id="buyNow" :class="['buyNow', {'bkcLightGray': buyNow}, 'col-6',{'bkcGreen': !buyNow}]">立即購買</div>
-                                </div>
-                                <!-- showPrice -->
-                                <div :class="{'displayNone':buyNow}">
-                                    <h2 class="priceInfo">TWD{{DisplayPrice}}</h2>
-                                </div>
-                                <!-- inputPrice-->
-                                <div :class="[{'displayNone':!buyNow}, 'inputPriceGroup']">
-                                    <span class="inputSpan">＄</span>
-                                    <input placeholder="輸入出價" v-model="pPrice" type="number" class="inputPrice" @@blur="checkPrice">
-                                </div>
-                                <div class="priceState">{{DisplayPriceState}}</div>
+                        <!--  提交出價及立即購買  -->
+                        <div class="priceContent">
+                            <div class="submitAndBuy">
+                                <div @@click="buyNow=true" id="submit" :class="['submit', {'bkcLightGray': !buyNow}, 'col-6', {'bkcGreen': buyNow}]">提交出價</div>
+                                <div @@click="buyNow=false;" id="buyNow" :class="['buyNow', {'bkcLightGray': buyNow}, 'col-6',{'bkcGreen': !buyNow}]">立即購買</div>
+                            </div>
+                            <!-- showPrice -->
+                            <div :class="{'displayNone':buyNow}">
+                                <h2 class="priceInfo">TWD{{DisplayPrice}}</h2>
+                            </div>
+                            <!-- inputPrice-->
+                            <div :class="[{'displayNone':!buyNow}, 'inputPriceGroup']">
+                                <span class="inputSpan">＄</span>
+                                <input placeholder="輸入出價" v-model="pPrice" type="number" class="inputPrice" @@blur="checkPrice">
+                            </div>
+                            <div class="priceState">{{DisplayPriceState}}</div>
 
-                                <div class="calculateInfo">
-                                    <div :class="['specialOffer']">
-                                        <span>優惠碼</span>
-                                        <span class="fontGreen addDiscount">添加折扣</span>
-                                    </div>
-                                    <div :class="['specialOffer']">
-                                        <span>預計運費</span>
-                                        <span>{{DisplayfreightFee}}</span>
-                                    </div>
-                                    @*                               <div :class="[{'displayNone':!buyNow}, 'specialOffer']">
+                            <div class="calculateInfo">
+                                <div :class="['specialOffer']">
+                                    <span>優惠碼</span>
+                                    <span class="fontGreen addDiscount">添加折扣</span>
+                                </div>
+                                <div :class="['specialOffer']">
+                                    <span>預計運費</span>
+                                    <span>{{DisplayfreightFee}}</span>
+                                </div>
+                                @*                               <div :class="[{'displayNone':!buyNow}, 'specialOffer']">
                                 <span>商品價格</span>
                                 <span>{{DisplayPrice}}</span>
                                 </div>*@
-                                    <div :class="['specialOffer']">
-                                        <span>商品價格</span>
-                                        <span>{{DisplayTotalPrice}}</span>
-                                    </div>
-                                    @*<div class="specialOffer">
+                                <div :class="['specialOffer']">
+                                    <span>商品價格</span>
+                                    <span>{{DisplayTotalPrice}}</span>
+                                </div>
+                                @*<div class="specialOffer">
                                 <span>最終價格將在結帳時計算</span>
                                 <span></span>
                                 </div>*@
-                                </div>
-                            </div>
-
-                            <div class="buyInfo">
-                                <div :class="[{'displayNone':!buyNow}, 'buyInfoBlock']">
-                                    <div class="row align-items-center">
-                                        <div class="col-6">
-                                            <img src="https://stockx-assets.imgix.net/svg/icons/stopwatch.svg?auto=compress,format">
-                                            <span>出價有效期</span>
-                                        </div>
-                                        <div class="col-6">
-                                            <select value="1" class="selDay" v-model="selBidDay">
-                                                <option value="1">1天</option>
-                                                <option value="3">3天</option>
-                                                <option value="7">7天</option>
-                                                <option value="14">14天</option>
-                                                <option value="30">30天</option>
-                                                <option value="60">60天</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div :class="[{'displayNone':buyNow}, 'buyInfoBlock']">
-                                    <div class="row align-items-center">
-                                        <div class="col-6">
-                                            <img src="https://stockx-assets.imgix.net/svg/icons/stopwatch.svg?auto=compress,format">
-                                            <span>請選擇付款方式</span>
-                                        </div>
-                                        <div class="col-6">
-                                            <select value="LinePay" class="selDay" v-model="selPay">
-                                                <option value="LinePay">Line Pay</option>
-                                                <option value="信用卡">信用卡</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div :class="[{'displayNone':buyNow}, 'buyInfoBlock']">
-                                    <div class="row align-items-center">
-                                        <div class="col-9">
-                                            <img src="https://stockx-assets.imgix.net/svg/icons/home_2.svg?auto=compress,format">
-                                            <span>{{DisplayAddressInfo}}</span>
-                                        </div>
-                                        <div class="col-3">
-                                            <div class="icon">
-                                                <img @@click="changeAddressDisplay" src="https://stockx-assets.imgix.net/svg/icons/pencil.svg?auto=compress,format">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="btnCancelAndNext">
-                                <a>
-                                    <div @@click="back" class="btnCancel">返回</div>
-                                </a>
-                                <div @@click="next" class="btnNext">下一步</div>
-                                @*                                <div @@click="BidTest" class="btnNext">測試用</div>*@
                             </div>
                         </div>
 
-                        <!--  填寫地址   -->
-                        <div :class="['product_Address_Right', {'DisPlayNone':addressHide}]">
-                            <div class="address">
-                                <h1>地址</h1>
-                                <div class="addressTitle">
-                                    <span class="setAddress">請提供你的郵遞資訊</span>
-                                    <button @@click="getMemberInfo" class="addMemberInfo">會員資料帶入</button>
+                        <div class="buyInfo">
+                            <div :class="[{'displayNone':!buyNow}, 'buyInfoBlock']">
+                                <div class="row align-items-center">
+                                    <div class="col-6">
+                                        <img src="https://stockx-assets.imgix.net/svg/icons/stopwatch.svg?auto=compress,format">
+                                        <span>出價有效期</span>
+                                    </div>
+                                    <div class="col-6">
+                                        <select value="1" class="selDay" v-model="selBidDay">
+                                            <option value="1">1天</option>
+                                            <option value="3">3天</option>
+                                            <option value="7">7天</option>
+                                            <option value="14">14天</option>
+                                            <option value="30">30天</option>
+                                            <option value="60">60天</option>
+                                        </select>
+                                    </div>
                                 </div>
+                            </div>
+                            <div :class="[{'displayNone':buyNow}, 'buyInfoBlock']">
+                                <div class="row align-items-center">
+                                    <div class="col-6">
+                                        <img src="https://stockx-assets.imgix.net/svg/icons/stopwatch.svg?auto=compress,format">
+                                        <span>請選擇付款方式</span>
+                                    </div>
+                                    <div class="col-6">
+                                        <select value="LinePay" class="selDay" v-model="selPay">
+                                            <option value="LinePay">Line Pay</option>
+                                            <option value="信用卡">信用卡</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
 
+                            <div :class="[{'displayNone':buyNow}, 'buyInfoBlock']">
+                                <div class="row align-items-center">
+                                    <div class="col-9">
+                                        <img src="https://stockx-assets.imgix.net/svg/icons/home_2.svg?auto=compress,format">
+                                        <span>{{DisplayAddressInfo}}</span>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="icon">
+                                            <img @@click="changeAddressDisplay" src="https://stockx-assets.imgix.net/svg/icons/pencil.svg?auto=compress,format">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="btnCancelAndNext">
+                            <a>
+                                <div @@click="back" class="btnCancel">返回</div>
+                            </a>
+                            <div @@click="next" class="btnNext">下一步</div>
+                            @*                                <div @@click="BidTest" class="btnNext">測試用</div>*@
+                        </div>
+                    </div>
+
+                    <!--  填寫地址   -->
+                    <div :class="['product_Address_Right', {'DisPlayNone':addressHide}]">
+                        <div class="address">
+                            <h1>地址</h1>
+                            <div class="addressTitle">
+                                <span class="setAddress">請提供你的郵遞資訊</span>
+                                <button @@click="getMemberInfo" class="addMemberInfo">會員資料帶入</button>
+                            </div>
+
+                            <div>
+                                <h5>
+                                    郵遞資訊
+                                </h5>
+                            </div>
+                            <div class="addressgroup">
+                                <label>姓名</label>
+                                <input v-model="mName" type="text" name="text" class="form-control" placeholder="請輸入全名">
+                            </div>
+                            <div class="addressgroup">
+                                <label>地址</label>
+                                <input v-model="mAddress" type="text" name="text" class="form-control" placeholder="請輸入地址">
+                            </div>
+                            <div class="addressgroup">
+                                <label>電話號碼</label>
+                                <input v-model="mPhone" type="tel" name="tel" class="form-control" placeholder="請輸入電話號碼">
+                            </div>
+                            <div class="addressConcelAndNext">
+                                <button @@click="changeAddressDisplay" type="button" class="btnCancel">
+                                    取消
+                                </button>
+                                <input @@click="saveMemberInfo" type="submit" class="btnNext" value="儲存">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--  填寫信用卡   -->
+                    <div :class="['product_Pay_Right', {'DisPlayNone':payHide}]">
+                        <div class="orderTopWidth-2">
+                            <div>
+                                <h1>帳單</h1>
+                                <p>請提供你的帳單資訊</p>
                                 <div>
-                                    <h5>
-                                        郵遞資訊
-                                    </h5>
+                                    <h4>
+                                        信用卡
+                                    </h4>
+                                </div>
+                                <div>
+                                    <input type="text" name="text" class="form-control" placeholder="信用卡卡號">
+                                </div>
+                                <div class="addressgroup-1">
+                                    <div class="addressgroup-2">
+                                        <input type="text" name="text" class="form-control" placeholder="到期日">
+                                    </div>
+                                    <div>
+                                        <input type="text" name="text" class="form-control" placeholder="信用卡檢查碼">
+                                    </div>
+                                </div>
+                                <div class="addressgroup-1">
+                                    <h4>
+                                        帳單資訊
+                                    </h4>
+                                </div>
+                                <div>
+                                    <label>名字</label>
+                                    <input type="text" name="text" class="form-control" placeholder="請輸入名子">
                                 </div>
                                 <div class="addressgroup">
-                                    <label>姓名</label>
-                                    <input v-model="mName" type="text" name="text" class="form-control" placeholder="請輸入全名">
+                                    <label>姓氏</label>
+                                    <input type="text" name="text" class="form-control" placeholder="請輸入姓氏">
                                 </div>
                                 <div class="addressgroup">
                                     <label>地址</label>
-                                    <input v-model="mAddress" type="text" name="text" class="form-control" placeholder="請輸入地址">
+                                    <input type="text" name="text" class="form-control" placeholder="請輸入地址">
+                                </div>
+                                <div class="addressgroup-1">
+                                    <div class="addressgroup-2">
+                                        <label>地區</label>
+                                        <input type="text" name="text" class="form-control" placeholder="請輸入地區">
+                                    </div>
+                                    <div>
+                                        <label>郵遞區號</label>
+                                        <input type="text" name="text" class="form-control" placeholder="請輸入遞區號">
+                                    </div>
                                 </div>
                                 <div class="addressgroup">
                                     <label>電話號碼</label>
-                                    <input v-model="mPhone" type="tel" name="tel" class="form-control" placeholder="請輸入電話號碼">
+                                    <input type="tel" name="tel" class="form-control" placeholder="請輸入電話號碼">
                                 </div>
-                                <div class="addressConcelAndNext">
-                                    <button @@click="changeAddressDisplay" type="button" class="btnCancel">
+                                <div class="addressgroupBtn">
+                                    <button @@click="changePayDisplay" type="button" class="btn btncolor btnCancel">
                                         取消
                                     </button>
-                                    <input @@click="saveMemberInfo" type="submit" class="btnNext" value="儲存">
+                                    <input type="submit" class="btn btncolor inputright btnNext" value="儲存">
                                 </div>
                             </div>
-                        </div>
 
-                        <!--  填寫信用卡   -->
-                        <div :class="['product_Pay_Right', {'DisPlayNone':payHide}]">
-                            <div class="orderTopWidth-2">
-                                <div>
-                                    <h1>帳單</h1>
-                                    <p>請提供你的帳單資訊</p>
-                                    <div>
-                                        <h4>
-                                            信用卡
-                                        </h4>
-                                    </div>
-                                    <div>
-                                        <input type="text" name="text" class="form-control" placeholder="信用卡卡號">
-                                    </div>
-                                    <div class="addressgroup-1">
-                                        <div class="addressgroup-2">
-                                            <input type="text" name="text" class="form-control" placeholder="到期日">
-                                        </div>
-                                        <div>
-                                            <input type="text" name="text" class="form-control" placeholder="信用卡檢查碼">
-                                        </div>
-                                    </div>
-                                    <div class="addressgroup-1">
-                                        <h4>
-                                            帳單資訊
-                                        </h4>
-                                    </div>
-                                    <div>
-                                        <label>名字</label>
-                                        <input type="text" name="text" class="form-control" placeholder="請輸入名子">
-                                    </div>
-                                    <div class="addressgroup">
-                                        <label>姓氏</label>
-                                        <input type="text" name="text" class="form-control" placeholder="請輸入姓氏">
-                                    </div>
-                                    <div class="addressgroup">
-                                        <label>地址</label>
-                                        <input type="text" name="text" class="form-control" placeholder="請輸入地址">
-                                    </div>
-                                    <div class="addressgroup-1">
-                                        <div class="addressgroup-2">
-                                            <label>地區</label>
-                                            <input type="text" name="text" class="form-control" placeholder="請輸入地區">
-                                        </div>
-                                        <div>
-                                            <label>郵遞區號</label>
-                                            <input type="text" name="text" class="form-control" placeholder="請輸入遞區號">
-                                        </div>
-                                    </div>
-                                    <div class="addressgroup">
-                                        <label>電話號碼</label>
-                                        <input type="tel" name="tel" class="form-control" placeholder="請輸入電話號碼">
-                                    </div>
-                                    <div class="addressgroupBtn">
-                                        <button @@click="changePayDisplay" type="button" class="btn btncolor btnCancel">
-                                            取消
-                                        </button>
-                                        <input type="submit" class="btn btncolor inputright btnNext" value="儲存">
-                                    </div>
-                                </div>
-
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    @section Scripts{
+@section Scripts{
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
@@ -303,7 +303,7 @@
         // order page
         let baseLoginPayUrl = "https://localhost:7052/api/LinePay/";
         let webApiAddress = "https://localhost:7139/api/J";
-        let NgrokUrl = "https://ce25-111-242-186-4.jp.ngrok.io"
+        let NgrokUrl = "https://311a-59-125-142-166.jp.ngrok.io"
         var appVue = new Vue({
             el: "#appVue",
             data: {
@@ -349,9 +349,6 @@
                 } else {
                     _this.buyNow = false;
                 }
-
-
-
 
             },
             methods: {
@@ -405,10 +402,20 @@
                         let _this = this;
                         let response = await axios.get(`${webApiAddress}/GetMemberInfo/${_this.mID}`);
                         _this.memberList = response.data;
-                        _this.mName = _this.memberList.mName;
-                        _this.mPhone = _this.memberList.mPhone;
-                        _this.mAddress = _this.memberList.mAddress;
+                        if (_this.memberList.mName != null && _this.memberList.mPhone != null && _this._this.memberList.mAddress != null) {
+                            _this.mName = _this.memberList.mName;
+                            _this.mPhone = _this.memberList.mPhone;
+                            _this.mAddress = _this.memberList.mAddress;
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: '您未設定銀行帳戶<br>請填入銀行帳戶',
+                            })
+                        }
+
+
                     } catch (error) {
+
                         console.log(error);
                     }
                 },
@@ -457,12 +464,18 @@
                             mName: _this.mName,
                             mAddress: _this.mAddress
                         };
-
                         axios.put(`${webApiAddress}/UpdataMemberInfo/${_this.mID}`, request)
-                        alert("會員資料儲存成功!");
+                        Swal.fire({
+                            icon: 'success',
+                            title: '會員資料儲存成功!',
+                        })
                         _this.changeAddressDisplay();
                     } else {
-                        alert("寄送資訊不完整, 請重新檢查")
+                        Swal.fire({
+                            icon: 'error',
+                            title: '寄送資訊不完整, 請重新檢查!',
+                        })
+
                     }
                 },
                 Format(val) { return numeral(val).format("$0,0"); },
@@ -472,7 +485,10 @@
                 checkPayment(orderInfo) {
                     let _this = this;
                     if (_this.selPay == null && orderInfo.info == "buy") {
-                        alert("請選擇付款方式");
+                        Swal.fire({
+                            icon: 'error',
+                            title: '請選擇付款方式!',
+                        })
                     } else if (_this.mAddress != "" && _this.mPhone != "" && _this.mName != "" && _this.selPay == "LinePay" && orderInfo.info == "buy") {
                         _this.requestLinePayment(_this.pPrice, orderInfo);
                     } else if (_this.mAddress != "" && _this.mPhone != "" && _this.mName != "" && _this.selPay == "信用卡" && orderInfo.info == "buy") {
@@ -508,9 +524,7 @@
                                 CancelUrl: "https://c4f0-61-63-154-173.jp.ngrok.io/api/LinePay/Cancel",
                             },
                         };
-
                         window.name = JSON.stringify(orderInfo);
-
                         // 送出交易申請至商家 server
                         $.post({
                             url: baseLoginPayUrl + "Create",
@@ -546,19 +560,42 @@
                         shippingAddress: _this.memberList.mAddress,
                     }
                     if (!_this.buyNow) {
-                        orderInfo.info = "buy";
-                        orderInfo.sID = _this.sID;
+                        if (_this.pPrice > 0) {
+                            orderInfo.info = "buy";
+                            orderInfo.sID = _this.sID;
+                            _this.checkPayment(orderInfo);
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: '目前無賣家無法購買!<br>請使用提交出價功能',
+                            })
+                            _this.buyNow = !_this.buyNow;
+                        }
                     } else {
-                        orderInfo.info = "bid"  
+                        orderInfo.info = "bid"
                         try {
-                            console.log(orderInfo)
-                            axios.post(`${webApiAddress}/InsertBuyerOrder`, orderInfo);
-                            alert("完成出價")
+                            if (_this.pPrice > 0) {
+                                console.log(orderInfo)
+                                axios.post(`${webApiAddress}/InsertBuyerOrder`, orderInfo);
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: '完成出價!',
+                                })
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: '請輸入正確報價!',
+                                })
+                            }
+
+
                         } catch (error) {
                             console.log(error)
                         }
+
+                        _this.checkPayment(orderInfo);
                     }
-                    _this.checkPayment(orderInfo);
+
 
                 },
                 checkPrice() {
@@ -596,12 +633,10 @@
                     _this.checkPayment(orderInfo);
                     try {
                         axios.post(`${webApiAddress}/InsertBuyerOrder`, _this.orderInfo);
-                        alert(_this.orderInfo)
+                        //alert(_this.orderInfo)
                     } catch {
-                        alert("error")
+                        //alert("error")
                     }
-
-
                 }
 
             },

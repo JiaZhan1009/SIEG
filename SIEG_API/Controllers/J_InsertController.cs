@@ -83,7 +83,11 @@ namespace SIEG_API.Controllers
             {
                 Insert.SizeList = new List<string> { "S", "M", "L", "XL" };
             }
-           
+            else if (Insert.CateName == "精品腕錶" || Insert.CateName == "時尚包款")
+            {
+                Insert.SizeList = new List<string> { "0" };
+            }
+
 
             List<Product> p = new List<Product>();
 
@@ -140,7 +144,8 @@ namespace SIEG_API.Controllers
                         ProductId = orderInfo.pID,
                         Price = (int)orderInfo.buyerPrice,
                         FinalPrice = orderInfo.finalPrice,
-                        EffectiveTime = DateTime.Now
+                        EffectiveTime = DateTime.Now,
+                        SaleTime = DateTime.Now
                     };
 
                     _context.BuyerBid.Add(bid);
@@ -183,7 +188,7 @@ namespace SIEG_API.Controllers
         public async Task InsertSellOrder([FromBody] J_OrderInfo orderInfo)
         {
             // error check :
-            if (orderInfo.bidID == 0 || orderInfo.sID == 0 || orderInfo.quoteID == 0)
+            if (orderInfo.bidID == 0 || orderInfo.sID == 0)
                 throw new Exception("無法取得訂單資訊");
 
             var bid = await _context.BuyerBid.FindAsync(orderInfo.bidID);
@@ -193,28 +198,32 @@ namespace SIEG_API.Controllers
             // alter Order: 
             var order = await _context.Order.Where(o => o.OrderId == bid.OrderId).SingleOrDefaultAsync();
             if (order == null)
-                throw new Exception("無法取得訂單資訊");
-
-            order.State = "待出貨";
-            order.SellerId = orderInfo.sID;
-            order.SellerPrice = orderInfo.finalPrice;
-            order.UpdateTime = DateTime.Now;
-
-            _context.Order.Update(order);
-            await _context.SaveChangesAsync();
-
-            // insert Quote : 填上 OrderID
-            SellerAddProduct quote = new SellerAddProduct
             {
-                OrderId = order.OrderId,
-                FinalPrice = orderInfo.finalPrice,
-                MemberId = orderInfo.sID,
-                Price = (int)orderInfo.sellerPrice,
-                ProductId = orderInfo.pID,
-            };
+                throw new Exception("無法取得訂單資訊");
+            }
+            else
+            {
+                order.State = "待出貨";
+                order.SellerId = orderInfo.sID;
+                order.SellerPrice = orderInfo.finalPrice;
+                order.UpdateTime = DateTime.Now;
 
-            _context.SellerAddProduct.Add(quote);
-            await _context.SaveChangesAsync();
+                _context.Order.Update(order);
+                await _context.SaveChangesAsync();
+
+                // insert Quote : 填上 OrderID
+                SellerAddProduct quote = new SellerAddProduct
+                {
+                    OrderId = order.OrderId,
+                    FinalPrice = orderInfo.finalPrice,
+                    MemberId = orderInfo.sID,
+                    Price = (int)orderInfo.sellerPrice,
+                    ProductId = orderInfo.pID,
+                };
+
+                _context.SellerAddProduct.Add(quote);
+                await _context.SaveChangesAsync();
+            }     
         }
 
 

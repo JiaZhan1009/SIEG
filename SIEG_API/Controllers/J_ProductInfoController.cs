@@ -315,11 +315,7 @@ namespace SIEG_API.Controllers
                     pID = s.ProductId,
 
                 }).ToListAsync();
-
-
-
         }
-
     }
 }
 

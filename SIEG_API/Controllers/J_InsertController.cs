@@ -54,6 +54,56 @@ namespace SIEG_API.Controllers
             await _context.SaveChangesAsync();
         }
 
+        [HttpPost("InsertProductCategory")]
+        public async Task InsertProductCategory(J_InsertProductCategory Insert)
+        {
+            Insert.Info = "從充滿校園氣息的 College Colors Program 到充滿活力的 Nike CO.JP 系列，Nike Dunk 系列球鞋自 1985 年設計問世以來已經推出了許多配色。但每一種新配色都為 Dunk 的經典撞色設計保留了一席之地。Nike 將其永恆的撞色設計與這款 Nike Dunk Low Retro White Black 球鞋完美搭配。|鞋面由白色皮革搭配黑色皮革覆面和 Swoosh 對勾組成。尼龍材質的鞋舌上飾有經典的 NIKE 品牌標誌，以向傳統的 Dunk 設計元素致敬。加上白色中底和黑色外底，便構成了這款亮眼潮鞋。|這款 Nike Dunk Low Retro White Black 球鞋於 2021 年 1 月發售，零售價為 $100 美元。";
+            ProductCategory category = new ProductCategory
+            {
+                CategoryName = Insert.CateName,
+                BrandName = Insert.BrandName,
+                ProductName = Insert.Name,
+                Img = Insert.Img,
+                Note = Insert.Note,
+                Info = Insert.Info
+            };
+            _context.ProductCategory.Add(category);
+
+            if(Insert.ImgFront == null || Insert.ImgFront == "")
+            {
+                //Insert.pPrice = 5500;
+                //Insert.ImgFront = "/images/product/高檔鞋履/Air Jordan/Jordan 1 Retro Low OG SP.jpg";
+                //Insert.SizeList = new List<string> { "S", "M", "L", "XL"};
+                //Insert.pModel = "Travis Scott Black Phantom";                
+            }
+            else if (Insert.CateName == "高檔鞋履")
+            {
+                Insert.SizeList = new List<string> { "9", "9.5", "10", "10.5", "11", "11.5", "12" };
+            }else if (Insert.CateName == "潮流服飾")
+            {
+                Insert.SizeList = new List<string> { "S", "M", "L", "XL" };
+            }
+           
+
+            List<Product> p = new List<Product>();
+
+            for (int i = 0; i < Insert.SizeList.Count; i++)
+            {
+                p.Add(new Product
+                {
+                    Price = Insert.pPrice,
+                    ImgFront = Insert.ImgFront,
+                    Size = Insert.SizeList[i],
+                    Model = Insert.pModel,
+                    ProductCategory = category
+                });
+            }
+            _context.Product.AddRange(p);
+            await _context.SaveChangesAsync();
+        }
+
+
+
         [HttpPost("InsertBuyerOrder")]
         public async Task InsertBuyerOrderAsync([FromBody] J_OrderInfo orderInfo)
         {

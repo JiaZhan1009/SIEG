@@ -44,16 +44,17 @@ namespace SIEG_API.Controllers
             //ps = ProductCategory
             return await _context.ProductCategory
                 .Where(ps => ps.ValIdity == true)
+                .GroupBy(ps => ps.Img)
                 .Select(ps => new E_ProductSortDTO
                 {
-                productsortId = ps.ProductCategoryId,
-                productsortBrand = ps.BrandName,
-                productsortName = ps.CategoryName,
-                productsortImg = ps.Img,
+                productsortId = ps.First().ProductCategoryId,
+                productsortBrand = ps.First().BrandName,
+                productsortName = ps.First().CategoryName,
+                productsortImg = ps.First().Img,
             }).ToListAsync();
 
         }
-
+        
 
         // GET: api/E_ProductSort/5
         [HttpGet("{id}")]

@@ -239,21 +239,21 @@
                             //console.log("我是買家價錢" + _this.Price)
 
                             //買家等級判斷
-                            if (_this.Price < 5000) {
-                                _this.BuyerGrade = Math.floor(_this.Price / 5000);
+                            if (_this.Price < 50000) {
+                                _this.BuyerGrade = Math.floor(_this.Price / 50000);
                                 if (_this.BuyerGrade == 0) {
-                                    _this.BuyExp = _this.Price % 5000 / 50
+                                    _this.BuyExp = _this.Price % 50000 / 500
                                 }
                             } else {
-                                _this.BuyerGrade = Math.floor(_this.Price / 5000);
+                                _this.BuyerGrade = Math.floor(_this.Price / 50000);
                                 if (_this.BuyerGrade == 0) {
-                                    _this.BuyExp = _this.Price % 5000 / 50
+                                    _this.BuyExp = _this.Price % 50000 / 500
                                 }
                                 else if (_this.BuyerGrade == 1) {
-                                    _this.BuyExp = Math.floor(_this.Price % 10000 / 100);
+                                    _this.BuyExp = Math.floor(_this.Price % 100000 / 1000);
                                 }
                                 else if (_this.BuyerGrade == 2) {
-                                    _this.BuyExp = Math.floor(_this.Price % 15000 / 150)
+                                    _this.BuyExp = Math.floor(_this.Price % 700000 / 7000)
                                 } else if (_this.BuyerGrade >= 3) {
                                     _this.BuyerGrade = 3
                                     if (_this.BuyerGrade = 3) {
@@ -272,13 +272,13 @@
 
                             //買家剩餘金額
                             if (_this.BuyerGrade == 0) {
-                                _this.BuyRemain = 5000 - _this.Price
+                                _this.BuyRemain = 50000 - _this.Price
                             }
                             else if (_this.BuyerGrade == 1) {
-                                _this.BuyRemain = 10000 - _this.Price
+                                _this.BuyRemain = 100000 - _this.Price
                             }
                             else if (_this.BuyerGrade == 2) {
-                                _this.BuyRemain = 15000 - _this.Price
+                                _this.BuyRemain = 700000 - _this.Price
                             }
                             else if (_this.BuyerGrade == 3) {
                                 _this.BuyRemain = 0
@@ -317,21 +317,21 @@
                             _this.Price = _this.D_GradeSellDTO[0].price;
 
                             //賣家等級判斷
-                            if (_this.Price < 15000) {
-                                _this.SellerGrade = Math.floor(_this.Price / 15000);
+                            if (_this.Price < 150000) {
+                                _this.SellerGrade = Math.floor(_this.Price / 150000);
                                 if (_this.SellerGrade == 0) {
-                                    _this.SellExp = Math.floor(_this.Price % 15000 / 150)
+                                    _this.SellExp = Math.floor(_this.Price % 150000 / 1500)
                                 }
                             } else {
-                                _this.SellerGrade = Math.floor(_this.Price / 15000);
+                                _this.SellerGrade = Math.floor(_this.Price / 150000);
                                 if (_this.SellerGrade == 0) {
-                                    _this.SellExp = Math.floor(_this.Price % 15000 / 150);
+                                    _this.SellExp = Math.floor(_this.Price % 150000 / 1500);
                                 }
                                 else if (_this.SellerGrade == 1) {
-                                    _this.SellExp = Math.floor(_this.Price % 30000 / 300);
+                                    _this.SellExp = Math.floor(_this.Price % 300000 / 3000);
                                 }
                                 else if (_this.SellerGrade == 2) {
-                                    _this.SellExp = Math.floor(_this.Price % 45000 / 450);
+                                    _this.SellExp = Math.floor(_this.Price % 900000 / 9000);
                                 } else if (_this.SellerGrade >= 3) {
                                     _this.SellerGrade = 3
                                     if (_this.SellerGrade = 3) {
@@ -358,13 +358,13 @@
                             });
                             //賣家剩餘金額
                             if (_this.SellerGrade == 0) {
-                                _this.SellRemain = 15000 - _this.Price
+                                _this.SellRemain = 150000 - _this.Price
                             }
                             else if (_this.SellerGrade == 1) {
-                                _this.SellRemain = 30000 - _this.Price
+                                _this.SellRemain = 300000 - _this.Price
                             }
                             else if (_this.SellerGrade == 2) {
-                                _this.SellRemain = 45000 - _this.Price
+                                _this.SellRemain = 900000 - _this.Price
                             }
                             else if (_this.SellerGrade == 3) {
                                 _this.SellRemain = 0
@@ -392,7 +392,7 @@
                             if (response.status == 200) {
                                 //alert("成功")
                             } else {
-                                alert("失敗")
+                                //alert("失敗")
                             }
                         }
                     );
@@ -415,7 +415,7 @@
                             if (response.status == 200) {
                                 //alert("成功")
                             } else {
-                                alert("失敗")
+                                //alert("失敗")
                             }
                         }
                     );
@@ -435,9 +435,9 @@
                         response => {
                             console.log("我是優惠券" + response.data)
                             if (response.status == 200) {
-                                alert("成功")
+                                //alert("成功")
                             } else {
-                                alert("失敗")
+                                //alert("失敗")
                             }
                         }
                     );
@@ -458,9 +458,9 @@
                             console.log(response.data);
                             if (response.data == "已經有了") {
                                 _this.updateCP();
-                                alert("已更改");
+                                //alert("已更改");
                             } else {
-                                alert("新增成功");
+                                //alert("新增成功");
                             }
                         }
                     );

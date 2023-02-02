@@ -36,7 +36,7 @@
                     <tbody class="table-border-bottom-0">
                         <tr v-for="item in PostDTOs">
                             <td>
-                                <img :src=item.img>
+                                <img v-if="item.img != 'https://localhost:7002/images/forum/post/none-img.jpg'" style="max-height:220px" :src=item.img>
                             </td>
                             <td>
                                 <div>{{item.category}}</div>

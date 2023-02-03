@@ -170,9 +170,15 @@
                                 $("#paymentStatus").text("交易狀態 : 成功");
                                 Swal.fire({
                                     icon: 'success',
-                                    title: '付款成功, 即將跳轉訂單頁面',
+                                    title: '成功!',
+                                    text: '付款成功, 即將跳轉訂單頁面',
                                 })
-                                location.replace("https://localhost:7002/Member/Member_buyerorder");
+
+                                setTimeout(() => {
+                                    location.replace("https://localhost:7002/Member/Member_buyerorder");
+                                }, 2000);
+
+                                //location.replace("https://localhost:7002/Member/Member_buyerorder");
                                 //let num = "";
                                 //for (let i = 3; i >= 1; i--) {
                                 //    setTimeout(() => {
@@ -188,7 +194,8 @@
                             } catch {
                                 Swal.fire({
                                     icon: 'error',
-                                    title: '訂單有誤,請重新嘗試<br>或聯繫客戶',
+                                    title: '發生錯誤',
+                                    text: '訂單有誤,請重新嘗試或聯繫客服處理',
                                 })
                             }
 

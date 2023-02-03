@@ -61,6 +61,7 @@
                     <div class="infoGroup ">
 
                         <div class="title">
+                            <div class="placement" style="float: right;"><div class="heart"></div></div>
                             <h4 class="mainTitle">{{productInfo.pName}}</h4>
                             <h5 class="subTitle">{{productInfo.pModel}}</h5>
                         </div>
@@ -256,7 +257,7 @@
             <div class="news_share" style="border:0px;justify-content:end">
                 <div class="social">
                     <!-- 點擊後加active -->
-                    <div class="placement" style="float: right;"><div class="heart"></div></div>
+                    @*<div class="placement" style="float: right;"><div class="heart"></div></div>*@
                     @*                    <a class="like" href="#"><i class="fa fa-heart" style="height: 50px;"></i></a>
                     <a class="fb" href="#">
                     <img src="/images/icon-fb.png">
@@ -454,27 +455,27 @@
                 const datas = _this.relatedProducts.map(item => {
                     const { pID, pName, pImg } = item;
                     return (`
-                                                                            <div class="item">
-                                                                                <div class="product_col">
-                                                                                    <div class="productInfo_card">
-                                                                                        <div class="divLikeProduct">
-                                                                                            <a href="product_info">
-                                                                                                      <img src="${item.pImg}" alt="" class="bannerImg">
-                                                                                            </a>
-                                                                                        </div>
-                                                                                        <div class="productInfo_content">
-                                                                                            <!-- <a href="product_info.html" class="two-row"> -->
-                                                                                            <a href="product_info.html" class="">
-                                                                                                        <div class="two-row">${item.pName}</div>
-                                                                                        @*      <div style="color:#999999;margin:0px">最低報價</div>
-                                                                                                <div class="minPrice fontSizeM">$1,780</div>
-                                                                                                @*<div class="listTimeSold">上次成交價 : $1,780</div>*@
-                                                                                            </a>
+                                                                                    <div class="item">
+                                                                                        <div class="product_col">
+                                                                                            <div class="productInfo_card">
+                                                                                                <div class="divLikeProduct">
+                                                                                                    <a href="product_info">
+                                                                                                              <img src="${item.pImg}" alt="" class="bannerImg">
+                                                                                                    </a>
+                                                                                                </div>
+                                                                                                <div class="productInfo_content">
+                                                                                                    <!-- <a href="product_info.html" class="two-row"> -->
+                                                                                                    <a href="product_info.html" class="">
+                                                                                                                <div class="two-row">${item.pName}</div>
+        @*      <div style="color:#999999;margin:0px">最低報價</div>
+                                                                                                    <div class="minPrice fontSizeM">$1,780</div>
+                                                                                                    @*<div class="listTimeSold">上次成交價 : $1,780</div>*@
+                                                                                                    </a>
+                                                                                                </div>
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        `)
+                                                                                `)
                 })
                 $(".banner-carousel").html(datas.join(""));
                 $(".banner-carousel").owlCarousel({
@@ -619,9 +620,10 @@
                         if (_this.DisplayselBuyPrice == "無報價記錄") {
                             Swal.fire({
                                 icon: 'error',
-                                title: `此商品無報價記錄<br>請使用"提交出價"`,
+                                title: '無法操作!',
+                                text: '您尚未登入會員,請先登入會員',
                             })
-                   
+
                         } else {
                             sessionStorage.setItem("bool", false);
                             sessionStorage.setItem("pID", _this.pID);
@@ -631,7 +633,8 @@
                     } else {
                         Swal.fire({
                             icon: 'error',
-                            title: '您尚未登入會員<br>請先登入會員',
+                            title: '無法操作!',
+                            text: '您尚未登入會員,請先登入會員',
                         })
                     }
 
@@ -645,7 +648,8 @@
                     } else {
                         Swal.fire({
                             icon: 'error',
-                            title: '您尚未登入會員<br>請先登入會員',
+                            title: '無法操作!',
+                            text: '您尚未登入會員,請先登入會員',
                         })
                     }
 
@@ -658,7 +662,8 @@
                     } else {
                         Swal.fire({
                             icon: 'error',
-                            title: '您尚未登入會員<br>請先登入會員',
+                            title: '無法操作!',
+                            text: '您尚未登入會員,請先登入會員',
                         })
                     }
 
@@ -694,7 +699,7 @@
                         }
                     }
                 },
-                mID:{
+                mID: {
                     handler: function () {
                         if (this.mID) {
                             sessionStorage.setItem("mID", this.mID)

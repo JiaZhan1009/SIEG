@@ -351,7 +351,8 @@
                     if (_this.bankCode == "" || _this.bankName == "" || _this.bankAccount == "") {
                         Swal.fire({
                             icon: 'error',
-                            title: '請檢查收款帳戶是否填寫正確!',
+                            title: '無法操作!',
+                            text: '請檢查收款帳戶是否填寫正確!',
                         })
                     } else {
                         let request = {
@@ -384,7 +385,8 @@
                     if (_this.bankCode == "" || _this.bankName == "" || _this.bankAccount == "") {
                         Swal.fire({
                             icon: 'error',
-                            title: '請檢查收款帳戶是否填寫正確',
+                            title: '無法操作!',
+                            text: '請檢查收款帳戶是否填寫正確',
                         })
 
                     }
@@ -406,7 +408,8 @@
                                     axios.post(`${webApiAddress}/InsertSellOrder`, request);
                                     Swal.fire({
                                         icon: 'success',
-                                        title: '交易完成!',
+                                                title: '完成',
+                                        text: '交易完成!',
                                     })
 
                                 } catch (error) {
@@ -415,7 +418,8 @@
                             }else{
                                 Swal.fire({
                                     icon: 'error',
-                                    title: '目前無買家出價無法交易!',
+                                    title: '無法操作!',
+                                    text: '目前無買家出價無法交易!',
                                 })
                             }
                             
@@ -433,7 +437,8 @@
                                 axios.post(`${webApiAddress}/InsertSellerQuote`, request)
                                 Swal.fire({
                                     icon: 'success',
-                                    title: '您已完成報價!',
+                                    title: '完成',
+                                    text: '您已完成報價!',
                                 })
 
                             } catch (error) {

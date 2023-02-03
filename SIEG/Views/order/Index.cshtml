@@ -310,7 +310,7 @@
         // order page
         let baseLoginPayUrl = "https://localhost:7052/api/LinePay/";
         let webApiAddress = "https://localhost:7139/api/J";
-        let NgrokUrl = "https://c4e8-111-242-212-226.jp.ngrok.io"
+        let NgrokUrl = "https://c74c-59-125-142-166.jp.ngrok.io"
         var appVue = new Vue({
             el: "#appVue",
             data: {
@@ -475,7 +475,8 @@
                         axios.put(`${webApiAddress}/UpdataMemberInfo/${_this.mID}`, request)
                         Swal.fire({
                             icon: 'success',
-                            title: '會員資料儲存成功!',
+                            title: '成功!',
+                            text: '會員資料儲存成功!',
 
                         })
                         _this.changeAddressDisplay();
@@ -508,7 +509,8 @@
                     if (_this.selPay == null && orderInfo.info == "buy") {
                         Swal.fire({
                             icon: 'error',
-                            title: '請選擇付款方式!',
+                            title: '無法操作!',
+                            text: '請選擇付款方式!',
                         })
                     } else if (_this.mAddress != "" && _this.mPhone != "" && _this.mName != "" && _this.selPay == "LinePay" && orderInfo.info == "buy") {
                         _this.requestLinePayment(_this.pPrice, orderInfo);
@@ -589,7 +591,8 @@
                         } else {
                             Swal.fire({
                                 icon: 'error',
-                                title: '目前無賣家無法購買!<br>請使用提交出價功能',
+                                title: '無法操作',
+                                text: '目前無賣家無法購買!請使用提交出價功能',
                             })
 
                             _this.buyNow = !_this.buyNow;

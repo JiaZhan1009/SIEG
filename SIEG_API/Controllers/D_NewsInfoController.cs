@@ -92,31 +92,51 @@ namespace SIEG_API.Controllers
 
         // POST: api/D_NewsInfo
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //[HttpPost]
+        //public async Task<string> PostNews(D_FavoreiteNewsDTO collectnews)
+        //{
+        //    var msg = "";
+        //    FaviriteNews news = new FaviriteNews
+        //    {
+        //        NewsId = collectnews.NewsId,
+        //        MemberId = collectnews.MemberId,
+        //        ValIdity = collectnews.ValIdity,
+        //    };
+        //    bool exit = _context.FaviriteNews.Any(e => e.NewsId == collectnews.NewsId );
+        //    bool exit1 = _context.FaviriteNews.Any(e => e.MemberId == collectnews.MemberId);
+        //    if (exit == true && exit1==true)
+        //    {
+        //        msg = "成功";
+        //        _context.FaviriteNews.Add(news);
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    else
+        //    {
+        //        //msg = "成功";
+        //        //_context.FaviriteNews.Add(news);
+        //        //await _context.SaveChangesAsync();
+        //    }
+        //    return msg;
+        //}
+        //新聞發送
         [HttpPost]
-        public async Task<string> PostNews(D_FavoreiteNewsDTO collectnews)
+        public async Task<FaviriteNews> PostNews(D_FavoreiteNewsDTO collectnews)
         {
-            var msg = "";
             FaviriteNews news = new FaviriteNews
             {
                 NewsId = collectnews.NewsId,
                 MemberId = collectnews.MemberId,
                 ValIdity = collectnews.ValIdity,
             };
-            bool exit = _context.FaviriteNews.Any(e => e.NewsId == collectnews.NewsId );
-            bool exit1 = _context.FaviriteNews.Any(e => e.MemberId == collectnews.MemberId);
-            if (exit == true && exit1==true)
-            {
-                msg = "成功";
+         
                 _context.FaviriteNews.Add(news);
                 await _context.SaveChangesAsync();
-            }
-            else
-            {
+        
                 //msg = "成功";
                 //_context.FaviriteNews.Add(news);
                 //await _context.SaveChangesAsync();
-            }
-            return msg;
+            
+            return news;
         }
 
         // DELETE: api/D_NewsInfo/5

@@ -96,7 +96,7 @@
                             </div>
                             <div class="credit_card_form">
                                 <div class="credit_card_btn">
-                                    <button @@click="getMemberBankInfo()" class="addMemberInfo ">會員資料帶入</button>
+                                    <button @@click="getMemberBankInfo()" class="addMemberInfo ">會員資料匯入</button>
                                 </div>
 
                                 <form>
@@ -215,7 +215,7 @@
 
                 _this.getProductInfo();
 
-                _this.getMemberBankInfo();
+                //_this.getMemberBankInfo();
 
             },
             methods: {
@@ -285,15 +285,25 @@
                     try {
                         let _this = this;
                         let response = await axios.get(`${webApiAddress}/GetMemberBankInfo/${_this.mID}`);
-                        if (response.data.mBankCode != "") {
+                        if (response.data.mBankCode != "" || response.data.mBankAccount != "") {
                             let res = response.data;
                             _this.bankCode = res.mBankCode;
                             _this.bankName = res.mBankName;
                             _this.bankAccount = res.mBankAccount.toString();
+                                                      Swal.fire({
+                                icon: 'success',
+                                title: '匯入成功',
+                                text: '帳戶資料已成功匯入!'
+                            })
                             console.log(typeof _this.bankAccount)
 
                         }
                         else {
+                            swal.fire({
+                                icon: 'error',
+                                title: '無法匯入資料',
+                                 text: '您會員中心尚未設定帳戶, 請填寫表格。'
+                            })
                             _this.bankCode = "";
                             _this.bankName = "";
                             _this.bankAccount = "";
@@ -356,7 +366,8 @@
                             $('.credit_card_form').hide();
                             Swal.fire({
                                 icon: 'success',
-                                title: '銀行賬戶儲存成功!',
+                                title: '儲存成功',
+                                text: '銀行帳戶已儲存成功!'
                             })
 
                         } catch (error) {

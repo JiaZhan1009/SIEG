@@ -167,7 +167,7 @@ namespace SIEG_API.Controllers
             var productName = _context.Product.Include(p => p.ProductCategory).Where(p => p.ProductId == val.pID).ToList()[0].ProductCategory.ProductName;
 
             var list = await _context.Order.Include(o => o.Product)
-                .Where(o => o.Product.ProductCategory.ProductName == productName && o.State != null)//之後補上 && o.State == "已完成"
+                .Where(o => o.Product.ProductCategory.ProductName == productName && o.State != null && o.UpdateTime != null)//之後補上 && o.State == "已完成"
                 .OrderByDescending(o => o.DoneTime)
                 .Select(x => new J_OrderListDTO
                 {
@@ -184,7 +184,8 @@ namespace SIEG_API.Controllers
         public async Task<int?> GetLastDealPrice(int pID)
         {
             var lastPrice = 0;
-            var price = await _context.Order.Where(o => o.ProductId == pID && o.DoneTime != null)//之後補上 && o.State == "已完成" )
+            //var price = await _context.Order.Where(o => o.ProductId == pID && o.DoneTime != null)//之後補上 && o.State == "已完成" )
+            var price = await _context.Order.Where(o => o.ProductId == pID && o.State != null && o.UpdateTime != null)//之後補上 && o.State == "已完成" )
                .OrderByDescending(o => o.DoneTime).Select(o => o.BuyerPrice)
                .FirstOrDefaultAsync();
             if (price != null)

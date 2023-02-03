@@ -60,7 +60,7 @@
                                                     <div>{{item.productName}}</div>
                                                     <span class="nameDilute">{{item.model}}</span>
                                                     <div v-if="item.size!= 0">
-                                                        <p class=" badge rounded-pill Pcolor">us{{item.size}}</p>
+                                                        <p class=" badge rounded-pill Pcolor">美國尺碼:{{item.size}}</p>
                                                     </div>
                                                 </div>
                                             </td>
@@ -82,7 +82,7 @@
                                                     <div>{{item.productName}}</div>
                                                     <span class="nameDilute">{{item.model}}</span>
                                                     <div v-if="item.size!= 0">
-                                                        <p class=" badge rounded-pill Pcolor">us{{item.size}}</p>
+                                                        <p class=" badge rounded-pill Pcolor">美國尺碼:{{item.size}}</p>
                                                     </div>
                                                 </div>
                                             </td>
@@ -121,7 +121,7 @@
                                         <div>{{item.productName}}</div>
                                         <span class="nameDilute">{{item.model}}</span>
                                         <div>
-                                        <p class=" badge rounded-pill Pcolor">us{{item.size}}</p>
+                                        <p class=" badge rounded-pill Pcolor">美國尺碼:{{item.size}}</p>
                                         </div>
                                         </div>
                                         </td>
@@ -139,7 +139,7 @@
                                                 <div>{{item.productName}}</div>
                                                 <span class="nameDilute">{{item.model}}</span>
                                                 <div v-if="item.size!= 0">
-                                                    <p class=" badge rounded-pill Pcolor">us{{item.size}}</p>
+                                                    <p class=" badge rounded-pill Pcolor">美國尺碼:{{item.size}}</p>
                                                 </div>
                                             </div>
                                         </td>
@@ -176,7 +176,7 @@
                                                 <div :id="item.orderId">{{item.productName}}</div>
                                                 <span :id="item.orderId" class="nameDilute">{{item.model}}</span>
                                                 <div :id="item.orderId" v-if="item.size!= 0">
-                                                    <p class=" badge rounded-pill Pcolor">us{{item.size}}</p>
+                                                    <p class=" badge rounded-pill Pcolor">美國尺碼:{{item.size}}</p>
                                                 </div>
                                             </div>
                                         </td>
@@ -212,7 +212,7 @@
                             </div>
                             <div class="orderdetail" v-if="item.size!= 0">
                                 <span>商品尺寸:</span>
-                                <span>us{{item.size}}</span>
+                                <span>美國尺碼:{{item.size}}</span>
                             </div>
                             <div class="orderdetail">
                                 <span>賣出日期:</span>

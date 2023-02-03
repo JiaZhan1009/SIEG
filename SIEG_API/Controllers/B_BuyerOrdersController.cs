@@ -62,7 +62,7 @@ namespace SIEG_API.Controllers
                     Image = x.pds.ImgFront,
                     SizeId = x.pds.Size,
                     Price = x.pd.BuyerPrice,
-                    CompleteTime = x.pd.AddTime,
+                    CompleteTime = x.pd.DoneTime,
                     ShippingAddress = x.pd.ShippingAddress,
                     State = x.pd.State,
                     Receiver = x.pd.Receiver,

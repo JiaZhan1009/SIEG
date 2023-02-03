@@ -251,16 +251,31 @@
                                 //}
                             }
                             else {
-                                alert("驗證碼不正確")
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: '驗證碼不正確',
+                                    showConfirmButton: false,
+                                    timer: 1000
+                                })
                             }
                         }
                         else {
-                            alert("日期不正確")
+                            Swal.fire({
+                                icon: 'error',
+                                title: '日期不正確',
+                                showConfirmButton: false,
+                                timer: 1000
+                            })
                         }
 
                     }
                     else {
-                        alert("信用卡號不正確")
+                        Swal.fire({
+                            icon: 'error',
+                            title: '信用卡號不正確',
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
                     }
                 },
                 getPersonalDTOes: function () {

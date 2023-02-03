@@ -70,9 +70,14 @@
                             <div class="col-4">
                                 <div class="personalDivrow">
                                     <h6>重設密碼</h6>
-                                    <button type="button" class="btn btncolor" @@click="sendEmail()">
-                                        更改<a href="#"></a>
-                                    </button>
+                                    <a asp-area="" asp-controller="Member" asp-action="Passwordmodification">
+                                        <button type="button" class="btn btncolor">
+                                            更改
+                                        </button>
+                                    </a>
+                                    @* <button type="button" class="btn btncolor" @@click="sendEmail()">
+                                    更改<a href="#"></a>
+                                    </button>*@
                                 </div>
                             </div>
                         </div>
@@ -151,12 +156,12 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.2/axios.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script type="text/javascript" src="~/lib/emailjs/email.min.js"></script>
+    @* <script type="text/javascript" src="~/lib/emailjs/email.min.js"></script>
     <script type="text/javascript">
         (function () {
             emailjs.init("LA8QRRpuwpqpnI3up");
         })();
-    </script>
+    </script>*@
     <script>
         var webApiBaseAddress = "https://localhost:7139";
         var appVue = new Vue({
@@ -182,7 +187,6 @@
             },
             mounted: function () {
                 let _this = this;
-                localStorage.setItem("GETmID", _this.mID)
                 $('.SidebarMember').css("background", "#ededed");
                 _this.getPersonalDTOes();
                 //dennis
@@ -207,22 +211,23 @@
                         }
                     );
                 },
-                sendEmail: function () {
-                    let _this = this
-                    var params = {
-                        to_name: _this.name,
-                        email_id: _this.email,
-                    }
-                    emailjs.send("service_c7s971q", "template_luei145", params).then(function (res) {
-                        //alert("以寄信至您的信箱");
-                        Swal.fire({
-                            icon: 'success',
-                            title: '以寄信至您的信箱',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
-                    })
-                },
+                //sendEmail: function () {
+                //    let _this = this
+                //    window.location = "/Passwordmodification"
+                //    //var params = {
+                //    //    to_name: _this.name,
+                //    //    email_id: _this.email,
+                //    //}
+                //    //emailjs.send("service_c7s971q", "template_luei145", params).then(function (res) {
+                //    //    //alert("以寄信至您的信箱");
+                //    //    Swal.fire({
+                //    //        icon: 'success',
+                //    //        title: '以寄信至您的信箱',
+                //    //        showConfirmButton: false,
+                //    //        timer: 1500
+                //    //    })
+                //    //})
+                //},
                 //dennis
                 getD_GradeBuyDTO: function () {
                     var mID = sessionStorage.getItem("mID");
@@ -451,7 +456,7 @@
                     request.CouponId = 102;
                     request.MemberId = mID;
                     request.Count = _this.Count;
-                    console.log("我是優惠券數量"+request.Count)
+                    console.log("我是優惠券數量" + request.Count)
 
                     axios.post(`${webApiBaseAddress}/api/D_BuyerGrade`, request).then(
                         response => {

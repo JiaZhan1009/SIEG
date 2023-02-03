@@ -100,7 +100,7 @@ namespace SIEG_API.Controllers
             }
             Member memberinformation = await _context.Member.FindAsync(member.MemberId);
             memberinformation.NickName = member.NickName;
-            memberinformation.Phone = member.Phone;
+            //memberinformation.Phone = member.Phone;
             memberinformation.Address = member.Shippingaddress;
             memberinformation.BillingAddress = member.BillingAddress;
             //memberinformation.Name = member.Name;

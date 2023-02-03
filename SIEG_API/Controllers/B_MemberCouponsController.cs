@@ -36,7 +36,7 @@ namespace SIEG_API.Controllers
         [HttpGet("{MemberId}")]
         public async Task<IEnumerable<B_MemberCouponsDTO>> GetMemberCoupon(int MemberId)
         {
-            var CouponId = _context.MemberCoupon.Where(cp => cp.MemberId == MemberId).Select(cpid => cpid.CouponId).ToArray();
+            var CouponId = _context.MemberCoupon.Where(cp => cp.MemberId == MemberId && cp.Count>0).Select(cpid => cpid.CouponId).ToArray();
             var Newcoupon = new List<B_MemberCouponsDTO>();
             foreach (var NewCouponId in CouponId)
             {

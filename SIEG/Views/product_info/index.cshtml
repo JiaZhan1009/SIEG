@@ -46,8 +46,8 @@
                 <div class="col-xl-7 col-xs-7 col-12">
 
                     <!--   測試用  -->
-                    <label> 會員 ID</label>
-                    <input type="number" v-model="mID" />
+           @*         <label> 會員 ID</label>
+                    <input type="number" v-model="mID" />*@
                     <!--   測試用  -->
 
                     <div class="imgGroup">
@@ -342,7 +342,7 @@
             </tr>
             </template>*@
             <div class="row">
-                <div class="col-3">
+                <div class="col-4">
                     <table class="product_note">
                         <tr v-for="item in productNote">
                             <td>{{item.key}}</td>
@@ -351,7 +351,7 @@
                     </table>
                 </div>
 
-                <div class="col-9">
+                <div class="col-8">
                     <div class="article">
                         <template v-if="productNote.length">
                             <p v-for="article in pInfo">{{article}}</p>

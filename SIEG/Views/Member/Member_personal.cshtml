@@ -250,21 +250,30 @@
                                     _this.BuyExp = _this.Price % 50000 / 500
                                 }
                             } else {
-                                _this.BuyerGrade = Math.floor(_this.Price / 50000);
-                                if (_this.BuyerGrade == 0) {
-                                    _this.BuyExp = _this.Price % 50000 / 500
-                                }
-                                else if (_this.BuyerGrade == 1) {
-                                    _this.BuyExp = Math.floor(_this.Price % 100000 / 1000);
-                                }
-                                else if (_this.BuyerGrade == 2) {
+                                if (_this.Price >= 150000) {
+                                    _this.BuyerGrade == 2;
                                     _this.BuyExp = Math.floor(_this.Price % 700000 / 7000)
-                                } else if (_this.BuyerGrade >= 3) {
-                                    _this.BuyerGrade = 3
-                                    if (_this.BuyerGrade = 3) {
-                                        _this.BuyExp = 100
+                                } else if (_this.Price >= 700000) {
+                                    _this.BuyerGrade == 3;
+                                    _this.BuyExp = 100;
+                                } else {
+
+                                    _this.BuyerGrade = Math.floor(_this.Price / 50000);
+                                    if (_this.BuyerGrade == 0) {
+                                        _this.BuyExp = _this.Price % 50000 / 500
                                     }
-                                }
+                                    else if (_this.BuyerGrade == 1) {
+                                        _this.BuyExp = Math.floor(_this.Price % 100000 / 1000);
+                                    }
+                                    else if (_this.BuyerGrade == 2) {
+                                        _this.BuyExp = Math.floor(_this.Price % 700000 / 7000)
+                                    } else if (_this.BuyerGrade >= 3) {
+                                        _this.BuyerGrade = 3
+                                        if (_this.BuyerGrade = 3) {
+                                            _this.BuyExp = 100
+                                        };
+                                    };
+                                };
                             };
                             //優惠券判斷
                             if (_this.BuyerGrade == 2) {

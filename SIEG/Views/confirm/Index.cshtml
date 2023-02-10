@@ -130,11 +130,11 @@
 
     <script>
         // confirm page
-        var webApiAddress = "https://localhost:7139/api/J";
+        var webApiAddress = "https://siegapi.azurewebsites.net/api/J";
         var appVue = new Vue({
             el: "#appVue",
             data: {
-                baseLoginPayUrl: 'https://localhost:7052/api/LinePay/',
+                baseLoginPayUrl: 'https://siegpayment.azurewebsites.net/api/LinePay/',
                 transactionId: "",
                 orderId: "",
                 orderInfo: JSON.parse(window.name),
@@ -175,10 +175,10 @@
                                 })
 
                                 setTimeout(() => {
-                                    location.replace("https://localhost:7002/Member/Member_buyerorder");
+                                    location.replace("https://siegweb.azurewebsites.net/Member/Member_buyerorder");
                                 }, 2000);
 
-                                //location.replace("https://localhost:7002/Member/Member_buyerorder");
+                                //location.replace("https://siegweb.azurewebsites.net/Member/Member_buyerorder");
                                 //let num = "";
                                 //for (let i = 3; i >= 1; i--) {
                                 //    setTimeout(() => {

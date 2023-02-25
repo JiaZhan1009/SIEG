@@ -32,7 +32,7 @@
                         <tr v-for="item in ReturnDTOes">
                             @* <td class="imgTd-1" data-bs-toggle="modal" :data-bs-target="'#'+item.num" :id="item.orderId">*@
                             <td class="imgTd">
-                                <img :src="'https://localhost:7002'+item.image" class="imgWidth" :id="item.orderId">
+                                <img :src="'https://siegweb.azurewebsites.net'+item.image" class="imgWidth" :id="item.orderId">
                                 <div class="imgMargin" alt="Image">
                                     <div>{{item.productName}}</div>
                                     <span class="nameDilute">{{item.model}}</span>
@@ -77,7 +77,7 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script>
         $(".back_Returns").addClass('active');
-        var webApiBaseAddress = "https://localhost:7139";
+        var webApiBaseAddress = "https://siegapi.azurewebsites.net";
         var appVue = new Vue({
             el: "#bannerVue",
             name: "bannerVue",

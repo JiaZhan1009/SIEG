@@ -39,10 +39,10 @@
                                 <div>{{item.name}}</div>
                             </td>
                             <td>
-                                <img :src="'https://localhost:7002'+item.idCardFront" class="Memberkyc">
+                                <img :src="'https://siegweb.azurewebsites.net'+item.idCardFront" class="Memberkyc">
                             </td>
                             <td>
-                                <img :src="'https://localhost:7002'+item.idCardBack" class="Memberkyc">
+                                <img :src="'https://siegweb.azurewebsites.net'+item.idCardBack" class="Memberkyc">
                             </td>
                             <td>
                                 <div class="tb_btn edit">
@@ -75,7 +75,7 @@
     </script>
     <script>
         $(".back_memberkyc").addClass('active');
-        var webApiBaseAddress = "https://localhost:7139";
+        var webApiBaseAddress = "https://siegapi.azurewebsites.net";
         var appVue = new Vue({
             el: "#bannerVue",
             name: "bannerVue",

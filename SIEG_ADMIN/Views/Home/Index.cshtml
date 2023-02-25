@@ -33,7 +33,7 @@
                     <tbody class="table-border-bottom-0">
                         <tr v-for="item in BannerDTO">
                             <td>
-                                <img :src="'https://localhost:7002'+item.bannerImg">
+                                <img :src="'https://siegweb.azurewebsites.net'+item.bannerImg">
                             </td>
                             <td>
                                 <div>{{item.bannerTitle}}</div>
@@ -70,7 +70,7 @@
 
         $(".back_home").addClass('active');
 
-        var webApiBaseAddress = "https://localhost:7139";
+        var webApiBaseAddress = "https://siegapi.azurewebsites.net";
         var appVue = new Vue({
             el: "#bannerVue",
             name: "bannerVue",

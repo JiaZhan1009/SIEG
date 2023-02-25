@@ -36,7 +36,7 @@
                     <tbody class="table-border-bottom-0">
                         <tr v-for="item in PostDTOs">
                             <td>
-                                <img v-if="item.img != 'https://localhost:7002/images/forum/post/none-img.jpg'" style="max-height:220px" :src=item.img>
+                                <img v-if="item.img != 'https://siegweb.azurewebsites.net/images/forum/post/none-img.jpg'" style="max-height:220px" :src=item.img>
                             </td>
                             <td>
                                 <div>{{item.category}}</div>
@@ -70,7 +70,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
 
     <script>
-        var webApiBaseAddress = "https://localhost:7139";
+        var webApiBaseAddress = "https://siegapi.azurewebsites.net";
         var postVue = new Vue({
             el: "#ForumListVue",
             name: "ForumListVue",
@@ -92,7 +92,7 @@
                                 let item = {};
                                 item = _this.PostDTOs[i];
                                 item.addTime = moment(item.addTime).add(8, 'hours').format("YYYY年M月D日 h:m A");
-                                item.img = "https://localhost:7002"+(item.img);
+                                item.img = "https://siegweb.azurewebsites.net"+(item.img);
                                 item.valIdity = "顯示";
                                 PostList.push(item);
                             }

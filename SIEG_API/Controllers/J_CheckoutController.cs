@@ -16,6 +16,7 @@ using NuGet.Protocol;
 using SIEG_API.DTO;
 using SIEG_API.Models;
 using SIEG_API.Parameters;
+using Facebook;
 
 namespace SIEG_API.Controllers
 {
@@ -43,6 +44,25 @@ namespace SIEG_API.Controllers
                     finalPrice = b.FinalPrice,
                     bidID = b.BuyerBidId
                 }).FirstOrDefaultAsync();
+        }
+
+        [HttpPost]
+        [Route("delete-callback")]
+        public async Task<IActionResult> DeleteCallback()
+        {//  收到 Facebook 傳來的刪除請求的回呼函式
+            var client = new FacebookClient();
+
+            if (!client.TryParseSignedRequest(Request.Form["signed_request"], "app_secret", out dynamic decodedSignedRequest))
+            {
+                // 無法驗證簽名
+                return BadRequest();
+            }
+
+            var userId = decodedSignedRequest.user_id;
+
+            // 呼叫你自己的使用者資料庫，根據 user_id 刪除使用者資料
+
+            return Ok();
         }
 
 

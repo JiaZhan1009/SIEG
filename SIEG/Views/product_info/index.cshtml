@@ -3,8 +3,6 @@
     ViewData["EnTitle"] = "PRODUCT";
 }
 @section Style{
-
-    @*    <link href="~/css/forumArticleStyle.css" rel="stylesheet">*@
     <link href="/css/jiazhan/product_info.css" rel="stylesheet">
     <link href="/css/jiazhan/general.css" rel="stylesheet">
     <link href="/css/BEN.css" rel="stylesheet">
@@ -12,6 +10,8 @@
 
     </style>
 }
+    <meta charset="utf-8">
+
     <div id="appVue" style="margin-bottom: 100px;">
         <!-- Page Banner -->
         <div class="page_banner" style="background-image: url(/images/1920x350-1.jpg)">
@@ -29,17 +29,9 @@
                 </div>
             </div>
         </div>
+        
+
         <div class="container">
-            @*         <div class="pathGroup">
-        <a href="#"> Home /</a>
-        <a href="#"> {{productInfo.pCategory}} /</a>
-        <a href="#"> {{productInfo.pBrand}} /</a>
-        <a href="#"> {{productInfo.pName}} </a>
-        </div>*@
-            @*<div class="title">
-        <h4 class="mainTitle">{{productInfo.pName}}</h4>
-        <h5 class="subTitle">White Black Panda (2021)</h5>
-        </div>*@
             <div class="productGroup">
                 <div class="row align-items-center">
                     @*LeftImage*@
@@ -58,7 +50,9 @@
 
                     @*RightProductInfo*@
                     <div class="col-xl-5 col-xs-5 col-12">
-                        <div class="infoGroup ">
+                        <img :class="{displayNone: !loading}" src="~/images/loading.gif" style=" margin:100px auto" />
+                        <div :class="['infoGroup', {'displayNone': loading}]">
+                         
 
                             <div class="title">
                                 <div class="placement" style="float: right;"><div class="heart"></div></div>
@@ -259,26 +253,11 @@
                     </div>
                 </div>
 
-                <!--  右下角分享區  -->
-                <div class="news_share" style="border:0px;justify-content:end">
-                    <div class="social">
-                        <!-- 點擊後加active -->
-                        @*<div class="placement" style="float: right;"><div class="heart"></div></div>*@
-                        @*                    <a class="like" href="#"><i class="fa fa-heart" style="height: 50px;"></i></a>
-                    <a class="fb" href="#">
-                    <img src="/images/icon-fb.png">
-                    </a>
-                    <a class="line" href="#">
-                    <img src="/images/icon-line.png">
-                    </a>*@
-                    </div>
-                </div>
             </div>
             <!-- 相關商品-->
-            @*Deom*@
-
-
-            @*<div class="owl-carousel owl-theme banner-carousel">
+            @*Deom
+                
+        <div class="owl-carousel owl-theme banner-carousel">
         <div class="item">
         <img class="w-100" src="images/1920x700-1.jpg" alt="Image">
         <div class="carousel-caption">
@@ -399,26 +378,9 @@
 
     <partial name="_footerPartial" />
     @section Scripts{
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    @*<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>*@
-    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>*@
-
-    <script src="/lib/wow/wow.min.js"></script>
-    <script src="/lib/easing/easing.min.js"></script>
-    <script src="/lib/waypoints/waypoints.min.js"></script>
-    <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="/lib/counterup/counterup.min.js"></script>
-    <script src="/lib/parallax/parallax.min.js"></script>
-    <script src="/lib/lightbox/js/lightbox.min.js"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
-
-    <!-- Template Javascript -->
-    <script src="/js/main.js"></script>
-
     @*<script src="~/js/product_info.js"></script>*@
-
+   
     <script>
 
         var webApiAddress = "https://siegapi.azurewebsites.net/api/J";
@@ -427,7 +389,7 @@
             data() {
                 return {
                     mID: sessionStorage.getItem("mID"),
-                    pID: 0,
+                    pID: sessionStorage.getItem("pID"),
                     //pID: 102,
                     productInfo: [],
                     quotePriceList: [],
@@ -449,15 +411,25 @@
                     tpCateID: null,
                     historicalData: [],
                     relatedProducts: [],
+                    loading: true,
                 }
             },
             mounted: async function () {
                 _this = this;
-                _this.pID = sessionStorage.getItem("pID");
                 //sessionStorage.setItem("mID", _this.mID);
+                console.log("loading mounted:", _this.loading)
+                _this.loading = true;
 
-                //await _this.getProductInfo();
-                await _this.getRelatedProducts();
+                setTimeout(() => {
+                    console.log("等待")
+
+                    _this.getProductInfo();
+                    _this.loading = false;
+                }, 300)
+                
+
+                
+                //await _this.getRelatedProducts();
 
                 //await _this.getNewsListDTO();
 
@@ -521,16 +493,21 @@
                 async getProductInfo() {
                     let _this = this;
                     try {
+
+                        console.log("loading 剛進入get:", _this.loading)
                         var response = await axios.get(`${webApiAddress}/GetProductInfo/${_this.pID}`);
                         _this.productInfo = response.data[0];
                         _this.pLength = response.data.length === 1;
                         sessionStorage.setItem("pLength", _this.pLength);
                         _this.pCateID = _this.productInfo.pCateID;
                         //_this.getSizeAndQuote();
+
+                        console.log("loading: ", _this.loading)
                     } catch (error) {
                         console.error(error);
                     } finally {
 
+                        console.log("loading 進入 finally後:", _this.loading)
                     }
                 },
                 async getProductNote() {
@@ -791,7 +768,6 @@
                 },
             },
         });
-
 
     </script>
     }

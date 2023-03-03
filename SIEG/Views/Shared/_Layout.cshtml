@@ -21,8 +21,8 @@
     <link href="~/css/responsive.css" rel="stylesheet" asp-append-version="true" />
 
     <style>
-        .member_login.div_hide{
-            display:none !important;
+        .member_login.div_hide {
+            display: none !important;
         }
 
         .member_login.div_show {
@@ -32,9 +32,9 @@
 
     @await RenderSectionAsync("Style", required: false)
 
+
 </head>
 <body>
-
     <!-- header -->
     <div class="header_sec sticky-top" id="headerVue">
         <div class="container">
@@ -54,6 +54,7 @@
                             </div>
                             <div class="offcanvas-body">
                                 <div class="navbar-nav ms-auto">
+
                                     <a class="nav-item nav-link" asp-controller="about" asp-action="index">關於我們</a>
                                     <div class="nav-item dropdown">
                                         <a class="nav-link" asp-controller="news_list" asp-action="index">最新消息</a>
@@ -101,10 +102,10 @@
                                 </a>
                             </li>
                             @*<li class="header_notice">
-                                <a href="D_Personal">
-                                    <img src="~/images/icon-notice.png" alt="img">
-                                </a>
-                                <span class="new_notice"></span>
+                            <a href="D_Personal">
+                            <img src="~/images/icon-notice.png" alt="img">
+                            </a>
+                            <span class="new_notice"></span>
                             </li>*@
                             <li class="header_search">
                                 <a href="javascript:void(0)">
@@ -159,6 +160,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
 
+    @*<script src="~/js/header.js"></script>*@
     <script>
         var webApiBaseAddress = "https://siegapi.azurewebsites.net";
         var appVue = new Vue({
@@ -179,7 +181,6 @@
                 let _this = this;
                 _this.getNewsSortDTO();
                 _this.getProductSortDTO();
-
             },
             methods: {
                 getNewsSortDTO: function () {
@@ -234,8 +235,6 @@
                 },
             },
         });
-    </script>
-    <script>
         let mID = sessionStorage.getItem("mID");
         if (mID == "" || mID == null) {
             $('.member_login').hide();
@@ -246,8 +245,9 @@
             $('.member_login').addClass('div_show');
         }
 
-    </script>
 
+
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 
 </body>

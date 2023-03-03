@@ -140,6 +140,8 @@
                 let _this = this;
                 await _this.getBannerDTO();
 
+                console.log("測試")
+
                 const datas = _this.BannerDTO.map(item => {
                     const { bannerId, bannerImg, bannerLink, bannerTitle } = item;
                     return (`

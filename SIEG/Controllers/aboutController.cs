@@ -8,5 +8,9 @@ namespace SIEG.Controllers
         {
             return View();
         }
+        public IActionResult privacy()
+        {
+            return View();
+        }
     }
 }

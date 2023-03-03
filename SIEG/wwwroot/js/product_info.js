@@ -5,7 +5,7 @@ var appVue = new Vue({
     data() {
         return {
             mID: sessionStorage.getItem("mID"),
-            pID: 0,
+            pID: sessionStorage.getItem("pID"),
             //pID: 102,
             productInfo: [],
             quotePriceList: [],
@@ -27,15 +27,18 @@ var appVue = new Vue({
             tpCateID: null,
             historicalData: [],
             relatedProducts: [],
+            loading: true,
         }
     },
     mounted: async function () {
         _this = this;
-        _this.pID = sessionStorage.getItem("pID");
         //sessionStorage.setItem("mID", _this.mID);
+        console.log("loading mounted:", _this.loading)
+        _this.loading = true;
+        _this.getProductInfo();
 
-        //await _this.getProductInfo();
-        await _this.getRelatedProducts();
+        _this.loading = false;
+        //await _this.getRelatedProducts();
 
         //await _this.getNewsListDTO();
 
@@ -54,9 +57,9 @@ var appVue = new Vue({
                     <!-- <a href="product_info.html" class="two-row"> -->
                         <a href="product_info.html" class="">
                             <div class="two-row">${item.pName}</div>
-                            @*      <div style="color:#999999;margin:0px">≥ÃßC≥¯ª˘</div>
+                            @*      <div style="color:#999999;margin:0px">ÊúÄ‰ΩéÂ†±ÂÉπ</div>
                             <div class="minPrice fontSizeM">$1,780</div>
-                            @*<div class="listTimeSold">§W¶∏¶®•Êª˘ : $1,780</div>*@
+                            @*<div class="listTimeSold">‰∏äÊ¨°Êàê‰∫§ÂÉπ : $1,780</div>*@
                         </a>
                 </div>
             </div>
@@ -99,16 +102,21 @@ var appVue = new Vue({
         async getProductInfo() {
             let _this = this;
             try {
+                
+                console.log("loading ÂâõÈÄ≤ÂÖ•get:", _this.loading)
                 var response = await axios.get(`${webApiAddress}/GetProductInfo/${_this.pID}`);
                 _this.productInfo = response.data[0];
                 _this.pLength = response.data.length === 1;
                 sessionStorage.setItem("pLength", _this.pLength);
                 _this.pCateID = _this.productInfo.pCateID;
                 //_this.getSizeAndQuote();
+                
+                console.log("loading: ", _this.loading)
             } catch (error) {
                 console.error(error);
             } finally {
-
+                
+                console.log("loading ÈÄ≤ÂÖ• finallyÂæå:", _this.loading)
             }
         },
         async getProductNote() {
@@ -138,17 +146,17 @@ var appVue = new Vue({
 
             if (response.data.length >= 1) {
                 console.log(`getSizeAndQuote_start_pPrice:${_this.pPrice}`)
-                if (_this.pPrice == "" || _this.pPrice == null) { // ≤ƒ§@¶∏∂i≠∂≠±µπ™Ï©løÔ®˙
+                if (_this.pPrice == "" || _this.pPrice == null) { // Á¨¨‰∏ÄÊ¨°ÈÄ≤È†ÅÈù¢Áµ¶ÂàùÂßãÈÅ∏Âèñ
                     _this.pPrice = _this.SizeAndPriceList[0].pPrice;
                     _this.selectSizeItem(_this.SizeAndPriceList[0].pSize, _this.SizeAndPriceList[0].pPrice, _this.activeIndex, _this.SizeAndPriceList[0].pID, _this.SizeAndPriceList[0].sID)
                 }
 
-            } else { // ∞”´~µL≥¯ª˘∞Oø˝
+            } else { // ÂïÜÂìÅÁÑ°Â†±ÂÉπË®òÈåÑ
                 _this.pPrice = "";
                 sessionStorage.removeItem("sID");
             }
         },
-        async getOrderList() { //•Ê©ˆ∞Oø˝
+        async getOrderList() { //‰∫§ÊòìË®òÈåÑ
             try {
                 let _this = this;
                 let response = await axios.get(`${webApiAddress}/GetOrderList/${_this.pID}`);
@@ -158,7 +166,7 @@ var appVue = new Vue({
                 console.log(error);
             }
         },
-        async getLastPrice() { //®˙±oøÔ®˙™∫ pID ≥Ã™Ò§@µß™∫¶®•Êª˘ÆÊ
+        async getLastPrice() { //ÂèñÂæóÈÅ∏ÂèñÁöÑ pID ÊúÄËøë‰∏ÄÁ≠ÜÁöÑÊàê‰∫§ÂÉπÊ†º
             try {
                 let _this = this;
                 let response = await axios.get(`${webApiAddress}/GetLastDealPrice/${_this.pID}`);
@@ -204,11 +212,11 @@ var appVue = new Vue({
         BuyNow() {
             let _this = this;
             if (_this.mID != null) {
-                if (_this.DisplayselBuyPrice == "µL≥¯ª˘∞Oø˝") {
+                if (_this.DisplayselBuyPrice == "ÁÑ°Â†±ÂÉπË®òÈåÑ") {
                     Swal.fire({
                         icon: 'error',
-                        title: 'µL™kæﬁß@!',
-                        text: '•ÿ´eµLΩÊÆa¥£•X≥¯ª˘, Ω–®œ•Œ¥£•Ê•Xª˘•\Ø‡',
+                        title: 'ÁÑ°Ê≥ïÊìç‰Ωú!',
+                        text: 'ÁõÆÂâçÁÑ°Ë≥£ÂÆ∂ÊèêÂá∫Â†±ÂÉπ, Ë´ã‰ΩøÁî®Êèê‰∫§Âá∫ÂÉπÂäüËÉΩ',
                     })
 
                 } else {
@@ -220,8 +228,8 @@ var appVue = new Vue({
             } else {
                 Swal.fire({
                     icon: 'error',
-                    title: 'µL™kæﬁß@!',
-                    text: '±z©|•ºµn§J∑|≠˚,Ω–•˝µn§J∑|≠˚',
+                    title: 'ÁÑ°Ê≥ïÊìç‰Ωú!',
+                    text: 'ÊÇ®Â∞öÊú™ÁôªÂÖ•ÊúÉÂì°,Ë´ãÂÖàÁôªÂÖ•ÊúÉÂì°',
                 })
             }
 
@@ -235,8 +243,8 @@ var appVue = new Vue({
             } else {
                 Swal.fire({
                     icon: 'error',
-                    title: 'µL™kæﬁß@!',
-                    text: '±z©|•ºµn§J∑|≠˚,Ω–•˝µn§J∑|≠˚',
+                    title: 'ÁÑ°Ê≥ïÊìç‰Ωú!',
+                    text: 'ÊÇ®Â∞öÊú™ÁôªÂÖ•ÊúÉÂì°,Ë´ãÂÖàÁôªÂÖ•ÊúÉÂì°',
                 })
             }
 
@@ -249,8 +257,8 @@ var appVue = new Vue({
             } else {
                 Swal.fire({
                     icon: 'error',
-                    title: 'µL™kæﬁß@!',
-                    text: '±z©|•ºµn§J∑|≠˚,Ω–•˝µn§J∑|≠˚',
+                    title: 'ÁÑ°Ê≥ïÊìç‰Ωú!',
+                    text: 'ÊÇ®Â∞öÊú™ÁôªÂÖ•ÊúÉÂì°,Ë´ãÂÖàÁôªÂÖ•ÊúÉÂì°',
                 })
             }
 
@@ -296,7 +304,7 @@ var appVue = new Vue({
     },
     computed: {
         DispalyLastDealPrice() {
-            return this.lastTimePrice == 0 ? "µL¶®•Ê∞Oø˝" : this.Format(this.lastTimePrice);
+            return this.lastTimePrice == 0 ? "ÁÑ°Êàê‰∫§Ë®òÈåÑ" : this.Format(this.lastTimePrice);
         },
         GetDifference() {
             return this.lastTimePrice == 0 ? "" : this.pPrice - this.lastTimePrice;
@@ -308,13 +316,13 @@ var appVue = new Vue({
             return this.lastTimePrice == 0 ? 0 : ((this.pPrice - this.lastTimePrice) / this.lastTimePrice * 100).toFixed(2);
         },
         GetUpDown() {
-            return this.GetDifference > 0 ? "°∂ " : this.GetDifference < 0 ? "°ø " : "  "
+            return this.GetDifference > 0 ? "‚ñ≤ " : this.GetDifference < 0 ? "‚ñº " : "  "
         },
         GetFontColor() {
             return this.GetDifference > 0 ? "#006340" : this.GetDifference < 0 ? "#df2b14" : "#333"
         },
         DisplayselBuyPrice() {
-            return this.pPrice == "" ? "µL≥¯ª˘∞Oø˝" : this.pPrice == null ? "¡ ∂R" : `•H ${this.Format(this.pPrice)} ¡ ∂R`
+            return this.pPrice == "" ? "ÁÑ°Â†±ÂÉπË®òÈåÑ" : this.pPrice == null ? "Ë≥ºË≤∑" : `‰ª• ${this.Format(this.pPrice)} Ë≥ºË≤∑`
         },
         DisplaySizeAndPriceList() {
             return this.SizeAndPriceList.map(item => {
@@ -323,7 +331,7 @@ var appVue = new Vue({
                     pID: item.pID,
                     price: item.pPrice,
                     size: item.pSize,
-                    fPrice: item.pPrice != 0 ? this.Format(item.pPrice) : "µL"
+                    fPrice: item.pPrice != 0 ? this.Format(item.pPrice) : "ÁÑ°"
                 }
             })
         },

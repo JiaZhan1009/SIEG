@@ -16,6 +16,7 @@
                     <li><a asp-controller="product_list" asp-action="index">商品介紹</a></li>
                     <li><a asp-controller="forum_list" asp-action="index">討論專區</a></li>
                     <li><a asp-controller="contact" asp-action="index">聯絡我們</a></li>
+                    <li><a asp-controller="about" asp-action="privacy">隱私權政策</a></li>
                     <li><a onclick="memberLogin()">會員中心</a></li>
                 </ul>
                 <ul class="footer_social">
@@ -26,15 +27,24 @@
             </div>
             <div class="col-12">
                 <div class="copyright">
-                    <div>Copyright © 2022 - All Right Reserved. ∣ <a asp-controller ="disclaimer" asp-action="index">免責聲明</a></div>
+                    <div>Copyright © 2022 - All Right Reserved. ∣ <a asp-controller="disclaimer" asp-action="index">免責聲明</a></div>
+                </div>
+            </div>
+            <div id="appVue">
+                <div v-if="isAuthenticated">
+                    <p>Welcome, {{ user.name }}!</p>
+                    <button @@click="logout">Log Out</button>
+                </div>
+                <div v-else>
+                    <button @@click="login">Log In with Facebook</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
 <script>
-    function memberLogin(){
+    function memberLogin() {
         mID = sessionStorage.getItem("mID");
         console.log(mID);
         if (mID == "" || mID == null) {
@@ -44,4 +54,70 @@
             window.location = "/Member/Member_buyerorder";
         }
     }
+    var webApiBaseAddress = "https://siegapi.azurewebsites.net";
+    var appVue = new Vue({
+        el: "#appVue",
+        data: {
+            isAuthenticated: false,
+            user: null,
+            authResponse: null,
+            scopes: 'email',
+            appId: '872139614081838',
+        },
+        mounted: function () {
+            let _this = this;
+
+            // Initialize the Facebook SDK
+            window.fbAsyncInit = function () {
+                FB.init({
+                    appId: _this.appId,
+                    cookie: true,
+                    xfbml: true,
+                    version: 'v16.0'
+                });
+
+                FB.getLoginStatus(function (response) {
+                    
+                    _this.statusChangeCallback(response);
+                });
+            };
+            // Load the Facebook SDK asynchronously
+            (function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id;
+                js.src = "https://connect.facebook.net/en_US/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+
+        },
+        methods: {
+            statusChangeCallback: function (response) {
+                let _this = this
+                console.log("response: ", response);
+                if (response.status === 'connected') {
+                    _this.authResponse = response.authResponse;
+                    _this.isAuthenticated = true;
+
+                    FB.api('/me', { fields: 'name,email' }, function (response) {
+                        _this.user = response;
+                        console.log("user: ", _this.user)
+                    });
+                }
+            },
+            login: function () {
+                let _this = this;
+                FB.login(function (response) {
+                    _this.statusChangeCallback(response);
+                }, { scope: _this.scopes });
+            },
+            logout: function () {
+                let _this = this;
+                FB.logout(function () {
+                    _this.isAuthenticated = false;
+                    _this.user = null;
+                });
+            },
+        },
+    })
 </script>
